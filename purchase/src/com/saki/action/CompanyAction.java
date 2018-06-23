@@ -62,17 +62,15 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 	public void listAll(){
 		super.writeJson(companyService.loadAll(sort, order, page, rows).getRows());
 	}
-	public void add(){
+	
+	public void edit(){
 		Message j = new Message();
 		try{
-			companyService.add(company);
-			TUser user = new TUser();
-			String roleId = getParameter("roleId");
-			String userName = getParameter("userName");
-			user.setRoleId(Integer.valueOf(roleId));
-			user.setCompanyId(company.getId());
-			user.setUserName(userName);
-			userService.add(user);
+			if(company.getId() != null && company.getId() > 0 ){
+				update();
+			}else{
+				add();
+			}
 			j.setSuccess(true);
 			j.setMsg("添加成功");
 		}catch(Exception e){
@@ -81,9 +79,17 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		}
 		super.writeJson(j);
 	}
+	public void add(){
+			companyService.add(company);
+			TUser user = new TUser();
+			String roleId = getParameter("roleId");
+			String userName = getParameter("userName");
+			user.setRoleId(Integer.valueOf(roleId));
+			user.setCompanyId(company.getId());
+			user.setUserName(userName);
+			userService.add(user);
+	}
 	public void update(){
-		Message j = new Message();
-		try{
 			companyService.update(company);
 			TUser user = userService.getByCompanyId(company.getId());
 			String roleId = getParameter("roleId");
@@ -92,14 +98,6 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 			user.setCompanyId(company.getId());
 			user.setUserName(userName);
 			userService.update(user);
-			j.setSuccess(true);
-			j.setMsg("更新成功");
-		}catch(Exception e){
-			j.setSuccess(false);
-			j.setMsg("更新失败");
-		}
-		super.writeJson(j);
-		
 	}
 	public void delete(){
 		Message j = new Message();

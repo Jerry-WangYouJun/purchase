@@ -183,7 +183,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	<form id="company_form" role="form" style="padding: 20px">
     		<div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">公司名称：</label>
-                <input name="name" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+                <input name="name" class="form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>

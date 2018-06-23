@@ -1,15 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<c:set var="basePath" value="${pageContext.request.contextPath}" scope="request"></c:set>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<base href="<%=basePath%>">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>众联焊割集中采购平台</title>
 <link href="media/css/bootstrap.min.css" rel="stylesheet"
@@ -31,10 +26,6 @@
 <link href="media/css/daterangepicker.css" rel="stylesheet"
 	type="text/css" />
 <link href="media/css/fullcalendar.css" rel="stylesheet" type="text/css" />
-<link href="media/css/jqvmap.css" rel="stylesheet" type="text/css"
-	media="screen" />
-<link href="media/css/jquery.easy-pie-chart.css" rel="stylesheet"
-	type="text/css" media="screen" />
 <link rel="shortcut icon" href="media/image/favicon.ico" />
 <script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
 <script src="media/js/jquery-migrate-1.2.1.min.js"
@@ -46,7 +37,6 @@
 <script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>
 <script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
 <script src="media/js/jquery.uniform.min.js" type="text/javascript"></script>
-
 <script src="media/js/jquery.flot.js" type="text/javascript"></script>
 <script src="media/js/jquery.flot.resize.js" type="text/javascript"></script>
 <script src="media/js/jquery.pulsate.min.js" type="text/javascript"></script>
@@ -54,7 +44,6 @@
 <script src="media/js/daterangepicker.js" type="text/javascript"></script>
 <script src="media/js/jquery.gritter.js" type="text/javascript"></script>
 <script src="media/js/fullcalendar.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.easy-pie-chart.js" type="text/javascript"></script>
 <script src="media/js/jquery.sparkline.min.js" type="text/javascript"></script>
 <script src="media/js/app.js" type="text/javascript"></script>
 <script src="media/js/index.js" type="text/javascript"></script>
@@ -63,10 +52,6 @@
 		App.init(); //  修改主题
 		Index.initDashboardDaterange(); //主页时间
 	});
-	
-	function openTab(url){
-        document.getElementById("center-content").src = url;
-      };
 </script>
 <style type="text/css">
 	.container-fluid {
@@ -79,7 +64,7 @@
 	<div class="header navbar navbar-inverse navbar-fixed-top">
 		<!-- BEGIN TOP NAVIGATION BAR -->
 		<div class="navbar-inner">
-			<div class="brand" style="color:#eee;width:225px">众联焊割集中采购平台</div>
+			<div class="brand" style="color:#eee;width:225px;margin-left:5px">众联焊割集中采购平台</div>
 			<div class="container-fluid" style="background-color:#fff;margin-left: 225px;">
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="index.html" style="color:#eee;"> </a>
@@ -167,7 +152,7 @@
 									My Inbox(3)</a></li>
 							<li><a href="#"><i class="icon-tasks"></i> My Tasks</a></li>
 							<li class="divider"></li>
-							<li><a href="login.html"><i class="icon-key"></i> Log
+							<li><a href="#" onclick="logout()"><i class="icon-key"></i> Log
 									Out</a></li>
 						</ul></li>
 					<!-- END 用户登陆 DROPDOWN -->
@@ -192,29 +177,32 @@
 						class="icon-home"></i> <span class="title">主页</span> <span
 						class="selected"></span>
 				</a></li>
-
-				<li class=""><a href="javascript:;"> <i class="icon-cogs"></i>
-						<span class="title">信息管理</span> <span class="arrow "></span>
-				</a>
-					<ul class="sub-menu">
-						<li ><a href="#"  onclick="openTab('<%=path%>/pages/company_list.jsp')">
-									客户 & 供应商 管理</a></li>
-						<li><a href="#"  onclick="openTab('<%=path%>/pages/user_list.jsp')"> 
-									用户管理</a></li>
-						<li><a href="#"  onclick="openTab('<%=path%>/pages/confirm_manage.jsp')"> 
-									采购日管理</a></li>
-					</ul></li>
-
-				<li class=""><a href="javascript:;"> <i class="icon-th"></i>
-						<span class="title">订单管理</span> <span class="arrow "></span>
-				</a>
-					<ul class="sub-menu">
-						<li><a href="#" onclick="openTab('<%=path%>/pages/order_manage.jsp')"> 客户订单管理</a></li>
-						<li><a href="#" onclick="openTab('<%=path%>/pages/supplier_mange.jsp')"> 供应商管理</a></li>
-					</ul></li>
-				<li class="last"><a href="#" onclick="openTab('<%=path%>/pages/company_list.jsp')"> <i
-						class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
-				</a></li>
+				<c:if test="${roleId eq '1' }">
+					<li class=""><a href="javascript:;"> <i class="icon-cogs"></i>
+							<span class="title">信息管理</span> <span class="arrow "></span>
+					</a>
+						<ul class="sub-menu">
+							<li ><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
+										客户 &供应商 管理</a></li>
+							<li><a href="#"  onclick="openTab('用户管理','${basePath}/pages/user_manage.jsp')"> 
+										用户管理</a></li>
+							<li><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
+										采购日管理</a></li>
+						</ul></li>
+				</c:if>
+						<li class=""><a href="javascript:;"> <i class="icon-th"></i>
+								<span class="title">订单管理</span> <span class="arrow "></span>
+						</a>
+							<ul class="sub-menu">
+								<li><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')"> 客户订单管理</a></li>
+								<li><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
+							</ul></li>
+				<c:if test="${roleId ne 1 }">
+					<li class="last"><a href="#" onclick="openTab('产品类别管理','${basePath}/pages/company_manage.jsp')"> <i
+							class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
+					</a></li>
+					
+				</c:if>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
@@ -281,7 +269,7 @@
 						<ul class="breadcrumb" style="padding:15px 15px">
 							<li><i class="icon-home"></i> <a href="index.html">Home</a>
 								<i class="icon-angle-right"></i></li>
-							<li><a href="#">Dashboard</a></li>
+							<li><a href="#" id="panelName">Dashboard</a></li>
 							<li class="pull-right no-text-shadow" style="padding-right: 50px">
 								<div id="dashboard-report-range"
 									class="dashboard-date-range tooltips no-tooltip-on-touch-device responsive"
@@ -299,7 +287,7 @@
 
 				<!-- BEGIN 主面板 STATS -->
 				<div id="dashboard">
-	 					<div  id ="home" class="tab-content">
+	 					<div  id ="home" class="tab-content" style="margin-left: 20px">
 									
 						</div>
 				</div>
@@ -328,7 +316,7 @@
 		/**
          * 增加标签页
          */
-        function openTab(tabUrl ) {
+        function openTab(panelName ,tabUrl ) {
             //option:
             //tabMainName:tab标签页所在的容器
             //tabName:当前tab的名称
@@ -336,6 +324,7 @@
             //tabUrl:当前tab所指向的URL地址
                 var content = '';
                     content = '<iframe id="myframe" src="' + tabUrl + '" width="100%"  height="780px"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe>';
+                   $("#panelName").text(panelName);
                     $("#home").empty();
                     $("#home").append(content);
         }
@@ -347,7 +336,20 @@
       		});
         });
 
-      
+        function logout(){
+        	$.ajax({ 
+    			url: '${pageContext.request.contextPath}/userAction!logout.action',
+    			dataType : 'json',
+    			success : function(obj){
+    				if(obj.success){
+    					alert(obj.msg);
+						location.replace('${basePath}/pages/login.jsp');
+					}else{
+						alert(obj.msg);
+					}
+    			}
+    		});
+        }
 	</script>
 </body>
 </html>

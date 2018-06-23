@@ -13,13 +13,13 @@
 				  <div class="panel-body" id="a3" style="display:block">
 				  	    <table id="infoTable"> </table>
 					<div id="toolbar" class="btn-group">  
-			            <button id="btn_edit" type="button" class="btn btn-default" onclick="updateData()">  
+			            <button id="btn_edit" type="button" class="btn btn-default" onclick="updateData('company')">  
 			                <span class="glyphicon glyphicon-pencil" aria-hidden="true" ></span>修改  
 			            </button>  
-			            <button id="btn_delete" type="button" class="btn btn-default" onclick="delDish()">  
+			            <button id="btn_delete" type="button" class="btn btn-default" onclick="deleteDataAll('company')">  
 			                <span class="glyphicon glyphicon-remove" aria-hidden="true" ></span>删除  
 			            </button>  
-			            <button id="btn_delete" type="button" class="btn btn-default" onclick="addInfo()">  
+			            <button id="btn_delete" type="button" class="btn btn-default" onclick="addInfo('company')">  
 			            	<span class="glyphicon glyphicon-plus" aria-hidden="true" ></span>新增
 			            </button>
 			        </div>  
@@ -29,41 +29,82 @@
 		
 	<div class="modal fade" id="myModal" tabindex="-2" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
-		<div class="modal-dialog" style="height: ">
-			<div class="modal-content">
+		<div class="modal-dialog" >
+			<div class="modal-content" style="width: 800px">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">代理商管理</h4>
 				</div>
 				<div class="modal-body">
-					<form id="dataForm">
-					 <input  class="form-control" name="id" type="hidden"></input>
-						<div class="form-group">
-							<label for="recipient-name" class="control-label">登录名:</label> <input
-								type="text" class="form-control" name="userNo" id="userNo">
-						</div>
-						<div class="form-group">
-							<label for="message-text" class="control-label">代理商名称:</label> 
-								<input type="text" class="form-control" name="name" id="name">
-						</div>
-						<div class="form-group">
-							<label for="message-text" class="control-label">代理商类型:</label>
-							<select class="form-control"  id ="groupId" name="groupId">  
-					           <option value="1">移动</option>
-					           <option value="2">联通</option>
-					           <option value="3">联通，移动</option>  
-					        </select>	
-						</div>
-						<div class="form-group">
-							<label for="message-text" class="control-label">客服电话:</label> 
-								<input type="text" class="form-control" name="telphone" id="telphone">
-						</div>
+					<form class="form-horizontal" role="form"  style="padding: 20px" id="dataForm">
+						<input type="hidden"  name="id" >
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">公司名称：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control" id="name" name="name" placeholder="必填" required>
+					    </div>
+					    <label for="lastname" class="col-sm-2 control-label">企业类型：</label>
+					    <div class="col-sm-4">
+					      <select name="roleId" id="roleId" 
+                    		class="form-control select2 easyui-combobox" editable="false" required>
+                    			<option value="">请选择</option>
+			                	<option value="2">供货商</option>
+			                	<option value="3">客户</option>
+			                </select>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					   		 <label class="col-sm-2 control-label" >登录账号：</label>
+					   		 <div class="col-sm-4">
+                				<input name="userName" class=" form-control"  placeholder="必填" required>
+                			 </div>
+                			 <label class="col-sm-2 control-label" >联系人：</label>
+					   		 <div class="col-sm-4">
+                				<input name="contacts" class="form-control"  placeholder="必填" required>
+                			 </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">主营业务：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control"  name="business" placeholder="必填" required>
+					    </div>
+					    <label for="lastname" class="col-sm-2 control-label">企业星级：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control"  name="level" >
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">联系电话：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control" name="telphone" placeholder="必填" required>
+					    </div>
+					    <label for="lastname" class="col-sm-2 control-label">税号：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control"  name="tax" placeholder="必填" required>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">银行账号：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control" id="name" name="card" placeholder="必填" required>
+					    </div>
+					    <label for="lastname" class="col-sm-2 control-label">地址：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control"  name="address" placeholder="必填" required>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="lastname" class="col-sm-2 control-label">备注：</label>
+					    <div class="col-sm-6">
+					      <input type="text" class="form-control"  name="remark">
+					    </div>
+					  </div>
 					</form>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-					<button type="button" class="btn btn-primary" onclick="subInfo()">提交更改</button>
+					<button type="button" class="btn btn-primary" onclick="subInfoAll('company')">提交更改</button>
 				</div>
 			</div>
 			<!-- /.modal-content -->
@@ -72,13 +113,7 @@
 	</div>
 </body>
 <script type="text/javascript">
-		function subInfo(){
-			subInfoAll("company");
-		}
 			
-		function delDish(){
-			deleteDataAll("company");
-		}
 		$(function(){
 			    $('#infoTable').bootstrapTable({  
 			        url : '${basePath}/companyAction!loadAll.action', // 请求后台的URL（*）            
@@ -95,7 +130,7 @@
 			        showRefresh : true, // 是否显示刷新按钮  
 			        clickToSelect : true, // 是否启用点击选中行  
 			        showToggle : false, // 是否显示详细视图和列表视图的切换按钮  
-			        search:true,   //是否启用搜索框 
+			        search:false,   //是否启用搜索框 
 			        
 			        columns : [ {  
 			            checkbox : true 

@@ -1,0 +1,108 @@
+/*ѡ��ְλ ��ҵ*/
+
+
+
+
+.production-menu .menu
+{
+	
+    width: 20%;
+    position: absolute;
+    z-index: 2;
+    float: left;
+    border-width: 0px;
+}
+
+.production-menu .menu a
+{
+	background: url(images/select000.png) no-repeat left center;
+    width: 20%;
+    position: absolute;
+    z-index: 2;
+    float: left;
+    border-width: 0px;
+}
+.production-menu .menu a.sele
+{
+    background: url(images/select111.png) no-repeat left center;
+    color: #f2766a;
+}
+
+
+.production-menu .sub-menu
+{
+  padding: 10px;
+  margin-left: 20%;
+
+  overflow: auto;
+  border : 0px;
+  border-left: #eee 1px solid;
+  float: left;
+  background: #fff;
+}
+.production-menu .menu li
+{
+    width: 100%;
+    height: 36px;
+    line-height: 36px;
+    cursor: pointer;
+    color: #666;
+    background: no-repeat right bottom;
+    text-indent: 15px;
+    border-bottom: #eee 1px solid;
+}
+.production-menu .menu li:hover
+{
+    color: #e05447;
+}
+.production-menu .menu li.sele
+{
+    color: #fff;
+    background-color: #e05447;
+}
+.production-menu .sub-menu dl, .industry-list dl
+{
+    width: 100%;
+    display: table;
+    font-size: 12px;
+    padding: 4px 0 2px 0;
+    border-bottom: #eee 1px dotted;
+}
+.production-menu .sub-menu dt a, .industry-list dt
+{
+	background: url(images/select000.png) no-repeat left center;
+    display: table-cell;
+    color: #333;
+    font-weight: bold;
+    padding: 2px 10px 0 20px;
+    vertical-align: top;
+}
+.production-menu .sub-menu dt a.sele, .industry-list dt
+{
+    background: url(images/select111.png) no-repeat left center;
+    color: #f2766a;
+}
+
+
+.production-menu .sub-menu dd, .industry-list dd
+{
+    display: table-cell;
+}
+.production-menu .sub-menu dd a, .industry-list dd a
+{
+    background: url(images/select000.png) no-repeat left center;
+    padding: 0 0 0 20px;
+    margin: 1px 3px;
+    color: #666;
+    display: block;
+    float: left;
+    width: 30%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+.production-menu .sub-menu dd a.sele, .industry-list dd a.sele
+{
+    background: url(images/select111.png) no-repeat left center;
+    color: #f2766a;
+}
