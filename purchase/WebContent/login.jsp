@@ -20,8 +20,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="css/style2.0.css">
-	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="js/com.js"></script>
 	
 	<style type="text/css">
 	ul li{font-size: 30px;color:#2ec0f6;}
@@ -91,23 +89,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <div class="tyg-div">
 	<ul>
     	<li>让</li>
-    	<li><div style="margin-left:20px;">数</div></li>
-    	<li><div style="margin-left:40px;">据</div></li>
-    	<li><div style="margin-left:60px;">改</div></li>
-    	<li><div style="margin-left:80px;">变</div></li>
-    	<li><div style="margin-left:100px;">生</div></li>
-    	<li><div style="margin-left:120px;">活</div></li>
+    	<li><div style="margin-left:20px;">采</div></li>
+    	<li><div style="margin-left:40px;">购</div></li>
+    	<li><div style="margin-left:60px;">更</div></li>
+    	<li><div style="margin-left:80px;">轻</div></li>
+    	<li><div style="margin-left:100px;">松</div></li>
+    	<li><div style="margin-left:120px;">更</div></li>
+    	<li><div style="margin-left:140px;">放</div></li>
+    	<li><div style="margin-left:160px;">心</div></li>
     </ul>
 </div> 
 <div id="contPar" class="contPar">
 	<div id="page1"  style="z-index:1;">
-		<div class="title0">行业智慧能力平台</div>
-		<div class="title1">旅游、交通、气象、公共安全、大数据</div>
+		<div class="title0">众联焊割集中采购平台</div>
+		<div class="title1"><!-- 旅游、交通、气象、公共安全、大数据 --></div>
 		<div class="imgGroug">
 			<ul>
-				<img alt="" class="img0 png" src="img/page1_0.png">
-				<img alt="" class="img1 png" src="img/page1_1.png">
-				<img alt="" class="img2 png" src="img/page1_2.png">
+				<img alt="" class="img0 png" src="<%=basePath%>/img/page1_0.png">
+				<img alt="" class="img1 png" src="<%=basePath%>/img/page1_1.png">
+				<img alt="" class="img2 png" src="<%=basePath%>/img/page1_2.png">
 			</ul>
 		</div>
 		<img alt="" class="img3 png" src="img/page1_3.jpg">
@@ -116,7 +116,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <div class="tyg-div-denglv">
 	<div class="tyg-div-form">
 		<form action="" id="log_form">
-			<h2>登录</h2><p class="tyg-p">欢迎访问  智慧能力</p>
+			<h2>登录</h2><p class="tyg-p">欢迎访问  </p>
 			<div style="margin:5px 0px;">
 				<input type="text" name="userName" placeholder="请输入账号..."/>
 			</div>
@@ -127,6 +127,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</form>
 	</div>
 </div>
+	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+	<script type="text/javascript" src="js/com.js"></script>
     <script>
 function submitForm(){
 	$.ajax({ 
