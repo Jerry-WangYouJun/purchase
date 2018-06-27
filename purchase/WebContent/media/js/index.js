@@ -135,7 +135,7 @@ var Index = function () {
                 minDate: '01/01/2012',
                 maxDate: '12/31/2014',
                 locale: {
-                    applyLabel: 'Submit',
+                    applyLabel: '提交',
                     fromLabel: 'From',
                     toLabel: 'To',
                     customRangeLabel: 'Custom Range',
@@ -157,7 +157,7 @@ var Index = function () {
                     });
                     App.scrollTo();
                 }, 1000);
-                $('#dashboard-report-range span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
+                $('#dashboard-report-range span').html(start.toString('MMMM d, yyyy') );
 
             });
 
@@ -165,7 +165,7 @@ var Index = function () {
 
             $('#dashboard-report-range span').html(Date.today().add({
                 days: -29
-            }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
+            }).toString('MMMM d, yyyy') );
         },
 
         initIntro: function () {

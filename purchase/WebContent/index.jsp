@@ -47,11 +47,60 @@
 <script src="media/js/jquery.sparkline.min.js" type="text/javascript"></script>
 <script src="media/js/app.js" type="text/javascript"></script>
 <script src="media/js/index.js" type="text/javascript"></script>
+
+
+<link href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />  
+<script src="${pageContext.request.contextPath}/js/moment-with-locales.js"></script>  
+<script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.min.js"></script> 
+<script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.zh-CN.js"></script> 
 <script>
 	jQuery(document).ready(function() {
-		App.init(); //  修改主题
-		Index.initDashboardDaterange(); //主页时间
+		
+		//
 	});
+	
+	$(function(){
+		 if("${roleId}"  == ""){
+			   alert("登录超时");
+			   location.href="${pageContext.request.contextPath}";
+		 }
+		App.init(); //  修改主题
+		//Index.initDashboardDaterange(); //主页时间
+		$.ajax({ 
+   			url: '${pageContext.request.contextPath}/userAction!checkConfirm.action',
+   			dataType : 'json',
+   			success : function(obj){
+   					var myDate = new Date();
+   				if(obj.obj.length > 0 ){
+   					var nowDate = "下一个采购日" + CurentTime();
+   						for(var i  in obj.obj){ 
+   							$('#dashboard-report-range span').html("当前日期："+ CurentTime() +myDate.getDate() +"<br/>下一个采购日：" + CurentTime()  + obj.obj[i].confirmDate ); 
+   							alert(nowDate + obj.obj[i].confirmDate + "请在采购日之前结清待支付订单,否则订单将进入下一个采购周期！" );
+   							break;
+   						}
+   						$('#dashboard-report-range').css("backgroundColor" ,"#e02222");
+   					}else{
+   						$('#dashboard-report-range span').html("当前日期:"+ CurentTime() +myDate.getDate());
+   						$('#dashboard-report-range').css("backgroundColor" ,"#aaa");
+   					}
+   			}
+   		});
+		
+		$('#dashboard-report-range').show();
+		
+	});
+	
+	function CurentTime()
+    { 
+        var now = new Date();
+        var year = now.getFullYear();       //年
+        var month = now.getMonth() + 1;     //月
+        var clock = year + "-";
+        if(month < 10)
+            clock += "0";
+        clock += month + "-";
+        return(clock); 
+    }  
 </script>
 <style type="text/css">
 	.container-fluid {
@@ -173,10 +222,6 @@
 			<!-- BEGIN SIDEBAR MENU -->
 			<ul class="page-sidebar-menu">
 
-				<li class="start "><a href="index.html"> <i
-						class="icon-home"></i> <span class="title">主页</span> <span
-						class="selected"></span>
-				</a></li>
 				<c:if test="${roleId eq '1' }">
 					<li class=""><a href="javascript:;"> <i class="icon-cogs"></i>
 							<span class="title">信息管理</span> <span class="arrow "></span>
@@ -240,26 +285,6 @@
 									<li class="color-grey" data-style="grey"></li>
 									<li class="color-white color-light" data-style="light"></li>
 								</ul>
-								<label> <span>Layout</span> <select
-									class="layout-option m-wrap small">
-										<option value="fluid" selected>Fluid</option>
-										<option value="boxed">Boxed</option>
-								</select>
-								</label> <label> <span>Header</span> <select
-									class="header-option m-wrap small">
-										<option value="fixed" selected>Fixed</option>
-										<option value="default">Default</option>
-								</select>
-								</label> <label> <span>Sidebar</span> <select
-									class="sidebar-option m-wrap small">
-										<option value="fixed">Fixed</option>
-										<option value="default" selected>Default</option>
-								</select>
-								</label> <label> <span>Footer</span> <select
-									class="footer-option m-wrap small">
-										<option value="fixed">Fixed</option>
-										<option value="default" selected>Default</option>
-								</select>
 								</label>
 							</div>
 						</div>
@@ -272,7 +297,7 @@
 							<li><a href="#" id="panelName">Dashboard</a></li>
 							<li class="pull-right no-text-shadow" style="padding-right: 50px">
 								<div id="dashboard-report-range"
-									class="dashboard-date-range tooltips no-tooltip-on-touch-device responsive"
+									class="dashboard-date-range no-tooltip-on-touch-device responsive"
 									data-tablet="" data-desktop="tooltips" data-placement="top"
 									data-original-title="Change dashboard date range">
 									<i class="icon-calendar"></i> <span></span> <i
@@ -343,7 +368,7 @@
     			success : function(obj){
     				if(obj.success){
     					alert(obj.msg);
-						location.replace('${basePath}/pages/login.jsp');
+						location.replace('${basePath}/login.jsp');
 					}else{
 						alert(obj.msg);
 					}

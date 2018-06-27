@@ -1,13 +1,19 @@
 package com.saki.action;
 
+import java.util.List;
+
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.apache.struts2.convention.annotation.Results;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Message;
+import com.saki.model.TConfirm;
 import com.saki.model.TUser;
+import com.saki.service.ConfirmServiceI;
 import com.saki.service.UserServiceI;
 import com.saki.utils.MD5Util;
 
@@ -19,6 +25,8 @@ import com.saki.utils.MD5Util;
 public class UserAction extends BaseAction implements ModelDriven<TUser>{
 
 	TUser user = new TUser();
+	
+	
 	@Override
 	public TUser getModel() {
 		return user;
@@ -31,6 +39,13 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		this.userService = userService;
 	}
 	private UserServiceI userService;
+	
+	@Autowired
+	public void setConfirmService(ConfirmServiceI confirmService) {
+		this.confirmService = confirmService;
+	}
+	private ConfirmServiceI confirmService ;
+	
 	
 	public void loadAll(){
 		super.writeJson(userService.loadAll(sort, order, page, rows));
@@ -82,16 +97,30 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 	public void login(){	
 		Message j = new Message();
 		TUser u =userService.login(user);
+		List<TConfirm> t = confirmService.getWarningList();
 		if(u != null){
 			getSession().setAttribute("userName", u.getUserName());
 			getSession().setAttribute("roleId", u.getRoleId());
 			getSession().setAttribute("companyId", u.getCompanyId());
 			getSession().setAttribute("loged", true);
+			getSession().setAttribute("warnFlag",t.size());
+			getSession().setAttribute("warnList", JSON.toJSON(t));
 			j.setSuccess(true);
 			j.setMsg("登陆成功!");
 		}else{
 			getSession().setAttribute("loged", false);
 			j.setMsg("登陆失败，用户名或密码错误");
+		}
+		super.writeJson(j);
+	}
+	
+	public void checkConfirm(){	
+		Message j = new Message();
+		List<TConfirm> t = confirmService.getWarningList();
+		if(t != null){
+			getSession().setAttribute("warnFlag",t.size());
+			getSession().setAttribute("warnList",t);
+			j.setObj(t);
 		}
 		super.writeJson(j);
 	}

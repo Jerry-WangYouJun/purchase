@@ -52,6 +52,16 @@ public class ConfirmServiceImpl implements ConfirmServiceI{
 		confirmDao.update(confirm);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<TConfirm> getWarningList() {
+		String hql = " from TConfirm t  where  0<= "
+				+ "( t.confirmDate  - DATE_FORMAT(now(),'%d') ) "
+				+ "   	 and   (t.confirmDate  - DATE_FORMAT(now(),'%d') "
+				+ "  ) <= 3  ";
+		return confirmDao.find(hql);
+	}
+
 
 
 }
