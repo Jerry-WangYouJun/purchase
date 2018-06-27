@@ -300,8 +300,7 @@
 									class="dashboard-date-range no-tooltip-on-touch-device responsive"
 									data-tablet="" data-desktop="tooltips" data-placement="top"
 									data-original-title="Change dashboard date range">
-									<i class="icon-calendar"></i> <span></span> <i
-										class="icon-angle-down"></i>
+									<i class="icon-calendar"></i> <span></span> 
 								</div>
 							</li>
 						</ul>
