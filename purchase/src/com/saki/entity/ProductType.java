@@ -13,6 +13,13 @@ public class ProductType {
 	public void setParentId(String parentId) {
 		this.parentId = parentId;
 	}
+	private Integer id;
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
+	}
 	private String product;
 	private String type;
 	private String unit;

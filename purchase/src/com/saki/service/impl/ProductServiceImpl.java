@@ -355,4 +355,71 @@ public class ProductServiceImpl implements ProductServiceI{
 		}
 		return product;
 	}
+	
+	@Override
+	public ArrayList<Product> searchProductAndChileProduct() {
+		// TODO Auto-generated method stub
+		//取出产品 （焊丝）
+		String hql = "from   TProduct t  where  t.parentId is null ";
+		String hql1 = " from  TProduct t  where t.parentId =:parentId";
+		ArrayList<Product> productList = new ArrayList<Product>();
+		/*//用户选择的detail id
+		ArrayList<Integer> detailIds = userProductService.getIdByCompany(companyId);		
+		if(detailIds == null||detailIds.size() ==0)
+		return  listAll1();*/
+		//循环 
+		List<TProduct> products = produceDao.find(hql);
+		Map<String,Object> map = new HashMap<String,Object>();
+		logger.info("products Size = "+products.size());
+		//循环2层 
+		for (TProduct tProduct : products) {
+			//创建新的 product  
+			Product product = new Product();
+			product.setUnit(tProduct.getUnit());
+			product.setProduct(tProduct.getProduct());
+			product.setId(tProduct.getId());
+			//查询product 的 二级类型
+			map.put("parentId", tProduct.getId()+"");
+			List<TProduct> productType = produceDao.find(hql1,map);
+			//封装成 productType 对象
+			ArrayList<ProductType> typeList = new ArrayList<ProductType>();
+			for (TProduct tProduct2 : productType) {
+				ProductType type = new ProductType();
+				type.setBase(tProduct2.getBase());
+				type.setProduct(tProduct2.getProduct());
+				type.setId(tProduct2.getId());
+				//type.setType(tProduct2.getProduct());
+				type.setParentId(tProduct2.getParentId());			
+				typeList.add(type);
+			}
+			product.setChildren(typeList);
+			productList.add(product);
+		}	
+		return productList;
+	}
+	
+	@Override
+	public ArrayList<ProductType>  searchSecProductAndChild()
+	{
+		String hql = "from   TProduct t  where  t.parentId is not null ";
+		String hql1 = "from  TProductDetail t where t.productId = :productId";
+		List<TProduct> products = produceDao.find(hql);
+		Map<String,Object> map = new HashMap<String,Object>();
+		ArrayList<ProductType> types = new ArrayList<ProductType>();
+		for (TProduct tProduct : products) {
+			//创建新的 product  
+			ProductType product = new ProductType();
+			product.setUnit(tProduct.getUnit());
+			product.setProduct(tProduct.getProduct());
+			product.setId(tProduct.getId());
+			//查询product 的 二级类型
+			map.put("productId", tProduct.getId());
+			ArrayList<TProductDetail> detailList = (ArrayList)produceDao.find(hql1,map);
+			product.setChildren(detailList);
+			types.add(product);
+		}
+		
+		
+		return types;
+	}
 }

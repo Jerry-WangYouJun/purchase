@@ -631,6 +631,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     <script type="text/javascript">
 		function endEditing(){
+			var order = $("#table_order").datagrid('getSelected');
+			if(order.status != '1' && '${roleId}' == '1'){
+				return false;
+			}
 			if (editIndex == undefined){return true}
 			if ($('#table_add').datagrid('validateRow', editIndex)){
 				$('#table_add').datagrid('endEdit', editIndex);
@@ -645,6 +649,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if (endEditing()){
 					$('#table_add').datagrid('selectRow', index)
 							.datagrid('beginEdit', index);
+					//订单信息选中行
 					editIndex = index;
 				} else {
 					$('#table_add').datagrid('selectRow', editIndex);

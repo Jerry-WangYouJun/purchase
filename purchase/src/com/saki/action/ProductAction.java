@@ -3,6 +3,7 @@ package com.saki.action;
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.opensymphony.xwork2.ModelDriven;
@@ -12,6 +13,7 @@ import com.saki.service.ProductServiceI;
 import com.saki.service.UserProductServiceI;
 
 @Namespace("/")
+@Result(name="toProduceSelectTab",location="/pages/produce_select_tab.jsp")
 @Action(value="productAction")
 public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 
@@ -73,6 +75,13 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	@Autowired
 	public void setUserProductService(UserProductServiceI userProductService) {
 		this.userProductService = userProductService;
+	}
+	
+	public String toProduceSelectTab()
+	{
+		this.getRequest().setAttribute("productList",  productService.searchProductAndChileProduct());
+		this.getRequest().setAttribute("secProduct", productService.searchSecProductAndChild());
+		return "toProduceSelectTab";
 	}
 	
 }

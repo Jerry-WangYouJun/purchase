@@ -243,7 +243,7 @@
 								<li><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
 							</ul></li>
 				<c:if test="${roleId ne 1 }">
-					<li class="last"><a href="#" onclick="openTab('产品类别管理','${basePath}/pages/company_manage.jsp')"> <i
+					<li class="last"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
 							class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
 					</a></li>
 					
