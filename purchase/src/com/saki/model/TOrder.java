@@ -25,6 +25,8 @@ public class TOrder implements java.io.Serializable {
 	private Date confirmDate;
 	private Date pillDate;
 	private Date endDate;
+	
+	//订单状态 1：新订单 2已报价 3已付款 4确认收货  5已提交采购
 	private String status;
 	private double amount;
 	private String remark;

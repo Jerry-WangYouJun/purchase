@@ -150,7 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							if (value == '1') {
 								return "新订单";
 							} else if (value == '2') {
-								return "已发布";
+								return "已报价";
 							} else if(value =='3' ){
 								if(row.percent != undefined){
 									return  "已付款" + row.percent + "%";
@@ -158,6 +158,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								 return "已付款";
 							} else if(value == "4"){
 								return "已收货";
+							} else if(value == "5"){
+								return "已提交采购";
 							}
 	
 						}

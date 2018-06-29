@@ -271,7 +271,6 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 		List<Integer > orderList = new ArrayList<Integer >();
 		Map<Integer , Integer>  tempMap = new HashMap<Integer, Integer>();
 	    List<TOrderDetail> orderDetailList =  getOrderDetailsForSupplierOrder();
-	    
 	    for(TOrderDetail orderDetail : orderDetailList) {
 	    		//计算订单总数
 		  	  if(orderDetail.getNum() != null ) {
@@ -317,6 +316,8 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	    	 mapping.setOrderId(orderId);
 	    	 mapping.setSuppilerOrderId(supOrder.getId());
 	    	 add(mapping);
+	    	 String updateOrderStatus ="update TOrder t set t.status = 5  where t.id = '"+orderId+"'";
+	    	 supplierOrderDao.updateHql(updateOrderStatus);
 	    }
 	    
 	    return orderDetailList.size();
