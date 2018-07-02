@@ -22,6 +22,7 @@ public class TUserProduct implements java.io.Serializable {
 	private Integer productDetailId;
 	private String status;
 	private Integer roleId;
+	private Double price ;
 
 	// Constructors
 
@@ -30,11 +31,12 @@ public class TUserProduct implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TUserProduct(Integer companyId, Integer productDetailId, String status, Integer roleId) {
+	public TUserProduct(Integer companyId, Integer productDetailId, String status, Integer roleId , Double price) {
 		this.companyId = companyId;
 		this.productDetailId = productDetailId;
 		this.status = status;
 		this.roleId = roleId;
+		this.price = price ;
 	}
 
 	// Property accessors
@@ -91,5 +93,16 @@ public class TUserProduct implements java.io.Serializable {
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
+
+	@Column(name = "price")
+	public Double getPrice() {
+		return price;
+	}
+
+	public void setPrice(Double price) {
+		this.price = price;
+	}
+	
+	
 
 }

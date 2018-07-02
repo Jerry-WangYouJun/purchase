@@ -21,6 +21,7 @@ public interface BaseDaoI<T> {
 	
 	public List<T> find(String hql);
 	
+	
 	public List<T> find(String hql, Map<String, Object> params);
 	
 	public List<T> find(String hql, int page, int rows);
@@ -36,5 +37,7 @@ public interface BaseDaoI<T> {
 	public int deleteSupDetailById(String orderId, String detailId);
 
 	public void updateHql(String hql);
+
+	List<T> find(String hql, List<Object> list);
 	
 }

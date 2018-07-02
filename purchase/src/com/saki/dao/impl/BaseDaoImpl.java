@@ -100,6 +100,14 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 		}
 		return q.list();
 	}
+	
+	//批量执行in语句 （  in (:list)）
+	@Override
+	public List<T> find(String hql, List<Object> list) {
+		Query q = this.getCurrentSession().createQuery(hql);
+		 q.setParameterList("list", list);
+		return q.list();
+	}
 
 	@Override
 	public List<T> find(String hql, Map<String, Object> params, int page,

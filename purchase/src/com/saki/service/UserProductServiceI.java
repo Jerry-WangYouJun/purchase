@@ -10,4 +10,5 @@ public interface UserProductServiceI{
 	public List<TUserProduct> listByCompanyId(int companyId);
 	public void save(int companyId, String productlist);
 	public void delete(int companyId);
+	void updatePrice(int companyId, int detailId, double price);
 }

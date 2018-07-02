@@ -32,11 +32,12 @@ public class TUser implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TUser(Integer companyId, Integer roleId, String userName, String userPwd) {
+	public TUser(Integer companyId, Integer roleId, String userName, String userPwd , String companyName) {
 		this.companyId = companyId;
 		this.roleId = roleId;
 		this.userName = userName;
 		this.userPwd = userPwd;
+		this.companyName = companyName;
 	}
 
 	// Property accessors
@@ -94,6 +95,7 @@ public class TUser implements java.io.Serializable {
 		this.userPwd = userPwd;
 	}
 
+	@Column(name="companyName")
 	public String getCompanyName() {
 		return companyName;
 	}

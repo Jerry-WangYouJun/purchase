@@ -7,6 +7,7 @@ import com.saki.entity.Product;
 import com.saki.entity.ProductType;
 import com.saki.entity.TreeModel;
 import com.saki.model.TProduct;
+import com.saki.model.TProductDetail;
 
 public interface ProductServiceI extends BaseServiceI{
 	public ArrayList<Product> listAll();
@@ -16,4 +17,5 @@ public interface ProductServiceI extends BaseServiceI{
 	public TProduct searchParentProduct(Integer id);
 	public ArrayList<Product> searchProductAndChileProduct();
 	public ArrayList<ProductType> searchSecProductAndChild();
+	List<TProductDetail> searchProductDetailByCompanyId(Integer companyId);
 }

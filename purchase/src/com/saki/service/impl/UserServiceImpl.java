@@ -122,10 +122,7 @@ public class UserServiceImpl implements UserServiceI{
 		
 		TUser t = (TUser) userDao.get("from TUser t where t.userName = :userName and t.userPwd = :userPwd", params);
 		if(t!=null){
-			user.setCompanyId(t.getCompanyId());
-			user.setId(t.getId());
-			user.setRoleId(t.getRoleId());
-			return user;
+			return t;
 		}
 		return null;
 	}

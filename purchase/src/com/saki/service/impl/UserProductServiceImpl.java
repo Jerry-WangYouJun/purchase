@@ -74,4 +74,10 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		return l;
 	}
 
+	@Override
+	public void updatePrice(int companyId, int detailId , double price) {
+		userProductDao.updateHql("update TUserProduct t set t.price = '" + price +  "'"
+				+ "  where t.companyId = " + companyId  + " and t.productDetailId = " + detailId);
+	}
+
 }

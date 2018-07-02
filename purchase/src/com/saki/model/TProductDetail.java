@@ -24,6 +24,9 @@ public class TProductDetail implements java.io.Serializable {
 	private String material;
 	private String remark;
 	
+	private TProduct  product;
+	private TUserProduct mapper;
+	
 	private int selected = 0;
 
 	// Constructors
@@ -113,5 +116,26 @@ public class TProductDetail implements java.io.Serializable {
 	public void setSelected(int selected) {
 		this.selected = selected;
 	}
+
+	public TProduct getProduct() {
+		if(product ==null){
+			product = new TProduct();
+		}
+		return product;
+	}
+
+	public void setProduct(TProduct product) {
+		this.product = product;
+	}
+
+	public TUserProduct getMapper() {
+		return mapper;
+	}
+
+	public void setMapper(TUserProduct mapper) {
+		this.mapper = mapper;
+	}
+	
+	
 
 }

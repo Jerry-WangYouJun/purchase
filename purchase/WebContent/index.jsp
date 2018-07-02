@@ -71,16 +71,19 @@
    			dataType : 'json',
    			success : function(obj){
    					var myDate = new Date();
+   					var curDay= myDate.getDate();
+					
    				if(obj.obj.length > 0 ){
    					var nowDate = "下一个采购日" + CurentTime();
    						for(var i  in obj.obj){ 
-   							$('#dashboard-report-range span').html("当前日期："+ CurentTime() +myDate.getDate() +"<br/>下一个采购日：" + CurentTime()  + obj.obj[i].confirmDate ); 
-   							alert(nowDate + obj.obj[i].confirmDate + "请在采购日之前结清待支付订单,否则订单将进入下一个采购周期！" );
+   							$('#dashboard-report-range span').html("当前日期："+ CurentTime() +formatDay(curDay) 
+   									+"<br/>下一个采购日：" + CurentTime()  + formatDay(obj.obj[i].confirmDate) ); 
+   							//alert(nowDate + formatDay(obj.obj[i].confirmDate) + "请在采购日之前结清待支付订单,否则订单将进入下一个采购周期！" );
    							break;
    						}
    						$('#dashboard-report-range').css("backgroundColor" ,"#e02222");
    					}else{
-   						$('#dashboard-report-range span').html("当前日期:"+ CurentTime() +myDate.getDate());
+   						$('#dashboard-report-range span').html("当前日期:"+ CurentTime() + formatDay(curDay));
    						$('#dashboard-report-range').css("backgroundColor" ,"#aaa");
    					}
    			}
@@ -89,6 +92,13 @@
 		$('#dashboard-report-range').show();
 		
 	});
+	function formatDay(day){
+		if(day < 10 ) {
+			return day = "0" + day;
+		}else{
+			return day ;
+		}
+	}
 	
 	function CurentTime()
     { 
@@ -189,8 +199,8 @@
 					<!-- BEGIN 用户登陆 DROPDOWN -->
 					<li class="dropdown user"><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown"> <img alt=""
-							src="media/image/avatar1_small.jpg" /> <span class="username">Bob
-								Nilson</span> <i class="icon-angle-down"></i>
+							src="media/image/avatar1_small.jpg" /> <span class="username">
+							${userName }</span> <i class="icon-angle-down"></i>
 						</a>
 						<ul class="dropdown-menu">
 							<li><a href="extra_profile.html"><i class="icon-user"></i>
@@ -243,10 +253,14 @@
 								<li><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
 							</ul></li>
 				<c:if test="${roleId ne 1 }">
-					<li class="last"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
+					<li class=""><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
 							class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
+					</a></li>																 
+				</c:if>
+				<c:if test="${roleId eq 2 }">
+					 <li class="last"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
+							class="icon-bar-chart"></i> <span class="title">价格设置</span>
 					</a></li>
-					
 				</c:if>
 			</ul>
 			<!-- END SIDEBAR MENU -->

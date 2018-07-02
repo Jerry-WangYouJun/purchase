@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import com.saki.entity.ProductType;
 import com.saki.entity.TreeModel;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
+import com.saki.model.TUserProduct;
 import com.saki.service.ProductDetailServiceI;
 import com.saki.service.ProductServiceI;
 import com.saki.service.UserProductServiceI;
@@ -396,6 +398,41 @@ public class ProductServiceImpl implements ProductServiceI{
 			productList.add(product);
 		}	
 		return productList;
+	}
+	
+	@Override
+	public List<TProductDetail> searchProductDetailByCompanyId(Integer companyId) {
+		 List<TProductDetail> productListTemp = new ArrayList<>();
+		 List<TUserProduct>  mappingList = new ArrayList<>();
+		 String hqlMap = "from TUserProduct  m where m.companyId = :companyId";
+		 Map<String,Object> map = new HashMap<String,Object>();
+		 map.put("companyId", companyId);
+		 mappingList = produceDao.find(hqlMap, map);
+		 List<Integer > detailIdList = new ArrayList<>(); 
+		 Map<Integer , TUserProduct>  mappingMap = new HashMap<>();
+		 for (TUserProduct mapper : mappingList) {
+			 detailIdList.add(mapper.getProductDetailId()); 
+			 mappingMap.put(mapper.getProductDetailId(),mapper);
+		 }
+		 List<TProductDetail>  productList = produceDao.find(" from TProductDetail d  where  id in (:list)", detailIdList);
+		 for (TProductDetail detail : productList) {
+			 TProductDetail detailTemp  =  new TProductDetail();
+			 TProduct product = (TProduct)produceDao.get("from TProduct p  where id = " + detail.getProductId());
+			 detailTemp.setId(detail.getId());
+			 detailTemp.setMaterial(detail.getMaterial());
+			 detailTemp.setFormat(detail.getFormat());
+			 detailTemp.setRemark(detail.getRemark());
+			 detailTemp.setSubProduct(detail.getSubProduct());
+			 detailTemp.getProduct().setProduct(product.getProduct());
+			 detailTemp.getProduct().setType(product.getType());//具体种类
+			 detailTemp.getProduct().setUnit(product.getUnit());
+			 detailTemp.getProduct().setBase(product.getBase());
+			 /*detailTemp.getMapper().setProductDetailId(detail.getId());
+			 detailTemp.getMapper().setPrice(m);*/
+			 detailTemp.setMapper(mappingMap.get(detail.getId()));
+			 productListTemp.add(detailTemp);
+		}
+		return productListTemp;
 	}
 	
 	@Override

@@ -2,6 +2,7 @@ package com.saki.action;
 
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
@@ -99,7 +100,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		TUser u =userService.login(user);
 		List<TConfirm> t = confirmService.getWarningList();
 		if(u != null){
-			getSession().setAttribute("userName", u.getUserName());
+			getSession().setAttribute("userName", StringUtils.isEmpty(u.getCompanyName())?"管理员":u.getCompanyName());
 			getSession().setAttribute("roleId", u.getRoleId());
 			getSession().setAttribute("companyId", u.getCompanyId());
 			getSession().setAttribute("loged", true);
