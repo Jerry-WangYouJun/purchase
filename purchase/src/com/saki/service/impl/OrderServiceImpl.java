@@ -169,6 +169,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			TProduct product = (TProduct) objs[0];
 			TProductDetail detail = (TProductDetail) objs[1];
 			TOrderDetail oDetail = (TOrderDetail) objs[3];
+			TUserProduct mapper = (TUserProduct) objs[5];
 			TProduct parentProduct = (TProduct) objs[6];
 			Map<String , Object >  map = new HashMap<String,Object>();
 			map.put("id", oDetail.getId());
@@ -178,8 +179,8 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("materail", detail.getMaterial());
 			map.put("acount",  oDetail.getNum());
 			map.put("unit", parentProduct.getUnit());
-			if(oDetail.getPrice() != null && oDetail.getPrice() > 0 ) {
-				map.put("price", oDetail.getPrice());
+			if(mapper.getPrice() != null && mapper.getPrice() > 0 ) {
+				map.put("price", mapper.getPrice());
 			}
 			map.put("detailId", detail.getId());
 			map.put("productId", product.getId());
@@ -204,7 +205,8 @@ public class OrderServiceImpl implements OrderServiceI{
 	
 	private List<Map<String, Object>> searchDetailNullPrice(String id) {
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
-		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od ,TProduct product  "
+		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od ,TProduct product "
+				+ " left join TUserProduct m  "
 				+ " where t.id = d.productId  and o.id = od.orderId and od.productDetailId = d.id  "
 				+ " and  o.id = " + id +"and t.parentId = product.id " ;
 		
