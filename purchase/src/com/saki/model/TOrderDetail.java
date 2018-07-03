@@ -22,6 +22,7 @@ public class TOrderDetail implements java.io.Serializable {
 	private Integer productDetailId;
 	private Integer num;
 	private Double price;
+	private String brand; 
 	private String remark;
 
 	// Constructors
@@ -104,4 +105,14 @@ public class TOrderDetail implements java.io.Serializable {
 		this.remark = remark;
 	}
 
+	@Column(name = "brand")
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
+	}
+
+	
 }

@@ -170,5 +170,10 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	
 	}
 	
+	@Override
+	public void  executeUpdate(String sql){
+		 this.getCurrentSession().createSQLQuery(sql).executeUpdate();
+	}
+	
 
 }

@@ -404,15 +404,23 @@ public class ProductServiceImpl implements ProductServiceI{
 	public List<TProductDetail> searchProductDetailByCompanyId(Integer companyId) {
 		 List<TProductDetail> productListTemp = new ArrayList<>();
 		 List<TUserProduct>  mappingList = new ArrayList<>();
-		 String hqlMap = "from TUserProduct  m where m.companyId = :companyId";
+		 String hqlMap = "from TUserProduct  m where 1 = 1 ";
 		 Map<String,Object> map = new HashMap<String,Object>();
-		 map.put("companyId", companyId);
+		 if(companyId > 0 ){
+			 hqlMap += " and  m.companyId like  :companyId" ;
+			 map.put("companyId", companyId);
+		 }else {
+			 hqlMap += " and  m.roleId = 2 " ;
+		 }
 		 mappingList = produceDao.find(hqlMap, map);
 		 List<Integer > detailIdList = new ArrayList<>(); 
 		 Map<Integer , TUserProduct>  mappingMap = new HashMap<>();
 		 for (TUserProduct mapper : mappingList) {
 			 detailIdList.add(mapper.getProductDetailId()); 
 			 mappingMap.put(mapper.getProductDetailId(),mapper);
+		 }
+		 if(detailIdList == null  || detailIdList.size() == 0){
+			  return productListTemp;
 		 }
 		 List<TProductDetail>  productList = produceDao.find(" from TProductDetail d  where  id in (:list)", detailIdList);
 		 for (TProductDetail detail : productList) {

@@ -55,7 +55,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	});
 	var editIndex = undefined;
-    
     	$(function(){
 			$('#user_table').datagrid({
 				url:'${pageContext.request.contextPath}/productAction!loadProducntDetailByCompany.action',
@@ -85,9 +84,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}}
 				]],				
 			});
+			
+			 $('#user_table').datagrid('showColumn', 'id');
 		});
     	
     	function onDblClickCell(rowIndex, field){
+    		if('${roleId}' == '1'){
+				 return false ;
+			}
     		var rows=$('#user_table').datagrid('getRows');//获取所有当前加载的数据行
     		var target=rows[rowIndex];///
 			$('#user_table').datagrid('selectRow', rowIndex)

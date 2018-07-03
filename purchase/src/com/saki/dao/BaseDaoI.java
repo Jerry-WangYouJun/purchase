@@ -40,4 +40,5 @@ public interface BaseDaoI<T> {
 
 	List<T> find(String hql, List<Object> list);
 	
+	public void  executeUpdate(String sql);
 }

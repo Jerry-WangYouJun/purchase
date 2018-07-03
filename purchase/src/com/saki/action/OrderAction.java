@@ -240,8 +240,9 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	}
 	
 	public void getProductDetail() {
+		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
 		String productId = getParameter("productId");
-		List<TProductDetail> list = orderService.searchDetailByProductId(productId);
+		List<TProductDetail> list = orderService.searchDetailByProductId(productId,companyId);
 		String jsonString = JSON.toJSONString(list);
 		JSONArray jsonArray = JSONArray.parseArray(jsonString);
 		super.writeJson(jsonArray);
@@ -292,6 +293,8 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 						 deleteDetail(delete);
 					 }
 				 }
+				 j.setSuccess(true);
+			     j.setMsg("修改成功");
 			 }
 	     
 	     
@@ -317,6 +320,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   detail.setNum( obj.getIntValue("acount"));
 	    	    	   detail.setOrderId(order.getId());
 	    	    	   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
+	    	    	   detail.setBrand(obj.getString("brand"));
 	    	    	   orderService.add(detail);
 	     }
 	}

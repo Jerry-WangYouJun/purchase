@@ -45,14 +45,11 @@ public class UserProductServiceImpl implements UserProductServiceI{
 
 
 	@Override
-	public void save(int companyId, String productlist) {
+	public void save(int companyId, String productlist , int roleId) {
 		//delete(companyId);
 		String[] ap = productlist.split(",");
 		for(int i=0;i<ap.length;i++){
-			TUserProduct t = new TUserProduct();
-			t.setCompanyId(companyId);
-			t.setProductDetailId(Integer.valueOf(ap[i]));
-			userProductDao.save(t);
+			updatePrice(companyId , Integer.valueOf(ap[i]) , 0  , roleId);
 		}
 	}
 
@@ -62,7 +59,6 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		for(TUserProduct t : l){
 			userProductDao.delete(t);
 		}
-		
 	}
 
 	@Override
@@ -75,9 +71,12 @@ public class UserProductServiceImpl implements UserProductServiceI{
 	}
 
 	@Override
-	public void updatePrice(int companyId, int detailId , double price) {
-		userProductDao.updateHql("update TUserProduct t set t.price = '" + price +  "'"
-				+ "  where t.companyId = " + companyId  + " and t.productDetailId = " + detailId);
+	public void updatePrice(int companyId, int detailId , double price, int roleId) {
+		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price  , roleId ) "
+				+ " VALUES (" + companyId + " , " + detailId + " , " + price + " , " + roleId + " )"
+				+ " ON DUPLICATE KEY UPDATE price = " + price + " ";
+		userProductDao.executeUpdate(sql);
+		
 	}
 
 }

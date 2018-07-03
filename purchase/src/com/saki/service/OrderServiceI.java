@@ -17,7 +17,7 @@ public interface OrderServiceI extends BaseServiceI{
 
 	List<TProduct> searchProductType(String product);
 
-	List<TProductDetail> searchDetailByProductId(String productId);
+	List<TProductDetail> searchDetailByProductId(String productId, String companyId);
 
 	TOrderDetail getByDetailId(String detailId);
 

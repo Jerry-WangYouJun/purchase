@@ -8,7 +8,7 @@ import com.saki.model.TUserProduct;
 public interface UserProductServiceI{
 	public ArrayList<Integer> getIdByCompany(int companyId);
 	public List<TUserProduct> listByCompanyId(int companyId);
-	public void save(int companyId, String productlist);
+	public void save(int companyId, String productlist, int roleId);
 	public void delete(int companyId);
-	void updatePrice(int companyId, int detailId, double price);
+	void updatePrice(int companyId, int detailId, double price, int roleId);
 }

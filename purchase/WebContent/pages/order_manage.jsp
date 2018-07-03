@@ -351,6 +351,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                        }    
 		                    	}},
 						{field:'materail',title:'材质',width:100,align:'center',editor:'textbox'},
+						{field:'brand',title:'品牌',width:100,align:'center',editor:'textbox'},
 						{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
 						{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
 						{field:'price',title:'单价',width:100,align:'center'},
@@ -383,6 +384,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    						{field:'type',title:'产品类型',width:100,align:'center'},
    						{field:'sub_product',title:'产品规格',width:100,align:'center'},
    						{field:'materail',title:'材质',width:100,align:'center'},
+   						{field:'brand',title:'品牌',width:100,align:'center',editor:'textbox'},
    						{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
    						{field:'unit',title:'单位',width:100,align:'center'},
    						{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
@@ -634,9 +636,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript">
 		function endEditing(){
 			var order = $("#table_order").datagrid('getSelected');
-			if(order.status != '1' && '${roleId}' == '1'){
+			if('${roleId}' == '1'){
 				return false;
 			}
+			if(order != null &&  order.status != '1'  ){
+				return false;
+			} 
 			if (editIndex == undefined){return true}
 			if ($('#table_add').datagrid('validateRow', editIndex)){
 				$('#table_add').datagrid('endEdit', editIndex);

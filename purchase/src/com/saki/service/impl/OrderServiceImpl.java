@@ -1,6 +1,7 @@
 package com.saki.service.impl;
 
 import java.util.ArrayList;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +26,7 @@ import com.saki.service.OrderServiceI;
 import com.saki.service.ProductServiceI;
 import com.saki.utils.SystemUtil;
 
+@SuppressWarnings("unchecked" )
 @Service("orderService")
 public class OrderServiceImpl implements OrderServiceI{
 	
@@ -44,6 +46,8 @@ public class OrderServiceImpl implements OrderServiceI{
 	public void setConfirmDao(BaseDaoI confirmDao) {
 		this.confirmDao = confirmDao;
 	}
+	
+
 	private BaseDaoI orderDao;
 	public BaseDaoI getOrderDao() {
 		return orderDao;
@@ -168,16 +172,17 @@ public class OrderServiceImpl implements OrderServiceI{
 			//主表数据
 			TProduct product = (TProduct) objs[0];
 			TProductDetail detail = (TProductDetail) objs[1];
-			TOrderDetail oDetail = (TOrderDetail) objs[3];
+			TOrderDetail orderDetail = (TOrderDetail) objs[3];
 			TUserProduct mapper = (TUserProduct) objs[5];
 			TProduct parentProduct = (TProduct) objs[6];
 			Map<String , Object >  map = new HashMap<String,Object>();
-			map.put("id", oDetail.getId());
+			map.put("id", orderDetail.getId());
 			map.put("product", parentProduct.getProduct() );
 			map.put("type",  product.getProduct());
 			map.put("sub_product", detail.getSubProduct());
 			map.put("materail", detail.getMaterial());
-			map.put("acount",  oDetail.getNum());
+			map.put("acount",  orderDetail.getNum());
+			map.put("brand", orderDetail.getBrand());
 			map.put("unit", parentProduct.getUnit());
 			if(mapper.getPrice() != null && mapper.getPrice() > 0 ) {
 				map.put("price", mapper.getPrice());
@@ -206,7 +211,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	private List<Map<String, Object>> searchDetailNullPrice(String id) {
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od ,TProduct product "
-				+ " left join TUserProduct m  "
 				+ " where t.id = d.productId  and o.id = od.orderId and od.productDetailId = d.id  "
 				+ " and  o.id = " + id +"and t.parentId = product.id " ;
 		
@@ -218,27 +222,27 @@ public class OrderServiceImpl implements OrderServiceI{
 			//主表数据
 			TProduct product = (TProduct) objs[0];
 			TProductDetail detail = (TProductDetail) objs[1];
-			TOrderDetail oDetail = (TOrderDetail) objs[3];
+			TOrderDetail orderDetail = (TOrderDetail) objs[3];
 			TProduct parentProduct = (TProduct)objs[4];
 			Map<String , Object >  map = new HashMap<String,Object>();
-			map.put("id", oDetail.getId());
+			map.put("id", orderDetail.getId());
 			map.put("product",parentProduct.getProduct() );
 			//前台没改  所以 这个地方 对应的是type
 			map.put("type",  product.getProduct());
 			map.put("sub_product", detail.getSubProduct());
 			map.put("materail", detail.getMaterial());
-			map.put("acount",  oDetail.getNum());
+			map.put("acount",  orderDetail.getNum());
 			map.put("unit", parentProduct.getUnit());
-			if(oDetail.getPrice() != null && oDetail.getPrice() > 0 ) {
-				map.put("price", oDetail.getPrice());
+			if(orderDetail.getPrice() != null && orderDetail.getPrice() > 0 ) {
+				map.put("price", orderDetail.getPrice());
 			}
 			map.put("detailId", detail.getId());
 			map.put("productId", product.getId());
-			detailMap.put(detail.getId(), map);
+			map.put("brand", orderDetail.getBrand());
+			detailMap.put(orderDetail.getId(), map);
+			mapList.add(map);
 		}
-		for(Map<String,Object> map : detailMap.values()) {
-			   mapList.add(map);
-		}
+		
 		return mapList ;
 	}
 	
@@ -256,8 +260,9 @@ public class OrderServiceImpl implements OrderServiceI{
 		List<TProduct> list = orderDao.find(hql);
 		return list;
 	}
-	public List<TProductDetail> searchDetailByProductId(String productId) {
-		String  hql = "from TProductDetail t where t.productId = '" + productId + "'";
+	public List<TProductDetail> searchDetailByProductId(String productId , String companyId) {
+		String  hql = "from TProductDetail t where t.productId = '" + productId + "' and t.id in ("
+				+  " select m.productDetailId from TUserProduct m where m.companyId = '" + companyId +"' ) ";
 		List<TProductDetail> list = orderDao.find(hql);
 		return list;
 	}
@@ -275,7 +280,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	public void delete(TOrderDetail detail) {
 		orderDao.delete(detail);
 	}
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<TOrderDetail> getOrderDetailsForSupplierOrder() {
 		String  hql = "from TOrderDetail t ";
@@ -307,7 +311,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	
 	@Override
 	public List<TProduct> searchProductByCompanyId(String companyId) {
-		// TODO Auto-generated method stub
 		StringBuffer sb  = new StringBuffer();
 		sb.append(" select  t.id,t.product,t.unit  from  TProduct  t ,TProduct t1 ");	
 		sb.append("  where t.id  in  (  ");
@@ -321,7 +324,6 @@ public class OrderServiceImpl implements OrderServiceI{
 		try {
 			list = orderDao.find(sb.toString(), map);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		int count = list.size();
@@ -329,8 +331,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	@Override
 	public List<TProductDetail> searchDetailByCompanyId(String companyId) {
-		// TODO Auto-generated method stub
-		
 		String hql = "from  TUserProduct user  where user.companyId = "+companyId;
 		List<TUserProduct> userList = orderDao.find(hql);
 		String detailIds = "";
@@ -353,7 +353,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	
 	@Override
 	public List<TProduct> searchProductByProductIds(String productIds) {
-		// TODO Auto-generated method stub
 		StringBuffer sb  = new StringBuffer();
 		sb.append("  from  TProduct  product where  product.id in  ( "+ productIds+")");
 		List<TProduct> list = orderDao.find(sb.toString());
@@ -363,7 +362,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	
 	@Override
 	public List<TProduct> searchProductTypeByParentId(String parentId) {
-		// TODO Auto-generated method stub
 		String hql = " from TProduct t where  t.parentId = "+parentId;
 		List<TProduct> list= orderDao.find(hql);		
 		return list;
@@ -371,7 +369,6 @@ public class OrderServiceImpl implements OrderServiceI{
 	//查询所有已选产品
 	@Override
 	public List<TUserProduct> searchUserProductByCompanyId(String companyId) {
-		// TODO Auto-generated method stub
 		String hql = "from  TUserProduct  t  where t.companyId = :companyId";
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("companyId", Integer.parseInt(companyId));
@@ -380,14 +377,11 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	@Override
 	public List<TProductDetail> searchDetailByIds(String ids) {
-		// TODO Auto-generated method stub
 		String hql = "from  TProductDetail  detail  where  detail.id in ("+ids+") ";
-		
 		return orderDao.find(hql);
 	}
 	@Override
 	public TProduct searchProductByProductId(Integer productId) {
-		// TODO Auto-generated method stub
 		String hql = "from TProduct  product  where  product.id =:id ";
 		Map<String,Object> params = new HashMap<String,Object>();
 		params.put("id", productId);
@@ -396,13 +390,11 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	@Override
 	public List<TProduct> searchProductByproductIds(String productIds) {
-		// TODO Auto-generated method stub
 		String hql ="from  TProduct product where product.id  in ("+productIds+")";
 		return orderDao.find(hql);
 	}
 	@Override
 	public List<TProduct> searchProductByProductIdsAndParentId(String productIds, String parentId) {
-		// TODO Auto-generated method stub
 		StringBuffer sb  = new StringBuffer();
 		sb.append("  from  TProduct  product where  product.id in  ( "+ productIds+")  and parent_id =:parentId");
 		Map<String,Object> params = new HashMap<String,Object>();
@@ -411,9 +403,9 @@ public class OrderServiceImpl implements OrderServiceI{
 		return list;
 	}
 	
+	
 	@Override
 	public List<TProduct> searchFirstProduct() {
-		// TODO Auto-generated method stub
 		String hql ="from  TProduct product where parent_id is null ";
 		return orderDao.find(hql);
 	}

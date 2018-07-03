@@ -48,7 +48,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	
 	public void loadProducntDetailByCompany(){
 			Grid grid = new Grid();
-			int companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
+			int companyId =  0 ;
+			if(getSession().getAttribute("companyId")!= null){
+				 companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
+			}
 			List<TProductDetail> l = productService.searchProductDetailByCompanyId(companyId);
 			grid.setTotal(l.size());
 			grid.setRows(l);
@@ -66,9 +69,12 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	public void saveUserProduct(){
 		Message j = new Message();
 		try{
-			//
-			userProductService.delete(Integer.valueOf(getSession().getAttribute("companyId").toString()));
-			userProductService.save(Integer.valueOf(getSession().getAttribute("companyId").toString()), getParameter("productlist"));
+			int roleId =  0 ;
+			if(getSession().getAttribute("roleId")!= null){
+				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
+			}
+			//userProductService.delete(Integer.valueOf(getSession().getAttribute("companyId").toString()));
+			userProductService.save(Integer.valueOf(getSession().getAttribute("companyId").toString()), getParameter("productlist") , roleId);
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){
@@ -77,12 +83,19 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		super.writeJson(j);
 	}
 	
+	/**
+	 * 更新供应商价格
+	 */
 	public void updateMappingPrice(){
 		Message j = new Message();
 		try{
-			userProductService.updatePrice( Integer.valueOf(getSession().getAttribute("companyId").toString())
+			int roleId =  0 ;
+			if(getSession().getAttribute("roleId")!= null){
+				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
+			}
+			userProductService.updatePrice( Integer.valueOf(getSession().getAttribute("companyId").toString() )
 					, Integer.valueOf(getParameter("detailId")) 
-					, Double.valueOf(getParameter("price")));
+					, Double.valueOf(getParameter("price")), roleId);
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){

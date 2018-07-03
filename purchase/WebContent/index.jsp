@@ -233,32 +233,40 @@
 			<ul class="page-sidebar-menu">
 
 				<c:if test="${roleId eq '1' }">
-					<li class=""><a href="javascript:;"> <i class="icon-cogs"></i>
+					<li class="">
+						<a href="javascript:;"> <i class="icon-cogs"></i>
 							<span class="title">信息管理</span> <span class="arrow "></span>
-					</a>
+						</a>
 						<ul class="sub-menu">
-							<li ><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
-										客户 &供应商 管理</a></li>
-							<li><a href="#"  onclick="openTab('用户管理','${basePath}/pages/user_manage.jsp')"> 
-										用户管理</a></li>
-							<li><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
-										采购日管理</a></li>
-						</ul></li>
+							<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
+										客户 &供应商 管理</a>
+							</li>
+							<li class="active-menu"><a href="#"  onclick="openTab('用户管理','${basePath}/pages/user_manage.jsp')"> 
+										用户管理</a>
+							</li>
+							<li class="active-menu"><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
+										采购日管理</a>
+							</li>
+							<li class="active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> 
+									<span class="title">价格设置</span></a>
+							</li>
+						</ul>
+					</li>
 				</c:if>
 						<li class=""><a href="javascript:;"> <i class="icon-th"></i>
 								<span class="title">订单管理</span> <span class="arrow "></span>
 						</a>
 							<ul class="sub-menu">
-								<li><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')"> 客户订单管理</a></li>
-								<li><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
+								<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')"> 客户订单管理</a></li>
+								<li class="active-menu"><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
 							</ul></li>
 				<c:if test="${roleId ne 1 }">
-					<li class=""><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
+					<li class="active-menu"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
 							class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
 					</a></li>																 
 				</c:if>
 				<c:if test="${roleId eq 2 }">
-					 <li class="last"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
+					 <li class="last active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
 							class="icon-bar-chart"></i> <span class="title">价格设置</span>
 					</a></li>
 				</c:if>
@@ -367,7 +375,7 @@
                     $("#home").append(content);
         }
         $(function(){
-       	 	$("li a").click(function (e) {
+       	 	$(".active-menu a").click(function (e) {
    			   e.preventDefault();
    			   $(".active").removeClass("active");
    			   $(this).parent().addClass("active");
