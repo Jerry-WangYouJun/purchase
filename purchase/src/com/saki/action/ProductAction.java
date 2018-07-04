@@ -1,6 +1,9 @@
 package com.saki.action;
 
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
@@ -8,6 +11,8 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Grid;
 import com.saki.entity.Message;
@@ -52,7 +57,8 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			if(getSession().getAttribute("companyId")!= null){
 				 companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
 			}
-			List<TProductDetail> l = productService.searchProductDetailByCompanyId(companyId);
+			List<Map<String, Object>>  l = productService.searchProductDetailByCompanyId(companyId);
+			//List<Map<String,Object>>  list = orderService.searchDetail(id);
 			grid.setTotal(l.size());
 			grid.setRows(l);
 		super.writeJson(grid);
@@ -101,6 +107,32 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		}catch(Exception e){
 			j.setMsg("保存失败");
 		}	
+		super.writeJson(j);
+	}
+	
+	public void updateMappingStatus(){
+		Message j = new Message();
+		 String  s = getParameter("obj");
+		 JSONArray jsonArray = JSONArray.parseArray(s);
+		 Iterator it  = jsonArray.iterator();
+		 Map<String , Object> map = new HashMap<>();
+		while(it.hasNext()){
+			 JSONObject  json = (JSONObject) it.next();
+			 if(map.containsKey(json.getIntValue("productDetailId") + json.getString("reamrk")) ){
+				 j.setSuccess(false);
+				 j.setMsg("同种产品不能选择两次！");
+				 super.writeJson(j);
+			 }else{
+				 map.put(json.getIntValue("productDetailId") + json.getString("reamrk"), json);
+			 }
+		}
+		for (Object object : jsonArray) {
+			 JSONObject  json = (JSONObject) object;
+			 userProductService.updateStatusReset(json.getIntValue("detailId"), json.getString("companyId"));
+			 userProductService.updateStatus(json.getIntValue("mapId"));
+		}
+		j.setSuccess(true);
+		j.setMsg("操作成功");
 		super.writeJson(j);
 	}
 	

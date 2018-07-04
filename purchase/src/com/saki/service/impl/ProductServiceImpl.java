@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +14,7 @@ import com.saki.entity.Grid;
 import com.saki.entity.Product;
 import com.saki.entity.ProductType;
 import com.saki.entity.TreeModel;
+import com.saki.model.TCompany;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
@@ -401,46 +401,39 @@ public class ProductServiceImpl implements ProductServiceI{
 	}
 	
 	@Override
-	public List<TProductDetail> searchProductDetailByCompanyId(Integer companyId) {
-		 List<TProductDetail> productListTemp = new ArrayList<>();
-		 List<TUserProduct>  mappingList = new ArrayList<>();
-		 String hqlMap = "from TUserProduct  m where 1 = 1 ";
-		 Map<String,Object> map = new HashMap<String,Object>();
-		 if(companyId > 0 ){
-			 hqlMap += " and  m.companyId like  :companyId" ;
-			 map.put("companyId", companyId);
-		 }else {
-			 hqlMap += " and  m.roleId = 2 " ;
-		 }
-		 mappingList = produceDao.find(hqlMap, map);
-		 List<Integer > detailIdList = new ArrayList<>(); 
-		 Map<Integer , TUserProduct>  mappingMap = new HashMap<>();
-		 for (TUserProduct mapper : mappingList) {
-			 detailIdList.add(mapper.getProductDetailId()); 
-			 mappingMap.put(mapper.getProductDetailId(),mapper);
-		 }
-		 if(detailIdList == null  || detailIdList.size() == 0){
-			  return productListTemp;
-		 }
-		 List<TProductDetail>  productList = produceDao.find(" from TProductDetail d  where  id in (:list)", detailIdList);
-		 for (TProductDetail detail : productList) {
-			 TProductDetail detailTemp  =  new TProductDetail();
-			 TProduct product = (TProduct)produceDao.get("from TProduct p  where id = " + detail.getProductId());
-			 detailTemp.setId(detail.getId());
-			 detailTemp.setMaterial(detail.getMaterial());
-			 detailTemp.setFormat(detail.getFormat());
-			 detailTemp.setRemark(detail.getRemark());
-			 detailTemp.setSubProduct(detail.getSubProduct());
-			 detailTemp.getProduct().setProduct(product.getProduct());
-			 detailTemp.getProduct().setType(product.getType());//具体种类
-			 detailTemp.getProduct().setUnit(product.getUnit());
-			 detailTemp.getProduct().setBase(product.getBase());
-			 /*detailTemp.getMapper().setProductDetailId(detail.getId());
-			 detailTemp.getMapper().setPrice(m);*/
-			 detailTemp.setMapper(mappingMap.get(detail.getId()));
-			 productListTemp.add(detailTemp);
+	public List<Map<String , Object>> searchProductDetailByCompanyId(Integer companyId) {
+		Map<String,Object> map = new HashMap<String,Object>();
+		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c  "
+				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id   "   ;
+		if(companyId > 0 ){
+			hql += " and  m.companyId like  :companyId" ;
+			map.put("companyId", companyId);
+		}else {
+			hql += " and  m.roleId = 2 " ;
 		}
-		return productListTemp;
+		List<Object[]> list = produceDao.find(hql , map);
+		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
+		for (int i = 0; i < list.size(); i++) {
+			Object[] objs = list.get(i);
+			TUserProduct  mapper = (TUserProduct)objs[0]; 
+			TProductDetail ProductDetail = (TProductDetail)objs[1];
+			TProduct product = (TProduct) objs[2];
+			TCompany company = (TCompany) objs[3];
+			Map<String , Object>  tempMap = new HashMap<>();
+			tempMap.put("company", company.getName());
+			tempMap.put("companyId", company.getId());
+			tempMap.put("level", company.getLevel());
+			tempMap.put("productName", product.getProduct());
+			tempMap.put("subProduct", ProductDetail.getSubProduct());
+			tempMap.put("format", ProductDetail.getFormat());
+			tempMap.put("material", ProductDetail.getMaterial());
+			tempMap.put("price", mapper.getPrice());
+			tempMap.put("remark", product.getRemark());
+			tempMap.put("productDetailId", mapper.getProductDetailId());
+			tempMap.put("mapid", mapper.getId());
+			mapList.add(tempMap);
+		}
+		return mapList;
 	}
 	
 	@Override

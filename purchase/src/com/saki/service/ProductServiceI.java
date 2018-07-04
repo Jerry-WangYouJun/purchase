@@ -2,6 +2,7 @@ package com.saki.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.saki.entity.Product;
 import com.saki.entity.ProductType;
@@ -17,5 +18,5 @@ public interface ProductServiceI extends BaseServiceI{
 	public TProduct searchParentProduct(Integer id);
 	public ArrayList<Product> searchProductAndChileProduct();
 	public ArrayList<ProductType> searchSecProductAndChild();
-	List<TProductDetail> searchProductDetailByCompanyId(Integer companyId);
+	List<Map<String, Object>> searchProductDetailByCompanyId(Integer companyId);
 }

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -72,11 +73,22 @@ public class UserProductServiceImpl implements UserProductServiceI{
 
 	@Override
 	public void updatePrice(int companyId, int detailId , double price, int roleId) {
-		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price  , roleId ) "
+		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price  , role_id ) "
 				+ " VALUES (" + companyId + " , " + detailId + " , " + price + " , " + roleId + " )"
 				+ " ON DUPLICATE KEY UPDATE price = " + price + " ";
 		userProductDao.executeUpdate(sql);
-		
+	}
+	
+	@Override
+	public void updateStatus(int id ) {
+		String sql = " update t_user_product  set status = 1  where id =" + id ;
+		userProductDao.executeUpdate(sql);
+	}
+	
+	@Override
+	public void updateStatusReset(int detailId ,String companyId ) {
+		String sql = " update t_user_product  set status = 0  where product_detail_id =" + detailId ;
+		userProductDao.executeUpdate(sql);
 	}
 
 }

@@ -32,6 +32,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
  		<table id="user_table" class="easyui-datagrid"></table>
  	</div>
+ 	<div id="toolbar_user" style="padding:2px 5px;">
+        <a onclick="price_default()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a>    
+    </div>
 	
     <script type="text/javascript">
     $.extend($.fn.datagrid.methods, {
@@ -62,19 +65,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				toolbar:'#toolbar_user',		
 				fitColumns: true,
 				striped:true,
-				singleSelect: true,
+				singleSelect: false,
 				onDblClickCell:onDblClickCell,
 				columns:[[
-					{field:'id',title:'id',width:20,align:'center', hidden:'true'},
-					{field:'productName',title:'产品类别',width:20,align:'center',formatter:function(row,value){
-						return value.product.type;
-					}},
+					{field:'id', hidden:'true'},
+					{field:'companyId',hidden:'true'},
+					{field:'mapId',hidden:'true'},
+					{field:'productDetailId',title:'productDetailId',width:20,align:'center', hidden:'true'},
+					{field:'ck',checkbox:true },
+					{field:'company',title:'公司',width:20,align:'center'},
+					{field:'level',title:'企业星级',width:20,align:'center'},
+					{field:'remark',title:'品牌',width:20,align:'center'},
+					{field:'productName',title:'产品类别',width:20,align:'center'},
 					{field:'subProduct',title:'小类名称',width:20,align:'center'},
 					{field:'format',title:'规格',width:20,align:'center'},
 					{field:'material',title:'材料',width:20,align:'center'},
-					{field:'price',title:'价格',width:20,align:'center',formatter:function(row,value){
-						return value.mapper.price;
-					},
+					{field:'price',title:'价格',width:20,align:'center',
 					editor:{
 						type:'text',
 						options:{
@@ -85,7 +91,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				]],				
 			});
 			
-			 $('#user_table').datagrid('showColumn', 'id');
+			 if('${roleId}' != '1'){
+				 $('#user_table').datagrid('hideColumn', 'company');
+				 $('#user_table').datagrid('hideColumn', 'level');
+			}
 		});
     	
     	function onDblClickCell(rowIndex, field){
@@ -96,13 +105,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		var target=rows[rowIndex];///
 			$('#user_table').datagrid('selectRow', rowIndex)
 			.datagrid('editCell', {index:rowIndex,field:field});
-			$("input.datagrid-editable-input").val(target.mapper.price).bind("blur",function(evt){
-				target.mapper.price = $("input.datagrid-editable-input").val();
-				if(target.mapper.price  == '' || target.mapper.price  == 0){
+			$("input.datagrid-editable-input").val(target.price).bind("blur",function(evt){
+				target.price = $("input.datagrid-editable-input").val();
+				if(target.price  == '' || target.price  == 0){
 					 alert("不能为空或0 ,请重新填写");
 					 return false;
 				}
-				updatePrice(target.mapper.price , target.mapper.productDetailId);
+				updatePrice(target.price , target.productDetailId);
 				$("#user_table").datagrid('endEdit',rowIndex);
 			});
 		}
@@ -122,6 +131,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				}
     			}
     		});
+		}
+		
+		function price_default(){
+			var flag = confirm("同一种产品只能选择一个,确认选择的信息无误？");
+			if(flag){
+				var checkedItems = $('#user_table').datagrid('getChecked');
+				$.ajax({ 
+	    			url: '${pageContext.request.contextPath}/productAction!updateMappingStatus.action',
+	    			data : { "obj": JSON.stringify(checkedItems)},
+	    			dataType : 'json',
+	    			success : function(obj){
+	    				if(obj.success){
+	    				 	//alert(obj.msg);
+	    				 	//$('#user_table').datagrid('reload');
+	    				}else{
+	    					alert(obj.msg);
+	    					$('#user_table').datagrid('reload');
+	    				}
+	    			}
+	    		});
+			}
 		}
     </script>
 </body>

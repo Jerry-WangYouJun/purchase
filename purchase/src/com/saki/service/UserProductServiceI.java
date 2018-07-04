@@ -11,4 +11,6 @@ public interface UserProductServiceI{
 	public void save(int companyId, String productlist, int roleId);
 	public void delete(int companyId);
 	void updatePrice(int companyId, int detailId, double price, int roleId);
+	void updateStatus(int id);
+	void updateStatusReset(int detailId, String companyId);
 }
