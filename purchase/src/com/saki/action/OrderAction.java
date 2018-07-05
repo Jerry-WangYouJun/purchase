@@ -135,6 +135,14 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		
 	}
 	
+	public void getProductBrand(){
+		String detailId  = getParameter("detailId");
+		List<Map<String, Object>> mapList =  orderService.searchBrandByProductDetailId(detailId);
+		String jsonString = JSON.toJSONString(mapList);
+		JSONArray jsonArray = JSONArray.parseArray(jsonString);
+		super.writeJson(jsonArray);
+	}
+	
 	public void getProduct() {
 		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
 		if(companyId =="null")

@@ -3,7 +3,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	公司名称：
                 <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
             	企业类型：
-                <select name="roleId" id="roleId" 
+                <select name="roleId" id="role" 
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
                     <option value="">-选择-</option>
                 	<option value="2">供货商</option>
@@ -52,7 +52,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     function query(){
     	$('#company_table').datagrid('load', {
     	    name: $("#cname").val(),
-    	    roleId: $("#roleId").val()
+    	    roleId: $("#role").val()
     	});
     }
     	$(function(){
@@ -65,6 +65,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				singleSelect: true,
 				columns:[[
 					{field:'name',title:'公司名称',width:100,align:'center'},
+					{field:'brand',title:'品牌',width:100,align:'center'},
 					{field:'contacts',title:'联系人',width:100,align:'center'},
 					{field:'address',title:'地址',width:150,align:'center'},
 					{field:'business',title:'主营业务',width:150,align:'center'},
@@ -89,7 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#company_save").unbind('click').click(function(){
 				if($("#company_form").validate().form()){
 		  				$.ajax({
-							url : '${pageContext.request.contextPath}/companyAction!add.action',
+							url : '${pageContext.request.contextPath}/companyAction!edit.action',
 							data : $('#company_form').serialize(),
 							dataType : 'json',
 							success : function(obj) {
@@ -114,7 +115,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#company_save").unbind('click').click(function(){
 					if($("#company_form").validate().form()){
 	  					$.ajax({
-							url : '${pageContext.request.contextPath}/companyAction!update.action',
+							url : '${pageContext.request.contextPath}/companyAction!edit.action',
 							data : $('#company_form').serialize(),
 							dataType : 'json',
 							success : function(obj) {
@@ -168,7 +169,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		
 		$(function(){
 			$("#company_form").validate();
+			$('#roleId').combobox({
+				onChange:function(n,o){
+					 if(n == '2'){
+						  $(".brand").show();
+					 }else {
+						 $(".brand").hide(); 
+					 }
+			    }
+			});
+
 		})
+		
 		
     </script>
     
@@ -187,11 +199,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>
-                <select name="roleId" id="roleId" 
+                <select name="roleId" id="roleId"  
                     		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
                 	<option value="2">供货商</option>
                 	<option value="3">客户</option>
                 </select>
+            </div>
+            <div class="form-group col-md-6 brand">
+            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">品牌：</label>
+                <input name="brand" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">登录账号：</label>

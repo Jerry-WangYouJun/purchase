@@ -110,6 +110,26 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		super.writeJson(j);
 	}
 	
+	/**
+	 * 更新供应商价格
+	 */
+	public void updateMarkupPrice(){
+		Message j = new Message();
+		try{
+			int roleId =  0 ;
+			if(getSession().getAttribute("roleId")!= null){
+				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
+			}
+			userProductService.updateMarkupPrice(  Integer.valueOf(getParameter("mapid")) 
+					, Double.valueOf(getParameter("markup")));
+			j.setSuccess(true);
+			j.setMsg("保存成功");
+		}catch(Exception e){
+			j.setMsg("保存失败");
+		}	
+		super.writeJson(j);
+	}
+	
 	public void updateMappingStatus(){
 		Message j = new Message();
 		 String  s = getParameter("obj");
@@ -122,14 +142,15 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				 j.setSuccess(false);
 				 j.setMsg("同种产品不能选择两次！");
 				 super.writeJson(j);
+				 return ;
 			 }else{
 				 map.put(json.getIntValue("productDetailId") + json.getString("reamrk"), json);
 			 }
 		}
 		for (Object object : jsonArray) {
 			 JSONObject  json = (JSONObject) object;
-			 userProductService.updateStatusReset(json.getIntValue("detailId"), json.getString("companyId"));
-			 userProductService.updateStatus(json.getIntValue("mapId"));
+			 userProductService.updateStatusReset(json.getIntValue("productDetailId"), json.getString("companyId"));
+			 userProductService.updateStatus(json.getIntValue("mapid"));
 		}
 		j.setSuccess(true);
 		j.setMsg("操作成功");

@@ -71,11 +71,20 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		return l;
 	}
 
+	/**
+	 *  updatePrice方法被两处两用
+	 *   一处为更新企业产品类型（price=0，sql中每次更新是保留原有的price  即为：‘price=price’）
+	 *   一处为企业更新产品报价（price》0）sql中更新新的price，即为price=传入的double值
+	 */
 	@Override
 	public void updatePrice(int companyId, int detailId , double price, int roleId) {
+		String tempPrice = price + "";
+		if(price == 0.0){
+			tempPrice = "price";
+		}
 		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price  , role_id ) "
 				+ " VALUES (" + companyId + " , " + detailId + " , " + price + " , " + roleId + " )"
-				+ " ON DUPLICATE KEY UPDATE price = " + price + " ";
+				+ " ON DUPLICATE KEY UPDATE price = " + tempPrice + " ";
 		userProductDao.executeUpdate(sql);
 	}
 	
@@ -88,6 +97,12 @@ public class UserProductServiceImpl implements UserProductServiceI{
 	@Override
 	public void updateStatusReset(int detailId ,String companyId ) {
 		String sql = " update t_user_product  set status = 0  where product_detail_id =" + detailId ;
+		userProductDao.executeUpdate(sql);
+	}
+
+	@Override
+	public void updateMarkupPrice(Integer mapid, Double markup) {
+		String sql = " update t_user_product  set markup = " + markup + "  where id =" + mapid ;
 		userProductDao.executeUpdate(sql);
 	}
 

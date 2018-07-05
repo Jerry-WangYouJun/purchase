@@ -411,6 +411,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		}else {
 			hql += " and  m.roleId = 2 " ;
 		}
+		hql += " order by  p.product  , d.subProduct , d.format , d.material  ";
 		List<Object[]> list = produceDao.find(hql , map);
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		for (int i = 0; i < list.size(); i++) {
@@ -423,14 +424,16 @@ public class ProductServiceImpl implements ProductServiceI{
 			tempMap.put("company", company.getName());
 			tempMap.put("companyId", company.getId());
 			tempMap.put("level", company.getLevel());
+			tempMap.put("remark", company.getBrand());
 			tempMap.put("productName", product.getProduct());
 			tempMap.put("subProduct", ProductDetail.getSubProduct());
 			tempMap.put("format", ProductDetail.getFormat());
 			tempMap.put("material", ProductDetail.getMaterial());
 			tempMap.put("price", mapper.getPrice());
-			tempMap.put("remark", product.getRemark());
 			tempMap.put("productDetailId", mapper.getProductDetailId());
 			tempMap.put("mapid", mapper.getId());
+			tempMap.put("status", mapper.getStatus());
+			tempMap.put("markup", mapper.getMarkup());
 			mapList.add(tempMap);
 		}
 		return mapList;

@@ -23,6 +23,7 @@ public class TUserProduct implements java.io.Serializable {
 	private String status;
 	private Integer roleId;
 	private Double price ;
+	private Double markup;
 
 	// Constructors
 
@@ -102,7 +103,13 @@ public class TUserProduct implements java.io.Serializable {
 	public void setPrice(Double price) {
 		this.price = price;
 	}
-	
-	
+	@Column(name = "markup")
+	public Double getMarkup() {
+		return markup;
+	}
 
+	public void setMarkup(Double markup) {
+		this.markup = markup;
+	}
+	
 }

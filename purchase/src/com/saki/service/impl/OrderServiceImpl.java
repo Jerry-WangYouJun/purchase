@@ -1,7 +1,6 @@
 package com.saki.service.impl;
 
 import java.util.ArrayList;
-
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -216,7 +215,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		
 		
 		List<Object[]> list = orderDao.find(hql);
-		Map<Integer , Map<String,Object>> detailMap = new HashMap<Integer , Map<String,Object>>();
+		//Map<Integer , Map<String,Object>> detailMap = new HashMap<Integer , Map<String,Object>>();
 		for (int i = 0; i < list.size(); i++) {
 			Object[] objs = list.get(i);
 			//主表数据
@@ -239,7 +238,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("detailId", detail.getId());
 			map.put("productId", product.getId());
 			map.put("brand", orderDetail.getBrand());
-			detailMap.put(orderDetail.getId(), map);
+			//detailMap.put(orderDetail.getId(), map);
 			mapList.add(map);
 		}
 		
@@ -326,29 +325,28 @@ public class OrderServiceImpl implements OrderServiceI{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		int count = list.size();
 		return list;
 	}
-	@Override
-	public List<TProductDetail> searchDetailByCompanyId(String companyId) {
-		String hql = "from  TUserProduct user  where user.companyId = "+companyId;
-		List<TUserProduct> userList = orderDao.find(hql);
-		String detailIds = "";
-		for (TUserProduct tUserProduct : userList) {
-			detailIds += tUserProduct.getProductDetailId()+",";
-		}
-		detailIds = detailIds.substring(0, detailIds.length()-1);
-		String hql1 = " from  TProductDetail detail where  detail.id in  ("+detailIds+")  ";
-		
-		
-		List<TProductDetail> list = orderDao.find(hql1);
-		String parentId ="";
-		/*for (TProductDetail tProductDetail : list) {
-			parentId += tProductDetail.getProduct().getParentProduct().getId()+"";
-		}	*/
-		return list;
-	}
-	
+//	@Override
+//	public List<TProductDetail> searchDetailByCompanyId(String companyId) {
+//		String hql = "from  TUserProduct user  where user.companyId = "+companyId;
+//		List<TUserProduct> userList = orderDao.find(hql);
+//		String detailIds = "";
+//		for (TUserProduct tUserProduct : userList) {
+//			detailIds += tUserProduct.getProductDetailId()+",";
+//		}
+//		detailIds = detailIds.substring(0, detailIds.length()-1);
+//		String hql1 = " from  TProductDetail detail where  detail.id in  ("+detailIds+")  ";
+//		
+//		
+//		List<TProductDetail> list = orderDao.find(hql1);
+//		String parentId ="";
+//		/*for (TProductDetail tProductDetail : list) {
+//			parentId += tProductDetail.getProduct().getParentProduct().getId()+"";
+//		}	*/
+//		return list;
+//	}
+//	
 	
 	
 	@Override
@@ -409,6 +407,41 @@ public class OrderServiceImpl implements OrderServiceI{
 		String hql ="from  TProduct product where parent_id is null ";
 		return orderDao.find(hql);
 	}
+	@Override
+	public List<Map<String, Object>> searchBrandByProductDetailId(
+			String detailId) {
+		List<Map<String , Object>>  mapListTemp = new ArrayList<Map<String , Object>>();
+		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
+		String hql = "from  TUserProduct  m  , TCompany c  where m.companyId = c.id "
+				+ " and m.roleId = 2  and m.productDetailId = " +  detailId  ;
+		List<Object[]> list = orderDao.find(hql);
+		for (int i = 0; i < list.size(); i++) {
+			Object[] objs = list.get(i);
+			TUserProduct mapper = (TUserProduct)objs[0];
+			TCompany company = (TCompany)objs[1];
+			Map<String , Object >  map = new HashMap<String,Object>();
+			map.put("mapid", mapper.getId());
+			map.put("price", isNull(mapper.getPrice()) + isNull(mapper.getMarkup()));
+			map.put("brand", company.getBrand());
+			map.put("status", mapper.getStatus());
+			mapListTemp.add(map);
+		}
+		for(Map<String , Object> map : mapListTemp){
+			  if("1".equals(map.get("status"))){
+				  mapList.add(map);
+				  mapListTemp.remove(map);
+					  break;
+			  }
+		}
+		mapList.addAll(mapListTemp);
+		return mapList;
+	}
 	
-	
+	public Double isNull(Double val){
+		 if(val == null){
+			  return 0.0;
+		 }else{
+			 return val;
+		 }
+	}
 }

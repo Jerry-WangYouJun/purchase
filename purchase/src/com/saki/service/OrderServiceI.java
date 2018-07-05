@@ -33,7 +33,7 @@ public interface OrderServiceI extends BaseServiceI{
 	
 	List<TProduct> searchProductByCompanyId(String companyId);
 
-	List<TProductDetail> searchDetailByCompanyId(String companyId);
+	//List<TProductDetail> searchDetailByCompanyId(String companyId);
 
 	List<TProduct> searchProductByProductIds(String productIds);
 
@@ -50,5 +50,7 @@ public interface OrderServiceI extends BaseServiceI{
 	List<TProduct> searchProductByProductIdsAndParentId(String productIds, String parentId);
 
 	List<TProduct> searchFirstProduct();
+
+	List<Map<String, Object>> searchBrandByProductDetailId(String detailId);
 	
 }

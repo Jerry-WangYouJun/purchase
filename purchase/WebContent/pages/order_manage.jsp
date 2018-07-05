@@ -277,22 +277,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                            url:'${pageContext.request.contextPath}/orderAction!getProduct.action',  
 		                            valueField:'product' ,   
 		                            textField:'product',  
-		                            onSelect:function(data){  
+		                            onSelect:function(data){ 
+		                            	//选择的行
 		                                var row = $('#table_add').datagrid('getSelected');  
 		                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 		                                 var ed = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
-		                                        field : 'unit'  
+		                                        field : 'unit'  //根据字段名获取编辑的字段
 		                                    });  
-		                                $(ed.target).textbox('setValue',  data.unit);   
-		                                var thisTarget = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'product'}).target;  
-		                                var value = thisTarget.combobox('getValue');  
+		                                $(ed.target).textbox('setValue',  data.unit);   //赋值
+		                                $(ed.target).combobox('disable');//不可用
+		                                
+		                                //定义要编辑的列
 		                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
 		                                target.combobox('clear'); //清除原来的数据  
 		                                var subtarget = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'sub_product'}).target;  
 		                                subtarget.combobox('clear');
 		                                var url = '${pageContext.request.contextPath}/orderAction!getProductTypeByParentId.action?parentId='+data.id;  
 		                                target.combobox('reload', url);//联动下拉列表重载   */
+		                                
 		                            }  
 		                        }    
 		                    	}/* ,
@@ -346,16 +349,58 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                                        index : rowIndex,  
 	                                        field : 'detailId'  
 	                                    });  
-	                                $(idvalue.target).textbox('setValue',  data.id );   
+	                               	 $(idvalue.target).textbox('setValue',  data.id );   
+		                               	var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'brand'}).target;  
+		                                target.combobox('clear'); //清除原来的数据  
+		                                var url = '${pageContext.request.contextPath}/orderAction!getProductBrand.action?detailId='+data.id;  
+		                                target.combobox('reload', url);//联动下拉列表重载   
 		                            }  
-		                        }    
+		                        },
 		                    	}},
 						{field:'materail',title:'材质',width:100,align:'center',editor:'textbox'},
-						{field:'brand',title:'品牌',width:100,align:'center',editor:'textbox'},
+						{field:'brand',title:'品牌',width:100,align:'center',editor:{    
+	                        type : 'combobox',    
+	                        options : {    
+	                           // url:'${pageContext.request.contextPath}/orderAction!getProduct.action',  
+	                            valueField:'brand' ,   
+	                            textField:'brand',  
+	                            onSelect:function(data){  
+	                                var row = $('#table_add').datagrid('getSelected');  
+	                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+	                                 var ed = $("#table_add").datagrid('getEditor', {  
+	                                        index : rowIndex,  
+	                                        field : 'price'  
+	                                    });  
+	                                $(ed.target).textbox('setValue',  data.price); 
+	                                $(ed.target).combobox('disable');
+	                                var idvalue = $("#table_add").datagrid('getEditor', {  
+                                        index : rowIndex,  
+                                        field : 'mapid'  
+                                    });  
+                               	 $(idvalue.target).textbox('setValue',  data.mapid );   
+	                            } ,onLoadSuccess:function(){ //数据加载完成执行该代码
+	                                var data= $(this).combobox("getData");
+	                                var row = $('#table_add').datagrid('getSelected');  
+	                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+	                                 var bra = $("#table_add").datagrid('getEditor', {  
+	                                        index : rowIndex,  
+	                                        field : 'brand'  
+	                                    });  
+	                                $(bra.target).textbox('setValue',  data[0].brand); 
+	                                var bra = $("#table_add").datagrid('getEditor', {  
+                                        index : rowIndex,  
+                                        field : 'price'  
+                                    });  
+                              	   $(bra.target).textbox('setValue',  data[0].price); 
+	                                
+	                			} 
+	                        }   
+	                    }},
 						{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
 						{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
-						{field:'price',title:'单价',width:100,align:'center'},
+						{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
 						{field:'detailId', hidden:'true',editor:'textbox' },
+						{field:'mapid', hidden:'true',editor:'textbox' },
 						{field:'productId', hidden:'true',editor:'textbox' },
 						{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 						{field:'id', hidden:'true',editor:'textbox' }
