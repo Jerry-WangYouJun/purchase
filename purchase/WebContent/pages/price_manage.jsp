@@ -112,6 +112,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 $('#user_table').datagrid('hideColumn', 'level');
 				 $('#user_table').datagrid('hideColumn', 'remark');
 				 $('#user_table').datagrid('hideColumn', 'status');
+				 $('#user_table').datagrid('hideColumn', 'markup');
 			}
 		});
     	

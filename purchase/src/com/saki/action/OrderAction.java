@@ -329,6 +329,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   detail.setOrderId(order.getId());
 	    	    	   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
 	    	    	   detail.setBrand(obj.getString("brand"));
+	    	    	   detail.setPrice(obj.getDouble("price"));
 	    	    	   orderService.add(detail);
 	     }
 	}
@@ -346,6 +347,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    		   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    			       detail.setPrice(obj.getDouble("price"));
 	    	    		   }
+	    	    		   detail.setBrand(obj.getString("brand"));
 	    	    		   orderService.update(detail);
 	    	    	   }
 	     }
@@ -401,6 +403,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		Message j = new Message();
 		try {
 			String id = getParameter("id");
+			//发票状态
 			String invoice = getParameter("invoice");
 			TOrder order = (TOrder)orderService.getByKey(id);
 			switch (invoice) {

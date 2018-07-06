@@ -176,7 +176,7 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 				order.setStatus(status);
 			}
 			supllierOrderService.update(order);
-		//	supllierOrderService.updateOrderStatus(id);
+			supllierOrderService.updateOrderStatus(id);
 				j.setSuccess(true);
 				j.setMsg("操作成功");
 		} catch (Exception e) {
@@ -272,7 +272,7 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		Message j = new Message();
 		try {
 			String id = getParameter("id");
-			String invoice = getParameter("invoice");
+			String invoice = getParameter("invoice");//发票状态
 			TSupllierOrder order = (TSupllierOrder)supllierOrderService.getByKey(id);
 			switch (invoice) {
 			case "1":

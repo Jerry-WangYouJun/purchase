@@ -433,7 +433,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    						{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
    						{field:'unit',title:'单位',width:100,align:'center'},
    						{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
-   						{field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'},
+   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
    						{field:'detailId', hidden:'true',editor:'textbox' },
    						{field:'productId', hidden:'true',editor:'textbox' },
    						{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
@@ -515,6 +515,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		if(status == '3'){
 			$.messager.prompt('','请输入已完成的付款百分比(只输入数字即可)',function(s){
 				if(Math.round(s) == s){
+					if(!isRealNum(s)){
+						return false ;
+					}
 					percent = "&percent="   + s;
 		    			$.messager.confirm(
 		    				'提示',
@@ -537,8 +540,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			    		});
 		    					}
 		    				});  		
-				}else{
-					$.messager.alert("error","只需要输入正确的数字！");
 				}
 			});
 		}else{
@@ -767,6 +768,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     					}
     				});
 			}
+		
+		function isRealNum(val){
+		    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
+		    if(val === "" || val ==null){
+		        return false;
+		    }
+		    if(!isNaN(val)){
+		        return true;
+		    }else{
+		        return false;
+		    }
+		} 
 	 </script>
 </body>
 </html>

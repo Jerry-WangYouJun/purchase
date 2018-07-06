@@ -265,6 +265,8 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 		supplierOrderDao.updateHql(deleteDetail);
 		String hql = "delete from TSupllierOrder where status = 1 ";
 		supplierOrderDao.updateHql(hql);
+		String resetOrderStatus = "update TOrder t set t.status = 3  where t.status = 5  ";
+		supplierOrderDao.updateHql(resetOrderStatus);
 		TSupllierOrder supOrder = new TSupllierOrder();
 		int amount = 0 ;//订单总数
 		List<TOrderMapping> orderMap =  new ArrayList<TOrderMapping>();

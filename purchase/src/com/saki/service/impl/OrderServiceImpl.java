@@ -17,6 +17,7 @@ import com.saki.model.TCompany;
 import com.saki.model.TConfirm;
 import com.saki.model.TOrder;
 import com.saki.model.TOrderDetail;
+import com.saki.model.TOrderMapping;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.model.TSupllierOrderDetail;
@@ -149,62 +150,14 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	@Override
 	public List<Map<String, Object>> searchDetail(String id ) {
-		int  num = orderDao.count("from  TOrder o , TOrderMapping m  where o.id = m.orderId and o.id= " + id );
+		/*int  num = orderDao.count("from  TOrder o , TOrderMapping m  where o.id = m.orderId and o.id= " + id );
 		//如果生成了供应商订单 则关联供应商订单查询返回结果（有供应商报价就带出报价），如果没有只关联查询订单信息
 		if(num <= 0 ){
 			  return searchDetailNullPrice(id);
 		}else{
 			return searchDetailPrice(id);
-		}
-	}
-	private List<Map<String, Object>> searchDetailPrice(String id) {
-		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od , TSupllierOrderDetail sod , "
-				+ " TOrderMapping  m  , TProduct parent  "
-				+ " where t.id = d.productId  and o.id = od.orderId and od.productDetailId = d.id  "
-				+ " and o.id = m.orderId and sod.supllierOrderId = m.suppilerOrderId and sod.productDetailId = d.id "
-				+ " and t.parentId = parent.id   and  o.id = " + id  ;
-		List<Object[]> list = orderDao.find(hql);
-		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
-		Map<Integer , Map<String,Object>> detailMap = new HashMap<Integer , Map<String,Object>>();
-		for (int i = 0; i < list.size(); i++) {
-			Object[] objs = list.get(i);
-			//主表数据
-			TProduct product = (TProduct) objs[0];
-			TProductDetail detail = (TProductDetail) objs[1];
-			TOrderDetail orderDetail = (TOrderDetail) objs[3];
-			TUserProduct mapper = (TUserProduct) objs[5];
-			TProduct parentProduct = (TProduct) objs[6];
-			Map<String , Object >  map = new HashMap<String,Object>();
-			map.put("id", orderDetail.getId());
-			map.put("product", parentProduct.getProduct() );
-			map.put("type",  product.getProduct());
-			map.put("sub_product", detail.getSubProduct());
-			map.put("materail", detail.getMaterial());
-			map.put("acount",  orderDetail.getNum());
-			map.put("brand", orderDetail.getBrand());
-			map.put("unit", parentProduct.getUnit());
-			if(mapper.getPrice() != null && mapper.getPrice() > 0 ) {
-				map.put("price", mapper.getPrice());
-			}
-			map.put("detailId", detail.getId());
-			map.put("productId", product.getId());
-			TSupllierOrderDetail  sDetail = (TSupllierOrderDetail)objs[4];
-			if(detailMap.containsKey(detail.getId())) {
-				 Map<String, Object> temp = detailMap.get(detail.getId());
-				 if(sDetail.getPrice() > 0) {
-					 temp.put("sprice", temp.get("sprice").toString() + "/" + sDetail.getPrice());
-					 detailMap.put(detail.getId(), temp);
-					 continue;
-				 }
-			}
-			map.put("sprice",  sDetail.getPrice() );
-			detailMap.put(detail.getId(), map);
-			//mapList.add(map);
-		}
-		for(Map<String,Object> map : detailMap.values()) {
-			   mapList.add(map);
-		}
-		return mapList ;
+		}*/
+		 return searchDetailNullPrice(id);
 	}
 	
 	private List<Map<String, Object>> searchDetailNullPrice(String id) {
@@ -443,5 +396,55 @@ public class OrderServiceImpl implements OrderServiceI{
 		 }else{
 			 return val;
 		 }
+	}
+	
+	private List<Map<String, Object>> searchDetailPrice(String id) {
+		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od , TSupllierOrderDetail sod , "
+				+ " TOrderMapping  m  , TProduct parent  "
+				+ " where t.id = d.productId  and o.id = od.orderId and od.productDetailId = d.id  "
+				+ " and o.id = m.orderId and sod.supllierOrderId = m.suppilerOrderId and sod.productDetailId = d.id "
+				+ " and t.parentId = parent.id   and  o.id = " + id  ;
+		List<Object[]> list = orderDao.find(hql);
+		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
+		Map<Integer , Map<String,Object>> detailMap = new HashMap<Integer , Map<String,Object>>();
+		for (int i = 0; i < list.size(); i++) {
+			Object[] objs = list.get(i);
+			//主表数据
+			TProduct product = (TProduct) objs[0];
+			TProductDetail detail = (TProductDetail) objs[1];
+			TOrderDetail orderDetail = (TOrderDetail) objs[3];
+			TOrderMapping orderMapper = (TOrderMapping) objs[5];
+			TProduct parentProduct = (TProduct) objs[6];
+			Map<String , Object >  map = new HashMap<String,Object>();
+			map.put("id", orderDetail.getId());
+			map.put("product", parentProduct.getProduct() );
+			map.put("type",  product.getProduct());
+			map.put("sub_product", detail.getSubProduct());
+			map.put("materail", detail.getMaterial());
+			map.put("acount",  orderDetail.getNum());
+			map.put("brand", orderDetail.getBrand());
+			map.put("unit", parentProduct.getUnit());
+//			if(mapper.getPrice() != null && mapper.getPrice() > 0 ) {
+//				map.put("price", mapper.getPrice());
+//			}
+			map.put("detailId", detail.getId());
+			map.put("productId", product.getId());
+			TSupllierOrderDetail  sDetail = (TSupllierOrderDetail)objs[4];
+			if(detailMap.containsKey(detail.getId())) {
+				 Map<String, Object> temp = detailMap.get(detail.getId());
+				 if(sDetail.getPrice() > 0) {
+					 temp.put("sprice", temp.get("sprice").toString() + "/" + sDetail.getPrice());
+					 detailMap.put(detail.getId(), temp);
+					 continue;
+				 }
+			}
+			map.put("sprice",  sDetail.getPrice() );
+			detailMap.put(detail.getId(), map);
+			//mapList.add(map);
+		}
+		for(Map<String,Object> map : detailMap.values()) {
+			   mapList.add(map);
+		}
+		return mapList ;
 	}
 }
