@@ -124,6 +124,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<input type="password" name="userPwd" placeholder="请输入密码..."/>
 			</div>
 			<button type="button" onclick="submitForm()" >登<span style="width:20px;"></span>录</button>
+			<div style="margin:15px 0px;">
+				 <a href="register.jsp" style="color: white;padding: 5px">企业注册</a>
+			</div>
 		</form>
 	</div>
 </div>
