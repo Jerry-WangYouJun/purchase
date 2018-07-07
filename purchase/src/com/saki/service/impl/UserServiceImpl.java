@@ -74,7 +74,7 @@ public class UserServiceImpl implements UserServiceI{
 		Map<String, Object> params = new HashMap<String, Object>();		
 		String hql = "from TUser t";
 		if(row!=null && text!=null){
-			params.put("text", "%" + text + "%");
+			params.put("text",  Integer.valueOf(text) );
 			hql = hql + " where t." + row + " like :text";
 		}
 		if(sort!=null && order!=null){

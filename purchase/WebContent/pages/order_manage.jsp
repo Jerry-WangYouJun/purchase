@@ -3,7 +3,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -44,50 +44,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
 	</div>
+	<div id="toolbar_company" style="padding:2px 5px;">
+	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
+	    <c:if test="${roleId eq 1 }">
+	  	    <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>    
+	        <a onclick="updateOrderLocked('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-lock" style="margin: 2px">锁定订单</a>
+	        <a onclick="updateOrderLocked('0')" class="easyui-linkbutton"  plain="true" iconCls="icon-undo" style="margin: 2px">解锁订单</a>
+	        <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
+	    </c:if>
+	    <c:if test="${roleId eq 3 }">
+	  	    <a onclick="order_add()" class="easyui-linkbutton"  plain="true" iconCls="icon-add" style="margin: 2px">添加订单</a>    
+	        <a onclick="order_edit()" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
+	        <a onclick="order_delete()" class="easyui-linkbutton"  plain="true" iconCls="icon-remove" style="margin: 2px">删除订单</a>
+	        <a onclick="order_status('4')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认收货</a>
+	        <a onclick="invoice_status('2')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已收</a>
+	    </c:if>
+    </div>
+    <div id="toolbar_add" style="padding:2px 5px;">
+	    <c:if test="${roleId eq 3 }">
+	  	    <a onclick="append()" class="easyui-linkbutton"  plain="true" iconCls="icon-add" style="margin: 2px">添加产品条目</a>    
+	        <a onclick="removeit()" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">删除</a>
+	    </c:if>
+	     <a onclick="reject()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">重置</a>
+	     <a onclick="submitData()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">提交</a>
+    </div>
+		   
     <script type="text/javascript">
     	$(function(){
-    		var toolbar = [
-	    			{
-	    				text:'详情',iconCls: 'icon-tip',
-	    				handler:function(){order_detail();}
-					},'-',{
-						text:'确认付款',iconCls: 'icon-ok',
-						handler: function(){order_status('3');}
-					},'-',{
-   						text:'锁定订单',iconCls: 'icon-lock',
-   						handler: function(){updateOrderLocked('1');}
-					},'-',{
-						text:'解锁订单',iconCls: 'icon-undo',
-						handler: function(){updateOrderLocked('0');}
-					},'-',{
-						text:'发票已开',iconCls: 'icon-print',
-						handler: function(){invoice_status('1');}
-					}
-    		];
-    		var orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
+    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
     		if("${roleId}" == '3'){
     			  orderUrl = '${pageContext.request.contextPath}/orderAction!loadByCompanyId.action';
-    			  toolbar = [
-    	    			{
-	   	    				text:'详情',iconCls: 'icon-tip',
-							handler: function(){order_detail();}
-						},'-',{
-    						text:'添加订单',iconCls: 'icon-add',
-    						handler: function(){order_add();}
-    					},'-',{
-    						text:'修改',iconCls: 'icon-edit',
-    						handler: function(){order_edit();}
-    					},'-',{
-    						text:'删除',iconCls: 'icon-remove',
-    						handler: function(){order_delete();}
-    					},'-',{
-    						text:'确认收货',iconCls: 'icon-ok',
-    						handler: function(){order_status('4');}
-    					},'-',{
-    						text:'发票已收',iconCls: 'icon-print',
-    						handler: function(){invoice_status('2');}
-    					}
-    	    		];
     		}
 			$('#table_order').datagrid({
 				url: orderUrl,
@@ -95,7 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				fitColumns: true,
 				singleSelect: true,
 				striped:true,
-				toolbar: toolbar,
+				toolbar: '#toolbar_company',
 				rowStyler: function(index,row){
 					if (row.status  == '4'){
 						return 'background-color:#6293BB;color:#fff;'; // return inline style
@@ -225,28 +211,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
     	
     	var editIndex = undefined;
-    	 var toolbarAdd =  [{
-				text:'添加产品条目',iconCls: 'icon-add',
-				handler: function(){append();}
-			},'-',{
-				text:'删除',iconCls: 'icon-remove',
-				handler: function(){removeit();}
-			},'-',{
-				text:'重置',iconCls: 'icon-undo',
-				handler: function(){reject();}
-			},'-',{
-				text:'提交',iconCls: 'icon-ok',
-				handler: function(){submitData();}
-			}];
-		   
-		   var toolbarAdmin = [{
-					text:'重置',iconCls: 'icon-undo',
-					handler: function(){reject();}
-				},'-',{
-					text:'提交',iconCls: 'icon-ok',
-					handler: function(){submitData();}
-				}];
-		   
+    	 
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
@@ -395,7 +360,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];
     	$(function(){
-    		   if("${roleId}" == '3'){
 				$('#table_add').datagrid({
 					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
 					pagination: true,
@@ -403,23 +367,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					singleSelect: true,
 					striped:true,
 					onClickRow: onClickRow,//选中行是，调用onClickRow js方法（397行）
-					toolbar:toolbarAdd,
+					toolbar:'#toolbar_add',
 					columns:columnEdit,
-					
 				});
-    		   }else if("${roleId}" == '1'){
-    			   $('#table_add').datagrid({
-   					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
-   					pagination: true,
-   					fitColumns: true,
-   					singleSelect: true,
-   					striped:true,
-   					onClickRow: onClickRow,//选中行是，调用onClickRow js方法（397行）
-   					toolbar: toolbarAdmin,
-   					columns:columnDetail
-   				});
-    		   }
-			//$("#table_add").datagrid("hideColumn","amount");
 		});
     	function order_detail(){
     		var row = $('#table_order').datagrid('getSelected');
@@ -464,7 +414,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#startDate").val(row.startDate);
 			editIndex = undefined;
 			 $('#table_add').datagrid({
-				 toolbar: toolbarAdd,
+				 toolbar: '#toolbar_add',
 				 columns:columnEdit
 			 })
 			$('#table_add').datagrid('reload', {
@@ -497,6 +447,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 			$('#order_dlg').dialog('open');	
 			$('#order_dlg').dialog('setTitle','添加订单');
+			 $('#table_add').datagrid({
+				 toolbar: '#toolbar_add',
+				 columns:columnEdit
+			 })
 			$('#table_add').datagrid('loadData', { total: 0, rows: [] });
 		}
     	function order_delete(){

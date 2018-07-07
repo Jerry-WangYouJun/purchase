@@ -43,9 +43,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		<table id="company_table" class="easyui-datagrid" fit="true" ></table>
  	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
+	<c:if test="${roleId eq 1 }">
      	<a onclick="company_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>
+	</c:if>
         <a onclick="company_edit()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">编辑</a>    
+    <c:if test="${roleId eq 1 }">
         <a onclick="company_delete()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-remove fa-fw" style="margin: 2px">删除</a>
+    </c:if>
     </div>
 	
     <script type="text/javascript">
@@ -59,7 +63,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#company_table').datagrid({
 				url:'${pageContext.request.contextPath}/companyAction!loadAll.action',
 				pagination: true,
-				toolbar:'#toolbar_company',				
+				toolbar:'#toolbar_company',		
+				pagePosition:'top',
 				fitColumns: true,
 				striped:true,
 				singleSelect: true,
@@ -178,7 +183,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 }
 			    }
 			});
-
+			if('${roleId}' != '1'){
+				$("#company_table").datagrid("hideColumn","brand");
+			}
 		})
 		
 		

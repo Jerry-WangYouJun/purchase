@@ -232,7 +232,6 @@
 			<!-- BEGIN SIDEBAR MENU -->
 			<ul class="page-sidebar-menu">
 
-				<c:if test="${roleId eq '1' }">
 					<li class="">
 						<a href="javascript:;"> <i class="icon-cogs"></i>
 							<span class="title">信息管理</span> <span class="arrow "></span>
@@ -244,15 +243,16 @@
 							<li class="active-menu"><a href="#"  onclick="openTab('用户管理','${basePath}/pages/user_manage.jsp')"> 
 										用户管理</a>
 							</li>
-							<li class="active-menu"><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
-										采购日管理</a>
-							</li>
-							<li class="active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> 
-									<span class="title">价格设置</span></a>
-							</li>
+							<c:if test="${roleId eq '1' }">
+								<li class="active-menu"><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
+											采购日管理</a>
+								</li>
+								<li class="active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> 
+										<span class="title">价格设置</span></a>
+								</li>
+							</c:if>
 						</ul>
 					</li>
-				</c:if>
 						<li class=""><a href="javascript:;"> <i class="icon-th"></i>
 								<span class="title">订单管理</span> <span class="arrow "></span>
 						</a>

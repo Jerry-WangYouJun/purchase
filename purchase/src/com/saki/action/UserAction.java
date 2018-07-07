@@ -1,6 +1,8 @@
 package com.saki.action;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
@@ -49,7 +51,12 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 	
 	
 	public void loadAll(){
-		super.writeJson(userService.loadAll(sort, order, page, rows));
+		String roleId = getSession().getAttribute("roleId").toString();
+		if(!"1".equals(roleId)){
+			value = getSession().getAttribute("companyId").toString();
+			name = "companyId";
+		}
+		super.writeJson(userService.search(name, value,sort, order, page, rows));
 	}
 	public void add(){
 		Message j = new Message();
@@ -93,6 +100,11 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		
 	}
 	public void search(){
+		String roleId = getSession().getAttribute("roleId").toString();
+		if(!"1".equals(roleId)){
+			value = getSession().getAttribute("companyId").toString();
+			name = "companyId";
+		}
 		super.writeJson(userService.search(name, value,sort, order, page, rows));
 	}
 	public void login(){	

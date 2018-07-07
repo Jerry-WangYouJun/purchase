@@ -47,14 +47,12 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		this.companyService = companyService;
 	}
 	public void loadAll(){
-		String name = getParameter("name");
-		String roleId = getParameter("roleId");
+		String roleId = getSession().getAttribute("roleId").toString();
+		String companyId = "";
 		Map map = new HashMap();
-		if(StringUtils.isNotEmpty(name)){
-			map.put("name", "%"+name + "%");
-		}
-		if(StringUtils.isNotEmpty(roleId)){
-			map.put("roleId", roleId);
+		if(!"1".equals(roleId)){
+			companyId = getSession().getAttribute("companyId").toString();
+			map.put("id", companyId);
 		}
 		super.writeJson(companyService.loadQuery(sort, order, page, rows, map));
 		
