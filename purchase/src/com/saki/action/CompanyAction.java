@@ -87,6 +87,7 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 			user.setRoleId(Integer.valueOf(roleId));
 			user.setCompanyId(company.getId());
 			user.setUserName(userName);
+			user.setUserPwd(getParameter("userPwd"));
 			userService.add(user);
 	}
 	public void update(){

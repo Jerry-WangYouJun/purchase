@@ -22,8 +22,13 @@ public class UserServiceImpl implements UserServiceI{
 	private CompanyServiceI companyService;
 	@Override
 	public void add(Object object) {
-		((TUser)object).setUserPwd(MD5Util.md5("000000"));
-		userDao.save(object);
+		TUser user = (TUser)object ;
+		if(user.getUserPwd()==null || "".equals(user.getUserPwd())){
+			user.setUserPwd(MD5Util.md5("000000"));
+		}else{
+			user.setUserPwd(MD5Util.md5(user.getUserPwd()));
+		}
+		userDao.save(user);
 	}
 
 	@Override

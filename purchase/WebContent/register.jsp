@@ -4,11 +4,11 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
+<title>企业信息注册</title>
 <title>注册</title>
 
  <jsp:include page="/common.jsp"></jsp:include>
-
+<link rel="shortcut icon" href="media/image/favicon.ico" />
 <style type="text/css">
 body {
 	background: #191c2c !important;
@@ -43,7 +43,6 @@ body {
 						}
 					});
 			}
-			
 		});
 	})
 	
@@ -55,7 +54,7 @@ body {
 		  id ="company_form">
 
 		<fieldset>
-			<legend>注册账号</legend>
+			<legend>企业信息注册</legend>
 		</fieldset>
 
 			<div class="form-group col-md-6">
@@ -78,7 +77,10 @@ body {
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">登录账号：</label>
                 <input name="userName" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
-
+			<div class="form-group col-md-6">
+            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">登录密码：</label>
+                <input name="userPwd" type="password" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+            </div>
 			<div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">联系人：</label>
                 <input name="contacts" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
