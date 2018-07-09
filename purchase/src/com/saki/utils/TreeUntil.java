@@ -58,4 +58,21 @@ public class TreeUntil {
 		}
 		return list;
 	}
+	
+	
+	public List<TreeModel> convertProductDetailToList(List<TProductDetail> detailList)
+	{
+		List<TreeModel> list = new ArrayList<TreeModel>();		
+		for (TProductDetail detail : detailList) {
+			TreeModel tree = new TreeModel();
+			tree.setId("detail_"+detail.getId());
+			tree.setPid(detail.getProductId()+"");
+			tree.setName(detail.getSubProduct()+"-"+detail.getFormat()+"-"+detail.getMaterial());		
+			
+			list.add(tree);
+		}
+		return list;
+	}
+	
+
 }

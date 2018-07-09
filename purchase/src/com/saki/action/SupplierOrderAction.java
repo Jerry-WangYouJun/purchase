@@ -176,7 +176,6 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 				order.setStatus(status);
 			}
 			supllierOrderService.update(order);
-			supllierOrderService.updateOrderStatus(id);
 				j.setSuccess(true);
 				j.setMsg("操作成功");
 		} catch (Exception e) {

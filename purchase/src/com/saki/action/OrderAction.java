@@ -374,9 +374,6 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 			String status = getParameter("status");
 			TOrder order = (TOrder)orderService.getByKey(id);
 			switch (status) {
-			case "2":
-				
-				break;
 			case "3":
 				String percent = getParameter("percent");
 				order.setPercent(percent);

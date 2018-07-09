@@ -54,8 +54,7 @@ public class ProductServiceImpl implements ProductServiceI{
 	}
 	@Override
 	public void add(Object object) {
-		// TODO Auto-generated method stub
-		
+		this.produceDao.saveOrUpdate(object);
 	}
 
 	@Override
@@ -459,8 +458,58 @@ public class ProductServiceImpl implements ProductServiceI{
 			product.setChildren(detailList);
 			types.add(product);
 		}
-		
-		
 		return types;
 	}
+	
+	//查询一级类型
+		@Override
+		public List<TProduct> searchFirstProductType() {
+			// TODO Auto-generated method stub
+			String hql = "from   TProduct t  where  t.parentId is  null ";
+			List<TProduct> products = produceDao.find(hql);	
+			return products;
+		}
+		//查询子类型
+		@Override
+		public List<TProduct> searchChildProductType(int parentId) {
+			// TODO Auto-generated method stub
+			String hql="from TProduct t where t.parentId =:parentId";
+			Map<String,Object> params = new HashMap<String,Object>();
+			params.put("parentId", parentId);		
+			List<TProduct> products = produceDao.find(hql,params);	
+			return products;
+		}
+		//删除类型
+		@Override
+		public void deleteByProduct(TProduct product) {
+			// TODO Auto-generated method stub
+			this.produceDao.delete(product);
+		}
+		//加载 treee 不包含选中
+		@Override
+		public List<TreeModel> listTree() {
+			// TODO Auto-generated method stub
+		
+			
+			String hql ="from  TProduct ";
+			//取出所有product
+			List<TProduct> productList = produceDao.find(hql);
+			//取出所有productDetail
+			
+			List<TProductDetail> detailList = productDetailService.searchAllProductDetail();
+			
+			logger.info(" productList.size = "+productList.size() + "detailList.size = "+detailList.size() );
+			TreeUntil tUntil = new TreeUntil();
+			
+			List<TreeModel> productModel = tUntil.convertProductToList(productList);
+			
+			List<TreeModel> detailModel = tUntil.convertProductDetailToList(detailList);
+			
+			List<TreeModel> treeList = new ArrayList<TreeModel>();
+			treeList.addAll(productModel);
+			treeList.addAll(detailModel);
+			logger.info("treeLis.size = "+treeList.size());		
+			
+			return treeList;
+		}
 }

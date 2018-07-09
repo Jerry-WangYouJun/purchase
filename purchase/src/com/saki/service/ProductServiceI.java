@@ -19,4 +19,8 @@ public interface ProductServiceI extends BaseServiceI{
 	public ArrayList<Product> searchProductAndChileProduct();
 	public ArrayList<ProductType> searchSecProductAndChild();
 	List<Map<String, Object>> searchProductDetailByCompanyId(Integer companyId);
+	public List<TProduct> searchFirstProductType();
+	public List<TProduct> searchChildProductType(int parentId);
+	public void deleteByProduct(TProduct product);
+	public List<TreeModel> listTree();
 }

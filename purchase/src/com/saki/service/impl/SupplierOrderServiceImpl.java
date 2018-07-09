@@ -107,7 +107,8 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	public Grid searchBycompanyId(String row, String text, String sort, String order, String page, String rows) {
 		Grid grid = new Grid();
 		Map<String, Object> params = new HashMap<String, Object>();		
-		String hql = "from TSupllierOrder t  where  id in (select supllierOrderId  from TSupllierOrderDetail d where d.conpanyId = " + text + " ) ";
+		String hql = "from TSupllierOrder t  where t.status != 1 and   id  "
+				+ " in (select supllierOrderId  from TSupllierOrderDetail d where d.conpanyId = " + text + " ) ";
 		if(sort!=null && order!=null){
 			hql = hql + " order by t." + sort + " " + order;
 		}	
@@ -356,12 +357,6 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 		  List<TCompany> list = supplierOrderDao.find(hql);
 		  return list;
 	}
-	@Override
-	public void updateOrderStatus(String  id ) {
-		String hql = " update  TOrder t set  t.status = '2' where t.status = '1' and t.id  in ( select o.id from "
-				+ " TOrder o , TOrderMapping om where  om.suppilerOrderId = " + id +" ) " ;
-		supplierOrderDao.updateHql(hql);
-	}
 	
 	@Override
 	public String getOrderCode(String dayOfOrderNo) {
@@ -370,5 +365,4 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 		List<Integer> list =supplierOrderDao.find(hql);
 		return   SystemUtil.getOrderResult(list);
 	}
-	
 }

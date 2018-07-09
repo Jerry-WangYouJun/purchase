@@ -23,6 +23,14 @@
 	<constant name="struts.enable.SlashesInActionNames" value="false" />
 	<!-- 允许标签中使用表达式语法 -->
 	<constant name="struts.tag.altSyntax" value="true" />
-	<package name="basePackage" extends="struts-default">
+	
+	<package name="basePackage" extends="struts-default">	
+		<action name="*!*" class="com.saki.action.{1}" >
+			<interceptor-ref name="defaultStack">  
+				<param name="exception.logEnabled">true</param>  
+				<param name="exception.logLevel">error</param>  
+			</interceptor-ref>
+		</action>
+
 	</package>
 </struts>    

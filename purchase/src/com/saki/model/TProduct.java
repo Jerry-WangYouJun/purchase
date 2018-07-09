@@ -42,14 +42,16 @@ public class TProduct implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TProduct(String product, String type, String unit, String base, String remark) {
+	public TProduct(String parentId,String product, String type, String unit, String base, String remark) {
+		this.parentId = parentId;
 		this.product = product;
 		this.type = type;
 		this.unit = unit;
 		this.base = base;
 		this.remark = remark;
 	}
-	public TProduct(Integer id, String product, String type, String unit, String base, String remark) {
+	public TProduct(Integer id,String parentId, String product, String type, String unit, String base, String remark) {
+		this.parentId = parentId;
 		this.id = id;
 		this.product = product;
 		this.type = type;

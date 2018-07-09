@@ -24,7 +24,6 @@ public class TProductDetail implements java.io.Serializable {
 	private String material;
 	private String remark;
 	
-	private TProduct  product;
 	private TUserProduct mapper;
 	
 	private int selected = 0;
@@ -43,6 +42,18 @@ public class TProductDetail implements java.io.Serializable {
 		this.material = material;
 		this.remark = remark;
 	}
+	
+	
+	public TProductDetail(Integer id,Integer productId, String subProduct, String format, String material, String remark) {
+		this.id = id;
+		this.productId = productId;
+		this.subProduct = subProduct;
+		this.format = format;
+		this.material = material;
+		this.remark = remark;
+	}
+	
+
 
 	// Property accessors
 	@GenericGenerator(name = "generator", strategy = "increment")
@@ -117,7 +128,7 @@ public class TProductDetail implements java.io.Serializable {
 		this.selected = selected;
 	}
 
-	public TProduct getProduct() {
+/*	public TProduct getProduct() {
 		if(product ==null){
 			product = new TProduct();
 		}
@@ -126,7 +137,7 @@ public class TProductDetail implements java.io.Serializable {
 
 	public void setProduct(TProduct product) {
 		this.product = product;
-	}
+	}*/
 
 	public TUserProduct getMapper() {
 		return mapper;

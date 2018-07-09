@@ -21,7 +21,7 @@ public class ProductDetailServiceImpl implements ProductDetailServiceI{
 	@Override
 	public void add(Object object) {
 		// TODO Auto-generated method stub
-		
+		productDetailDao.saveOrUpdate(object);
 	}
 
 	@Override
@@ -79,5 +79,30 @@ public class ProductDetailServiceImpl implements ProductDetailServiceI{
 		String hql =" from  TProductDetail detail  where detail.productId is not null ";		
 		return productDetailDao.find(hql);
 	}
+	
+	@Override
+	public TProductDetail searchProductDetailById(int id) {
+		// TODO Auto-generated method stub
+		Map<String, Object> params = new HashMap<String, Object>();
+		String hql = " from TProductDetail detail where detail.id =:id ";		
+		params.put("id", id);
+		return  (TProductDetail) productDetailDao.get(hql, params);
+	}
+
+	@Override
+	public void deleteById(int id) {
+		// TODO Auto-generated method stub	
+		productDetailDao.delete(this.searchProductDetailById(id));
+	}
+
+	@Override
+	public void deleteByProductDetail(TProductDetail tProductDetail) {
+		// TODO Auto-generated method stub
+		productDetailDao.delete(tProductDetail);
+	}
+	
+	
+
+
 
 }
