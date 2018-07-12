@@ -18,7 +18,6 @@
    	 <script type="text/javascript" src="<%=path%>/vendor/bootstrap/js/bootstrap.js"></script>
    	 <script type="text/javascript" src="<%=path%>/vendor/bootstrap-select/js/bootstrap-select.js"></script>
    	 <script type="text/javascript" src="<%=path%>/vendor/jquery/jquery.js"></script>
-   	 <script type="text/javascript" src="<%=path%>/vendor/jquery-validate/jquery.validate.js"></script>
    	 <script src="<%=path%>/vendor/layer/layer.js"></script>
 </head>
 <body>
@@ -78,8 +77,8 @@
 					</div>
 					<br>
 					<div class="input-group">
-					  <span class="input-group-addon" id="basic-addon3">材质</span>
-					  <input type="text" class="form-control" placeholder="材质" aria-describedby="basic-addon3" id="detailMaterial">
+					  <span class="input-group-addon" id="basic-addon3">材质/标准</span>
+					  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3" id="detailMaterial">
 					</div>
 					<br>
 					<div class="input-group">

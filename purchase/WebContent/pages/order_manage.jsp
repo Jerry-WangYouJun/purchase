@@ -60,14 +60,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        <a onclick="invoice_status('2')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已收</a>
 	    </c:if>
     </div>
-    <div id="toolbar_add" style="padding:2px 5px;">
-	    <c:if test="${roleId eq 3 }">
-	  	    <a onclick="append()" class="easyui-linkbutton"  plain="true" iconCls="icon-add" style="margin: 2px">添加产品条目</a>    
-	        <a onclick="removeit()" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">删除</a>
-	    </c:if>
-	     <a onclick="reject()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">重置</a>
-	     <a onclick="submitData()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">提交</a>
-    </div>
 		   
     <script type="text/javascript">
     	$(function(){
@@ -211,12 +203,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
     	
     	var editIndex = undefined;
-    	 
+    	 var toolbarAdd =  [{
+				text:'添加产品条目',iconCls: 'icon-add',
+				handler: function(){append();}
+			},'-',{
+				text:'删除',iconCls: 'icon-remove',
+				handler: function(){removeit();}
+			},'-',{
+				text:'重置',iconCls: 'icon-undo',
+				handler: function(){reject();}
+			},'-',{
+				text:'提交',iconCls: 'icon-ok',
+				handler: function(){submitData();}
+			}];
+		   
+		   var toolbarAdmin = [{
+					text:'重置',iconCls: 'icon-undo',
+					handler: function(){reject();}
+				},'-',{
+					text:'提交',iconCls: 'icon-ok',
+					handler: function(){submitData();}
+				}];
+		   
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
 	   						{field:'sub_product',title:'产品规格',width:100,align:'center'},
-	   						{field:'materail',title:'材质',width:100,align:'center'},
+	   						{field:'materail',title:'材质/标准',width:100,align:'center'},
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
@@ -224,6 +237,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
+	   						{field:'base', hidden:'true',editor:'textbox' },
 	   						{field:'remark',title:'备注',width:100,align:'center'},
 	   						{field:'id', hidden:'true',editor:'textbox' }
 	   					]];
@@ -279,9 +293,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                target.combobox('clear'); //清除原来的数据  
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductDetail.action?productId='+data.id;  
 				                                target.combobox('reload', url);//联动下拉列表重载   
-				                            }  
+				                            } , onLoadSuccess:function(){ //数据加载完成执行该代码
+				                                var data= $(this).combobox("getData");
+				                                var row = $('#table_add').datagrid('getSelected');  
+				                                 var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+				                                 var bra = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'base'  
+				                                    });  
+				                                $(bra.target).textbox('setValue',  data[0].base);  
+				                                $(bra.target).combobox('disable');//不可用
+				                			}  
 				                        }    
-				                    	}
+				                    }
 								},
 								{field:'sub_product',title:'产品规格',width:100,align:'center',
 									editor : {    
@@ -308,10 +332,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                target.combobox('clear'); //清除原来的数据  
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductBrand.action?detailId='+data.id;  
 				                                target.combobox('reload', url);//联动下拉列表重载   
+				                                target.combobox({    
+				                                    required:true,    
+				                                    multiple:false, //多选
+				                                    editable:false  //是否可编辑
+				                                    });  
 				                            }  
 				                        },
 				                    	}},
-								{field:'materail',title:'材质',width:100,align:'center',editor:'textbox'},
+								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'},
 								{field:'brand',title:'品牌',width:100,align:'center',editor:{    
 			                        type : 'combobox',    
 			                        options : {    
@@ -341,16 +370,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'brand'  
 			                                    });  
 			                                $(bra.target).textbox('setValue',  data[0].brand); 
-			                                var bra = $("#table_add").datagrid('getEditor', {  
+			                                 
+			                                var pri = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
 		                                        field : 'price'  
 		                                    });  
-		                              	   $(bra.target).textbox('setValue',  data[0].price); 
-			                                
+		                              	   $(pri.target).textbox('setValue',  data[0].price); 
+		                              		 $(pri.target).combobox('disable');
 			                			} 
 			                        }   
 			                    }},
 								{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
+								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
 								{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
 								{field:'detailId', hidden:'true',editor:'textbox' },
@@ -360,6 +391,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];
     	$(function(){
+    		   if("${roleId}" == '3'){
 				$('#table_add').datagrid({
 					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
 					pagination: true,
@@ -367,10 +399,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					singleSelect: true,
 					striped:true,
 					onClickRow: onClickRow,//选中行是，调用onClickRow js方法（397行）
-					toolbar:'#toolbar_add',
-					columns:columnEdit,
+					toolbar:toolbarAdd,
+					columns:columnEdit
 				});
+    		   }else if("${roleId}" == '1'){
+    			   $('#table_add').datagrid({
+   					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
+   					pagination: true,
+   					fitColumns: true,
+   					singleSelect: true,
+   					striped:true,
+   					onClickRow: onClickRow,//选中行是，调用onClickRow js方法（397行）
+   					toolbar: toolbarAdmin,
+   					columns:columnDetail
+   				});
+    		   }
+			//$("#table_add").datagrid("hideColumn","amount");
 		});
+    	
     	function order_detail(){
     		var row = $('#table_order').datagrid('getSelected');
     		if(row){
@@ -414,7 +460,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#startDate").val(row.startDate);
 			editIndex = undefined;
 			 $('#table_add').datagrid({
-				 toolbar: '#toolbar_add',
+				 toolbar: toolbarAdd,
 				 columns:columnEdit
 			 })
 			$('#table_add').datagrid('reload', {
@@ -440,18 +486,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	}
     	
     	function order_add(){
+			 $('#table_add').datagrid({
+				 toolbar: toolbarAdd,
+				 columns:columnEdit
+			 })
     		$("#order_dlg").dialog({
 				onOpen: function () {
-					$("#id").val("");  
+					 $("#startDate").textbox("setValue" , "");   
+                     $("#orderNo").val("");   
+					 $("#id").val("");  
                 }
 			});
 			$('#order_dlg').dialog('open');	
 			$('#order_dlg').dialog('setTitle','添加订单');
-			 $('#table_add').datagrid({
-				 toolbar: '#toolbar_add',
-				 columns:columnEdit
-			 })
-			$('#table_add').datagrid('loadData', { total: 0, rows: [] });
 		}
     	function order_delete(){
 			var row = $('#table_order').datagrid('getSelected');
@@ -626,10 +673,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		}else{
     			$('#order_dlg').dialog('close');
     		}
+    		$('#table_add').datagrid('reload', {
+				 id: 0
+			});
     	}
     </script>
     
     <script type="text/javascript">
+	    $.extend($.fn.datagrid.methods, {
+	        getEditingRowIndexs: function(jq) {
+	            var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
+	            var indexs = [];
+	            rows.each(function(i, row) {
+	                var index = row.sectionRowIndex;
+	                if (indexs.indexOf(index) == -1) {
+	                    indexs.push(index);
+	                }
+	            });
+	            return indexs;
+	        }
+	    });
+   		
 		function endEditing(){
 			var order = $("#table_order").datagrid('getSelected');
 			if('${roleId}' == '1'){
@@ -639,6 +703,39 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				return false;
 			} 
 			if (editIndex == undefined){return true}
+			var index = $('#table_add').datagrid('getEditingRowIndexs');
+			  var product = $("#table_add").datagrid('getEditor', {  
+                  index : index ,
+                  field : 'product'      
+              }).target.combobox('getValue');
+			  var type = $("#table_add").datagrid('getEditor', {  
+                  index : index ,
+                  field : 'type'      
+              }).target.combobox('getValue');
+			  var sub_product = $("#table_add").datagrid('getEditor', {  
+                  index : index ,
+                  field : 'sub_product'      
+              }).target.combobox('getValue');
+			  var brand = $("#table_add").datagrid('getEditor', {  
+                  index : index ,
+                  field : 'brand'      
+              }).target.combobox('getValue');
+		 	 if(product == '' || type  == '' || sub_product == '' ||brand == '' ||acount == '' ){
+		 		    alert('数据不全，请核对！');
+					return false;		 		
+		 	 } 
+			  var acount = $("#table_add").datagrid('getEditor', {  
+                  index : index ,
+                  field : 'acount'      
+              }).target.textbox('getValue');
+			  var base = $("#table_add").datagrid('getEditor', {  
+                  index : index ,
+                  field : 'base'      
+              }).target.textbox('getValue');
+		 	if( acount == 0 || acount < base ){
+	 		    alert('采购数量不应小于最小采购数量');
+				return false;		 		
+	 	 	}
 			if ($('#table_add').datagrid('validateRow', editIndex)){
 				$('#table_add').datagrid('endEdit', editIndex);
 				editIndex = undefined;
@@ -660,6 +757,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		}
 		function append(){
+			
 			if (endEditing()){
 				$('#table_add').datagrid('appendRow',{status:'P'});
 				editIndex = $('#table_add').datagrid('getRows').length-1;

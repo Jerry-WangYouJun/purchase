@@ -32,6 +32,7 @@
 <script src="${basePath}/vendor/dist/js/sb-admin-2.js"></script>
 
 <script src="${basePath}/vendor/easyui/jquery.easyui.min.js"></script>
+<script src="${basePath}/vendor/easyui/locale/easyui-lang-zh_CN.js"></script>
 <link href="${basePath}/vendor/easyui/themes/material/easyui.css" rel="stylesheet" type="text/css">
 <link href="${basePath}/vendor/easyui/themes/icon.css" rel="stylesheet" type="text/css">
 <link href="${basePath}/css/dialog_head.css" rel="stylesheet" type="text/css">

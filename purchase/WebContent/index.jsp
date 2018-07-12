@@ -54,18 +54,15 @@
 <script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.min.js"></script> 
 <script src="${pageContext.request.contextPath}/js/bootstrap-datetimepicker.zh-CN.js"></script> 
 <script>
-	jQuery(document).ready(function() {
-		
-		//
-	});
 	
 	$(function(){
 		 if("${roleId}"  == ""){
 			   alert("登录超时");
-			   location.href="${pageContext.request.contextPath}";
+			   location.href="${pageContext.request.contextPath}/login.jsp";
 		 }
 		App.init(); //  修改主题
 		//Index.initDashboardDaterange(); //主页时间
+		
 		$.ajax({ 
    			url: '${pageContext.request.contextPath}/userAction!checkConfirm.action',
    			dataType : 'json',
@@ -73,7 +70,7 @@
    					var myDate = new Date();
    					var curDay= myDate.getDate();
 					
-   				if(obj.obj.length > 0 ){
+   				if(obj.obj.length > 0  && "${roleId}"  == "3"){
    					var nowDate = "下一个采购日" + CurentTime();
    						for(var i  in obj.obj){ 
    							$('#dashboard-report-range span').html("当前日期："+ CurentTime() +formatDay(curDay) 
@@ -89,8 +86,36 @@
    			}
    		});
 		
+		$.ajax({ 
+   			url: '${pageContext.request.contextPath}/userAction!findConfirm.action',
+   			dataType : 'json',
+   			success : function(obj){
+   					 $("#confirm").text(obj.msg);
+   			}
+   		});
+		
 		$('#dashboard-report-range').show();
 		
+		
+		$.ajax({ 
+   			url: '${pageContext.request.contextPath}/productAction!countSituation.action',
+   			dataType : 'json',
+   			success : function(obj){
+   				for(var o in obj){
+   					// console.info(obj[o]);
+   					if(obj[o].msg == 0 ){
+   						continue;
+   					}
+   					 $("#"+obj[o].key).text(obj[o].msg);
+   					for(var index in obj[o].obj){
+						  if( obj[o].obj[index])
+						  $("#" + obj[o].key +"Msg").append('<li class="external" ><a href="#" > '
+							+ obj[o].obj[index]
+						    + '<i class="m-icon-swapright"></i></a></li>'); 
+					 }
+   				}
+   			}
+   		});
 	});
 	function formatDay(day){
 		if(day < 10 ) {
@@ -125,9 +150,6 @@
 		<div class="navbar-inner">
 			<div class="brand" style="color:#eee;width:225px;margin-left:5px">众联焊割集中采购平台</div>
 			<div class="container-fluid" style="background-color:#fff;margin-left: 225px;">
-				<!-- BEGIN LOGO -->
-				<a class="brand" href="index.html" style="color:#eee;"> </a>
-				<!-- END LOGO -->
 
 				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
 				<a href="javascript:;" class="btn-navbar collapsed" 
@@ -142,36 +164,20 @@
 					<!-- BEGIN NOTIFICATION DROPDOWN -->
 					<li class="dropdown" id="header_notification_bar"><a href="#"
 						class="dropdown-toggle" data-toggle="dropdown"> <i
-							class="icon-warning-sign"></i> <span class="badge">6</span>
+							class="icon-warning-sign"></i> <span class="badge" id="first"> </span>
 					</a>
-						<ul class="dropdown-menu extended notification">
-							<li>
-								<p>You have 14 new notifications</p>
-							</li>
-							<li><a href="#"> <span class="label label-success"><i
-										class="icon-plus"></i></span> New user registered. <span class="time">Just
-										now</span>
-							</a></li>
+						<ul class="dropdown-menu extended notification" id="firstMsg">
+							
 						</ul></li>
 					<!-- END NOTIFICATION DROPDOWN -->
 
 					<!-- BEGIN INBOX DROPDOWN -->
 					<li class="dropdown" id="header_inbox_bar">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							 <i class="icon-envelope"></i> <span class="badge">5</span>
+							 <i class="icon-envelope"></i> <span class="badge" id="second"></span>
 						</a>
-						<ul class="dropdown-menu extended inbox">
-							<li>
-								<p>You have 12 new messages</p>
-							</li>
-							<li><a href="inbox.html?a=view"> <span class="photo"><img
-										src="media/image/avatar2.jpg" alt="" /></span> <span class="subject">
-										<span class="from">Lisa Wong</span> <span class="time">Just
-											Now</span>
-								</span> <span class="message"> Vivamus sed auctor nibh congue
-										nibh. auctor nibh auctor nibh... </span>
-
-							</a></li>
+						<ul class="dropdown-menu extended inbox" id="secondMsg">
+							
 						 </ul>
 					 </li>
 					<!-- END INBOX DROPDOWN -->
@@ -179,41 +185,21 @@
 					<!-- BEGIN TODO DROPDOWN -->
 					<li class="dropdown" id="header_task_bar"><a href="#"
 						class="dropdown-toggle" data-toggle="dropdown"> <i
-							class="icon-tasks"></i> <span class="badge">5</span>
+							class="icon-tasks"></i> <span class="badge" id="third"></span>
 					</a>
-						<ul class="dropdown-menu extended tasks">
-							<li>
-								<p>You have 12 pending tasks</p>
-							</li>
-							<li><a href="#"> <span class="task"> <span
-										class="desc">New release v1.2</span> <span class="percent">30%</span>
-								</span> <span class="progress progress-success "> <span
-										style="width: 30%;" class="bar"></span>
-								</span>
-							</a></li>
-							<li class="external"><a href="#">See all tasks <i
-									class="m-icon-swapright"></i></a></li>
+						<ul class="dropdown-menu extended tasks" id="thirdMsg">
 						</ul></li>
 					<!-- END TODO DROPDOWN -->
 
 					<!-- BEGIN 用户登陆 DROPDOWN -->
-					<li class="dropdown user"><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown"> <img alt=""
-							src="media/image/avatar1_small.jpg" /> <span class="username">
-							${userName }</span> <i class="icon-angle-down"></i>
+					<li class="dropdown" ><a href="#" class="dropdown-toggle"
+						data-toggle="dropdown" style="padding-right:10px">  <span class="username"  style="font-size: 20px">
+							${userName }</span> 
 						</a>
-						<ul class="dropdown-menu">
-							<li><a href="extra_profile.html"><i class="icon-user"></i>
-									My Profile</a></li>
-							<li><a href="page_calendar.html"><i
-									class="icon-calendar"></i> My Calendar</a></li>
-							<li><a href="inbox.html"><i class="icon-envelope"></i>
-									My Inbox(3)</a></li>
-							<li><a href="#"><i class="icon-tasks"></i> My Tasks</a></li>
-							<li class="divider"></li>
-							<li><a href="#" onclick="logout()"><i class="icon-key"></i> Log
-									Out</a></li>
-						</ul></li>
+					</li>
+					<li class="dropdown" >
+						<a href="#" style="padding-right:10px;font-size: 20px"  class="dropdown-toggle" onclick="logout()">退出</a>
+					</li>
 					<!-- END 用户登陆 DROPDOWN -->
 				</ul>
 				<!-- END 顶部提醒  MENU -->
@@ -237,9 +223,23 @@
 							<span class="title">信息管理</span> <span class="arrow "></span>
 						</a>
 						<ul class="sub-menu">
-							<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
-										客户 &供应商 管理</a>
-							</li>
+							 <c:choose >
+									<c:when test="${roleId eq '1' }">
+										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
+													客户 &供应商 管理</a>
+										</li>
+									</c:when>
+									<c:when test="${roleId eq '2' }">
+										<li class="active-menu"><a href="#"  onclick="openTab('供应商管理','${basePath}/pages/company_manage.jsp')">
+													供应商 管理</a>
+										</li>
+									</c:when>
+									<c:when test="${roleId eq '3' }">
+										<li class="active-menu"><a href="#"  onclick="openTab('客户 管理','${basePath}/pages/company_manage.jsp')">
+													客户 管理</a>
+										</li>
+									</c:when>
+							 </c:choose>
 							<li class="active-menu"><a href="#"  onclick="openTab('用户管理','${basePath}/pages/user_manage.jsp')"> 
 										用户管理</a>
 							</li>
@@ -257,9 +257,19 @@
 							</c:if>
 						</ul>
 					</li>
-						<li class=""><a href="javascript:;"> <i class="icon-th"></i>
-								<span class="title">订单管理</span> <span class="arrow "></span>
-						</a>
+					<c:if test="${roleId ne 1 }">
+						<li class="active-menu"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
+								class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
+						</a></li>																 
+					</c:if>
+					<c:if test="${roleId eq 2 }">
+						 <li class="last active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
+								class="icon-bar-chart"></i> <span class="title">价格设置</span>
+						</a></li>
+					</c:if>
+					<li class="">
+							<a href="javascript:;"> <i class="icon-th"></i>
+								<span class="title">订单管理</span> <span class="arrow "></span></a>
 							<ul class="sub-menu">
 								<c:if test="${roleId ne 2 }">
 									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')"> 客户订单管理</a></li>
@@ -267,17 +277,8 @@
 								<c:if test="${roleId ne 3 }">
 									<li class="active-menu"><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
 								</c:if>
-							</ul></li>
-				<c:if test="${roleId ne 1 }">
-					<li class="active-menu"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
-							class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
-					</a></li>																 
-				</c:if>
-				<c:if test="${roleId eq 2 }">
-					 <li class="last active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
-							class="icon-bar-chart"></i> <span class="title">价格设置</span>
-					</a></li>
-				</c:if>
+							</ul>
+					</li>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
@@ -319,7 +320,11 @@
 							</div>
 						</div>
 						<!-- END BEGIN STYLE CUSTOMIZER -->
-
+						<c:if test="${roleId eq 3}">
+							<h3 class="page-title">
+								&nbsp;&nbsp;每月采购日为<span id ="confirm"></span>请在采购日三日前支付订单，否则订单将延期到下一采购日进行采购 
+							</h3>
+						</c:if>
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 						<ul class="breadcrumb" style="padding:15px 15px">
 							<li><i class="icon-home"></i> <a href="index.html">Home</a>

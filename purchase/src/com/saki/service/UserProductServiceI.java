@@ -2,7 +2,9 @@ package com.saki.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
+import com.saki.entity.Notice;
 import com.saki.model.TUserProduct;
 
 public interface UserProductServiceI{
@@ -14,4 +16,10 @@ public interface UserProductServiceI{
 	void updateStatus(int id);
 	void updateStatusReset(int detailId, String companyId);
 	public void updateMarkupPrice(Integer mapid, Double markup);
+	public int countNoMarkupCount();
+	public int countNoDefaultPrice();
+	public List<Notice> initAdminData();
+	public List<Notice> initCustomerData();
+	public List<Notice> initSupplierData();
+	public void deleteByList(Integer valueOf, String parameter);
 }

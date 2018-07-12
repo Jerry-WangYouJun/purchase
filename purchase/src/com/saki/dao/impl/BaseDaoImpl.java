@@ -174,6 +174,12 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	public void  executeUpdate(String sql){
 		 this.getCurrentSession().createSQLQuery(sql).executeUpdate();
 	}
+
+	@Override
+	public List executeSQLquery(String sql) {
+		List<Object[]> list = this.getCurrentSession().createSQLQuery(sql).list();  
+        return list; 
+	}
 	
 
 }

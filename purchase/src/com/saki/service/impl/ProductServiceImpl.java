@@ -223,7 +223,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			product.setProduct(tProduct.getProduct());	
 			product.setId(tProduct.getId());
 			//查询product 的 二级类型
-			map.put("parentId", tProduct.getId()+"");
+			map.put("parentId", tProduct.getId());
 			List<TProduct> productType =null;
 			try {
 				productType = produceDao.find(hql1,map);
@@ -238,7 +238,7 @@ public class ProductServiceImpl implements ProductServiceI{
 				type.setBase(tProduct2.getBase());
 				type.setProduct(tProduct2.getProduct());
 				//type.setType(tProduct2.getProduct());
-				type.setParentId(tProduct.getParentId());
+				type.setParentId(tProduct.getParentId()+"");
 				ArrayList<TProductDetail> children = (ArrayList<TProductDetail>)productDetailService.loadByProductId(tProduct2.getId());		
 				/*for (TProductDetail tProductDetail : children) {
 					tProductDetail.setSelected(0);
@@ -275,7 +275,7 @@ public class ProductServiceImpl implements ProductServiceI{
 				product.setProduct(tProduct.getProduct());
 				product.setId(tProduct.getId());			
 				//查询product 的 二级类型
-				map.put("parentId", tProduct.getId()+"");
+				map.put("parentId", tProduct.getId());
 				List<TProduct> productType = produceDao.find(hql1,map);
 				//封装成 productType 对象
 				ArrayList<ProductType> typeList = new ArrayList<ProductType>();
@@ -284,7 +284,7 @@ public class ProductServiceImpl implements ProductServiceI{
 					type.setBase(tProduct2.getBase());
 					type.setProduct(tProduct2.getProduct());
 					//type.setType(tProduct2.getProduct());
-					type.setParentId(tProduct2.getParentId());
+					type.setParentId(tProduct2.getParentId() + "");
 					ArrayList<TProductDetail> children = (ArrayList<TProductDetail>)productDetailService.loadByProductId(tProduct2.getId());							
 					/*for (TProductDetail tProductDetail : children) {
 						tProductDetail.setSelected(0);
@@ -380,7 +380,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			product.setProduct(tProduct.getProduct());
 			product.setId(tProduct.getId());
 			//查询product 的 二级类型
-			map.put("parentId", tProduct.getId()+"");
+			map.put("parentId", tProduct.getId());
 			List<TProduct> productType = produceDao.find(hql1,map);
 			//封装成 productType 对象
 			ArrayList<ProductType> typeList = new ArrayList<ProductType>();
@@ -390,7 +390,7 @@ public class ProductServiceImpl implements ProductServiceI{
 				type.setProduct(tProduct2.getProduct());
 				type.setId(tProduct2.getId());
 				//type.setType(tProduct2.getProduct());
-				type.setParentId(tProduct2.getParentId());			
+				type.setParentId(tProduct2.getParentId() + "");			
 				typeList.add(type);
 			}
 			product.setChildren(typeList);
@@ -471,7 +471,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		}
 		//查询子类型
 		@Override
-		public List<TProduct> searchChildProductType(int parentId) {
+		public List<TProduct> searchChildProductType(Integer parentId) {
 			// TODO Auto-generated method stub
 			String hql="from TProduct t where t.parentId =:parentId";
 			Map<String,Object> params = new HashMap<String,Object>();
@@ -488,9 +488,6 @@ public class ProductServiceImpl implements ProductServiceI{
 		//加载 treee 不包含选中
 		@Override
 		public List<TreeModel> listTree() {
-			// TODO Auto-generated method stub
-		
-			
 			String hql ="from  TProduct ";
 			//取出所有product
 			List<TProduct> productList = produceDao.find(hql);

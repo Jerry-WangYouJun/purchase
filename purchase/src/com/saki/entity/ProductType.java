@@ -23,7 +23,7 @@ public class ProductType {
 	private String product;
 	private String type;
 	private String unit;
-	private String base;
+	private Integer base;
 	private String remark;
 	private ArrayList<TProductDetail> children;
 	
@@ -39,10 +39,10 @@ public class ProductType {
 	public void setUnit(String unit) {
 		this.unit = unit;
 	}
-	public String getBase() {
+	public Integer getBase() {
 		return base;
 	}
-	public void setBase(String base) {
+	public void setBase(Integer base) {
 		this.base = base;
 	}
 	public String getRemark() {

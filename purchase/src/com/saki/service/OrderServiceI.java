@@ -39,6 +39,9 @@ public interface OrderServiceI extends BaseServiceI{
 
 	List<TProduct> searchProductTypeByParentId(String parentId);
 
+	/**
+	 * 查询企业关联的全部产品类型
+	 */
 	List<TUserProduct> searchUserProductByCompanyId(String companyId);
 
 	List<TProductDetail> searchDetailByIds(String ids);

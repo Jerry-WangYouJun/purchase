@@ -190,7 +190,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 			e.printStackTrace();
 		}
 		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
-		if(companyId=="null")
+		if(companyId=="null")//管理员用户
 		{
 			getAllProductType(parentId);
 			return;
@@ -201,7 +201,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		List<TUserProduct> userProductList = orderService.searchUserProductByCompanyId(companyId);
 		String ids = "";
 		String productIds = "";
-		String firstProductIds = "";
+		//遍历企业选择的所有产品id
 		for (TUserProduct tUserProduct : userProductList) {
 			ids+= tUserProduct.getProductDetailId()+",";
 		}

@@ -1,5 +1,6 @@
 package com.saki.action;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Grid;
 import com.saki.entity.Message;
+import com.saki.entity.Notice;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.service.ProductDetailServiceI;
@@ -88,7 +90,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			if(getSession().getAttribute("roleId")!= null){
 				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
 			}
-			//userProductService.delete(Integer.valueOf(getSession().getAttribute("companyId").toString()));
+			userProductService.deleteByList(Integer.valueOf(getSession().getAttribute("companyId").toString()),getParameter("productlist"));
 			userProductService.save(Integer.valueOf(getSession().getAttribute("companyId").toString()), getParameter("productlist") , roleId);
 			j.setSuccess(true);
 			j.setMsg("保存成功");
@@ -125,10 +127,6 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	public void updateMarkupPrice(){
 		Message j = new Message();
 		try{
-			int roleId =  0 ;
-			if(getSession().getAttribute("roleId")!= null){
-				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
-			}
 			userProductService.updateMarkupPrice(  Integer.valueOf(getParameter("mapid")) 
 					, Double.valueOf(getParameter("markup")));
 			j.setSuccess(true);
@@ -189,36 +187,32 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	
 	public void searchProduct()
 	{
-		HttpServletRequest request = this.getRequest();	
-		super.writeJson(productService.searchParentProduct(Integer.parseInt(request.getParameter("id"))));
+		super.writeJson(productService.searchParentProduct(Integer.parseInt(getParameter("id"))));
 	}
 	
 	public void searchProductDetail()
 	{
-		HttpServletRequest request = this.getRequest();		
-		super.writeJson(productDetailService.searchProductDetailById(Integer.parseInt(request.getParameter("id"))));
+		super.writeJson(productDetailService.searchProductDetailById(Integer.parseInt(getParameter("id"))));
 	}
 	//删除详情
 	public void deleteProductDetailById()
 	{
-		HttpServletRequest request = this.getRequest();
-		productDetailService.deleteById(Integer.parseInt(request.getParameter("id")));
+		productDetailService.deleteById(Integer.parseInt(getParameter("id")));
 	}
 	//删除类型
 	public void deleteProductById()
 	{
-		HttpServletRequest request = this.getRequest();
-		if(request.getParameter("parentId")!= null && request.getParameter("parentId") != "")
+		if( getParameter("parentId")!= null && getParameter("parentId") != "")
 		{
-			List<TProductDetail> detailList = productDetailService.loadByProductId(Integer.parseInt(request.getParameter("id")));
+			List<TProductDetail> detailList = productDetailService.loadByProductId(Integer.parseInt(getParameter("id")));
 			for (TProductDetail tProductDetail : detailList) {
 				productDetailService.deleteByProductDetail(tProductDetail);
 			}			
-			productService.deleteByProduct(this.productService.searchParentProduct(Integer.parseInt(request.getParameter("id"))));			
+			productService.deleteByProduct(this.productService.searchParentProduct(Integer.parseInt(getParameter("id"))));			
 		}
 		else
 		{
-			List<TProduct> productList = productService.searchChildProductType(Integer.parseInt(request.getParameter("id")));
+			List<TProduct> productList = productService.searchChildProductType(Integer.valueOf(getParameter("id")));
 			for (TProduct tProduct : productList) {
 				List<TProductDetail> detailList = productDetailService.loadByProductId(tProduct.getId());
 				for (TProductDetail tProductDetail : detailList) {
@@ -226,7 +220,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				}
 				productService.deleteByProduct(tProduct);
 			}
-			TProduct product = this.productService.searchParentProduct(Integer.parseInt(request.getParameter("id")));
+			TProduct product = this.productService.searchParentProduct(Integer.parseInt(getParameter("id")));
 			productService.deleteByProduct(product);		
 		}
 		
@@ -239,8 +233,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	//查询二级类型
 	public void searchChildProductType()
 	{
-		HttpServletRequest request = this.getRequest();
-		super.writeJson(productService.searchChildProductType(Integer.parseInt(request.getParameter("parentId"))));
+		super.writeJson(productService.searchChildProductType(Integer.valueOf(getParameter("parentId"))));
 	}
 	//保存 （更新）详情
 	public void saveProductDetail()
@@ -277,10 +270,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		
 		
 		String strParentId = request.getParameter("parentId");
-		String parentId = null;
+		Integer parentId = null;
 		
 		if(strParentId != null && strParentId !="" )
-			parentId = strParentId;
+			parentId = Integer.valueOf(strParentId);
 		
 		if(strId != null && strId != "")
 			id = Integer.parseInt(strId);
@@ -290,7 +283,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				request.getParameter("product"), 
 				request.getParameter("type"), 
 				request.getParameter("unit"), 
-				request.getParameter("base"),
+				Integer.valueOf(request.getParameter("base")),
 				request.getParameter("remark"));
 
 		this.productService.add(product);
@@ -305,6 +298,29 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			e.printStackTrace();
 		}
 	}
-
 	
+	/**
+	 * 统计管理员需要对商品进行加价
+	 * 	  以及勾选默认产品类型的数据	
+	 */
+	public void countSituation(){
+		try{
+			List<Notice > list = new ArrayList<>();
+			String roleId = getSession().getAttribute("roleId").toString();
+			switch (roleId) {
+			case "1":
+				list =  userProductService.initAdminData();
+				break;
+			case "2":
+				list = userProductService.initCustomerData();
+				break;
+			case "3":
+				list = userProductService.initSupplierData();
+				break;	
+			}
+			super.writeJson(list);
+		}catch(Exception e){
+			e.printStackTrace();
+		} 
+	}
 }

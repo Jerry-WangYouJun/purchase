@@ -21,10 +21,10 @@ public class TProduct implements java.io.Serializable {
 	private String product;
 	private String type;
 	private String unit;
-	private String base;
+	private Integer base;
 	private String remark;
 
-	private String parentId;
+	private Integer parentId;
 	// Constructors
 	
 	/** default constructor */
@@ -42,7 +42,7 @@ public class TProduct implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TProduct(String parentId,String product, String type, String unit, String base, String remark) {
+	public TProduct(Integer parentId,String product, String type, String unit, Integer base, String remark) {
 		this.parentId = parentId;
 		this.product = product;
 		this.type = type;
@@ -50,7 +50,7 @@ public class TProduct implements java.io.Serializable {
 		this.base = base;
 		this.remark = remark;
 	}
-	public TProduct(Integer id,String parentId, String product, String type, String unit, String base, String remark) {
+	public TProduct(Integer id,Integer parentId, String product, String type, String unit, Integer base, String remark) {
 		this.parentId = parentId;
 		this.id = id;
 		this.product = product;
@@ -83,11 +83,11 @@ public class TProduct implements java.io.Serializable {
 	}
 
 	@Column(name="parent_id")
-	public String getParentId() {
+	public Integer getParentId() {
 		return parentId;
 	}
 
-	public void setParentId(String parentId) {
+	public void setParentId(Integer parentId) {
 		this.parentId = parentId;
 	}
 	@Column(name = "product", nullable = false, length = 50)
@@ -122,11 +122,11 @@ public class TProduct implements java.io.Serializable {
 
 	@Column(name = "base", length = 10)
 
-	public String getBase() {
+	public Integer getBase() {
 		return this.base;
 	}
 
-	public void setBase(String base) {
+	public void setBase(Integer base) {
 		this.base = base;
 	}
 

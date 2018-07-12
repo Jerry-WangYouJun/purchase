@@ -25,9 +25,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
- 		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">客户/供应商管理</p>
+ 		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">
+ 		
+ 		客户/供应商管理
+ 				<c:choose >
+									<c:when test="${roleId eq '1' }">
+										客户 &供应商 管理
+									</c:when>
+									<c:when test="${roleId eq '2' }">
+										供应商 管理
+									</c:when>
+									<c:when test="${roleId eq '3' }">
+										客户 管理
+									</c:when>
+							 </c:choose>
+ 		</p>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+		  <c:if test="${roleId eq 1 }">
  			 <div >
             	公司名称：
                 <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
@@ -40,6 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </select>
                 <button onclick="query()">查询</button>
             </div> 
+		  </c:if>
  		<table id="company_table" class="easyui-datagrid" fit="true" ></table>
  	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
@@ -230,7 +246,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业星级：</label>
-                <input name="level" class=" form-control" style="display: inline-block;width: 45%" >
+                <select name = "level"  class=" form-control" style="display: inline-block;width: 45%" >
+                	 <option >一星</option>
+                	 <option >二星</option>
+                	 <option >三星</option>
+                	 <option >四星</option>
+                	 <option >五星</option>
+                </select>
             </div>
             
             <div class="form-group col-md-6">

@@ -26,7 +26,7 @@ public class TreeUntil {
 			}
 			else
 			{
-				tree.setPid(tProduct.getParentId());
+				tree.setPid(tProduct.getParentId()+"");
 			}
 			tree.setName(tProduct.getProduct());
 			list.add(tree);

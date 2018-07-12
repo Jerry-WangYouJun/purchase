@@ -54,6 +54,15 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 			companyId = getSession().getAttribute("companyId").toString();
 			map.put("id", companyId);
 		}
+		String role = getParameter("roleId");
+		if(StringUtils.isNotEmpty(role)){
+			map.put("roleId", role);
+		}
+		String cname = getParameter("name");
+		if(StringUtils.isNotEmpty(cname)){
+			map.put("name", "%" + cname + "%");
+		}
+		
 		super.writeJson(companyService.loadQuery(sort, order, page, rows, map));
 		
 	}

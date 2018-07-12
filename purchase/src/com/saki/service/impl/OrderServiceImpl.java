@@ -318,6 +318,9 @@ public class OrderServiceImpl implements OrderServiceI{
 		return list;
 	}
 	//查询所有已选产品
+	/**
+	 * 查询企业关联的全部产品类型
+	 */
 	@Override
 	public List<TUserProduct> searchUserProductByCompanyId(String companyId) {
 		String hql = "from  TUserProduct  t  where t.companyId = :companyId";

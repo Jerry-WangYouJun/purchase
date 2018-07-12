@@ -70,9 +70,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    if(id.indexOf('detail')!= -1)
 		    	{
 		    		id = id.substr(7);
-		    		$("#detailId").val(id);
+			    	$("#detailId").val(id);
 		    		$.post("<%=path%>/productAction!searchProductDetail.action?id="+id,function(data){		    		
 		    			var detail = JSON.parse(data);
+		    			$("#detailProductId").val(detail.productId);
 		    			$("#detailName").val(detail.subProduct);
 		    			$("#detailFormat").val(detail.format);
 		    			$("#detailMaterial").val(detail.material);
@@ -162,6 +163,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				var detailFormat = $("#detailFormat").val();
 				var detailMaterial = $("#detailMaterial").val();
 				var detailRemark = $("#detailRemark").val();
+				var productId = $("#detailProductId").val();
 				
 				$.post("<%=path%>/productAction!saveProductDetail.action",
 						{
@@ -169,7 +171,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							subProduct:detailName,
 							format:detailFormat,
 							material:detailMaterial,
-							remark: detailRemark
+							remark: detailRemark,
+							productId:productId
 						},
 						function(data){
 							layer.alert("保存成功");
@@ -286,6 +289,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	<h4>编辑</h4>
  		<form class="bs-example bs-example-form" data-example-id="simple-input-groups" >
  			<input type="hidden" id="detailId">
+ 			<input type="hidden" id="detailProductId">
 	   		<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon1">名称</span>
 			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" id="detailName">
@@ -297,8 +301,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<br>
 			<div class="input-group">
-			  <span class="input-group-addon" id="basic-addon3">材质</span>
-			  <input type="text" class="form-control" placeholder="材质" aria-describedby="basic-addon3" id="detailMaterial">
+			  <span class="input-group-addon" id="basic-addon3">材质/标准</span>
+			  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3" id="detailMaterial">
 			</div>
 			<br>
 			<div class="input-group">

@@ -71,12 +71,10 @@ public class CompanyServiceImpl implements CompanyServiceI{
 		if(sort!=null && order!=null){
 			hql = "from TCompany t order by " + sort + " " + order;
 		}
-		String countHql = "select count(t.id) from TOrder t  where 1= 1 ";
 		Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator();
 		while(it.hasNext()){
 			Map.Entry<String, Object> entry = it.next() ;
 			hql +=  " and " +  entry.getKey() + " like '" + entry.getValue()  +"'";
-			countHql += " and " +  entry.getKey() + " like '" + entry.getValue() +"'" ;
 		}
 		grid.setTotal(companyDao.count(hql));
 		if(page!=null && rows !=null){

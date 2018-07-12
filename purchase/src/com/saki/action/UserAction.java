@@ -1,8 +1,7 @@
 package com.saki.action;
 
-import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.struts2.convention.annotation.Action;
@@ -111,6 +110,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		Message j = new Message();
 		TUser u =userService.login(user);
 		List<TConfirm> t = confirmService.getWarningList();
+		List<TConfirm> confirm = confirmService.list();
 		if(u != null){
 			getSession().setAttribute("userName", StringUtils.isEmpty(u.getCompanyName())?"管理员":u.getCompanyName());
 			getSession().setAttribute("roleId", u.getRoleId());
@@ -118,6 +118,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			getSession().setAttribute("loged", true);
 			getSession().setAttribute("warnFlag",t.size());
 			getSession().setAttribute("warnList", JSON.toJSON(t));
+			getSession().setAttribute("confirm", confirm);
 			j.setSuccess(true);
 			j.setMsg("登陆成功!");
 		}else{
@@ -137,6 +138,21 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		}
 		super.writeJson(j);
 	}
+	
+	public void findConfirm(){	
+		Message j = new Message();
+		List<TConfirm> list = confirmService.list();
+		Iterator<TConfirm> it = list.iterator();
+		String msg = "";
+		while (it.hasNext()) {
+			TConfirm t = it.next();
+			msg += t.getConfirmDate() + "、";
+			
+		}
+		j.setMsg(msg.substring(0, msg.length()-1));
+		super.writeJson(j);
+	}
+	
 	public void logout(){
 		Message j = new Message();
 		try{		

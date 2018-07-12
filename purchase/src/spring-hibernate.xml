@@ -80,6 +80,7 @@
 			<tx:method name="add*" />
 			<tx:method name="search*"/>
 			<tx:method name="split*"/>
+			<tx:method name="init*"/>
 			<tx:method name="datagrid*" propagation="SUPPORTS" />
 
 			<tx:method name="*" propagation="SUPPORTS" />
