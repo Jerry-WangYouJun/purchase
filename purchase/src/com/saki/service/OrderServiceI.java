@@ -3,13 +3,16 @@ package com.saki.service;
 import java.util.List;
 import java.util.Map;
 
+import com.saki.entity.Grid;
 import com.saki.model.TOrderDetail;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
 
 public interface OrderServiceI extends BaseServiceI{
-
+	
+	public Grid loadAll(String sort, String order, String page, String rows , String urgent);
+	public Grid search(String row, String text, String sort, String order, String page, String rows , String urgent);
 	
 	List<Map<String, Object>> searchDetail(String id);
 

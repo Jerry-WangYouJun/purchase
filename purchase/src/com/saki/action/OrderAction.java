@@ -50,7 +50,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		String rows = getParameter("rows");
 		String sort = getParameter("sort");
 		String order = getParameter("order");
-		super.writeJson(orderService.loadAll( "startDate", "desc", page, rows));
+		super.writeJson(orderService.loadAll( "startDate", "desc", page, rows , null));
 	}
 	
 	public void loadByCompanyId() {
@@ -59,13 +59,21 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		String sort = getParameter("sort");
 		String order = getParameter("order");
 		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
-		super.writeJson(orderService.search("companyId" , companyId , "startDate", "desc", page, rows));
+		super.writeJson(orderService.search("companyId" , companyId , "startDate", "desc", page, rows ,null));
 	}
-	public void add(){
-		order.setLocked("0");
-		order.setInvoice("0");
-		orderService.add(order);
+	
+	public void loadUrgentOrder(){
+		String page = getParameter("page");
+		String rows = getParameter("rows");
+		String roleId = getSession().getAttribute("roleId").toString();
+		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
+		if("1".equals(roleId)){
+			super.writeJson(orderService.loadAll( "startDate", "desc", page, rows , "1"));
+		}else{
+			super.writeJson(orderService.search("companyId" , companyId , "startDate", "desc", page, rows , "1"));
+		}
 	}
+
 	public void update(){
 		orderService.update(order);
 	}
@@ -88,15 +96,6 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		}
 		super.writeJson(j);
 	}
-	public void search(){
-		String name = getParameter("name");
-		String value = getParameter("value");
-		String page = getParameter("page");
-		String rows = getParameter("rows");
-		String sort = getParameter("sort");
-		String order = getParameter("order");
-		super.writeJson(orderService.search(name, value,sort, order, page, rows));
-	}
 	
 	public void searchDetail() {
 		String id = getParameter("id");
@@ -110,12 +109,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		
 	}
 	
-	/*public void getProduct() {
-		List<TProduct>  list = orderService.searchProduct();
-		String jsonString = JSON.toJSONString(list);
-		JSONArray jsonArray = JSONArray.parseArray(jsonString);
-		super.writeJson(jsonArray);
-	}*/
+
 	public void getAllProduct(){
 		List<TProduct> list = null;
 		list = orderService.searchFirstProduct();
@@ -261,6 +255,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		 String insert = getParameter("inserted");
 		 String update = getParameter("updated");
 		 String delete = getParameter("deleted");
+		 String urgent = getParameter("urgent");
 		 Message j = new Message();
 		 boolean  insertFlag = checkOrderJson(insert);
 		 boolean  updateFlag = checkOrderJson(update);
@@ -276,6 +271,9 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 					 order.setCompanyId(Integer.valueOf(companyId));
 					 order.setStartDate(new Date());
 					 order.setStatus("1");//新订单
+					 if(StringUtils.isNotEmpty(urgent)){
+						  order.setUrgent(urgent);
+					 }
 					 orderService.add(order);
 					 insertDetail(insert);
 					 j.setSuccess(true);
@@ -329,7 +327,10 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   detail.setOrderId(order.getId());
 	    	    	   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
 	    	    	   detail.setBrand(obj.getString("brand"));
-	    	    	   detail.setPrice(obj.getDouble("price"));
+	    	    	   if(!StringUtils.isEmpty(obj.getString("price"))){
+	    	    		   detail.setPrice(obj.getDouble("price"));
+	    	    	   }
+	    	    	   detail.setRemark(obj.getString("remark"));
 	    	    	   orderService.add(detail);
 	     }
 	}

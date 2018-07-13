@@ -12,15 +12,14 @@ import org.hibernate.annotations.GenericGenerator;
  * TOrder entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_order", catalog = "order")
+@Table(name = "t_order", catalog = "urgent")
 
-public class TOrder implements java.io.Serializable {
+public class TUrgent implements java.io.Serializable {
 
 	// Fields
 
 	private Integer id;
 	private Integer companyId;
-	private Integer confirmId;
 	private String orderNo;
 	private Date startDate;
 	private Date confirmDate;
@@ -37,18 +36,16 @@ public class TOrder implements java.io.Serializable {
 	private Date invoiceDate;
 	private Date invoiceGet;
 	private String percent;
-	private String urgent;
 
 	// Constructors
 
 	/** default constructor */
-	public TOrder() {
+	public TUrgent() {
 	}
 
 	/** full constructor */
-	public TOrder(Integer confirmId ,Integer companyId, String orderNo, Date startDate, Date confirmDate, Date pillDate, Date endDate,
+	public TUrgent(Integer companyId, String orderNo, Date startDate, Date confirmDate, Date pillDate, Date endDate,
 			String status, double amount, String remark ,String invoice,Date invoiceDate,Date invoiceGet,String percent) {
-		this.confirmId = confirmId;
 		this.companyId = companyId;
 		this.orderNo = orderNo;
 		this.startDate = startDate;
@@ -223,24 +220,6 @@ public class TOrder implements java.io.Serializable {
 	public void setPercent(String percent) {
 		this.percent = percent;
 	}
-	@Column(name="urgent")
-	public String getUrgent() {
-		return urgent;
-	}
-
-	public void setUrgent(String urgent) {
-		this.urgent = urgent;
-	}
-
-	@Column(name="confirm_id")
-	public Integer getConfirmId() {
-		return confirmId;
-	}
-
-	public void setConfirmId(Integer confirmId) {
-		this.confirmId = confirmId;
-	}
-	
 	
 	
 	

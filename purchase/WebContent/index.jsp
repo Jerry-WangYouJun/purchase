@@ -272,10 +272,11 @@
 								<span class="title">订单管理</span> <span class="arrow "></span></a>
 							<ul class="sub-menu">
 								<c:if test="${roleId ne 2 }">
-									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')"> 客户订单管理</a></li>
+									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')"> 订单管理</a></li>
+									<li class="active-menu"><a href="#" onclick="openTab('加急订单管理','${basePath}/pages/urgent_manage.jsp')"> 加急订单管理</a></li>
 								</c:if>
 								<c:if test="${roleId ne 3 }">
-									<li class="active-menu"><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 供应商管理</a></li>
+									<li class="active-menu"><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 采购订单管理</a></li>
 								</c:if>
 							</ul>
 					</li>

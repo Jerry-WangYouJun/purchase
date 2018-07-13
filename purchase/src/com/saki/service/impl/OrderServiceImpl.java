@@ -83,11 +83,16 @@ public class OrderServiceImpl implements OrderServiceI{
 	private ProductServiceI productService;
 
 	@Override
-	public Grid loadAll(String sort, String order, String page, String rows) {
+	public Grid loadAll(String sort, String order, String page, String rows , String urgent) {
 		Grid grid = new Grid();
 		String hql = "from TOrder t  ";
 		if(sort!=null && order!=null){
-			hql = "from TOrder t order by " + sort + " " + order;
+			hql = " from TOrder t order by " + sort + " " + order;
+		}
+		if(urgent != null){
+			 hql += " where t.urgent = '1'" ; 
+		}else{
+			hql += " where t.urgent is null" ; 
 		}
 		String companyHql = "from TCompany t" ;
 		List<TCompany> companyList = orderDao.find(companyHql);
@@ -124,12 +129,17 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 
 	@Override
-	public Grid search(String row, String text, String sort, String order, String page, String rows) {
+	public Grid search(String row, String text, String sort, String order, String page, String rows , String urgent) {
 		Grid grid = new Grid();
 		Map<String, Object> params = new HashMap<String, Object>();		
-		String hql = "from TOrder t";
+		String hql = "from TOrder t where 1=1 ";
 		if(!StringUtils.isEmpty(text)) {
-			  hql = hql +  " where t.companyId = " + text ;
+			  hql = hql +  " and  t.companyId = " + text ;
+		}
+		if(urgent != null){
+			hql += "  and  t.urgent = '1'" ; 
+		}else{
+			hql += " and t.urgent is null " ; 
 		}
 		if(sort!=null && order!=null){
 			hql = hql + " order by " + sort + " " + order;
@@ -449,5 +459,24 @@ public class OrderServiceImpl implements OrderServiceI{
 			   mapList.add(map);
 		}
 		return mapList ;
+	}
+	
+	
+	/**
+	 * 因设计原因修改了原有的接口
+	 */
+	@Override
+	public Grid loadAll(String sort, String order, String page, String rows) {
+		
+		return null;
+	}
+	/**
+	 * 因设计原因修改了原有的接口
+	 */
+	@Override
+	public Grid search(String row, String text, String sort, String order,
+			String page, String rows) {
+		
+		return null;
 	}
 }

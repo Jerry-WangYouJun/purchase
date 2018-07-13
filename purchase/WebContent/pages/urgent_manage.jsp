@@ -8,7 +8,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <html>
   <head>
     <base href="<%=basePath%>">
-    <title>订单管理</title>
+    <title>加急订单管理</title>
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
- 		<h3>订单管理</h3>
+ 		<h3>加急订单管理</h3>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 20px">
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
@@ -30,6 +30,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
 		    	<form id="order_form" role="form" style="padding: 20px">
 				<input type="hidden"  id = "id"  name = "id">
+				<input type="hidden"  id = "urgent"  name = "urgent" value ="1">
 		    		<div class="form-group col-md-6">
 		            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
 		                <input name="orderNo" id="orderNo" class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
@@ -37,10 +38,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
 		                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%">
-		        </div>
-		        <div class="form-group col-md-8">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">请选择采购日：</label>
-		                <select name="confirmId" id= "confirmId" class="easyui-combobox" style="display: inline-block;width: 20%"></select>
 		        </div>
 		    	</form>   
 			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
@@ -67,26 +64,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   
     <script type="text/javascript">
     	$(function(){
-    		$.ajax({ 
-    			url: '${pageContext.request.contextPath}/confirm!loadAll.action' ,
-    			dataType : 'json',
-    			success : function(obj){
-    				 var data,json;
-    				 data = [];
-    				console.info(obj)
-    				for (var i = 0; i < obj.length; i++) {
-    				 	data.push({ "text": obj[i].confirmDate + "日" , "id": obj[i].id });
-					}
-    				 $("#confirmId").combobox("loadData", data);
-    			}
-    		}); 
-    	})
-    
-    	$(function(){
-    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
-    		if("${roleId}" == '3'){
-    			  orderUrl = '${pageContext.request.contextPath}/orderAction!loadByCompanyId.action';
-    		}
+    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadUrgentOrder.action' ;
 			$('#table_order').datagrid({
 				url: orderUrl,
 				pagination: true,
@@ -253,8 +231,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
-	   						{field:'price',title:'单价',width:100,align:'center'},
-	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
 	   						{field:'base', hidden:'true',editor:'textbox' },
@@ -367,21 +343,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                           // url:'${pageContext.request.contextPath}/orderAction!getProduct.action',  
 			                            valueField:'brand' ,   
 			                            textField:'brand',  
-			                            onSelect:function(data){  
-			                                var row = $('#table_add').datagrid('getSelected');  
-			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-			                                 var ed = $("#table_add").datagrid('getEditor', {  
-			                                        index : rowIndex,  
-			                                        field : 'price'  
-			                                    });  
-			                                $(ed.target).textbox('setValue',  data.price); 
-			                                $(ed.target).combobox('disable');
-			                                var idvalue = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'mapid'  
-		                                    });  
-		                               	 $(idvalue.target).textbox('setValue',  data.mapid );   
-			                            } ,onLoadSuccess:function(){ //数据加载完成执行该代码
+			                            onLoadSuccess:function(){ //数据加载完成执行该代码
 			                                var data= $(this).combobox("getData");
 			                                var row = $('#table_add').datagrid('getSelected');  
 			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
@@ -390,22 +352,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'brand'  
 			                                    });  
 			                                $(bra.target).textbox('setValue',  data[0].brand); 
-			                                 
-			                                var pri = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'price'  
-		                                    });  
-		                              	   $(pri.target).textbox('setValue',  data[0].price); 
-		                              		 $(pri.target).combobox('disable');
 			                			} 
 			                        }   
 			                    }},
 								{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
 								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
-								{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
 								{field:'detailId', hidden:'true',editor:'textbox' },
-								{field:'mapid', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
