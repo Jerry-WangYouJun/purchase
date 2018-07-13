@@ -40,7 +40,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        </div>
 		        <div class="form-group col-md-8">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">请选择采购日：</label>
-		                <select name="confirmId" id= "confirmId" class="easyui-combobox" style="display: inline-block;width: 20%"></select>
+		                <select name="confirmId" id= "confirmId" class="easyui-combobox" style="display: inline-block;width: 20%">
+		                	 <c:forEach items="${confirm}" var="it">
+		                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
+		                	 </c:forEach>
+		                </select>
 		        </div>
 		    	</form>   
 			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
@@ -67,7 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   
     <script type="text/javascript">
     	$(function(){
-    		$.ajax({ 
+    		/* $.ajax({ 
     			url: '${pageContext.request.contextPath}/confirm!loadAll.action' ,
     			dataType : 'json',
     			success : function(obj){
@@ -79,7 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
     				 $("#confirmId").combobox("loadData", data);
     			}
-    		}); 
+    		});  */
     	})
     
     	$(function(){
