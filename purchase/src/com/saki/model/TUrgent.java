@@ -31,7 +31,7 @@ public class TUrgent implements java.io.Serializable {
 	private double amount;
 	private String remark;
 	private String companyName;
-	private String locked;
+	//private String locked;
 	private String invoice;
 	private Date invoiceDate;
 	private Date invoiceGet;
@@ -175,14 +175,14 @@ public class TUrgent implements java.io.Serializable {
 		this.companyName = companyName;
 	}
 
-	@Column(name="locked")
-	public String getLocked() {
-		return locked;
-	}
-
-	public void setLocked(String locked) {
-		this.locked = locked;
-	}
+//	@Column(name="locked")
+//	public String getLocked() {
+//		return locked;
+//	}
+//
+//	public void setLocked(String locked) {
+//		this.locked = locked;
+//	}
 
 	@Column(name ="invoice")
 	public String getInvoice() {

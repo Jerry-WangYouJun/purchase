@@ -228,7 +228,6 @@ public class ProductServiceImpl implements ProductServiceI{
 			try {
 				productType = produceDao.find(hql1,map);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			//封装成 productType 对象

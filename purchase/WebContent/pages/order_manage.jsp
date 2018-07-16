@@ -54,12 +54,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
-	    <c:if test="${roleId eq 1 }">
-	  	    <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>    
-	        <a onclick="updateOrderLocked('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-lock" style="margin: 2px">锁定订单</a>
-	        <a onclick="updateOrderLocked('0')" class="easyui-linkbutton"  plain="true" iconCls="icon-undo" style="margin: 2px">解锁订单</a>
-	        <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
-	    </c:if>
 	    <c:if test="${roleId eq 3 }">
 	  	    <a onclick="order_add()" class="easyui-linkbutton"  plain="true" iconCls="icon-add" style="margin: 2px">添加订单</a>    
 	        <a onclick="order_edit()" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
@@ -87,10 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	})
     
     	$(function(){
-    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
-    		if("${roleId}" == '3'){
-    			  orderUrl = '${pageContext.request.contextPath}/orderAction!loadByCompanyId.action';
-    		}
+    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadByCompanyId.action';
 			$('#table_order').datagrid({
 				url: orderUrl,
 				pagination: true,
@@ -108,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				columns:[[
 					{field:'id', hidden:'true',editor:'textbox' },
 					{field:'companyId', hidden:'true',editor:'textbox' },
-					{field:'companyName',title:'公司',width:100,align:'center'},
+					//{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
 					{field:'startDate',title:'下单时间',width:120,align:'center',
 						formatter: function(value,row,index){
@@ -151,17 +142,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								return "已收货";
 							} else if(value == "5"){
 								return "已提交采购";
-							}
-	
-						}
-					},{field:'locked',title:'是否锁定',width:100,align:'center',
-						formatter : function(value, row, index) {
-							if (value == '1') {
-								return "已锁定";
-							}  else if(value == "0"){
-								return "未锁定";
-							}else {
-								return "";
 							}
 	
 						}
@@ -240,14 +220,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				text:'提交',iconCls: 'icon-ok',
 				handler: function(){submitData();}
 			}];
-		   
-		   var toolbarAdmin = [{
-					text:'重置',iconCls: 'icon-undo',
-					handler: function(){reject();}
-				},'-',{
-					text:'提交',iconCls: 'icon-ok',
-					handler: function(){submitData();}
-				}];
 		   
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
@@ -415,7 +387,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];
     	$(function(){
-    		   if("${roleId}" == '3'){
 				$('#table_add').datagrid({
 					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
 					pagination: true,
@@ -426,18 +397,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					toolbar:toolbarAdd,
 					columns:columnEdit
 				});
-    		   }else if("${roleId}" == '1'){
-    			   $('#table_add').datagrid({
-   					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
-   					pagination: true,
-   					fitColumns: true,
-   					singleSelect: true,
-   					striped:true,
-   					onClickRow: onClickRow,//选中行是，调用onClickRow js方法（397行）
-   					toolbar: toolbarAdmin,
-   					columns:columnDetail
-   				});
-    		   }
 			//$("#table_add").datagrid("hideColumn","amount");
 		});
     	
@@ -656,33 +615,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         			}
         	}
     	
-    	function updateOrderLocked(status){
-    		var row = $('#table_order').datagrid('getSelected');
-        		if(row){
-        			$.messager.confirm(
-        				'提示',
-        				'确定执行该操作?',
-        				function(r) {
-        					if (r) {
-        						$.ajax({ 
-        			    			url: '${pageContext.request.contextPath}/orderAction!updateOrderLocked.action?locked=' + status,
-        			    			data : {"id":row.id},
-        			    			dataType : 'json',
-        			    			success : function(obj){
-        			    				if(obj.success){
-        			    				 	alert(obj.msg);
-        			    				 	$('#table_order').datagrid('reload');
-        			    				}else{
-        			    					alert(obj.msg);
-        			    					$('#table_order').datagrid('reload');
-        			    				}
-        			    			}
-        			    		});
-        					}
-        				});  		
-        			}
-    	}
-    	
     	function company_close(){
     		var ops =$('#table_add').datagrid("options");
     		if(ops.toolbar.length > 0 ){
@@ -701,157 +633,45 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 id: 0
 			});
     	}
+    	
+    	function submitData() {
+			$.messager.confirm('提示','提交将保存当前所有修改，确定执行？',
+				function(r) {
+					if (r) {
+						if (endEditing()) { 
+			                //利用easyui控件本身的getChange获取新添加，删除，和修改的内容  
+			            if ($("#table_add").datagrid('getChanges').length) {  
+			                    var inserted = $("#table_add").datagrid('getChanges', "inserted");  
+			                    var deleted = $("#table_add").datagrid('getChanges', "deleted");  
+			                    var updated = $("#table_add").datagrid('getChanges', "updated");
+			                		var data = $('#order_form').serialize();
+			                    var effectRow = new Object();  
+			                    effectRow["formData"] = data;
+			                    if (inserted.length) { 
+			                        effectRow["inserted"] = JSON.stringify(inserted);  
+			                    }  
+			                    if (deleted.length) {  
+			                        effectRow["deleted"] = JSON.stringify(deleted);  
+			                    }  
+			                    if (updated.length) {  
+			                        effectRow["updated"] = JSON.stringify(updated);  
+			                    } 
+			                    $.post("${pageContext.request.contextPath}/orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
+			                				if(obj.success){
+			    			    				 	alert(obj.msg);
+			    			    				 	 $('#order_dlg').dialog('close');	
+			    			    				 	$('#table_order').datagrid('reload');
+			    			    				}else{
+			    			    					alert(obj.msg);
+			    			    				}
+			                    }, "JSON");
+			              }
+						}
+					}
+				});
+		}
     </script>
     
-    <script type="text/javascript">
-	    $.extend($.fn.datagrid.methods, {
-	        getEditingRowIndexs: function(jq) {
-	            var rows = $.data(jq[0], "datagrid").panel.find('.datagrid-row-editing');
-	            var indexs = [];
-	            rows.each(function(i, row) {
-	                var index = row.sectionRowIndex;
-	                if (indexs.indexOf(index) == -1) {
-	                    indexs.push(index);
-	                }
-	            });
-	            return indexs;
-	        }
-	    });
-   		
-		function endEditing(){
-			var order = $("#table_order").datagrid('getSelected');
-			if('${roleId}' == '1'){
-				return false;
-			}
-			if(order != null &&  order.status != '1'  ){
-				return false;
-			} 
-			if (editIndex == undefined){return true}
-			var index = $('#table_add').datagrid('getEditingRowIndexs');
-			  var product = $("#table_add").datagrid('getEditor', {  
-                  index : index ,
-                  field : 'product'      
-              }).target.combobox('getValue');
-			  var type = $("#table_add").datagrid('getEditor', {  
-                  index : index ,
-                  field : 'type'      
-              }).target.combobox('getValue');
-			  var sub_product = $("#table_add").datagrid('getEditor', {  
-                  index : index ,
-                  field : 'sub_product'      
-              }).target.combobox('getValue');
-			  var brand = $("#table_add").datagrid('getEditor', {  
-                  index : index ,
-                  field : 'brand'      
-              }).target.combobox('getValue');
-		 	 if(product == '' || type  == '' || sub_product == '' ||brand == '' ||acount == '' ){
-		 		    alert('数据不全，请核对！');
-					return false;		 		
-		 	 } 
-			  var acount = $("#table_add").datagrid('getEditor', {  
-                  index : index ,
-                  field : 'acount'      
-              }).target.textbox('getValue');
-			  var base = $("#table_add").datagrid('getEditor', {  
-                  index : index ,
-                  field : 'base'      
-              }).target.textbox('getValue');
-		 	if( acount == 0 || acount < base ){
-	 		    alert('采购数量不应小于最小采购数量');
-				return false;		 		
-	 	 	}
-			if ($('#table_add').datagrid('validateRow', editIndex)){
-				$('#table_add').datagrid('endEdit', editIndex);
-				editIndex = undefined;
-				return true;
-			} else {
-				return false;
-			}
-		}
-		function onClickRow(index){
-			if (editIndex != index){
-				if (endEditing()){
-					$('#table_add').datagrid('selectRow', index)
-							.datagrid('beginEdit', index);
-					//订单信息选中行
-					editIndex = index;
-				} else {
-					$('#table_add').datagrid('selectRow', editIndex);
-				}
-			}
-		}
-		function append(){
-			
-			if (endEditing()){
-				$('#table_add').datagrid('appendRow',{status:'P'});
-				editIndex = $('#table_add').datagrid('getRows').length-1;
-				$('#table_add').datagrid('selectRow', editIndex)
-						.datagrid('beginEdit', editIndex);
-			}
-		}
-		function removeit(){
-			if (editIndex == undefined){return}
-			$('#table_add').datagrid('cancelEdit', editIndex)
-					.datagrid('deleteRow', editIndex);
-			editIndex = undefined;
-		}
-		function accept(){
-			if (endEditing()){
-				$('#table_add').datagrid('acceptChanges');
-			}
-		}
-		function reject(){
-			$('#table_add').datagrid('rejectChanges');
-			editIndex = undefined;
-		}
-		function submitData() {
-				$.messager.confirm('提示','提交将保存当前所有修改，确定执行？',
-    				function(r) {
-    					if (r) {
-    						if (endEditing()) { 
-    			                //利用easyui控件本身的getChange获取新添加，删除，和修改的内容  
-    			            if ($("#table_add").datagrid('getChanges').length) {  
-    			                    var inserted = $("#table_add").datagrid('getChanges', "inserted");  
-    			                    var deleted = $("#table_add").datagrid('getChanges', "deleted");  
-    			                    var updated = $("#table_add").datagrid('getChanges', "updated");
-    			                		var data = $('#order_form').serialize();
-    			                    var effectRow = new Object();  
-    			                    effectRow["formData"] = data;
-    			                    if (inserted.length) { 
-    			                        effectRow["inserted"] = JSON.stringify(inserted);  
-    			                    }  
-    			                    if (deleted.length) {  
-    			                        effectRow["deleted"] = JSON.stringify(deleted);  
-    			                    }  
-    			                    if (updated.length) {  
-    			                        effectRow["updated"] = JSON.stringify(updated);  
-    			                    } 
-    			                    $.post("${pageContext.request.contextPath}/orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
-    			                				if(obj.success){
-    			    			    				 	alert(obj.msg);
-    			    			    				 	 $('#order_dlg').dialog('close');	
-    			    			    				 	$('#table_order').datagrid('reload');
-    			    			    				}else{
-    			    			    					alert(obj.msg);
-    			    			    				}
-    			                    }, "JSON");
-    			              }
-    						}
-    					}
-    				});
-			}
-		
-		function isRealNum(val){
-		    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
-		    if(val === "" || val ==null){
-		        return false;
-		    }
-		    if(!isNaN(val)){
-		        return true;
-		    }else{
-		        return false;
-		    }
-		} 
-	 </script>
+	<script src="${basePath}/js/edit.js"></script>
 </body>
 </html>

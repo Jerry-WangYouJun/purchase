@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
@@ -272,8 +273,11 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		String strParentId = request.getParameter("parentId");
 		Integer parentId = null;
 		
-		if(strParentId != null && strParentId !="" )
+		if(strParentId != null && strParentId !="" ){
 			parentId = Integer.valueOf(strParentId);
+		}else{
+			parentId = 0 ;
+		}
 		
 		if(strId != null && strId != "")
 			id = Integer.parseInt(strId);
@@ -283,7 +287,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				request.getParameter("product"), 
 				request.getParameter("type"), 
 				request.getParameter("unit"), 
-				Integer.valueOf(request.getParameter("base")),
+				request.getParameter("base") != null
+						&& StringUtils.isNotEmpty(request.getParameter("base")
+								.toString()) ? Integer.valueOf(request
+						.getParameter("base")) : 0,
 				request.getParameter("remark"));
 
 		this.productService.add(product);

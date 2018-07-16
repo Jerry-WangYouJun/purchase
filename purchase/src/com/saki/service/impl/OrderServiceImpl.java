@@ -86,13 +86,13 @@ public class OrderServiceImpl implements OrderServiceI{
 	public Grid loadAll(String sort, String order, String page, String rows , String urgent) {
 		Grid grid = new Grid();
 		String hql = "from TOrder t  ";
-		if(sort!=null && order!=null){
-			hql = " from TOrder t order by " + sort + " " + order;
-		}
 		if(urgent != null){
 			 hql += " where t.urgent = '1'" ; 
 		}else{
 			hql += " where t.urgent is null" ; 
+		}
+		if(sort!=null && order!=null){
+			hql += "  order by " + sort + " " + order;
 		}
 		String companyHql = "from TCompany t" ;
 		List<TCompany> companyList = orderDao.find(companyHql);
@@ -248,21 +248,21 @@ public class OrderServiceImpl implements OrderServiceI{
 		List<TOrderDetail> list = orderDao.find(hql);
 		return list;
 	}
-	@Override
-	public void updateOrderLocked(String locked , String id ) {
-		orderDao.updateHql("update TOrder t set t.locked = " + locked 
-				+ "where t.id = " + id);
-	}
-	@Override
-	public void updateOrderLockedTask() {
-		Calendar day =Calendar.getInstance();
-		int s = day.get(Calendar.DAY_OF_MONTH);
-		List<TConfirm> confirm =confirmDao.find("from TConfirm t where t.confirmDate = " + s);
-		if(confirm.size() > 0) {
-			orderDao.updateHql("update TOrder t set t.locked = 1 where t.status = '3'");
-			orderDao.updateHql("update TOrder t set t.remark='未付款，不予采购' where t.status < 3");
-		}
-	}
+//	@Override
+//	public void updateOrderLocked(String locked , String id ) {
+//		orderDao.updateHql("update TOrder t set t.locked = " + locked 
+//				+ "where t.id = " + id);
+//	}
+//	@Override
+//	public void updateOrderLockedTask() {
+//		Calendar day =Calendar.getInstance();
+//		int s = day.get(Calendar.DAY_OF_MONTH);
+//		List<TConfirm> confirm =confirmDao.find("from TConfirm t where t.confirmDate = " + s);
+//		if(confirm.size() > 0) {
+//			orderDao.updateHql("update TOrder t set t.locked = 1 where t.status = '3'");
+//			orderDao.updateHql("update TOrder t set t.remark='未付款，不予采购' where t.status < 3");
+//		}
+//	}
 	@Override
 	public String getOrderCode(String dayOfOrderNo) {
 		String hql = "select  SUBSTR(max(t.orderNo) ,LENGTH(max(t.orderNo))-2 ,3) + 1  "

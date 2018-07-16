@@ -81,21 +81,21 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		orderService.deleteByKey(String.valueOf(order.getId()));
 	}
 	
-	public void updateOrderLocked(){
-		String lockFlag = getParameter("locked");
-		String id =getParameter("id");
-		Message j = new Message();
-		try {
-			orderService.updateOrderLocked(lockFlag , id );
-			j.setSuccess(true);
-			j.setMsg("操作成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			j.setSuccess(false);
-			j.setMsg("操作失败");
-		}
-		super.writeJson(j);
-	}
+//	public void updateOrderLocked(){
+//		String lockFlag = getParameter("locked");
+//		String id =getParameter("id");
+//		Message j = new Message();
+//		try {
+//			orderService.updateOrderLocked(lockFlag , id );
+//			j.setSuccess(true);
+//			j.setMsg("操作成功");
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			j.setSuccess(false);
+//			j.setMsg("操作失败");
+//		}
+//		super.writeJson(j);
+//	}
 	
 	public void searchDetail() {
 		String id = getParameter("id");
