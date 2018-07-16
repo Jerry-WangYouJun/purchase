@@ -263,8 +263,8 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		this.productDetailService.add(detail);
 	}
 	//保存（更新）类型
-	public void saveProduct()
-	{
+	public void saveProduct() {
+	Message j = new Message();
 		HttpServletRequest request = this.getRequest();
 		String strId = request.getParameter("id");
 		Integer id =null;
@@ -279,21 +279,40 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			parentId = 0 ;
 		}
 		
-		if(strId != null && strId != "")
+		if(strId != null && strId != "") {
 			id = Integer.parseInt(strId);
+		}else {
+			if(StringUtils.isNotEmpty(request.getParameter("product"))) {
+				int num = this.productService.checkProductByName(getParameter("product"));
+				if( num > 0 ) {
+					j.setSuccess(false);
+					j.setMsg("产品名称已存在,请确认！");
+					super.writeJson(j);
+					return ;
+				}
+			}
+		}
 		
 		TProduct product = new TProduct(id,
 				 parentId, 
-				request.getParameter("product"), 
-				request.getParameter("type"), 
-				request.getParameter("unit"), 
-				request.getParameter("base") != null
-						&& StringUtils.isNotEmpty(request.getParameter("base")
-								.toString()) ? Integer.valueOf(request
-						.getParameter("base")) : 0,
-				request.getParameter("remark"));
+				getParameter("product"), 
+				getParameter("type"), 
+				getParameter("unit"), 
+				getParameter("base") != null
+						&& StringUtils.isNotEmpty(getParameter("base")
+								.toString()) ? Integer.valueOf(getParameter("base")) : 0,
+				getParameter("remark"));
 
 		this.productService.add(product);
+		try {
+			j.setSuccess(true);
+			j.setMsg("操作成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			j.setSuccess(false);
+			j.setMsg("操作失败");
+		}
+		super.writeJson(j);
 	}
 	//加载全部ztree(不加载选中项) 
 	public void loadTree()

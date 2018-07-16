@@ -508,4 +508,9 @@ public class ProductServiceImpl implements ProductServiceI{
 			
 			return treeList;
 		}
+		@Override
+		public int checkProductByName(String productName) {
+			String hql = "from TProduct t where t.product = '" + productName + "'" ; 
+			return produceDao.count(hql);
+		}
 }

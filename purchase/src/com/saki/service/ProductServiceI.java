@@ -23,4 +23,5 @@ public interface ProductServiceI extends BaseServiceI{
 	public List<TProduct> searchChildProductType(Integer parentId);
 	public void deleteByProduct(TProduct product);
 	public List<TreeModel> listTree();
+	public int checkProductByName(String productName);
 }

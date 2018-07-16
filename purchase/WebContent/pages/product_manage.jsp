@@ -9,7 +9,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <head>
     <base href="<%=basePath%>">
     
-    <title>订单管理</title>   
+    <title>产品类别管理</title>   
 	<meta http-equiv="pragma" content="no-cache">
 	<meta http-equiv="cache-control" content="no-cache">
 	<meta http-equiv="expires" content="0">    
@@ -151,8 +151,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							remark:productRemark
 						},
 						function(data){
-							layer.alert("保存成功");
-							window.location.reload();
+							var obj = eval('(' + data + ')');
+							alert(obj.success);
+							if(obj.success){
+								layer.alert("保存成功");
+								window.location.reload();
+							}else{
+								layer.alert(obj.msg);
+							}
 						})
 			})
 			//保存 （详情）

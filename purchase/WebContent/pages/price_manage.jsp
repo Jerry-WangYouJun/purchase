@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     
    <jsp:include page="/common.jsp"></jsp:include>
-
+	<script src="${basePath}/js/edit.js"></script>
   </head>
   
   <body class="easyui-layout">
@@ -67,8 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				toolbar:'#toolbar_user',		
 				fitColumns: true,
 				striped:true,
-				singleSelect: false,
-				onDblClickCell:onDblClickCell,
+				singleSelect: true,
+				onClickCell:onDblClickCell,
 				columns:[[
 					{field:'id', hidden:'true'},
 					{field:'companyId',hidden:'true'},
@@ -106,7 +106,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}}
 				]],				
 			});
-			
+			if("${roleId}" == '1'){
+				$('#user_table').datagrid({
+					singleSelect: false
+				});
+			}
 			 if('${roleId}' != '1'){
 				 $('#user_table').datagrid('hideColumn', 'company');
 				 $('#user_table').datagrid('hideColumn', 'level');
@@ -124,18 +128,36 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 return false ;
 			}
     		var rows=$('#user_table').datagrid('getRows');//获取所有当前加载的数据行
+    		for(var i in rows){
+    			if(i != rowIndex){
+	    			$("#user_table").datagrid('endEdit',i);
+    			}
+    		}
     		var target=rows[rowIndex];///
 			$('#user_table').datagrid('selectRow', rowIndex)
 			.datagrid('editCell', {index:rowIndex,field:field});
-			$("input.datagrid-editable-input").val(target.price).bind("blur",function(evt){
+			$("input.datagrid-editable-input").val(target.price).bind("change",function(evt){
 				target.markup = $("input.datagrid-editable-input").val();
 				if(target.markup  == '' || target.markup  == 0){
 					 alert("不能为空或0 ,请重新填写");
 					 return false;
 				}
+				var reg = new RegExp('^(0|[1-9][0-9]*)$');
 				if(field == 'price'){
+					if(!reg.test(target.price)){
+						alert("不是数字格式，请重新输入~");
+						$("input.datagrid-editable-input").val('');
+						$("input.datagrid-editable-input").focus();
+						return false ;
+					}
 					updatePrice(target.price , target.productDetailId);
 				}else{
+					if(!reg.test(target.markup)){
+						alert("不是数字格式，请重新输入~");
+						$("input.datagrid-editable-input").val('');
+						$("input.datagrid-editable-input").focus();
+						return false ;
+					}
 					updatePriceMarkup(target.markup , target.mapid);
 				}
 				$("#user_table").datagrid('endEdit',rowIndex);
@@ -143,20 +165,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
     	
 		function updatePrice(price , detailId){
-			$.ajax({ 
-    			url: '${pageContext.request.contextPath}/productAction!updateMappingPrice.action',
-    			data : {"price":price ,"detailId":detailId },
-    			dataType : 'json',
-    			success : function(obj){
-    				if(obj.success){
-    				 	//alert(obj.msg);
-    				 	//$('#user_table').datagrid('reload');
-    				}else{
-    					alert(obj.msg);
-    					$('#user_table').datagrid('reload');
-    				}
-    			}
-    		});
+				$.ajax({ 
+		    			url: '${pageContext.request.contextPath}/productAction!updateMappingPrice.action',
+		    			data : {"price":price ,"detailId":detailId },
+		    			dataType : 'json',
+		    			success : function(obj){
+		    				if(obj.success){
+		    				 	//alert(obj.msg);
+		    				 	//$('#user_table').datagrid('reload');
+		    				}else{
+		    					alert(obj.msg);
+		    					$('#user_table').datagrid('reload');
+		    				}
+		    			}
+		    		});
 		}
 		
 		function updatePriceMarkup(markup , mapid){

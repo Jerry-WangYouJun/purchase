@@ -235,13 +235,13 @@
 										</li>
 									</c:when>
 									<c:when test="${roleId eq '3' }">
-										<li class="active-menu"><a href="#"  onclick="openTab('密码管理','${basePath}/pages/company_manage.jsp')">
+										<li class="active-menu"><a href="#"  onclick="openTab('客户管理','${basePath}/pages/company_manage.jsp')">
 													客户 管理</a>
 										</li>
 									</c:when>
 							 </c:choose>
-							<li class="active-menu"><a href="#"  onclick="openTab('用户管理','${basePath}/pages/user_manage.jsp')"> 
-										用户管理</a>
+							<li class="active-menu"><a href="#"  onclick="openTab('密码管理','${basePath}/pages/user_manage.jsp')"> 
+										密码管理</a>
 							</li>
 							<c:if test="${roleId eq '1' }">
 								<li>
