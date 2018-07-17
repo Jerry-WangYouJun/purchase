@@ -70,10 +70,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
     <script type="text/javascript">
     function query(){
-    	$('#company_table').datagrid('load', {
-    	    name: $("#cname").val(),
-    	    roleId: $("#role").val()
-    	});
+	    	$('#company_table').datagrid('load', {
+	    	    name: $("#cname").val(),
+	    	    roleId: $("#role").val()
+	    	});
     }
     	$(function(){
 			$('#company_table').datagrid({

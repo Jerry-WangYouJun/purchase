@@ -24,6 +24,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		<h3>加急订单管理</h3>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 20px">
+ 			<div >
+            		订单编号：
+                <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
+            		订单状态：
+                <select name="ostatue" id="ostatue" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">新订单</option>
+	                	<!-- <option value="2">已报价</option> -->
+	                	<option value="3">已付款</option>
+	                	<option value="4">已收货</option>
+	                	<option value="5">提交采购</option>
+                </select>
+                <button onclick="query()">查询</button>
+            </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
  	</div>
  	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:800px;height: 450px"
@@ -61,6 +76,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 		   
     <script type="text/javascript">
+	 function query(){
+	    	$('#table_order').datagrid('load', {
+	    	    ostatue: $("#ostatue").val(),
+	    	    ono : $("#ono").val()
+	    	});
+ }
     	$(function(){
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadUrgentOrder.action' ;
 			$('#table_order').datagrid({
@@ -82,6 +103,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'companyId', hidden:'true',editor:'textbox' },
 					{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
+					{field:'conirmDate',title:'采购批次',width:100,align:'center',
+						formatter: function(value,row,index){
+							<c:forEach items="${confirm}" var="item"  >  
+								if(row.confirmId == '${item.id}'){
+							        return "${item.confirmDate}";  //获得值,加引号
+								}
+					    		</c:forEach>  	
+							
+					}},
 					{field:'startDate',title:'下单时间',width:120,align:'center',
 						formatter: function(value,row,index){
 							if(value){
@@ -183,7 +213,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    	}
 			   
 			});
-			
+			if("${roleId}" == '3'){
+		    		$('#table_order').datagrid('hideColumn', 'companyName');
+	    		}
 			$(".datagrid-row-alt").css("backgroundColor" , "#a9f9f9")
 		});
     	

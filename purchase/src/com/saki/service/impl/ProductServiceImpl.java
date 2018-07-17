@@ -360,7 +360,7 @@ public class ProductServiceImpl implements ProductServiceI{
 	public ArrayList<Product> searchProductAndChileProduct() {
 		// TODO Auto-generated method stub
 		//取出产品 （焊丝）
-		String hql = "from   TProduct t  where  t.parentId is null ";
+		String hql = "from   TProduct t  where  t.parentId is null or t.parentId = 0 ";
 		String hql1 = " from  TProduct t  where t.parentId =:parentId";
 		ArrayList<Product> productList = new ArrayList<Product>();
 		/*//用户选择的detail id

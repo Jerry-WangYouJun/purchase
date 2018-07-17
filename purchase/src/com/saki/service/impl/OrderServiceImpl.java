@@ -3,6 +3,7 @@ package com.saki.service.impl;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -109,6 +110,38 @@ public class OrderServiceImpl implements OrderServiceI{
 		return grid;
 	}
 	
+	@Override
+	public Grid search(Map params, String sort, String order, String page, String rows , String urgent) {
+		Grid grid = new Grid();
+		String hql = "from TOrder t where 1=1 ";
+		if(urgent != null){
+			hql += "  and  t.urgent = '1'" ; 
+		}else{
+			hql += " and t.urgent is null " ; 
+		}
+		Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<String, Object> entry = it.next() ;
+				hql +=  " and " +  entry.getKey() + " like '%" + entry.getValue()  +"%'";
+		}
+		if(sort!=null && order!=null){
+			hql = hql + " order by " + sort + " " + order;
+		}
+		String companyHql = "from TCompany t" ;
+		List<TCompany> companyList = orderDao.find(companyHql);
+		List<TOrder> l = orderDao.find(hql );
+		grid.setTotal(l.size());
+		if(page!=null && rows !=null){
+			List<TOrder> lp = orderDao.find(hql, Integer.valueOf(page),  Integer.valueOf(rows));
+			getCompanyName(companyList , lp);
+			grid.setRows(lp);
+		}else{
+			getCompanyName(companyList , l);
+			grid.setRows(l);
+		}	
+		return grid;
+	}
+	
 	public void getCompanyName(List<TCompany> companyList , List<TOrder> orderList){
 		   for(TOrder order : orderList) {
 			      for(TCompany company : companyList) {
@@ -128,36 +161,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		return t;
 	}
 
-	@Override
-	public Grid search(String row, String text, String sort, String order, String page, String rows , String urgent) {
-		Grid grid = new Grid();
-		Map<String, Object> params = new HashMap<String, Object>();		
-		String hql = "from TOrder t where 1=1 ";
-		if(!StringUtils.isEmpty(text)) {
-			  hql = hql +  " and  t.companyId = " + text ;
-		}
-		if(urgent != null){
-			hql += "  and  t.urgent = '1'" ; 
-		}else{
-			hql += " and t.urgent is null " ; 
-		}
-		if(sort!=null && order!=null){
-			hql = hql + " order by " + sort + " " + order;
-		}
-		String companyHql = "from TCompany t" ;
-		List<TCompany> companyList = orderDao.find(companyHql);
-		List<TOrder> l = orderDao.find(hql);
-		grid.setTotal(l.size());
-		if(page!=null && rows !=null){
-			List<TOrder> lp = orderDao.find(hql, params, Integer.valueOf(page),  Integer.valueOf(rows));
-			getCompanyName(companyList , lp);
-			grid.setRows(lp);
-		}else{
-			getCompanyName(companyList , l);
-			grid.setRows(l);
-		}	
-		return grid;
-	}
+	
 	@Override
 	public List<Map<String, Object>> searchDetail(String id ) {
 		/*int  num = orderDao.count("from  TOrder o , TOrderMapping m  where o.id = m.orderId and o.id= " + id );

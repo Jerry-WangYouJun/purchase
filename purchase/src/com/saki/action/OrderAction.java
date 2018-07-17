@@ -3,6 +3,7 @@ package com.saki.action;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,6 +17,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.ModelDriven;
+import com.saki.entity.Grid;
 import com.saki.entity.Message;
 import com.saki.model.TOrder;
 import com.saki.model.TOrderDetail;
@@ -48,29 +50,54 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	public void loadAll(){
 		String page = getParameter("page");
 		String rows = getParameter("rows");
-		String sort = getParameter("sort");
-		String order = getParameter("order");
-		super.writeJson(orderService.loadAll( "startDate", "desc", page, rows , null));
+		String cno = getParameter("ono");
+		String cstatus = getParameter("ostatue");
+		Map<String ,Object> params  = new HashMap<>();
+		if(StringUtils.isNotEmpty(cno)) {
+			params.put("orderNo", cno);
+		}
+		if(StringUtils.isNotEmpty(cstatus)) {
+			params.put("status", cstatus);
+		}
+		super.writeJson(orderService.search(params, "startDate", "desc", page, rows ,null));
 	}
 	
 	public void loadByCompanyId() {
 		String page = getParameter("page");
 		String rows = getParameter("rows");
-		String sort = getParameter("sort");
-		String order = getParameter("order");
+		String cno = getParameter("ono");
+		String cstatus = getParameter("ostatue");
 		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
-		super.writeJson(orderService.search("companyId" , companyId , "startDate", "desc", page, rows ,null));
+		Map<String ,Object> params  = new HashMap<>();
+		params.put("companyId", companyId);
+		if(StringUtils.isNotEmpty(cno)) {
+			params.put("orderNo", cno);
+		}
+		if(StringUtils.isNotEmpty(cstatus)) {
+			params.put("status", cstatus);
+		}
+		super.writeJson(orderService.search(params, "startDate", "desc", page, rows ,null));
 	}
 	
 	public void loadUrgentOrder(){
 		String page = getParameter("page");
 		String rows = getParameter("rows");
-		String roleId = getSession().getAttribute("roleId").toString();
+		String cno = getParameter("ono");
+		String cstatus = getParameter("ostatue");
 		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
+		Map<String ,Object> params  = new HashMap<>();
+		params.put("companyId", companyId);
+		if(StringUtils.isNotEmpty(cno)) {
+			params.put("orderNo", cno);
+		}
+		if(StringUtils.isNotEmpty(cstatus)) {
+			params.put("status", cstatus);
+		}
+		String roleId = getSession().getAttribute("roleId").toString();
 		if("1".equals(roleId)){
 			super.writeJson(orderService.loadAll( "startDate", "desc", page, rows , "1"));
 		}else{
-			super.writeJson(orderService.search("companyId" , companyId , "startDate", "desc", page, rows , "1"));
+			super.writeJson(orderService.search(params , "startDate", "desc", page, rows , "1"));
 		}
 	}
 
@@ -252,6 +279,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	
 	public void getChanges( ) {
 		 String orderId = getParameter("id");
+		 String confirmId = getParameter("confirmId");
 		 String insert = getParameter("inserted");
 		 String update = getParameter("updated");
 		 String delete = getParameter("deleted");
@@ -260,11 +288,21 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		 boolean  insertFlag = checkOrderJson(insert);
 		 boolean  updateFlag = checkOrderJson(update);
 			 if(StringUtils.isEmpty(orderId)) {
-				 if(insertFlag){
-					 String companyId = getParameter("companyId");
-					 if(StringUtils.isEmpty(companyId)) {
-						 companyId = String.valueOf((Integer)getSession().getAttribute("companyId"));
-					 }
+				 String companyId = getParameter("companyId");
+				 if(StringUtils.isEmpty(companyId)) {
+					 companyId = String.valueOf((Integer)getSession().getAttribute("companyId"));
+				 }
+				 Map<String,Object > params  = new HashMap<>();
+				 params.put("companyId", companyId);
+				 params.put("confirmId", confirmId );
+				Grid grid  = orderService.search(params, "startDate", "desc", page, rows ,null);
+				if(grid.getTotal() > 0 ) {
+					 j.setSuccess(false);
+				     j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
+				     super.writeJson(j);
+				     return ;
+				}
+				if(insertFlag){
 					 order  = new TOrder();
 					 String dayOfOrderNo = DateUtil.getUserDate("yyyyMMdd");
 					 order.setOrderNo("KH"  + dayOfOrderNo +  orderService.getOrderCode(dayOfOrderNo) );
@@ -302,8 +340,6 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				 j.setSuccess(true);
 			     j.setMsg("修改成功");
 			 }
-	     
-	     
 	     super.writeJson(j);
 	} 
 	private void deleteDetail(String delete) {

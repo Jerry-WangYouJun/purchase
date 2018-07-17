@@ -11,8 +11,28 @@ import com.saki.model.TUserProduct;
 
 public interface OrderServiceI extends BaseServiceI{
 	
-	public Grid loadAll(String sort, String order, String page, String rows , String urgent);
-	public Grid search(String row, String text, String sort, String order, String page, String rows , String urgent);
+	/**
+	 * 
+	 * @param sort 排序字段
+	 * @param order 排序方向
+	 * @param page 页码
+	 * @param rows 每页行数
+	 * @param urgent  是否为加急订单
+	 * @return
+	 */
+	public Grid loadAll(String sort, String order, String page, String rows , String urgent );
+	
+	/**
+	 * 
+	 * @param params 查询参数
+	 * @param sort 排序字段
+	 * @param order 排序方向
+	 * @param page 页码
+	 * @param rows 每页行数
+	 * @param urgent 是否为加急订单
+	 * @return
+	 */
+	public Grid search(Map params, String sort, String order, String page, String rows, String urgent);
 	
 	List<Map<String, Object>> searchDetail(String id);
 

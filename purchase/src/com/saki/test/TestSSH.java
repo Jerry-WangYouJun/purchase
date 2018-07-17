@@ -1,8 +1,5 @@
 package com.saki.test;
 
-import java.util.List;
-
-import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -10,7 +7,7 @@ import com.saki.service.ProductServiceI;
 
 public class TestSSH {
 	
-	@Test
+	//@Test
 	public void test() throws Exception {
 		
 		ApplicationContext ac = new ClassPathXmlApplicationContext

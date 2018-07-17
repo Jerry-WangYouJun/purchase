@@ -102,22 +102,10 @@
 			if("${roleId}" == '2'){
 				searchUrl = '${pageContext.request.contextPath}/supplier!loadByCompanyId.action' ;
 				toolbar=[ {
-					text : '添加',
-					iconCls : 'icon-add',
-					handler : function() {
-						order_add();
-					}
-				}, '-', {
 					text : '订单详情',
 					iconCls : 'icon-edit',
 					handler : function() {
 						order_edit();
-					}
-				}, '-', {
-					text : '删除',
-					iconCls : 'icon-remove',
-					handler : function() {
-						order_delete();
 					}
 				}, '-', {
 					text : '确认付款',
