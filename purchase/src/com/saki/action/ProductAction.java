@@ -138,6 +138,9 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		super.writeJson(j);
 	}
 	
+	/**
+	 * 更新某种产品在系统中的默认价格
+	 */
 	public void updateMappingStatus(){
 		Message j = new Message();
 		 String  s = getParameter("obj");
@@ -338,10 +341,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				list =  userProductService.initAdminData();
 				break;
 			case "2":
-				list = userProductService.initCustomerData();
+				list = userProductService.initSupplierData();
 				break;
 			case "3":
-				list = userProductService.initSupplierData();
+				list = userProductService.initCustomerData();
 				break;	
 			}
 			super.writeJson(list);

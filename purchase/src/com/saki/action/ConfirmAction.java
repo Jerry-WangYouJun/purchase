@@ -1,6 +1,7 @@
 package com.saki.action;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
@@ -38,6 +39,7 @@ public class ConfirmAction extends BaseAction implements ModelDriven<TConfirm>{
 		Message j = new Message();
 		try{
 			confirmService.save(confirm);
+			updateSessionConfirm();
 			j.setSuccess(true);
 			j.setMsg("添加成功");
 		}catch(Exception e){
@@ -51,6 +53,7 @@ public class ConfirmAction extends BaseAction implements ModelDriven<TConfirm>{
 		Message j = new Message();
 		try{
 			confirmService.update(confirm);
+			updateSessionConfirm();
 			j.setSuccess(true);
 			j.setMsg("修改成功");
 		}catch(Exception e){
@@ -63,6 +66,7 @@ public class ConfirmAction extends BaseAction implements ModelDriven<TConfirm>{
 		Message j = new Message();
 		try{
 			confirmService.delete(confirm.getId());
+			updateSessionConfirm();
 			j.setSuccess(true);
 			j.setMsg("删除成功");
 		}catch(Exception e){
@@ -72,6 +76,11 @@ public class ConfirmAction extends BaseAction implements ModelDriven<TConfirm>{
 		}
 		super.writeJson(j);
 		
+	}
+	
+	public void updateSessionConfirm() {
+		List<TConfirm> confirm = confirmService.list();
+		getSession().setAttribute("confirm", confirm);
 	}
 	
 	public void writeJson(Object object){

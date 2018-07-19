@@ -106,6 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 		});
 		function company_add(){
+			$('#userName').attr("readOnly",false);
 			$('#company_dlg').dialog('open');	
 			$('#company_dlg').dialog('setTitle','添加企业');
 			$("#company_save").unbind('click').click(function(){
@@ -130,6 +131,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function company_edit(){
 			var row = $('#company_table').datagrid('getSelected');
     		if(row){
+    			$('#userName').attr("readOnly",true);
     			$('#company_dlg').dialog('open');	
     			$('#company_dlg').dialog('setTitle','编辑企业');
     			$('#company_form').form('load', row);
@@ -234,7 +236,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">登录账号：</label>
-                <input name="userName" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+                <input name="userName" id="userName"  class="form-control" style="display: inline-block;width: 45%"
+                 placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">联系人：</label>

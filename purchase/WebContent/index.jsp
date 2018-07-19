@@ -327,7 +327,7 @@
 						<!-- END BEGIN STYLE CUSTOMIZER -->
 						<c:if test="${roleId eq 3}">
 							<h3 class="page-title">
-								&nbsp;&nbsp;每月采购日为<span id ="confirm"></span>请在采购日三日前支付订单，否则订单将延期到下一采购日进行采购 
+								&nbsp;&nbsp;每月采购日为<span id ="confirm"></span>请在采购日前全额支付订单，否则订单将延期到下一采购日进行采购 
 							</h3>
 						</c:if>
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->

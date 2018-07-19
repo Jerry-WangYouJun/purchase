@@ -18,6 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
+   <script src="${basePath}/js/edit.js"></script>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -34,8 +35,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                	<option value="1">新订单</option>
 	                	<!-- <option value="2">已报价</option> -->
 	                	<option value="3">已付款</option>
-	                	<option value="4">已收货</option>
 	                	<option value="5">提交采购</option>
+	                	<option value="4">已收货</option>
                 </select>
                 <button onclick="query()">查询</button>
             </div> 
@@ -47,19 +48,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<input type="hidden"  id = "id"  name = "id">
 		    		<div class="form-group col-md-6">
 		            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
-		                <input name="orderNo" id="orderNo" class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
+		                <input name="orderNo" id="orderNo" required class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
 		        </div>
 		        <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
 		                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%">
 		        </div>
-		        <div class="form-group col-md-8">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">请选择采购日：</label>
+		        <div class="form-group col-md-6">
+		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">选择采购日：</label>
 		               <!-- login时获取list存入session中 -->
-		                <select name="confirmId" id= "confirmId" class="easyui-combobox" style="display: inline-block;width: 20%">
-		                	 <c:forEach items="${confirm}" var="it">
-		                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
-		                	 </c:forEach>
+		                <select name="confirmId" id= "confirmId" class="easyui-combobox" 
+		                 editable="false" style="display: inline-block;width: 40%" 
+		                 class="form-control select2 easyui-combobox" >
+			                	 <c:forEach items="${confirm}" var="it">
+			                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
+			                	 </c:forEach>
 		                </select>
 		        </div>
 		    	</form>   
@@ -80,30 +83,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 		   
     <script type="text/javascript">
-    function query(){
-	    	$('#table_order').datagrid('load', {
-	    	    ostatue: $("#ostatue").val(),
-	    	    ono : $("#ono").val()
-	    	});
-	}
-    	$(function(){
-    		/* $.ajax({ 
-    			url: '${pageContext.request.contextPath}/confirm!loadAll.action' ,
-    			dataType : 'json',
-    			success : function(obj){
-    				 var data,json;
-    				 data = [];
-    				console.info(obj)
-    				for (var i = 0; i < obj.length; i++) {
-    				 	data.push({ "text": obj[i].confirmDate + "日" , "id": obj[i].id });
-					}
-    				 $("#confirmId").combobox("loadData", data);
-    			}
-    		});  */
-    	})
     
+    function update_confirm(){
+    			$.messager.confirm(
+				'提示',
+				'确定执行该操作?',
+				function(r) {
+					if (r) {
+						$.ajax({ 
+			    			url: getProjectUrl() + 'orderAction!updateInvoiceStatus.action?invoice=' + invoice,
+			    			data : {"id":row.id},
+			    			dataType : 'json',
+			    			success : function(obj){
+			    				if(obj.success){
+			    				 	alert(obj.msg);
+			    				 	$('#table_order').datagrid('reload');
+			    				}else{
+			    					alert(obj.msg);
+			    					$('#table_order').datagrid('reload');
+			    				}
+			    			}
+			    		});
+					}
+				}); 
+    	 }
+    /* 	$(function(){
+    		$('#confirmId').combobox({
+    			onSelect:function(n,o){
+    				 console.info(n);
+    		    }
+    		});
+    	})
+     */
     	$(function(){
-    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadByCompanyId.action';
+    		$("#order_form").validate();
+    		 $("#confirmId").combobox({
+    		       required:true
+    		  });
+    		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action';
 			$('#table_order').datagrid({
 				url: orderUrl,
 				pagination: true,
@@ -121,15 +138,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				columns:[[
 					{field:'id', hidden:'true',editor:'textbox' },
 					{field:'companyId', hidden:'true',editor:'textbox' },
+					{field:'confirmId', hidden:'true',editor:'textbox' },
 					//{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
 					{field:'conirmDate',title:'采购批次',width:120,align:'center',
 						formatter: function(value,row,index){
-							<c:forEach items="${confirm}" var="item"  >  
-								if(row.confirmId == '${item.id}'){
-							        return "${item.confirmDate}";  //获得值,加引号
-								}
-					    		</c:forEach>  	
+							if(row.confirmDate ){
+								return row.confirmDate
+							}else{
+								<c:forEach items="${confirm}" var="item"  >  
+									if(row.confirmId == '${item.id}'){
+								        return "${item.confirmDate}" + "日";  //获得值,加引号
+									}
+						    		</c:forEach> 
+							}
 							
 						}},
 					{field:'startDate',title:'下单时间',width:120,align:'center',
@@ -385,9 +407,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                $(ed.target).combobox('disable');
 			                                var idvalue = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
-		                                        field : 'mapid'  
+		                                        field : 'supplierCompanyId'  
 		                                    });  
-		                               	 $(idvalue.target).textbox('setValue',  data.mapid );   
+		                               	 $(idvalue.target).textbox('setValue',  data.supplierCompanyId );   
 			                            } ,onLoadSuccess:function(){ //数据加载完成执行该代码
 			                                var data= $(this).combobox("getData");
 			                                var row = $('#table_add').datagrid('getSelected');  
@@ -412,7 +434,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
 								{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
 								{field:'detailId', hidden:'true',editor:'textbox' },
-								{field:'mapid', hidden:'true',editor:'textbox' },
+								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
@@ -430,279 +452,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 			//$("#table_add").datagrid("hideColumn","amount");
 		});
-    	
-    	function order_detail(){
-    		var row = $('#table_order').datagrid('getSelected');
-    		if(row){
-    			$("#order_dlg").dialog({
-    				onOpen: function () {
-                        $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
-                        $("#orderNo").val(row.orderNo);   
-                        $("#id").val(row.id); 
-                    }
-    			});
-    			$('#order_dlg').dialog('open');	
-    			$('#order_dlg').dialog('setTitle','订单详情');
-			$("#startDate").val(row.startDate);
-			editIndex = undefined;
-			 $('#table_add').datagrid({
-				 toolbar:[],
-				 columns:columnDetail
-			 })
-			$('#table_add').datagrid('reload', {
-				 id: $("#id").val()
-			});
-			}
-    	}
-    	
-    	function order_edit(){
-			var row = $('#table_order').datagrid('getSelected');
-			if(row.status != '1' && '${roleId}' != '1'  ){
-			    alert("订单状态有误，不能修改！");
-			    return false ;
-			}
-    		if(row){
-    			$("#order_dlg").dialog({
-    				onOpen: function () {
-                        $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
-                        $("#orderNo").val(row.orderNo);   
-                        $("#id").val(row.id); 
-                    }
-    			});
-    			$('#order_dlg').dialog('open');	
-    			$('#order_dlg').dialog('setTitle','编辑订单');
-			$("#startDate").val(row.startDate);
-			editIndex = undefined;
-			 $('#table_add').datagrid({
-				 toolbar: toolbarAdd,
-				 columns:columnEdit
-			 })
-			$('#table_add').datagrid('reload', {
-				 id: $("#id").val()
-			});
-			
-				$("#company_save").click(function(){
-  					$.ajax({
-						url : '${pageContext.request.contextPath}/companyAction!update.action',
-						data : $('#order_form').serialize(),
-						dataType : 'json',
-						success : function(obj) {
-							if (obj.success) {
-								alert(obj.msg);
-								company_close();
-							} else {
-								alert(obj.msg);
-							}
-						}
-					});
-				});
-			}
-    	}
-    	
-    	function order_add(){
-			 $('#table_add').datagrid({
-				 toolbar: toolbarAdd,
-				 columns:columnEdit
-			 })
-    		$("#order_dlg").dialog({
-				onOpen: function () {
-					 $("#startDate").textbox("setValue" , "");   
-                     $("#orderNo").val("");   
-					 $("#id").val("");  
-                }
-			});
-			$('#order_dlg').dialog('open');	
-			$('#order_dlg').dialog('setTitle','添加订单');
-		}
-    	function order_delete(){
-			var row = $('#table_order').datagrid('getSelected');
-			if(row.status != '1'  ){
-				    alert("订单状态有误，不能删除！");
-				    return false ;
-			}
-    		if(row){
-    			$.messager.confirm(
-    				'提示',
-    				'确定要删除么?',
-    				function(r) {
-    					if (r) {
-    						$.ajax({ 
-    			    			url: '${pageContext.request.contextPath}/orderAction!deleteOrder.action',
-    			    			data : {"id":row.id},
-    			    			dataType : 'json',
-    			    			success : function(obj){
-    			    				if(obj.success){
-    			    				 	alert(obj.msg);
-    			    				 	$('#table_order').datagrid('reload');
-    			    				}else{
-    			    					alert(obj.msg);
-    			    					$('#table_order').datagrid('reload');
-    			    				}
-    			    			}
-    			    		});
-    					}
-    				});  		
-    			}
-		}
-    	
-	    function order_status(status){
-			var row = $('#table_order').datagrid('getSelected');
-			if(status == '3' && row.status != '1'){
-				  alert("订单状态有误，不能确认付款！");
-				  return false ;
-			}else if(status == '4' && row.status != '3'){
-				 alert("订单未付款，不能修改为收货状态");
-				 return false ;
-			}
-			 var percent = "";
-	    	if(row){
-				if(status == '3'){
-					$.messager.prompt('','请输入已完成的付款百分比(只输入数字即可)',function(s){
-						if(Math.round(s) == s){
-							if(!isRealNum(s)){
-								return false ;
-							}
-							percent = "&percent="   + s;
-				    			$.messager.confirm(
-				    				'提示',
-				    				'确定执行该操作?',
-				    				function(r) {
-				    					if (r) {
-				    						$.ajax({ 
-				    			    			url: '${pageContext.request.contextPath}/orderAction!updateStatus.action?status=' + status + percent,
-				    			    			data : {"id":row.id},
-				    			    			dataType : 'json',
-				    			    			success : function(obj){
-				    			    				if(obj.success){
-				    			    				 	alert(obj.msg);
-				    			    				 	$('#table_order').datagrid('reload');
-				    			    				}else{
-				    			    					alert(obj.msg);
-				    			    					$('#table_order').datagrid('reload');
-				    			    				}
-				    			    			}
-				    			    		});
-				    					}
-				    				});  		
-						}
-					});
-				}else{
-					$.messager.confirm(
-		    				'提示',
-		    				'确定执行该操作?',
-		    				function(r) {
-		    					if (r) {
-		    						$.ajax({ 
-		    			    			url: '${pageContext.request.contextPath}/orderAction!updateStatus.action?status=' + status ,
-		    			    			data : {"id":row.id},
-		    			    			dataType : 'json',
-		    			    			success : function(obj){
-		    			    				if(obj.success){
-		    			    				 	alert(obj.msg);
-		    			    				 	$('#table_order').datagrid('reload');
-		    			    				}else{
-		    			    					alert(obj.msg);
-		    			    					$('#table_order').datagrid('reload');
-		    			    				}
-		    			    			}
-		    			    		});
-		    					}
-		    				}); 
-				}
-	    	}
-	    }
-    	
-    	function invoice_status(invoice){
-    		var row = $('#table_order').datagrid('getSelected');
-    		if(invoice == '1' && (row.status == '2' || row.status == '1')){
-    			  alert("订单未付款，不能开具发票，请核对！");
-    			  return false ;
-    		}else if(invoice == '2' && row.invoice != '1'){
-    			 alert("发票未开，不能执行该操作！");
-    			 return false ;
-    		}
-        		if(row){
-        			$.messager.confirm(
-        				'提示',
-        				'确定执行该操作?',
-        				function(r) {
-        					if (r) {
-        						$.ajax({ 
-        			    			url: '${pageContext.request.contextPath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
-        			    			data : {"id":row.id},
-        			    			dataType : 'json',
-        			    			success : function(obj){
-        			    				if(obj.success){
-        			    				 	alert(obj.msg);
-        			    				 	$('#table_order').datagrid('reload');
-        			    				}else{
-        			    					alert(obj.msg);
-        			    					$('#table_order').datagrid('reload');
-        			    				}
-        			    			}
-        			    		});
-        					}
-        				});  		
-        			}
-        	}
-    	
-    	function company_close(){
-    		var ops =$('#table_add').datagrid("options");
-    		if(ops.toolbar.length > 0 ){
-    			$.messager.confirm('提示','关闭之后当前所做的修改都不会执行，确认关闭？',
-	   				function(r) {
-	   					if (r) {
-	   						document.getElementById('order_form').reset();
-	   						$('#order_dlg').dialog('close');	
-	   						$('#table_order').datagrid('reload');
-	   					}
-	   				});
-    		}else{
-    			$('#order_dlg').dialog('close');
-    		}
-    		$('#table_add').datagrid('reload', {
-				 id: 0
-			});
-    	}
-    	
-    	function submitData() {
-			$.messager.confirm('提示','提交将保存当前所有修改，确定执行？',
-				function(r) {
-					if (r) {
-						if (endEditing()) { 
-			                //利用easyui控件本身的getChange获取新添加，删除，和修改的内容  
-			            if ($("#table_add").datagrid('getChanges').length) {  
-			                    var inserted = $("#table_add").datagrid('getChanges', "inserted");  
-			                    var deleted = $("#table_add").datagrid('getChanges', "deleted");  
-			                    var updated = $("#table_add").datagrid('getChanges', "updated");
-			                		var data = $('#order_form').serialize();
-			                    var effectRow = new Object();  
-			                    effectRow["formData"] = data;
-			                    if (inserted.length) { 
-			                        effectRow["inserted"] = JSON.stringify(inserted);  
-			                    }  
-			                    if (deleted.length) {  
-			                        effectRow["deleted"] = JSON.stringify(deleted);  
-			                    }  
-			                    if (updated.length) {  
-			                        effectRow["updated"] = JSON.stringify(updated);  
-			                    } 
-			                    $.post("${pageContext.request.contextPath}/orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
-			                				if(obj.success){
-			    			    				 	alert(obj.msg);
-			    			    				 	 $('#order_dlg').dialog('close');	
-			    			    				 	$('#table_order').datagrid('reload');
-			    			    				}else{
-			    			    					alert(obj.msg);
-			    			    				}
-			                    }, "JSON");
-			              }
-						}
-					}
-				});
-		}
+   
     </script>
-    
-	<script src="${basePath}/js/edit.js"></script>
 </body>
 </html>

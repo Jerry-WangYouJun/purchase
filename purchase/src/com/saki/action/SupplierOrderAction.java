@@ -1,5 +1,6 @@
 package com.saki.action;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -15,9 +16,10 @@ import com.alibaba.fastjson.JSONArray;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Message;
 import com.saki.model.TCompany;
-import com.saki.model.TOrder;
+import com.saki.model.TConfirm;
 import com.saki.model.TSupllierOrder;
 import com.saki.service.CompanyServiceI;
+import com.saki.service.ConfirmServiceI;
 import com.saki.service.OrderServiceI;
 import com.saki.service.SupllierOrderServiceI;
 
@@ -33,33 +35,7 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		return supllierOrder;
 	}
 	
-	private CompanyServiceI companyService;
-	public CompanyServiceI getCompanyService() {
-		return companyService;
-	}
-	@Autowired
-	public void setCompanyService(CompanyServiceI companyService) {
-		this.companyService = companyService;
-	}
-	private SupllierOrderServiceI supllierOrderService;
-	public SupllierOrderServiceI getSupllierOrderService() {
-		return supllierOrderService;
-	}
-	@Autowired
-	public void setSupllierOrderService(SupllierOrderServiceI supllierOrderService) {
-		this.supllierOrderService = supllierOrderService;
-	}
-	
-	
-	private OrderServiceI orderService;
-	public OrderServiceI getOrderService() {
-		return orderService;
-	}
-	@Autowired
-	public void setOrderService(OrderServiceI orderService) {
-		this.orderService = orderService;
-	}
-	
+   
 	
 	public void loadAll(){
 		String page = getParameter("page");
@@ -166,25 +142,7 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		super.writeJson(j);
 	}
 	
-	public void checkSupllierOrder(){
-		Message j = new Message();
-		try {
-			String id = getParameter("id");
-			String status = getParameter("status");
-			TSupllierOrder order = (TSupllierOrder)supllierOrderService.getByKey(id);
-			if(order !=  null){
-				order.setStatus(status);
-			}
-			supllierOrderService.update(order);
-				j.setSuccess(true);
-				j.setMsg("操作成功");
-		} catch (Exception e) {
-			e.printStackTrace();
-			j.setSuccess(false);
-			j.setMsg("审核失败");
-		}
-		super.writeJson(j);
-	}
+	
 	
 
 	public void getChanges( ) {
@@ -231,10 +189,22 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		super.writeJson(jsonArray);
 	}
 	
+	/**
+	 * 
+	 */
 	public void getSupllierOrder(){
 		Message j = new Message();
 		try {
-			int num =  supllierOrderService.getSupllierOrder();
+			LocalDateTime currentTime = LocalDateTime.now();
+			int day = currentTime.getDayOfMonth();
+			List<TConfirm> t = confirmService.getWarningList();
+    			int num =0;
+    			for(TConfirm temp : t){
+	    			 int betweenDays =  temp.getConfirmDate() -  day ;
+	    			  if(betweenDays == 0 ){
+		    				num = supllierOrderService.getSupllierOrder(temp.getId());
+	    			  }
+	    		 }
 			if(num >0){
 				j.setSuccess(true);
 				j.setMsg("操作成功");
@@ -293,4 +263,62 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		super.writeJson(j);
 	}
 	
+	public void checkSupllierOrder(){
+		Message j = new Message();
+		try {
+			String id = getParameter("id");
+			String status = getParameter("status");
+			TSupllierOrder order = (TSupllierOrder)supllierOrderService.getByKey(id);
+			if(order !=  null){
+				order.setStatus(status);
+			}
+			supllierOrderService.update(order);
+				j.setSuccess(true);
+				j.setMsg("操作成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			j.setSuccess(false);
+			j.setMsg("审核失败");
+		}
+		super.writeJson(j);
+	}
+	
+	
+	 private ConfirmServiceI confirmService ;
+	    
+		public ConfirmServiceI getConfirmService() {
+			return confirmService;
+		}
+		@Autowired
+		public void setConfirmService(ConfirmServiceI confirmService) {
+			this.confirmService = confirmService;
+		}
+
+		private CompanyServiceI companyService;
+		public CompanyServiceI getCompanyService() {
+			return companyService;
+		}
+		@Autowired
+		public void setCompanyService(CompanyServiceI companyService) {
+			this.companyService = companyService;
+		}
+		private SupllierOrderServiceI supllierOrderService;
+		public SupllierOrderServiceI getSupllierOrderService() {
+			return supllierOrderService;
+		}
+		@Autowired
+		public void setSupllierOrderService(SupllierOrderServiceI supllierOrderService) {
+			this.supllierOrderService = supllierOrderService;
+		}
+		
+		
+		private OrderServiceI orderService;
+		public OrderServiceI getOrderService() {
+			return orderService;
+		}
+		@Autowired
+		public void setOrderService(OrderServiceI orderService) {
+			this.orderService = orderService;
+		}
+		
 }

@@ -18,10 +18,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
+   <script src="${basePath}/js/edit.js"></script>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
- 		<h3>admin订单管理</h3>
+ 		<h3>订单管理</h3>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 20px">
  		<div >
@@ -89,13 +90,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			}
     		});  */
     	})
-    	
-    	 function query(){
-	    	$('#table_order').datagrid('load', {
-	    	    ostatue: $("#ostatue").val(),
-	    	    ono : $("#ono").val()
-	    	});
-    }
+
     
     	$(function(){
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
@@ -116,15 +111,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				columns:[[
 					{field:'id', hidden:'true',editor:'textbox' },
 					{field:'companyId', hidden:'true',editor:'textbox' },
+					{field:'confirmId', hidden:'true',editor:'textbox' },
 					{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
-					{field:'conirmDate',title:'采购批次',width:30,align:'center',
+					{field:'conirmDate',title:'采购批次',width:100,align:'center',
 						formatter: function(value,row,index){
-							<c:forEach items="${confirm}" var="item"  >  
-								if(row.confirmId == '${item.id}'){
-							        return "${item.confirmDate}";  //获得值,加引号
-								}
-					    		</c:forEach>  	
+							if(row.confirmDate){
+								return row.confirmDate
+							}else{
+								<c:forEach items="${confirm}" var="item"  >  
+									if(row.confirmId == '${item.id}'){
+								        return "${item.confirmDate}" + "日";  //获得值,加引号
+									}
+						    		</c:forEach>  	
+							}
 							
 					}},
 					{field:'startDate',title:'下单时间',width:120,align:'center',
@@ -271,166 +271,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			//$("#table_add").datagrid("hideColumn","amount");
 		});
     	
-    	function order_detail(){
-    		var row = $('#table_order').datagrid('getSelected');
-    		if(row){
-    			$("#order_dlg").dialog({
-    				onOpen: function () {
-                        $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
-                        $("#orderNo").val(row.orderNo);   
-                        $("#id").val(row.id); 
-                    }
-    			});
-    			$('#order_dlg').dialog('open');	
-    			$('#order_dlg').dialog('setTitle','订单详情');
-			$("#startDate").val(row.startDate);
-			editIndex = undefined;
-			 $('#table_add').datagrid({
-				 toolbar:[],
-				 columns:columnDetail
-			 })
-			$('#table_add').datagrid('reload', {
-				 id: $("#id").val()
-			});
-			}
-    	}
-    	
-    	
-	    function order_status(status){
-			var row = $('#table_order').datagrid('getSelected');
-			if(status == '3' && row.status != '1'){
-				  alert("订单状态有误，不能确认付款！");
-				  return false ;
-			}else if(status == '4' && row.status != '3'){
-				 alert("订单未付款，不能修改为收货状态");
-				 return false ;
-			}
-			 var percent = "";
-	    	if(row){
-				if(status == '3'){
-					$.messager.prompt('','请输入已完成的付款百分比(只输入数字即可)',function(s){
-						if(Math.round(s) == s){
-							if(!isRealNum(s)){
-								return false ;
-							}
-							percent = "&percent="   + s;
-				    			$.messager.confirm(
-				    				'提示',
-				    				'确定执行该操作?',
-				    				function(r) {
-				    					if (r) {
-				    						$.ajax({ 
-				    			    			url: '${pageContext.request.contextPath}/orderAction!updateStatus.action?status=' + status + percent,
-				    			    			data : {"id":row.id},
-				    			    			dataType : 'json',
-				    			    			success : function(obj){
-				    			    				if(obj.success){
-				    			    				 	alert(obj.msg);
-				    			    				 	$('#table_order').datagrid('reload');
-				    			    				}else{
-				    			    					alert(obj.msg);
-				    			    					$('#table_order').datagrid('reload');
-				    			    				}
-				    			    			}
-				    			    		});
-				    					}
-				    				});  		
-						}
-					});
-				}else{
-					$.messager.confirm(
-		    				'提示',
-		    				'确定执行该操作?',
-		    				function(r) {
-		    					if (r) {
-		    						$.ajax({ 
-		    			    			url: '${pageContext.request.contextPath}/orderAction!updateStatus.action?status=' + status ,
-		    			    			data : {"id":row.id},
-		    			    			dataType : 'json',
-		    			    			success : function(obj){
-		    			    				if(obj.success){
-		    			    				 	alert(obj.msg);
-		    			    				 	$('#table_order').datagrid('reload');
-		    			    				}else{
-		    			    					alert(obj.msg);
-		    			    					$('#table_order').datagrid('reload');
-		    			    				}
-		    			    			}
-		    			    		});
-		    					}
-		    				}); 
-				}
-	    	}
-	    }
-    	
-    	function invoice_status(invoice){
-    		var row = $('#table_order').datagrid('getSelected');
-    		if(invoice == '1' && (row.status == '2' || row.status == '1')){
-    			  alert("订单未付款，不能开具发票，请核对！");
-    			  return false ;
-    		}else if(invoice == '2' && row.invoice != '1'){
-    			 alert("发票未开，不能执行该操作！");
-    			 return false ;
-    		}
-        		if(row){
-        			$.messager.confirm(
-        				'提示',
-        				'确定执行该操作?',
-        				function(r) {
-        					if (r) {
-        						$.ajax({ 
-        			    			url: '${pageContext.request.contextPath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
-        			    			data : {"id":row.id},
-        			    			dataType : 'json',
-        			    			success : function(obj){
-        			    				if(obj.success){
-        			    				 	alert(obj.msg);
-        			    				 	$('#table_order').datagrid('reload');
-        			    				}else{
-        			    					alert(obj.msg);
-        			    					$('#table_order').datagrid('reload');
-        			    				}
-        			    			}
-        			    		});
-        					}
-        				});  		
-        			}
-        	}
-    	
-    	
-    	function company_close(){
-    		var ops =$('#table_add').datagrid("options");
-    		if(ops.toolbar.length > 0 ){
-    			$.messager.confirm('提示','关闭之后当前所做的修改都不会执行，确认关闭？',
-	   				function(r) {
-	   					if (r) {
-	   						document.getElementById('order_form').reset();
-	   						$('#order_dlg').dialog('close');	
-	   						$('#table_order').datagrid('reload');
-	   					}
-	   				});
-    		}else{
-    			$('#order_dlg').dialog('close');
-    		}
-    		$('#table_add').datagrid('reload', {
-				 id: 0
-			});
-    	}
     </script>
-    
-    <script type="text/javascript">
-		
-		function isRealNum(val){
-		    // isNaN()函数 把空串 空格 以及NUll 按照0来处理 所以先去除
-		    if(val === "" || val ==null){
-		        return false;
-		    }
-		    if(!isNaN(val)){
-		        return true;
-		    }else{
-		        return false;
-		    }
-		} 
-	 </script>
 </body>
 </html>

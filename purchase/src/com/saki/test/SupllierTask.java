@@ -32,7 +32,7 @@ public class SupllierTask {
 	 *   
 	 *   
 	 * 1. 生成供应商订单 ：   获取所有客户订单明细，一比一生成供应商订单，
-	 * 2. 审核-如果是自动生成订单，则进行编辑-审核供应商订单；
+	 * 
 	 *        如果是需要重新生成订单，则先修改原供应商订单，设置为作废 再生成新的供应商订单
 	 * 
 	 */
@@ -42,13 +42,16 @@ public class SupllierTask {
     		 int day = currentTime.getDayOfMonth();
     		 for(TConfirm temp : t){
     			 int betweenDays =  temp.getConfirmDate() -  day ;
-    			  if(betweenDays > 0 && betweenDays <=3){
-	    				supllierOrderService.getSupllierOrder();
+    			  if(betweenDays == 0 ){
+	    				supllierOrderService.getSupllierOrder(temp.getId());
     			  }
     		 }
     }  
       
     
+    /**
+     * @param args
+     */
     public static void main(String[] args) {
     	 // 获取当前的日期时间
         LocalDateTime currentTime = LocalDateTime.now();
@@ -60,8 +63,9 @@ public class SupllierTask {
         Month month = currentTime.getMonth();
         int day = currentTime.getDayOfMonth();
         int seconds = currentTime.getSecond();
+        int hour = currentTime.getHour();
           
-        System.out.println("月: " + month +", 日: " + day +", 秒: " + seconds);
+        System.out.println("月: " + month +", 日: " + day +",时：" + hour + " 秒: " + seconds);
           
         LocalDateTime date2 = currentTime.withDayOfMonth(10).withYear(2012);
         System.out.println("date2: " + date2);

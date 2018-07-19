@@ -124,8 +124,10 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	}
 	@Override
 	public List<Map<String, Object>> searchDetail(String id  , String   companyId) {
-		String hql = "from TProduct t , TProductDetail d, TSupllierOrder o , TSupllierOrderDetail od , TProduct parent "
-				+ " where t.id = d.productId  and o.id = od.supllierOrderId and od.productDetailId = d.id"
+		String hql = "from TProduct t , TProductDetail d, TSupllierOrder o , TSupllierOrderDetail od"
+				+ " , TProduct parent ,TOrder order , TOrderDetail orderDetail "
+				+ " where t.id = d.productId  and o.id = od.supllierOrderId and od.productDetailId = d.id "
+				+ " and order.confirmDate = o. "
 				+ " and t.parentId = parent.id  and  o.id = " + id  ;
 		if(StringUtils.isNotEmpty(companyId)){
 			 hql += " and od.conpanyId = " + companyId ;
@@ -259,21 +261,24 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 		
 		System.out.println(new Date());
 	}
+	
+	//TODO 生成供应商订单重写
 	@Override
-	public int getSupllierOrder() {
+	public int getSupllierOrder(int confirmId) {
+		String dayOfOrderNo = DateUtil.getUserDate("yyyyMMdd");
 		String deleteDetail = "delete from TSupllierOrderDetail t where t.supllierOrderId in ("
 				+ "  select  id from TSupllierOrder where status = 1)  ";
 		supplierOrderDao.updateHql(deleteDetail);
 		String hql = "delete from TSupllierOrder where status = 1 ";
 		supplierOrderDao.updateHql(hql);
-		String resetOrderStatus = "update TOrder t set t.status = 3  where t.status = 5  ";
+		String resetOrderStatus = "update TOrder t set t.status = 3  where  "
+				+ " t.confirmDate = " + dayOfOrderNo;
 		supplierOrderDao.updateHql(resetOrderStatus);
 		TSupllierOrder supOrder = new TSupllierOrder();
 		int amount = 0 ;//订单总数
-		List<TOrderMapping> orderMap =  new ArrayList<TOrderMapping>();
 		List<Integer > orderList = new ArrayList<Integer >();
 		Map<Integer , Integer>  tempMap = new HashMap<Integer, Integer>();
-	    List<TOrderDetail> orderDetailList =  getOrderDetailsForSupplierOrder();
+	    List<TOrderDetail> orderDetailList =  getOrderDetailsForSupplierOrder(confirmId);
 	    for(TOrderDetail orderDetail : orderDetailList) {
 	    		//计算订单总数
 		  	  if(orderDetail.getNum() != null ) {
@@ -298,7 +303,6 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	    /**  插入供应商订单*/
 	    supOrder.setAmount(amount);
 	    supOrder.setStatus("1");//0代表新订单状态
-	    String dayOfOrderNo = DateUtil.getUserDate("yyyyMMdd");
 	    supOrder.setSupplierOrderNo("GH"  + dayOfOrderNo +  getOrderCode(dayOfOrderNo) );
 	    add(supOrder);
 	    
@@ -314,20 +318,21 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	    }
 	    
 	    /**插入关系表**/
+	    String ids = "";
+	    
 	    for(Integer orderId :  orderList){
-	    	 TOrderMapping mapping = new TOrderMapping();
-	    	 mapping.setOrderId(orderId);
-	    	 mapping.setSuppilerOrderId(supOrder.getId());
-	    	 add(mapping);
-	    	 String updateOrderStatus ="update TOrder t set t.status = 5  where t.id = '"+orderId+"'";
-	    	 supplierOrderDao.updateHql(updateOrderStatus);
+	    		ids += orderId + "," ;
 	    }
+	    String updateOrderStatus ="update TOrder t set t.status = 5 , "
+	    		+ " t.confirmDate = '" + dayOfOrderNo + "'  where t.id in  (" + ids + "0)";
+	    supplierOrderDao.updateHql(updateOrderStatus);
 	    
 	    return orderDetailList.size();
-	    
 	}
-	private List<TOrderDetail> getOrderDetailsForSupplierOrder() {
-		String  hql = "from TOrderDetail t  where t.orderId in (select  id from TOrder o where  o.status='3' and o.percent = '100' )";
+	private List<TOrderDetail> getOrderDetailsForSupplierOrder(int confirmId) {
+		String  hql = "from TOrderDetail t  where t.orderId in ( "
+				+ "select  id from TOrder o where  o.status='3' and o.percent = '100' "
+				+ " and  confirmId = " + confirmId +" )";
 		List<TOrderDetail> list = supplierOrderDao.find(hql);
 		return list;
 	}

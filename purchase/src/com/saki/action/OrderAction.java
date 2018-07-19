@@ -36,7 +36,6 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	private TOrder order;
 	@Override
 	public TOrder getModel() {
-		// TODO Auto-generated method stub
 		return order;
 	}
 	private OrderServiceI orderService;
@@ -47,58 +46,44 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	public void setOrderService(OrderServiceI orderService) {
 		this.orderService = orderService;
 	}
-	public void loadAll(){
-		String page = getParameter("page");
-		String rows = getParameter("rows");
+	
+	public void getParams(Map<String, Object> params){
 		String cno = getParameter("ono");
 		String cstatus = getParameter("ostatue");
-		Map<String ,Object> params  = new HashMap<>();
 		if(StringUtils.isNotEmpty(cno)) {
-			params.put("orderNo", cno);
+			params.put("orderNo", "%" + cno + "%");
 		}
 		if(StringUtils.isNotEmpty(cstatus)) {
 			params.put("status", cstatus);
 		}
+		String roleId = getSession().getAttribute("roleId").toString();
+		if(!"1".equals(roleId)){
+			String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
+			params.put("companyId", companyId);
+		}
+	}
+	public void loadAll(){
+		String page = getParameter("page");
+		String rows = getParameter("rows");
+		Map<String ,Object> params  = new HashMap<>();
+		getParams(params);
 		super.writeJson(orderService.search(params, "startDate", "desc", page, rows ,null));
 	}
 	
 	public void loadByCompanyId() {
 		String page = getParameter("page");
 		String rows = getParameter("rows");
-		String cno = getParameter("ono");
-		String cstatus = getParameter("ostatue");
-		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
 		Map<String ,Object> params  = new HashMap<>();
-		params.put("companyId", companyId);
-		if(StringUtils.isNotEmpty(cno)) {
-			params.put("orderNo", cno);
-		}
-		if(StringUtils.isNotEmpty(cstatus)) {
-			params.put("status", cstatus);
-		}
+		getParams(params);
 		super.writeJson(orderService.search(params, "startDate", "desc", page, rows ,null));
 	}
 	
 	public void loadUrgentOrder(){
 		String page = getParameter("page");
 		String rows = getParameter("rows");
-		String cno = getParameter("ono");
-		String cstatus = getParameter("ostatue");
-		String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
 		Map<String ,Object> params  = new HashMap<>();
-		params.put("companyId", companyId);
-		if(StringUtils.isNotEmpty(cno)) {
-			params.put("orderNo", cno);
-		}
-		if(StringUtils.isNotEmpty(cstatus)) {
-			params.put("status", cstatus);
-		}
-		String roleId = getSession().getAttribute("roleId").toString();
-		if("1".equals(roleId)){
-			super.writeJson(orderService.loadAll( "startDate", "desc", page, rows , "1"));
-		}else{
-			super.writeJson(orderService.search(params , "startDate", "desc", page, rows , "1"));
-		}
+		getParams(params);
+		super.writeJson(orderService.search(params , "startDate", "desc", page, rows , "1"));
 	}
 
 	public void update(){
@@ -108,25 +93,8 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		orderService.deleteByKey(String.valueOf(order.getId()));
 	}
 	
-//	public void updateOrderLocked(){
-//		String lockFlag = getParameter("locked");
-//		String id =getParameter("id");
-//		Message j = new Message();
-//		try {
-//			orderService.updateOrderLocked(lockFlag , id );
-//			j.setSuccess(true);
-//			j.setMsg("操作成功");
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//			j.setSuccess(false);
-//			j.setMsg("操作失败");
-//		}
-//		super.writeJson(j);
-//	}
-	
 	public void searchDetail() {
 		String id = getParameter("id");
-		String orderNo = getParameter("orderNo");
 		if(!StringUtils.isEmpty(id)) {
 			List<Map<String,Object>>  list = orderService.searchDetail(id);
 			String jsonString = JSON.toJSONString(list);
@@ -287,33 +255,39 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		 Message j = new Message();
 		 boolean  insertFlag = checkOrderJson(insert);
 		 boolean  updateFlag = checkOrderJson(update);
+		 //先判断是否有相同采购日的订单
+		 String companyId = getParameter("companyId");
+		 if(StringUtils.isEmpty(companyId)) {
+			 companyId = String.valueOf((Integer)getSession().getAttribute("companyId"));
+		 }
+		 Map<String,Object > params  = new HashMap<>();
+		 params.put("companyId", companyId);
+		 params.put("confirmId", confirmId );
+		 String checkOrderDate = DateUtil.getUserDate("yyyyMM");
+		 params.put("orderNo", "KH" + checkOrderDate + "%");
+		 Grid grid  = orderService.search(params, "startDate", "desc", page, rows ,urgent);
 			 if(StringUtils.isEmpty(orderId)) {
-				 String companyId = getParameter("companyId");
-				 if(StringUtils.isEmpty(companyId)) {
-					 companyId = String.valueOf((Integer)getSession().getAttribute("companyId"));
-				 }
-				 Map<String,Object > params  = new HashMap<>();
-				 params.put("companyId", companyId);
-				 params.put("confirmId", confirmId );
-				Grid grid  = orderService.search(params, "startDate", "desc", page, rows ,null);
-				if(grid.getTotal() > 0 ) {
+				 if(grid.getTotal() > 0 ) {
 					 j.setSuccess(false);
-				     j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
-				     super.writeJson(j);
-				     return ;
-				}
-				if(insertFlag){
+					 j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
+					 super.writeJson(j);
+					 return ;
+				 }
+				 if(insertFlag){
 					 order  = new TOrder();
 					 String dayOfOrderNo = DateUtil.getUserDate("yyyyMMdd");
 					 order.setOrderNo("KH"  + dayOfOrderNo +  orderService.getOrderCode(dayOfOrderNo) );
 					 order.setCompanyId(Integer.valueOf(companyId));
 					 order.setStartDate(new Date());
 					 order.setStatus("1");//新订单
+					 order.setConfirmId(Integer.valueOf(confirmId));
 					 if(StringUtils.isNotEmpty(urgent)){
-						  order.setUrgent(urgent);
+						 order.setUrgent(urgent);
 					 }
 					 orderService.add(order);
-					 insertDetail(insert);
+					 if(StringUtils.isNotEmpty(insert) ) {
+						 insertDetail(insert);
+					 }
 					 j.setSuccess(true);
 				     j.setMsg("添加成功");
 				 }else{
@@ -322,11 +296,29 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				 }
 				
 			 }else {
+				 //如果存在多条，数据异常
+				 if(grid.getTotal() > 1 ) {
+					 j.setSuccess(false);
+					 j.setMsg("该采购日已经存在多条订单，请联系管理员查看订单是否正常");
+					 super.writeJson(j);
+					 return ;
+				 }else if(grid.getTotal() ==  1) {
+					 List list = grid.getRows();
+					 TOrder t = (TOrder)list.get(0);
+					 if(t.getId()  !=  Integer.valueOf(orderId)) {
+						 j.setSuccess(false);
+						 j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
+						 super.writeJson(j);
+						 return ;  
+					 }
+				 }
 				 if(!insertFlag || !updateFlag){
 					 j.setSuccess(false);
 				     j.setMsg("产品类型或产品的数量为必填，请仔细检查！");
 				 }else{
 					 order = (TOrder)orderService.getByKey(orderId);
+					 order.setConfirmId(Integer.valueOf(confirmId));
+					 orderService.update(order);
 					 if(StringUtils.isNotEmpty(insert) ) {
 						 insertDetail(insert);
 					 }
@@ -362,7 +354,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   detail.setNum( obj.getIntValue("acount"));
 	    	    	   detail.setOrderId(order.getId());
 	    	    	   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
-	    	    	   detail.setBrand(obj.getString("brand"));
+	    	    	   detail.setBrand(obj.getString("supplierCompanyId"));
 	    	    	   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    		   detail.setPrice(obj.getDouble("price"));
 	    	    	   }
