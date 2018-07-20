@@ -77,18 +77,6 @@
 					order_delete();
 				}
 			}, '-', {
-				text : '审核',
-				iconCls : 'icon-filter',
-				handler : function() {
-					order_check('2');
-				}
-			}, '-', {
-				text : '取消审核',
-				iconCls : 'icon-undo',
-				handler : function() {
-					order_check('1');
-				}
-			}, '-', {
 				text : '确认收货',
 				iconCls : 'icon-ok',
 				handler : function() {
@@ -255,6 +243,18 @@
 							singleSelect : true,
 							striped:true,
 							onClickRow : onClickRow,
+							onLoadSuccess:function(data){
+								 var ed = $('#table_add').datagrid('getEditor', {index:0,field:'acount'});
+								 console.info(ed);
+								 for(var index in data.rows){
+									 var thisTarget = $('#table_add').datagrid('getEditor',
+												{
+													'index' : index,
+													'field' : 'acount'
+												});
+									 console.info(thisTarget);
+								 }
+							},
 							toolbar : [ {
 								text : '删除',
 								iconCls : 'icon-remove',
@@ -287,7 +287,7 @@
 									{field : 'materail',title : '材质/标准',width : 100,align : 'center'},
 									{field : 'acount',title : '数量',width : 100,align : 'center',editor : 'textbox'},
 									{field : 'unit',title : '单位',width : 100,align : 'center'},
-									{field : 'price',title : '单价',width : 100,align : 'center',editor : 'textbox'},
+									/* {field : 'price',title : '单价',width : 100,align : 'center',editor : 'textbox'}, */
 									{field : 'companyName',title : '供货商',width : 100,align : 'center',
 										editor : {
 											type : 'combobox',
@@ -296,7 +296,6 @@
 												valueField : 'name',
 												textField : 'name',
 												onSelect : function(data) {
-													console.info(data);
 													var row = $('#table_add').datagrid('getSelected');
 													var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 													var thisTarget = $('#table_add').datagrid('getEditor',
@@ -322,6 +321,12 @@
 									{field : 'remark',title : '备注',width : 100,align : 'center'}, 
 									{field : 'id',hidden : 'true',editor : 'textbox'}
 									] ],
+										//编辑数据前获取产品detailID，通过产品id获取有该产品的公司列表
+									onBeginEdit:function(index, row){
+			                          var index=$('#table_add').datagrid('getRowIndex',row)
+			                          var ed = $('#table_add').datagrid('getEditor', {index:index,field:'companyName'});
+			                          $(ed.target).combobox('reload', {'detailId':row.detailId});//
+			                      },
 
 						});
 			}else if("${roleId}" == '2'){
@@ -332,13 +337,6 @@
 							striped:true,
 							singleSelect : true,
 							onClickRow : onClickRow,
-							toolbar : [ {
-								text : '提交报价',
-								iconCls : 'icon-ok',
-								handler : function() {
-									updatePrice();
-								}
-							} ],
 							columns : [ [
 									{field : 'product',title : '产品大类',width : 100,align : 'center'},
 									{field : 'type',title : '产品类型',width : 100,align : 'center'},
@@ -346,7 +344,7 @@
 									{field : 'materail',title : '材质/标准',width : 100,align : 'center'},
 									{field : 'acount',title : '数量',width : 100,align : 'center'},
 									{field : 'unit',title : '单位',width : 100,align : 'center'},
-									{field : 'price',title : '单价',width : 100,align : 'center',editor : 'textbox'},
+									/* {field : 'price',title : '单价',width : 100,align : 'center',editor : 'textbox'}, */
 									{field : 'detailId',hidden : 'true',editor : 'textbox'}, 
 									{field : 'productId',hidden : 'true',editor : 'textbox'},
 									{field : 'companyId',hidden : 'true',editor : 'textbox'}, 
@@ -391,76 +389,10 @@
 			});  */
 		}
 
-		function order_check(status) {
-			var row = $('#table_order').datagrid('getSelected');
-			if( row.status != '1' && status == '2'){
-				  alert("订单状态不是新订单，不能审核！");
-				  return false ;
-			}
-			if( row.status != '2' && status == '1'){
-				  alert("订单状态有误，不能取消审核！");
-				  return false ;
-			}
-			if (row) {
-				$.messager.confirm(
-					'提示',
-					'确定执行该操作么?',
-					function(r) {
-						if (r) {
-							$.ajax({
-								url : '${pageContext.request.contextPath}/supplier!checkSupllierOrder.action',
-								data : {
-									"id" : row.id ,
-									"status":status
-								},
-								dataType : 'json',
-								success : function(obj) {
-									if (obj.success) {
-										alert(obj.msg);
-										$('#table_order').datagrid('reload');
-									} else {
-										alert(obj.msg);
-										$('#table_order').datagrid('reload');
-									}
-								}
-							});
-						}
-					});
-			}
-		}
-		function order_delete() {
-			var row = $('#table_order').datagrid('getSelected');
-
-			if (row) {
-				$.messager.confirm(
-					'提示',
-					'确定要删除么?',
-					function(r) {
-						if (r) {
-							$.ajax({
-								url : '${pageContext.request.contextPath}/supplier!deleteSupllierOrder.action',
-								data : {
-									"id" : row.id
-								},
-								dataType : 'json',
-								success : function(obj) {
-									if (obj.success) {
-										alert(obj.msg);
-										$('#table_order').datagrid('reload');
-									} else {
-										alert(obj.msg);
-										$('#table_order').datagrid('reload');
-									}
-								}
-							});
-						}
-					});
-			}
-		}
 		
 		function invoice_status(invoice){
     		var row = $('#table_order').datagrid('getSelected');
-    		if(invoice == '1' && (row.status == '2' || row.status == '1')){
+    		if(invoice == '1' &&  row.status == '1'){
     			  alert("订单未付款，不能开具发票，请核对！");
     			  return false ;
     		}else if(invoice == '2' && row.invoice != '1'){
@@ -494,8 +426,8 @@
     	
 	 	function order_status(status){
 			var row = $('#table_order').datagrid('getSelected');
-			if(status == '3' && row.status != '2'){
-				  alert("订单不是审核状态，不能确认付款！");
+			if(status == '3' && row.status != '1'){
+				  alert("订单已付款！");
 				  return false ;
 			}else if(status == '4' && row.status != '3'){
 				 alert("订单未付款，不能修改为收货状态");
@@ -594,15 +526,9 @@
 		}
 
 		function company_close() {
-			
-			$.messager.confirm('提示','关闭之后当前所做的修改都不会执行，确认关闭？',
-    				function(r) {
-    					if (r) {
-    						document.getElementById('order_form').reset();
-    						$('#order_dlg').dialog('close');
-    						$('#table_order').datagrid('reload');
-    					}
-    		});
+			document.getElementById('order_form').reset();
+			$('#order_dlg').dialog('close');
+			$('#table_order').datagrid('reload');
 		}
 	</script>
 

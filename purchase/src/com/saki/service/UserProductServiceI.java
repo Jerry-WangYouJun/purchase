@@ -16,10 +16,8 @@ public interface UserProductServiceI{
 	void updateStatus(int id);
 	void updateStatusReset(int detailId, String companyId);
 	public void updateMarkupPrice(Integer mapid, Double markup);
-	public int countNoMarkupCount();
-	public int countNoDefaultPrice();
 	public List<Notice> initAdminData();
-	public List<Notice> initCustomerData();
-	public List<Notice> initSupplierData();
+	public List<Notice> initCustomerData(Integer cid);
+	public List<Notice> initSupplierData(Integer cid);
 	public void deleteByList(Integer valueOf, String parameter);
 }

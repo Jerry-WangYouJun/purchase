@@ -341,10 +341,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				list =  userProductService.initAdminData();
 				break;
 			case "2":
-				list = userProductService.initSupplierData();
+				list = userProductService.initSupplierData( Integer.valueOf(getSession().getAttribute("roleId").toString()));
 				break;
 			case "3":
-				list = userProductService.initCustomerData();
+				list = userProductService.initCustomerData( Integer.valueOf(getSession().getAttribute("roleId").toString()));
 				break;	
 			}
 			super.writeJson(list);

@@ -87,7 +87,9 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		
 	}
 	
-	
+	/**
+	 *  拆分订单
+	 */
 	public void splitOrder(){
 		Message j = new Message();
 		try {
@@ -183,7 +185,8 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 	}
 	
 	public void getCompany(){
-		List<TCompany>  list = supllierOrderService.searchCompany();
+		String detailId = getParameter("detailId");
+		List<TCompany>  list = supllierOrderService.searchCompany(detailId);
 		String jsonString = JSON.toJSONString(list);
 		JSONArray jsonArray = JSONArray.parseArray(jsonString);
 		super.writeJson(jsonArray);

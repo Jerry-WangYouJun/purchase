@@ -280,9 +280,11 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 					 order.setCompanyId(Integer.valueOf(companyId));
 					 order.setStartDate(new Date());
 					 order.setStatus("1");//新订单
-					 order.setConfirmId(Integer.valueOf(confirmId));
 					 if(StringUtils.isNotEmpty(urgent)){
 						 order.setUrgent(urgent);
+					 }
+					 if(StringUtils.isNotBlank(confirmId)) {
+						 order.setConfirmId(Integer.valueOf(confirmId));
 					 }
 					 orderService.add(order);
 					 if(StringUtils.isNotEmpty(insert) ) {
@@ -317,8 +319,10 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				     j.setMsg("产品类型或产品的数量为必填，请仔细检查！");
 				 }else{
 					 order = (TOrder)orderService.getByKey(orderId);
-					 order.setConfirmId(Integer.valueOf(confirmId));
-					 orderService.update(order);
+					 if(StringUtils.isNotBlank(confirmId)) {
+						 order.setConfirmId(Integer.valueOf(confirmId));
+						 orderService.update(order);
+					 }
 					 if(StringUtils.isNotEmpty(insert) ) {
 						 insertDetail(insert);
 					 }
@@ -376,7 +380,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    		   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    			       detail.setPrice(obj.getDouble("price"));
 	    	    		   }
-	    	    		   detail.setBrand(obj.getString("brand"));
+	    	    		   detail.setBrand(obj.getString("supplierCompanyId"));
 	    	    		   orderService.update(detail);
 	    	    	   }
 	     }

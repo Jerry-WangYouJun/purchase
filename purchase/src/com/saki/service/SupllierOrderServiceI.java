@@ -26,7 +26,7 @@ public interface SupllierOrderServiceI  extends BaseServiceI{
 
 	int deleteDetailById(String orderId, String detailId);
 
-	List<TCompany> searchCompany();
+	List<TCompany> searchCompany(String detailId);
 	
 	public String updateDetail(String update) ;
 

@@ -237,8 +237,8 @@
 			if(status == '3' && row.status != '1'){
 				  alert("订单状态有误，不能确认付款！");
 				  return false ;
-			}else if(status == '4' && row.status != '3'){
-				 alert("订单未付款，不能修改为收货状态");
+			}else if(status == '4' && row.status != '5'){
+				 alert("订单状态有误，不能修改为收货状态");
 				 return false ;
 			}
 			 var percent = "";
