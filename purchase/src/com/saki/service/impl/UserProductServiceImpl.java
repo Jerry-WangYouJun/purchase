@@ -124,8 +124,12 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		int noDefaultPrice = countNum(noDefaultPricesql);
 		notice.setKey("first");
 		notice.setMsg(noMarkupCount+noDefaultPrice+"");
-		map.put("markupMsg", noMarkupCount + "种产品需要加价处理");
-		map.put("priceMsg", noDefaultPrice + "种产品未选择默认报价");
+		if(noMarkupCount > 0) {
+			map.put("markupMsg", noMarkupCount + "种产品需要加价处理");
+		}
+		if(noDefaultPrice > 0) {
+			map.put("priceMsg", noDefaultPrice + "种产品未选择默认报价");
+		}
 		notice.setObj(map);
 		
 		Map<String , Object> map2 = new HashMap<>();
@@ -136,8 +140,12 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		int invoiceGet = countNum(invoiceGetsql);
 		notice2.setKey("second");
 		notice2.setMsg(invoice + invoiceGet+"");
-		map2.put("invoiceMsg", invoice + "客户订单可以开发票");
-		map2.put("invoiceGetMsg",  invoiceGet + "供应商订单已开发票");
+		if(invoice > 0) {
+			map2.put("invoiceMsg", invoice + "客户订单可以开发票");
+		}
+		if(invoiceGet > 0) {
+			map2.put("invoiceGetMsg",  invoiceGet + "供应商订单已开发票");
+		}
 		notice2.setObj(map2);
 		
 		Map<String , Object> map3 = new HashMap<>();
@@ -148,8 +156,12 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		int urgentPay = countNum(urgentPaysql);
 		notice3.setKey("third");
 		notice3.setMsg(urgentPurchase + urgentPay + "");
-		map3.put("supplierInit", urgentPurchase + "加急订单尚未采购");
-		map3.put("supplierCheck",  urgentPay + "加急订单尚未付款");
+		if(urgentPurchase > 0) {
+			map3.put("supplierInit", urgentPurchase + "加急订单尚未采购");
+		}
+		if(urgentPay > 0) {
+			map3.put("supplierCheck",  urgentPay + "加急订单尚未付款");
+		}
 		notice3.setObj(map3);
 		
 		List<Notice> list= new ArrayList<>();
@@ -169,9 +181,9 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		Map<String , Object> map = new HashMap<>();
 		String noProductCountsql = "select 1 from  t_user_product where company_id =   " + companyId;
 		int noProductCount = countNum(noProductCountsql);
+		notice.setKey("first");
+		notice.setMsg(noProductCount + "");
 		if(noProductCount == 0 ) {
-			notice.setMsg(noProductCount + "");
-			notice.setKey("first");
 			map.put("priceMsg", "未选择公司需要采购的产品类型");
 			notice.setObj(map);
 		}else {
@@ -180,9 +192,11 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		
 		Map<String , Object> map2 = new HashMap<>();
 		Notice notice2 = new Notice();
-		String invoicesql = "select 1 from t_order where status = 1  and urgent  is null ";
+		String invoicesql = "select 1 from t_order where status = 1  and urgent  is null"
+				+ " and company_id =  " + companyId;
 		int invoice = countNum(invoicesql);
-		String invoiceGetsql = "select 1 from t_order where status = 1  and urgent  = '1' ";
+		String invoiceGetsql = "select 1 from t_order where status = 1  and urgent  = '1'"
+				+ "  and company_id =  " + companyId;
 		int invoiceGet = countNum(invoiceGetsql);
 		notice2.setKey("second");
 		notice2.setMsg(invoice + invoiceGet+"");
@@ -196,9 +210,11 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		
 		Map<String , Object> map3 = new HashMap<>();
 		Notice notice3 = new Notice();
-		String urgentPurchasesql = "select 1 from t_order where status != '1'  and invoice  is null ";
+		String urgentPurchasesql = "select 1 from t_order where status != '1'  and invoice  is null"
+				+ " and company_id =  " + companyId;
 		int urgentPurchase = countNum(urgentPurchasesql);
-		String urgentPaysql = "select 1 from  t_order where status != '1' and invoice = '1'";
+		String urgentPaysql = "select 1 from  t_order where status != '1' and invoice = '1'"
+				+ " and company_id =  " + companyId;
 		int urgentPay = countNum(urgentPaysql);
 		notice3.setKey("third");
 		notice3.setMsg(urgentPurchase + urgentPay + "");
@@ -228,21 +244,27 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		Map<String , Object> map = new HashMap<>();
 		String noProductCountsql = "select 1 from  t_user_product where company_id =   " + companyId;
 		int noProductCount = countNum(noProductCountsql);
-		String noMarkupCountsql = "select 1 from t_user_product where price = 0 or price is null  ";
+		String noMarkupCountsql = "select 1 from t_user_product where ( price = 0 or price is null)"
+				+ " and company_id = " + companyId;
 		int noMarkupCount = countNum(noMarkupCountsql);
-		notice.setMsg(noProductCount + noMarkupCount + "");
+		notice.setMsg(  noMarkupCount + "");
 		notice.setKey("first");
 		if(noProductCount == 0 ) {
+			notice.setMsg( "1");
 			map.put("priceMsg", "未选择公司需要采购的产品类型");
-		}
-		if(noMarkupCount > 0 ) {
-			map.put("markupMsg", noMarkupCount + "种产品未报价");
+		}else {
+			if(noMarkupCount > 0 ) {
+				map.put("markupMsg", noMarkupCount + "种产品未报价");
+			}
 		}
 		notice.setObj(map);
 		
 		Map<String , Object> map2 = new HashMap<>();
 		Notice notice2 = new Notice();
-		String invoicesql = "select 1 from t_supllier_order where status = 1  and  conpany_id =  " + companyId ;
+		String invoicesql = "select  1 from  t_supllier_order where status = 1"
+				+ "  and t_supllier_order.id in "
+				+ " (select supllier_order_id from  t_supllier_order_detail  "
+				+ " where conpany_id =  " + companyId  + ")";
 		int invoice = countNum(invoicesql);
 		notice2.setKey("second");
 		notice2.setMsg(invoice +"");
@@ -253,9 +275,15 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		
 		Map<String , Object> map3 = new HashMap<>();
 		Notice notice3 = new Notice();
-		String urgentPurchasesql = "select 1 from t_supllier_order where status != '1'  and invoice  is null ";
+		String urgentPurchasesql = "select 1 from t_supllier_order where status != '1'  and invoice  is null "
+				+ "  and t_supllier_order.id in "
+				+ " (select supllier_order_id from  t_supllier_order_detail  "
+				+ " where conpany_id =  " + companyId  + ")";
 		int urgentPurchase = countNum(urgentPurchasesql);
-		String urgentPaysql = "select 1 from  t_supllier_order where status != '1' and invoice = '1'";
+		String urgentPaysql = "select 1 from  t_supllier_order where status != '1' and invoice = '1'"
+				+ "  and t_supllier_order.id in "
+				+ " (select supllier_order_id from  t_supllier_order_detail  "
+				+ " where conpany_id =  " + companyId  + ")";
 		int urgentPay = countNum(urgentPaysql);
 		notice3.setKey("third");
 		notice3.setMsg(urgentPurchase + urgentPay + "");

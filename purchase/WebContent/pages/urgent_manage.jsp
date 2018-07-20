@@ -63,7 +63,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
 	    <c:if test="${roleId eq 1 }">
-	  	    <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>    
+	  	    <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>  
+	  	    <a onclick="order_status('5')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认采购</a>  
 	        <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
 	    </c:if>
 	    <c:if test="${roleId eq 3 }">
