@@ -91,7 +91,13 @@ body {
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">企业星级：</label>
-                <input name="level" class=" form-control" style="display: inline-block;width: 45%" >
+                <select name = "level"  class=" form-control" style="display: inline-block;width: 45%" >
+                	 <option >一星</option>
+                	 <option >二星</option>
+                	 <option >三星</option>
+                	 <option >四星</option>
+                	 <option >五星</option>
+                </select>
             </div>
             
             <div class="form-group col-md-6">
