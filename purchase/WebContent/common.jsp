@@ -114,7 +114,7 @@
     				function(r) {
     					if (r) {
     						$.ajax({ 
-    			    			url: ${basePath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
+    			    			url: '${basePath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
     			    			data : {"id":row.id},
     			    			dataType : 'json',
     			    			success : function(obj){
@@ -161,7 +161,7 @@
 			    				function(r) {
 			    					if (r) {
 			    						$.ajax({ 
-			    			    			url: ${basePath}/orderAction!updateStatus.action?status=' + status + percent,
+			    			    			url: '${basePath}/orderAction!updateStatus.action?status=' + status + percent,
 			    			    			data : {"id":row.id},
 			    			    			dataType : 'json',
 			    			    			success : function(obj){
@@ -185,7 +185,7 @@
 	    				function(r) {
 	    					if (r) {
 	    						$.ajax({ 
-	    			    			url: ${basePath}/orderAction!updateStatus.action?status=' + status ,
+	    			    			url: '${basePath}/orderAction!updateStatus.action?status=' + status ,
 	    			    			data : {"id":row.id},
 	    			    			dataType : 'json',
 	    			    			success : function(obj){
@@ -218,7 +218,7 @@
 				function(r) {
 					if (r) {
 						$.ajax({ 
-			    			url: ${basePath}/orderAction!deleteOrder.action',
+			    			url: '${basePath}/orderAction!deleteOrder.action',
 			    			data : {"id":row.id},
 			    			dataType : 'json',
 			    			success : function(obj){
@@ -284,7 +284,7 @@
 		
 			$("#company_save").click(function(){
 					$.ajax({
-					url : ${basePath}/companyAction!update.action',
+					url : '${basePath}/companyAction!update.action',
 					data : $('#order_form').serialize(),
 					dataType : 'json',
 					success : function(obj) {
