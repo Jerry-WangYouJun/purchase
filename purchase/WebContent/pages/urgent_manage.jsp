@@ -556,7 +556,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			                    if (updated.length) {  
 	 			                        effectRow["updated"] = JSON.stringify(updated);  
 	 			                    } 
-	 			                    $.post(getProjectUrl() + "orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
+	 			                    $.post("${basePath}/orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
 	 			                				if(obj.success){
 	 			    			    				 	alert(obj.msg);
 	 			    			    				 	 $('#order_dlg').dialog('close');	
@@ -611,7 +611,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	         				function(r) {
 	         					if (r) {
 	         						$.ajax({ 
-	         			    			url: getProjectUrl() + 'orderAction!updateInvoiceStatus.action?invoice=' + invoice,
+	         			    			url: '${basePath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
 	         			    			data : {"id":row.id},
 	         			    			dataType : 'json',
 	         			    			success : function(obj){
@@ -658,7 +658,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 				    				function(r) {
 	 				    					if (r) {
 	 				    						$.ajax({ 
-	 				    			    			url: getProjectUrl() + 'orderAction!updateStatus.action?status=' + status + percent,
+	 				    			    			url: '${basePath}/orderAction!updateStatus.action?status=' + status + percent,
 	 				    			    			data : {"id":row.id},
 	 				    			    			dataType : 'json',
 	 				    			    			success : function(obj){
@@ -682,7 +682,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		    				function(r) {
 	 		    					if (r) {
 	 		    						$.ajax({ 
-	 		    			    			url: getProjectUrl() + 'orderAction!updateStatus.action?status=' + status ,
+	 		    			    			url: '${basePath}/orderAction!updateStatus.action?status=' + status ,
 	 		    			    			data : {"id":row.id},
 	 		    			    			dataType : 'json',
 	 		    			    			success : function(obj){
@@ -715,7 +715,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	     				function(r) {
 	     					if (r) {
 	     						$.ajax({ 
-	     			    			url: getProjectUrl() + 'orderAction!deleteOrder.action',
+	     			    			url: '${basePath}/orderAction!deleteOrder.action',
 	     			    			data : {"id":row.id},
 	     			    			dataType : 'json',
 	     			    			success : function(obj){
@@ -778,7 +778,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			
 	 				$("#company_save").click(function(){
 	   					$.ajax({
-	 						url : getProjectUrl() + 'companyAction!update.action',
+	 						url : '${basePath}/companyAction!update.action',
 	 						data : $('#order_form').serialize(),
 	 						dataType : 'json',
 	 						success : function(obj) {
@@ -827,14 +827,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	  	    	});
 	   	}
 	     
-	     function getProjectUrl(){
-	     	var hostUrl = "";
-	     	var url = window.document.location.href;
-	     	var pathname = window.document.location.pathname;
-	     	pathname = pathname.substring(0,pathname.indexOf("/",1)+1);
-	     	hostUrl = url.substring(0,url.indexOf(pathname)) + pathname;
-	     	return hostUrl;
-	     }
+	    
     </script>
     
 </body>
