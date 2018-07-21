@@ -70,12 +70,6 @@
 				handler : function() {
 					order_edit();
 				}
-			}, {
-				text : '删除',
-				iconCls : 'icon-remove',
-				handler : function() {
-					order_delete();
-				}
 			}, '-', {
 				text : '确认收货',
 				iconCls : 'icon-ok',

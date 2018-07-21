@@ -87,16 +87,18 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		super.writeJson(j);
 	}
 	public void add(){
+			String userName = getParameter("userName");
 			companyService.add(company);
 			TUser user = new TUser();
 			String roleId = getParameter("roleId");
-			String userName = getParameter("userName");
 			user.setRoleId(Integer.valueOf(roleId));
 			user.setCompanyId(company.getId());
+			user.setCompanyName(company.getName());
 			user.setUserName(userName);
 			user.setUserPwd(getParameter("userPwd"));
 			userService.add(user);
 	}
+	
 	public void update(){
 			companyService.update(company);
 			TUser user = userService.getByCompanyId(company.getId());

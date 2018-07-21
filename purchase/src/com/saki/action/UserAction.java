@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ModelDriven;
+import com.saki.entity.Grid;
 import com.saki.entity.Message;
 import com.saki.model.TConfirm;
 import com.saki.model.TUser;
@@ -106,6 +107,18 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		}
 		super.writeJson(userService.search(name, value,sort, order, page, rows));
 	}
+	
+	public void checkUserOnly() {
+		String userName = getParameter("userName");
+		int num = userService.searchUserOnly(userName);
+		if(num > 0) {
+			Message j = new Message();
+			j.setSuccess(false);
+			j.setMsg("用户名重复，请重新输入!");
+			super.writeJson(j);
+		}
+	}
+	
 	public void login(){	
 		Message j = new Message();
 		TUser u =userService.login(user);

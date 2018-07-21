@@ -36,7 +36,7 @@ body {
 						success : function(obj) {
 							if (obj.success) {
 								alert(obj.msg);
-								window.location.href="${basePath}";
+								window.location.href="${basePath}/login.jsp";
 							} else {
 								alert(obj.msg);
 							}
@@ -45,6 +45,20 @@ body {
 			}
 		});
 	})
+	
+	function checkOnly(val){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/userAction!checkUserOnly.action',
+			data : $('#company_form').serialize(),
+			dataType : 'json',
+			success : function(obj) {
+				if (!obj.success) {
+					alert(obj.msg);
+					$("#userName").val("");
+				} 
+			}
+		});
+	}
 	
 </script>
 </head>
@@ -75,7 +89,7 @@ body {
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">登录账号：</label>
-                <input name="userName" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+                <input name="userName" id="userName" onchange="checkOnly(this.value)" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
 			<div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">登录密码：</label>

@@ -206,7 +206,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		})
 		
-		
+		function checkOnly(val){
+		$.ajax({
+			url : '${pageContext.request.contextPath}/userAction!checkUserOnly.action',
+			data : $('#company_form').serialize(),
+			dataType : 'json',
+			success : function(obj) {
+				if (!obj.success) {
+					alert(obj.msg);
+					$("#userName").val("");
+				} 
+			}
+		});
+	}
     </script>
     
     <div id="company_dlg_buttons" style="width:800px;height: 40px;text-align: center">
@@ -236,7 +248,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">登录账号：</label>
-                <input name="userName" id="userName"  class="form-control" style="display: inline-block;width: 45%"
+                <input name="userName" id="userName" onchange="checkOnly(this.value)"  class="form-control" style="display: inline-block;width: 45%"
                  placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">

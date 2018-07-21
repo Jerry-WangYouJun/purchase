@@ -67,8 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				toolbar:'#toolbar_user',		
 				fitColumns: true,
 				striped:true,
-				singleSelect: true,
-				onClickCell:onDblClickCell,
+				singleSelect: false,
+				onDblClickCell:onDblClickCell,
 				columns:[[
 					{field:'id', hidden:'true'},
 					{field:'companyId',hidden:'true'},
@@ -88,7 +88,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'subProduct',title:'小类名称',width:20,align:'center'},
 					{field:'format',title:'规格',width:20,align:'center'},
 					{field:'material',title:'材料',width:20,align:'center'},
-					{field:'price',title:'价格(双击修改)',width:20,align:'center',
+					{field:'price',title:'价格设置',width:20,align:'center',
 					editor:{
 						type:'text',
 						options:{
@@ -96,7 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							textField:'price'
 						}
 					}},
-					{field:'markup',title:'加价(双击修改)',width:20,align:'center',
+					{field:'markup',title:'加价设置',width:20,align:'center',
 						editor:{
 							type:'text',
 							options:{
@@ -137,13 +137,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#user_table').datagrid('selectRow', rowIndex)
 			.datagrid('editCell', {index:rowIndex,field:field});
 			$("input.datagrid-editable-input").val(target.price).bind("change",function(evt){
-				target.markup = $("input.datagrid-editable-input").val();
-				if(target.markup  == '' || target.markup  == 0){
-					 alert("不能为空或0 ,请重新填写");
-					 return false;
-				}
 				var reg = new RegExp('^(0|[1-9][0-9]*)$');
 				if(field == 'price'){
+					target.price = $("input.datagrid-editable-input").val();
+					if(target.price  == '' || target.price  == 0){
+						 alert("不能为空或0 ,请重新填写");
+						 return false;
+					}
 					if(!reg.test(target.price)){
 						alert("不是数字格式，请重新输入~");
 						$("input.datagrid-editable-input").val('');
@@ -152,6 +152,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 					updatePrice(target.price , target.productDetailId);
 				}else{
+					target.markup = $("input.datagrid-editable-input").val();
+					if(target.markup  == '' || target.markup  == 0){
+						 alert("不能为空或0 ,请重新填写");
+						 return false;
+					}
 					if(!reg.test(target.markup)){
 						alert("不是数字格式，请重新输入~");
 						$("input.datagrid-editable-input").val('');

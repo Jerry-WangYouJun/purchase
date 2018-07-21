@@ -246,9 +246,9 @@
 										密码管理</a>
 							</li>
 							<c:if test="${roleId eq '1' }">
-								<li>
+								<li class="active-menu">
 					                <a href="#"  class="active" onclick="openTab('产品类别管理','${basePath}/pages/product_manage.jsp')">
-					                  <i class="fa fa-dashboard fa-fw"></i>产品类别管理</a>
+					                      产品类别管理</a>
 					            </li>
 								<li class="active-menu"><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
 											采购日管理</a>

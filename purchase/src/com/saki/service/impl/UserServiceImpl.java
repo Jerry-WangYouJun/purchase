@@ -145,4 +145,10 @@ public class UserServiceImpl implements UserServiceI{
 		userDao.updateHql(" delete from TUser t where t.companyId = " + id );
 		
 	}
+
+	@Override
+	public int searchUserOnly(String userName) {
+		String hql = "select 1 from TUser u  where u.userName =  '" + userName + "'";
+		return userDao.count(hql);
+	}
 }
