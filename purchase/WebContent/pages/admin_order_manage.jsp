@@ -192,8 +192,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									return "";
 								}
 							}
-					},
-					{field:'remark',title:'备注',width:100,align:'center'}
+					}
 				]],
 				
 			});

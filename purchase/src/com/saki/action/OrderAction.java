@@ -381,6 +381,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    			       detail.setPrice(obj.getDouble("price"));
 	    	    		   }
 	    	    		   detail.setBrand(obj.getString("supplierCompanyId"));
+	    	    		   detail.setRemark(obj.getString("remark"));
 	    	    		   orderService.update(detail);
 	    	    	   }
 	     }

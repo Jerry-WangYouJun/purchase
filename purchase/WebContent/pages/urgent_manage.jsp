@@ -164,8 +164,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									return "";
 								}
 							}
-					},
-					{field:'remark',title:'备注',width:100,align:'center'}
+					}
 				]],
 				
 			});
@@ -255,6 +254,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            	//选择的行
 				                                var row = $('#table_add').datagrid('getSelected');  
 				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+				                                var product = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'product'});
+				                                var initialValue =  $(product.target).textbox('getValue');//产品大类原来的值
 				                                 var ed = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'unit'  //根据字段名获取编辑的字段
@@ -264,9 +265,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
-				                                target.combobox('clear'); //清除原来的数据  
+				                                if(initialValue != data.product){
+				                                		target.combobox('clear'); //清除原来的数据  
+				                                		//$(target).textbox('setValue',  val);
+				                                }
 				                                var subtarget = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'sub_product'}).target;  
-				                                subtarget.combobox('clear');
+				                                if(initialValue != data.product){
+					                                subtarget.combobox('clear');
+				                                		//$(target).textbox('setValue',  val);
+				                                }
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductTypeByParentId.action?parentId='+data.id;  
 				                                target.combobox('reload', url);//联动下拉列表重载   */
 				                                
@@ -292,7 +299,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                    });  
 			                                $(idvalue.target).textbox('setValue',  data.id ); 
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'sub_product'}).target;  
-				                                target.combobox('clear'); //清除原来的数据  
+				                                if(value != data.product){
+					                                target.combobox('clear'); //清除原来的数据  
+				                                }
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductDetail.action?productId='+data.id;  
 				                                target.combobox('reload', url);//联动下拉列表重载   
 				                            } , onLoadSuccess:function(){ //数据加载完成执行该代码
