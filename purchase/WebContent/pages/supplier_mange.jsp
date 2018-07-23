@@ -459,7 +459,7 @@
 					'确定进行拆分么?',
 					function(r) {
 						if (r) {
-							$.messager.prompt('','请输入要拆分的总数',function(s){
+							$.messager.prompt('','请输入要拆分的行数',function(s){
 								if(Math.round(s) == s){
 									$.ajax({
 										url : '${pageContext.request.contextPath}/supplier!splitOrder.action',

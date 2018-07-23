@@ -329,7 +329,8 @@
 						<!-- END BEGIN STYLE CUSTOMIZER -->
 						<c:if test="${roleId eq 3}">
 							<h3 class="page-title">
-								&nbsp;&nbsp;每月采购日为<span id ="confirm"></span>请在采购日前全额支付订单，否则订单将延期到下一采购日进行采购 
+								&nbsp;&nbsp;每月采购日为<span id ="confirm"></span>请在采购日前全额支付，否则订单将延期到下一采购日进行采购 <br/>
+								<span style="color:red">&nbsp;&nbsp; 对订单状态进行任何修改时，请确认无误再行操作。如有疑问，请拨打热线电话</span>
 							</h3>
 						</c:if>
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->

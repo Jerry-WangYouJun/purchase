@@ -464,7 +464,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		@Override
 		public List<TProduct> searchFirstProductType() {
 			// TODO Auto-generated method stub
-			String hql = "from   TProduct t  where  t.parentId is  null ";
+			String hql = "from   TProduct t  where  t.parentId is  null or t.parentId = 0 ";
 			List<TProduct> products = produceDao.find(hql);	
 			return products;
 		}

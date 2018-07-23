@@ -136,35 +136,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		var target=rows[rowIndex];///
 			$('#user_table').datagrid('selectRow', rowIndex)
 			.datagrid('editCell', {index:rowIndex,field:field});
-			$("input.datagrid-editable-input").val(target.price).bind("change",function(evt){
-				var reg = new RegExp('^(0|[1-9][0-9]*)$');
+			$("input.datagrid-editable-input").bind("change",function(evt){
+				reg=/^[-\+]?\d+(\.\d+)?$/;
+				var val  = $("input.datagrid-editable-input").val();
+					if(val  == '' || val  == 0){
+						 alert("不能为空或0 ,请重新填写");
+						 return false;
+					}
+					if(!reg.test(val)){
+						alert("不是数字格式，请重新输入~");
+						$("input.datagrid-editable-input").val('');
+						$("input.datagrid-editable-input").focus();
+						return false ;
+					}
 				if(field == 'price'){
-					target.price = $("input.datagrid-editable-input").val();
-					if(target.price  == '' || target.price  == 0){
-						 alert("不能为空或0 ,请重新填写");
-						 return false;
-					}
-					if(!reg.test(target.price)){
-						alert("不是数字格式，请重新输入~");
-						$("input.datagrid-editable-input").val('');
-						$("input.datagrid-editable-input").focus();
-						return false ;
-					}
-					updatePrice(target.price , target.productDetailId);
+					updatePrice(val, target.productDetailId);
 				}else{
-					target.markup = $("input.datagrid-editable-input").val();
-					if(target.markup  == '' || target.markup  == 0){
-						 alert("不能为空或0 ,请重新填写");
-						 return false;
-					}
-					if(!reg.test(target.markup)){
-						alert("不是数字格式，请重新输入~");
-						$("input.datagrid-editable-input").val('');
-						$("input.datagrid-editable-input").focus();
-						return false ;
-					}
-					updatePriceMarkup(target.markup , target.mapid);
+					updatePriceMarkup(val , target.mapid);
 				}
+				$("input.datagrid-editable-input").val(Number(val));
 				$("#user_table").datagrid('endEdit',rowIndex);
 			});
 		}

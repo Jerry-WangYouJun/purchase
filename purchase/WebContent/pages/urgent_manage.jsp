@@ -236,6 +236,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
+	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
 	   						{field:'base', hidden:'true',editor:'textbox' },
@@ -382,6 +383,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
 								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
+								{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
 								{field:'detailId', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
@@ -685,6 +687,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 						}
 	 					});
 	 				}else{
+	 					if(status == '4'){
+	 						 alert("如果没有收到全部货物请不要点击确认，确认后无法对订单做任何操作!!!");
+	 					}
 	 					$.messager.confirm(
 	 		    				'提示',
 	 		    				'确定执行该操作?',

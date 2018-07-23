@@ -135,7 +135,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
- 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">产品类别选择</span>
+ 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">请选择您需要的商品明细</span>
  		<a onclick="select_save()" id="select_save" style="background-color:#e05447;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">保存</a>
  		<a onclick="reset()" id="reset" style="background-color:#007FFF;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px;margin-right:10px">重置</a>
  		
