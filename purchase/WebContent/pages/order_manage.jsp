@@ -60,7 +60,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                <select name="confirmId" id= "confirmId" class="easyui-combobox" 
 		                 editable="false" style="display: inline-block;width: 40%" 
 		                 class="form-control select2 easyui-combobox" >
-			                	 <c:forEach items="${confirm}" var="it">
+			                	 <c:forEach items="${confirm}" var="it" >
 			                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
 			                	 </c:forEach>
 		                </select>
@@ -120,6 +120,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		 $("#confirmId").combobox({
     		       required:true
     		  });
+    		 
+    		 $("#confirmId").combobox("readonly" , true);
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action';
 			$('#table_order').datagrid({
 				url: orderUrl,

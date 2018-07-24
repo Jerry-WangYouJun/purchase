@@ -323,7 +323,6 @@
 									<li class="color-grey" data-style="grey"></li>
 									<li class="color-white color-light" data-style="light"></li>
 								</ul>
-								</label>
 							</div>
 						</div>
 						<!-- END BEGIN STYLE CUSTOMIZER -->

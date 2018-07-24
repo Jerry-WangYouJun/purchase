@@ -1,5 +1,6 @@
 package com.saki.action;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ModelDriven;
-import com.saki.entity.Grid;
 import com.saki.entity.Message;
 import com.saki.model.TConfirm;
 import com.saki.model.TUser;
@@ -129,7 +129,8 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			getSession().setAttribute("roleId", u.getRoleId());
 			getSession().setAttribute("companyId", u.getCompanyId());
 			getSession().setAttribute("loged", true);
-			getSession().setAttribute("warnFlag",t.size());
+			int nextDay = getConfirmDay(confirm);
+			getSession().setAttribute("warnFlag", nextDay);
 			getSession().setAttribute("warnList", JSON.toJSON(t));
 			getSession().setAttribute("confirm", confirm);
 			j.setSuccess(true);
@@ -141,11 +142,26 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		super.writeJson(j);
 	}
 	
+	private int getConfirmDay(List<TConfirm> confirm) {
+		 LocalDateTime currentTime = LocalDateTime.now();
+			int today =  currentTime.getDayOfMonth();
+			int nextDay = 0 ;
+			for(TConfirm con : confirm) {
+				 if(con.getConfirmDate() > today ) {
+					 nextDay = con.getConfirmDate()  ;
+					 break;
+				 }
+			}
+			if(nextDay == 0  && confirm.size() > 0) {
+				nextDay = confirm.get(0).getConfirmDate();
+			}
+			return nextDay;
+	}
 	public void checkConfirm(){	
 		Message j = new Message();
-		List<TConfirm> t = confirmService.getWarningList();
+		List<TConfirm> t = confirmService.list();
 		if(t != null){
-			getSession().setAttribute("warnFlag",t.size());
+			getSession().setAttribute("warnFlag",getConfirmDay(t));
 			getSession().setAttribute("warnList",t);
 			j.setObj(t);
 		}
