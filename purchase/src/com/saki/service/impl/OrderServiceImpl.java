@@ -189,21 +189,23 @@ public class OrderServiceImpl implements OrderServiceI{
 			TCompany company = (TCompany)objs[5];
 			Map<String , Object >  map = new HashMap<String,Object>();
 			map.put("id", orderDetail.getId());
-			map.put("product",parentProduct.getProduct() );
-			//前台没改  所以 这个地方 对应的是type
-			map.put("type",  product.getProduct());
-			map.put("sub_product", detail.getSubProduct());
-			map.put("materail", detail.getMaterial());
 			map.put("acount",  orderDetail.getNum());
-			map.put("unit", parentProduct.getUnit());
 			if(orderDetail.getPrice() != null && orderDetail.getPrice() > 0 ) {
 				map.put("price", orderDetail.getPrice());
 			}
-			map.put("base", product.getBase());
-			map.put("detailId", detail.getId());
-			map.put("productId", product.getId());
-			map.put("brand", company.getBrand());
 			map.put("remark", orderDetail.getRemark());
+			
+			map.put("product",parentProduct.getProduct() );
+			map.put("unit", parentProduct.getUnit());
+			map.put("type",  product.getProduct());
+			map.put("base", product.getBase());
+			map.put("productId", product.getId());
+			//前台没改  所以 这个地方 对应的是type
+			map.put("sub_product", detail.getSubProduct());
+			map.put("materail", detail.getMaterial());
+			map.put("detailId", detail.getId());
+			map.put("supplierCompanyId", company.getId());
+			map.put("brand", company.getBrand());
 			//detailMap.put(orderDetail.getId(), map);
 			mapList.add(map);
 		}

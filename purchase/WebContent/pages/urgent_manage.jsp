@@ -63,13 +63,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
 	    <c:if test="${roleId eq 1 }">
+	    		<a onclick="order_edit('admin')" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
+	    		<a onclick="order_status('2')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认报价</a> 
 	  	    <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>  
 	  	    <a onclick="order_status('5')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认采购</a>  
 	        <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
 	    </c:if>
 	    <c:if test="${roleId eq 3 }">
 	  	    <a onclick="order_add()" class="easyui-linkbutton"  plain="true" iconCls="icon-add" style="margin: 2px">添加订单</a>    
-	        <a onclick="order_edit()" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
+	        <a onclick="order_edit('')" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
 	        <a onclick="order_delete()" class="easyui-linkbutton"  plain="true" iconCls="icon-remove" style="margin: 2px">删除订单</a>
 	        <a onclick="order_status('4')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认收货</a>
 	        <a onclick="invoice_status('2')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已收</a>
@@ -237,6 +239,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
+	   						{field:'supplierCompanyId', hidden:'true' },
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
 	   						{field:'base', hidden:'true',editor:'textbox' },
@@ -278,6 +281,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductTypeByParentId.action?parentId='+data.id;  
 				                                target.combobox('reload', url);//联动下拉列表重载   */
 				                                
+				                                if("${roleId}" == '1'){
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'product'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).combobox('disable');
+				                                }
+				                                
 				                            }  
 				                        }    
 				                    	}
@@ -315,6 +326,47 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });  
 				                                $(bra.target).textbox('setValue',  data[0].base);  
 				                                $(bra.target).combobox('disable');//不可用
+				                                
+				                                //判断为admin时 除了价格都变为不可编辑
+				                                if("${roleId}" == '1'){
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'type'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).combobox('disable');
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'sub_product'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).combobox('disable');
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'brand'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).combobox('disable');
+					                                
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'materail'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).textbox('disable');
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'acount'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).textbox('disable');
+					                                var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'remark'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).textbox('disable');
+				                                }else{
+				                                		var pro = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'price'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(pro.target).textbox('disable');
+				                                }
 				                			}  
 				                        }    
 				                    }
@@ -348,8 +400,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    required:true,    
 				                                    multiple:false, //多选
 				                                    editable:false  //是否可编辑
-				                                    });  
-				                            }  
+				                                 });  
+				                            } 
 				                        },
 				                    	}},
 								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'},
@@ -377,7 +429,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'brand'  
 			                                    });  
 			                                $(bra.target).textbox('setValue',  data[0].brand); 
-			                			} 
+			                                if("${roleId}" == '1'){
+				                                var pro = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'brand'  //根据字段名获取编辑的字段
+			                                    });
+				                                $(pro.target).combobox('disable');
+			                                }
+			                				} 
 			                        }   
 			                    }},
 								{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
@@ -435,16 +494,26 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	   });
 	    		
 	 		function endEditing(){
-	 			if('${roleId}' == '1'){
-	 				return false;
-	 			}
 	 			if($("#orderNo").val() != ''){
 	 				var order = $("#table_order").datagrid('getSelected');
 	 				if(order != null &&  order.status != '1'  ){
 	 					return false;
 	 				} 
 	 			}
-	 			if (editIndex == undefined){return true}
+	 			if (editIndex == undefined){
+	 				return true
+	 			}
+	 			checkDetail();
+	 			if ($('#table_add').datagrid('validateRow', editIndex)){
+	 				$('#table_add').datagrid('endEdit', editIndex);
+	 				editIndex = undefined;
+	 				return true;
+	 			} else {
+	 				return false;
+	 			}
+	 		}
+	 		
+	 		function checkDetail(){
 	 			var index = $('#table_add').datagrid('getEditingRowIndexs');
 	 			if(index.length > 0){
 	 				  var product = $("#table_add").datagrid('getEditor', {  
@@ -480,13 +549,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 					return false;		 		
 	 		 	 	 }
 	 			}
-	 			if ($('#table_add').datagrid('validateRow', editIndex)){
-	 				$('#table_add').datagrid('endEdit', editIndex);
-	 				editIndex = undefined;
-	 				return true;
-	 			} else {
-	 				return false;
-	 			}
+	 			 	 return true;
 	 		}
 	 		function onClickRow(index){
 	 			if (editIndex != index){
@@ -764,7 +827,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		}
 	    	
 	      	
-	      	function order_edit(){
+	      	function order_edit(type){
 	 			var row = $('#table_order').datagrid('getSelected');
 	 			if(row.status != '1' && '${roleId}' != '1'  ){
 	 			    alert("订单状态有误，不能修改！");
@@ -782,10 +845,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	     			$('#order_dlg').dialog('setTitle','编辑订单');
 	 			$("#startDate").val(row.startDate);
 	 			editIndex = undefined;
-	 			 $('#table_add').datagrid({
-	 				 toolbar: toolbarAdd,
-	 				 columns:columnEdit
-	 			 })
+	 			if(type == 'admin'){
+	 				$('#table_add').datagrid({
+		 				toolbar: toolbarAdmin,
+		 				columns:columnEdit
+		 			 })
+	 			}else{
+		 			 $('#table_add').datagrid({
+		 				 toolbar: toolbarAdd,
+		 				 columns:columnEdit
+		 			 })
+	 			}
 	 			$('#table_add').datagrid('reload', {
 	 				 id: $("#id").val()
 	 			});
