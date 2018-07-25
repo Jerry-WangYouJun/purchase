@@ -375,7 +375,7 @@ public class OrderServiceImpl implements OrderServiceI{
 	
 	@Override
 	public List<TProduct> searchFirstProduct() {
-		String hql ="from  TProduct product where parent_id is null ";
+		String hql ="from  TProduct product where parent_id is null or parent_id = 0 ";
 		return orderDao.find(hql);
 	}
 	@Override
@@ -384,7 +384,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		List<Map<String , Object>>  mapListTemp = new ArrayList<Map<String , Object>>();
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		String hql = "from  TUserProduct  m  , TCompany c  where m.companyId = c.id "
-				+ " and m.roleId = 2  and m.productDetailId = " +  detailId  ;
+				+ " and c.roleId = 2  and m.productDetailId = " +  detailId  ;
 		List<Object[]> list = orderDao.find(hql);
 		for (int i = 0; i < list.size(); i++) {
 			Object[] objs = list.get(i);
