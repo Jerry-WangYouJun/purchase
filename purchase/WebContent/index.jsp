@@ -69,15 +69,20 @@
    			success : function(obj){
    					var myDate = new Date();
    					var curDay= myDate.getDate();
-					
-   				if(obj.obj.length > 0  && "${roleId}"  == "3"){
+   					var now = new Date();
+   			        var year = now.getFullYear();       //年
+   			        var month = now.getMonth() + 1;     //月
+   				if(obj.success && "${roleId}"  == "3"){
    					var nowDate = "下一个采购日" + CurentTime();
-   						for(var i  in obj.obj){ 
+   							if(curDay > obj.obj.confirmDate){
+   								month += 1 ;
+   							}
+   							if(month < 10 ){
+   								 month = "0" + month ;
+   							}
    							$('#dashboard-report-range span').html("当前日期："+ CurentTime() +formatDay(curDay) 
-   									+"<br/>下一个采购日：" + CurentTime()  + formatDay(obj.obj[i].confirmDate) ); 
+   									+"<br/>下一个采购日：" + year+"-" + month + "-"  + formatDay(obj.obj.confirmDate) ); 
    							//alert(nowDate + formatDay(obj.obj[i].confirmDate) + "请在采购日之前结清待支付订单,否则订单将进入下一个采购周期！" );
-   							break;
-   						}
    						$('#dashboard-report-range').css("backgroundColor" ,"#e02222");
    					}else{
    						$('#dashboard-report-range span').html("当前日期:"+ CurentTime() + formatDay(curDay));
@@ -102,7 +107,6 @@
    			dataType : 'json',
    			success : function(obj){
    				for(var o in obj){
-   					 console.info(obj[o]);
    					if(obj[o].msg == 0 ){
    						$("#"+obj[o].key).removeClass("badge");
    						continue;
