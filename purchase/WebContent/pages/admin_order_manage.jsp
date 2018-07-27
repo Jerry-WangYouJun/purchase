@@ -114,6 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'confirmId', hidden:'true',editor:'textbox' },
 					{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
+					{field:'amount',title:'订单总价',width:100,align:'center'},
 					{field:'conirmDate',title:'采购批次',width:100,align:'center',
 						formatter: function(value,row,index){
 							if(row.confirmDate){
@@ -250,6 +251,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
+	   						{field:'amount',title:'条目总价',width:100,align:'center'},
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
