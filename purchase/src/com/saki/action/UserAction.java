@@ -1,6 +1,9 @@
 package com.saki.action;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.Period;
+import java.time.temporal.ChronoUnit;
 import java.util.Iterator;
 import java.util.List;
 
@@ -28,6 +31,7 @@ import com.saki.utils.MD5Util;
 public class UserAction extends BaseAction implements ModelDriven<TUser>{
 
 	TUser user = new TUser();
+	
 	
 	
 	@Override
@@ -129,7 +133,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			getSession().setAttribute("roleId", u.getRoleId());
 			getSession().setAttribute("companyId", u.getCompanyId());
 			getSession().setAttribute("loged", true);
-			int nextDay = getConfirmDay(confirm);
+			TConfirm nextDay = getConfirmDay(confirm);
 			getSession().setAttribute("warnFlag", nextDay);
 			getSession().setAttribute("warnList", JSON.toJSON(t));
 			getSession().setAttribute("confirm", confirm);
@@ -142,29 +146,37 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		super.writeJson(j);
 	}
 	
-	private int getConfirmDay(List<TConfirm> confirm) {
+	private TConfirm getConfirmDay(List<TConfirm> confirm) {
 		 LocalDateTime currentTime = LocalDateTime.now();
 			int today =  currentTime.getDayOfMonth();
-			int nextDay = 0 ;
+			TConfirm nextDay =  null ;
 			for(TConfirm con : confirm) {
 				 if(con.getConfirmDate() > today ) {
-					 nextDay = con.getConfirmDate()  ;
+					 nextDay = con  ;
 					 break;
 				 }
 			}
-			if(nextDay == 0  && confirm.size() > 0) {
-				nextDay = confirm.get(0).getConfirmDate();
+			if(nextDay == null  && confirm.size() > 0) {
+				nextDay = confirm.get(0);
 			}
 			return nextDay;
 	}
 	public void checkConfirm(){	
 		Message j = new Message();
 		List<TConfirm> t = confirmService.list();
-		if(t != null){
-			getSession().setAttribute("warnFlag",getConfirmDay(t));
-			getSession().setAttribute("warnList",t);
-			j.setObj(t);
+		TConfirm nextDay = getConfirmDay(t) ;
+		LocalDate now = LocalDate.now();
+		int today =  now.getDayOfMonth();
+		int month = now.getMonthValue();
+		if(today > nextDay.getConfirmDate()){
+				month += 1 ;
 		}
+		LocalDate plusTwoDay = LocalDate.of(now.getYear(), month, nextDay.getConfirmDate());
+	    Period between = Period.between(now, plusTwoDay);
+	    if(between.getDays() < 3 ) {
+		    	j.setSuccess(true);
+		    	j.setObj(nextDay);
+	    }
 		super.writeJson(j);
 	}
 	

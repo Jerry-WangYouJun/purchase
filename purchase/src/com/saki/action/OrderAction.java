@@ -290,6 +290,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 					 if(StringUtils.isNotEmpty(insert) ) {
 						 insertDetail(insert);
 					 }
+					 
 					 j.setSuccess(true);
 				     j.setMsg("添加成功");
 				 }else{
@@ -319,10 +320,6 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				     j.setMsg("产品类型或产品的数量为必填，请仔细检查！");
 				 }else{
 					 order = (TOrder)orderService.getByKey(orderId);
-					 if(StringUtils.isNotBlank(confirmId)) {
-						 order.setConfirmId(Integer.valueOf(confirmId));
-						 orderService.update(order);
-					 }
 					 if(StringUtils.isNotEmpty(insert) ) {
 						 insertDetail(insert);
 					 }
@@ -332,10 +329,14 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 					 if(StringUtils.isNotEmpty(delete)) {
 						 deleteDetail(delete);
 					 }
+					 if(StringUtils.isNotBlank(confirmId)) {
+						 order.setConfirmId(Integer.valueOf(confirmId));
+					 }
 				 }
 				 j.setSuccess(true);
 			     j.setMsg("修改成功");
 			 }
+			 orderService.update(order);
 	     super.writeJson(j);
 	} 
 	private void deleteDetail(String delete) {
@@ -345,13 +346,18 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   JSONObject obj = jsonArr.getJSONObject(i);
 	    	    	   TOrderDetail detail = new TOrderDetail();
 	    	    	   detail = (TOrderDetail)orderService.getByDetailId(obj.getString("id"));
+	    	    	   if(!StringUtils.isEmpty(obj.getString("amount"))){
+	    	    		   detail.setAmount(obj.getDouble("amount"));
+	    	    	   }
+	    	    	   order.setAmount(SystemUtil.sub(order.getAmount(), detail.getAmount()));
 	    	    	   orderService.delete(detail);
 	     }
-		
 	}
+	
 	public void insertDetail(String insert)  {
 		JSONArray jsonArr =  JSON.parseArray(insert);
 	    // jsonArr.getJSONObject(0);
+		Double sum = order.getAmount();
 	     for(int i = 0 ; i < jsonArr.size() ; i ++) {
 	    	    	   JSONObject obj = jsonArr.getJSONObject(i);
 	    	    	   TOrderDetail detail = new TOrderDetail();
@@ -362,34 +368,47 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    		   detail.setPrice(obj.getDouble("price"));
 	    	    	   }
+	    	    	   if(!StringUtils.isEmpty(obj.getString("amount"))){
+	    	    		   detail.setAmount(obj.getDouble("amount"));
+	    	    	   }
+	    	    	   sum = SystemUtil.add(sum , detail.getAmount());
 	    	    	   detail.setRemark(obj.getString("remark"));
 	    	    	   orderService.add(detail);
 	     }
+	     order.setAmount(sum);
 	}
 	
 	public void updateDetail(String update) {
 		JSONArray jsonArr =  JSON.parseArray(update);
+		Double sum = order.getAmount();
 	     //jsonArr.getJSONObject(0);
 	     for(int i = 0 ; i < jsonArr.size() ; i ++) {
 	    	    	   JSONObject obj = jsonArr.getJSONObject(i);
 	    	    	   TOrderDetail detail = new TOrderDetail();
 	    	    	   detail = (TOrderDetail)orderService.getByDetailId(obj.getString("id"));
 	    	    	   if(detail != null) {
+	    	    		   sum = SystemUtil.sub(sum , detail.getAmount());
 	    	    		   detail.setNum(StringUtils.isEmpty(obj.getString("acount")) ? 0 : obj.getIntValue("acount"));
 	    	    		   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
 	    	    		   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    			       detail.setPrice(obj.getDouble("price"));
 	    	    		   }
+	    	    		   if(!StringUtils.isEmpty(obj.getString("amount"))){
+		    	    		   detail.setAmount(obj.getDouble("amount"));
+		    	    	   }
+	    	    		   sum = SystemUtil.add(sum , detail.getAmount());
 	    	    		   detail.setBrand(obj.getString("supplierCompanyId"));
 	    	    		   detail.setRemark(obj.getString("remark"));
 	    	    		   orderService.update(detail);
 	    	    	   }
 	     }
+	     order.setAmount(sum);
 	}
 	public void deleteOrder(){
 		Message j = new Message();
 		try {
 			String id = getParameter("id");
+			orderService.deleteOrderDetailByOrderId(id);
 			orderService.deleteByKey(id);
 			j.setSuccess(true);
 			j.setMsg("删除成功");

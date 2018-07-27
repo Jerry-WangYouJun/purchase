@@ -78,5 +78,7 @@ public interface OrderServiceI extends BaseServiceI{
 	List<TProduct> searchFirstProduct();
 
 	List<Map<String, Object>> searchBrandByProductDetailId(String detailId);
+
+	public void deleteOrderDetailByOrderId(String id);
 	
 }

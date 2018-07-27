@@ -56,7 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		        </div>
 		        <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">选择采购日：</label>
-		               <!-- login时获取list存入session中 -->
+		               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
 		                <select name="confirmId" id= "confirmId" class="easyui-combobox" 
 		                 editable="false" style="display: inline-block;width: 40%" 
 		                 class="form-control select2 easyui-combobox" >
@@ -143,6 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'confirmId', hidden:'true',editor:'textbox' },
 					//{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
+					{field:'amount',title:'订单总价',width:100,align:'center'},
 					{field:'conirmDate',title:'采购批次',width:120,align:'center',
 						formatter: function(value,row,index){
 							if(row.confirmDate ){
@@ -284,6 +285,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
+	   						{field:'amount',title:'条目总价',width:100,align:'center'},
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
@@ -312,6 +314,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });  
 				                                $(ed.target).textbox('setValue',  data.unit);   //赋值
 				                                $(ed.target).combobox('disable');//不可用
+				                                //条目总价不可编辑
+				                                 var amount = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'amount'  //根据字段名获取编辑的字段
+				                                    });  
+				                                $(amount.target).textbox('readonly');   //赋值
 				                                
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
@@ -442,13 +450,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                			} 
 			                        }   
 			                    }},
-								{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
+								{field:'acount',title:'数量',width:100,align:'center',editor:{
+									type:'textbox',
+									options:{
+										valueField:'acount' ,   
+			                            textField:'acount',
+			                            onChange:function(newValue,oldValue){
+			                            		 if(newValue == '' || newValue == '0' || newValue==undefined){
+			                            			  return ;
+			                            		 }
+			                            		 changeAmount();
+			                            }
+										
+									}
+								}},
 								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
-								{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
+								{field:'price',title:'单价',width:100,align:'center',editor:{
+									type:'textbox',
+									options:{
+										valueField:'price' ,   
+			                            textField:'price',
+			                            onChange:function(newValue,oldValue){
+			                            		 if(newValue == '' || newValue == '0' || newValue==undefined){
+			                            			  return ;
+			                            		 }
+			                            		 changeAmount();
+			                            }
+										
+									}
+								}},
 								{field:'detailId', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
+								{field:'amount',title:'条目总价',width:100,align:'center',editor:'textbox'},
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];

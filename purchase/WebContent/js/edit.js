@@ -174,11 +174,31 @@
  	    	});
   	}
     
+    function changeAmount(){
+    		var row = $('#table_add').datagrid('getSelected');  
+        var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+         var bra = $("#table_add").datagrid('getEditor', {  
+                index : rowIndex,  
+                field : 'amount'  
+            }); 
+         var price = $("#table_add").datagrid('getEditor', {  
+             index : rowIndex,  
+             field : 'price'  
+         });
+         
+         var acount = $("#table_add").datagrid('getEditor', {  
+             index : rowIndex,  
+             field : 'acount'  
+         });
+        $(bra.target).textbox('setValue', price.target.textbox('getValue') * acount.target.textbox('getValue'));
+    }
+    
+    //获取页面URL
     function getProjectUrl(){
-    	var hostUrl = "";
-    	var url = window.document.location.href;
-    	var pathname = window.document.location.pathname;
-    	pathname = pathname.substring(0,pathname.indexOf("/",1)+1);
-    	hostUrl = url.substring(0,url.indexOf(pathname)) + pathname;
-    	return hostUrl;
+	    	var hostUrl = "";
+	    	var url = window.document.location.href;
+	    	var pathname = window.document.location.pathname;
+	    	pathname = pathname.substring(0,pathname.indexOf("/",1)+1);
+	    	hostUrl = url.substring(0,url.indexOf(pathname)) + pathname;
+	    	return hostUrl;
     }

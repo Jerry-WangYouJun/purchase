@@ -193,6 +193,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			if(orderDetail.getPrice() != null && orderDetail.getPrice() > 0 ) {
 				map.put("price", orderDetail.getPrice());
 			}
+			map.put("amount", orderDetail.getAmount());
 			map.put("remark", orderDetail.getRemark());
 			
 			map.put("product",parentProduct.getProduct() );
@@ -378,6 +379,13 @@ public class OrderServiceImpl implements OrderServiceI{
 		String hql ="from  TProduct product where parent_id is null or parent_id = 0 ";
 		return orderDao.find(hql);
 	}
+	
+	@Override
+	public void deleteOrderDetailByOrderId(String id) {
+		String hql =" delete  TOrderDetail d where d.orderId =  " + id;
+		orderDao.updateHql(hql);
+	}
+	
 	@Override
 	public List<Map<String, Object>> searchBrandByProductDetailId(
 			String detailId) {
@@ -436,4 +444,5 @@ public class OrderServiceImpl implements OrderServiceI{
 		
 		return null;
 	}
+	
 }

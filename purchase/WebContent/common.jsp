@@ -249,7 +249,7 @@
 				 $("#startDate").textbox("setValue" , "");   
                 $("#orderNo").val("");   
 				 $("#id").val("");  
-				 $('#confirmId').combobox('setValue', "${warnFlag}");
+				 $('#confirmId').combobox('setValue', "${warnFlag.id}");
            }
 		});
 		$('#order_dlg').dialog('open');	

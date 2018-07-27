@@ -66,7 +66,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    		<a onclick="order_edit('admin')" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
 	    		<a onclick="order_status('2')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认报价</a> 
 	  	    <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>  
-	  	    <a onclick="order_status('5')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认采购</a>  
 	        <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
 	    </c:if>
 	    <c:if test="${roleId eq 3 }">
@@ -710,10 +709,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	     	 */
 	         function order_status(status){
 	 			var row = $('#table_order').datagrid('getSelected');
-	 			if(status == '3' && row.status != '1'){
+	 			if(status == '3' && row.status != '2'){
 	 				  alert("订单状态有误，不能确认付款！");
 	 				  return false ;
-	 			}else if(status == '4' && row.status != '5'){
+	 			}else if(status == '4' && row.status != '3'){
 	 				 alert("订单状态有误，不能修改为收货状态");
 	 				 return false ;
 	 			}

@@ -33,7 +33,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 <body>
 	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
 		<c:if test="${roleId eq  '3' }">
-	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">请在下面选择您要采购的商品明细</span>
+	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">请在下面选择您要采购的商品明细<br/>点击产品名称，可查看下一级</span>
 		</c:if>
 		<c:if test="${roleId eq  '2' }">
 	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">产品类别选择</span>
