@@ -19,6 +19,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
    <script src="${basePath}/js/edit.js"></script>
+   <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -63,10 +64,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                </select>
 		        </div>
 		    	</form>   
+		    	<div>
+				<table  id="table_print"  class="table" style="display: none">
+			    		 <tr>
+			    		 	 <td id="companyNamePrt">公司：<span></span></td>
+			    		 	 <td id="orderNoPrt">订单编号：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="amountPrt">订单总价：<span></span></td>
+			    		 	 <td id="confirmIdPrt">采购批次：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="statusPrt">订单状态：<span></span></td>
+			    		 	 <td id="invoicePrt">发票状态：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="startDatePrt">下单时间：<span></span></td>
+			    		 	 <td id="pillDatePrt">付款时间：<span></span></td>
+			    		 </tr>
+			    	</table>
+		    	</div>
 			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
+			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -90,7 +112,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			}
     		});  */
     	})
-
+	 function print(){
+    		var row = $('#table_order').datagrid('getSelected');
+    		$("#order_form").hide();
+    		$("#table_print").show();
+    		$("#companyNamePrt>span").append(row.companyName);
+    		$("#orderNoPrt>span").append(row.orderNo);
+    		$("#amountPrt>span").append(row.amount);
+    		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
+    		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
+    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
+    		$("#startDatePrt>span").append(row.startDate);
+    		$("#pillDatePrt>span").append(row.pillDate);
+		 $("#order_dlg").jqprint({
+			 debug: false,
+			 importCSS: true,
+			 printContainer: true,
+			 operaSupport: false
+		 });
+    		$("#order_form").show();
+    		$("#table_print").hide();
+    		$("#table_print  span").text('');
+		// company_close();
+	 }
     
     	$(function(){
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
@@ -98,7 +142,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				url: orderUrl,
 				pagination: true,
 				fitColumns: true,
-				singleSelect: true,
+				singleSelect: false,
 				striped:true,
 				toolbar: '#toolbar_company',
 				rowStyler: function(index,row){
@@ -109,7 +153,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 				},
 				columns:[[
-					{field:'id', hidden:'true',editor:'textbox' },
+					
+					{field:'id', checkbox:'true',editor:'textbox' },
 					{field:'companyId', hidden:'true',editor:'textbox' },
 					{field:'confirmId', hidden:'true',editor:'textbox' },
 					{field:'companyName',title:'公司',width:100,align:'center'},
@@ -156,32 +201,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					{field:'status',title:'订单状态',width:100,align:'center',
 						formatter : function(value, row, index) {
-							if (value == '1') {
-								return "新订单";
-							} else if (value == '2') {
-								return "已报价";
-							} else if(value =='3' ){
-								if(row.percent != undefined){
-									return  "已付款" + row.percent + "%";
-								}
-								 return "已付款";
-							} else if(value == "4"){
-								return "已收货";
-							} else if(value == "5"){
-								return "已提交采购";
-							}
-	
-						}
+							return getDicValue("status",value , row);
+					   }
 					},{field:'invoice',title:'发票状态',width:100,align:'center',
 						formatter : function(value, row, index) {
-							if (value == '1') {
-								return "发票已开";
-							}  else if(value == "2"){
-								return "发票已收";
-							}else {
-								return "发票未开";
-							}
-	
+							return  getDicValue("invoice",value , row);
 						}
 					},{field:'invoice_date',title:'开票/接收时间',width:120,align:'center',
 							formatter : function(value, row, index) {
@@ -234,13 +258,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	
     	var editIndex = undefined;
 		   
-		   var toolbarAdmin = [{
-					text:'重置',iconCls: 'icon-undo',
-					handler: function(){reject();}
-				},'-',{
-					text:'提交',iconCls: 'icon-ok',
-					handler: function(){submitData();}
-				}];
+		   var toolbarAdmin = [];
 		   
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
