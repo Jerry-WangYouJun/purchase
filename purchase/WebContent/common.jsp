@@ -99,37 +99,47 @@
 	 * @returns
 	 */
 	function invoice_status(invoice){
-		var row = $('#table_order').datagrid('getSelected');
-		if(invoice == '1' && (row.status == '2' || row.status == '1')){
-			  alert("订单未付款，不能开具发票，请核对！");
-			  return false ;
-		}else if(invoice == '2' && row.invoice != '1'){
-			 alert("发票未开，不能执行该操作！");
-			 return false ;
-		}
-    		if(row){
-    			$.messager.confirm(
-    				'提示',
-    				'确定执行该操作?',
-    				function(r) {
-    					if (r) {
-    						$.ajax({ 
-    			    			url: '${basePath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
-    			    			data : {"id":row.id},
-    			    			dataType : 'json',
-    			    			success : function(obj){
-    			    				if(obj.success){
-    			    				 	alert(obj.msg);
-    			    				 	$('#table_order').datagrid('reload');
-    			    				}else{
-    			    					alert(obj.msg);
-    			    					$('#table_order').datagrid('reload');
-    			    				}
-    			    			}
-    			    		});
-    					}
-    				});  		
-    			}
+		var rows = $('#table_order').datagrid('getChecked');
+			var goonflag =  true ;
+			$.messager.confirm(
+					'提示',
+					'确定执行该操作?',
+					function(r) {
+						if (r) {
+							for(index in rows){
+								row = rows[index];
+								if(invoice ==  row.invoice){
+									continue;
+								}else if(invoice == '1' && (row.status == '2' || row.status == '1')){
+									  alert("订单" + row.orderNo + "未付款，不能开具发票，请核对！");
+									  continue ;
+								}else if(invoice == '2' && row.invoice != '1'){
+									 alert("订单" + row.orderNo + "发票未开，不能执行该操作！");
+									 continue ;
+								}else if(invoice == '1' && row.invoice == '2'){
+									// alert("订单" + row.orderNo + "发票已收，不能执行该操作！");
+									 continue ;
+								} 
+								
+						    		if(row){
+										$.ajax({ 
+								    			url: '${basePath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
+								    			data : {"id":row.id},
+								    			dataType : 'json',
+								    			success : function(obj){
+					   			    				if(obj.success){
+					   			    				 	alert(obj.msg);
+					   			    				}else{
+					   			    					alert("订单" + row.orderNo + "操作失败：" + obj.msg);
+					   			    				}
+					   			    			}
+					   			    		});
+						    		}
+							 }
+					   		$('#table_order').datagrid('reload');
+						}
+			});
+			
     	}
 	
 	/**
@@ -302,6 +312,34 @@
 			});
 		}
 	}
+ 	
+ 	function getDicValue(name , value , row){
+ 		 if( name == 'status'){
+ 			if (value == '1') {
+				return "新订单";
+			} else if (value == '2') {
+				return "已报价";
+			} else if(value =='3' ){
+				if(row.percent != undefined){
+					return  "已付款" + row.percent + "%";
+				}
+				 return "已付款";
+			} else if(value == "4"){
+				return "已收货";
+			} else if(value == "5"){
+				return "已提交采购";
+			}
+ 		 }else if(name == 'invoice'){
+ 			if (value == '1') {
+				return "发票已开";
+			}  else if(value == "2"){
+				return "发票已收";
+			}else {
+				return "发票未开";
+			}
+
+ 		 }
+ 	}
 	
  	
 </script>

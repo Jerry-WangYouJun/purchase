@@ -96,7 +96,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 				},
 				columns:[[
-					{field:'id', hidden:'true',editor:'textbox' },
+					{field:'id', checkbox:'true',editor:'textbox' },
 					{field:'companyId', hidden:'true',editor:'textbox' },
 					{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},

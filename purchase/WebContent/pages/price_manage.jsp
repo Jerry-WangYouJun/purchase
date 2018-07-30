@@ -70,7 +70,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				singleSelect: false,
 				onDblClickCell:onDblClickCell,
 				columns:[[
-					{field:'id', hidden:'true'},
+					{field:'id', checkbox:'true'},
 					{field:'companyId',hidden:'true'},
 					{field:'mapId',hidden:'true'},
 					{field:'productDetailId',title:'productDetailId',width:20,align:'center', hidden:'true'},
