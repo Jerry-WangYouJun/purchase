@@ -51,7 +51,6 @@
 			 alert("采购日为必填项，不能为空");
 			$("#confirmId").focus();
 			return false ;
-			 
 		}
 		//alert($("#table_add").datagrid('getChanges').length);
 		if($('#table_add').datagrid('getRows').length == 0 ){
@@ -108,7 +107,7 @@
 						if (r) {
 							for(index in rows){
 								row = rows[index];
-								if(invoice ==  row.invoice){
+								if(invoice ==  row.invoice){//当前状态与要修改的状态相同，不操作
 									continue;
 								}else if(invoice == '1' && (row.status == '2' || row.status == '1')){
 									  alert("订单" + row.orderNo + "未付款，不能开具发票，请核对！");
@@ -128,7 +127,7 @@
 								    			dataType : 'json',
 								    			success : function(obj){
 					   			    				if(obj.success){
-					   			    				 	alert(obj.msg);
+					   			    				 	//alert(obj.msg);
 					   			    				}else{
 					   			    					alert("订单" + row.orderNo + "操作失败：" + obj.msg);
 					   			    				}

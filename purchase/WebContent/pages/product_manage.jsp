@@ -36,7 +36,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 <script type="text/javascript" src="<%=path%>/vendor/zTree/js/jquery.ztree.exhide.js"></script>	
 	 
 	 <script src="<%=path%>/vendor/layer/layer.js"></script>
-	 
+	 <script src="<%=path%>/js/jquery.validate.min.js"></script>
+<script src="<%=path%>/js/jquery.metadata.js"></script>
+<script src="<%=path%>/js/messages_zh.js"></script>
+<style type="text/css">
+	.error{
+	 color:red;
+	}
+
+</style>
      <script type="text/javascript">
 				
 		var setting = {
@@ -116,7 +124,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			code.append("<li>"+str+"</li>");
 		}		
 
-		$(document).ready(function(){			
+		$(document).ready(function(){
+			
 		  $.ajax({  
 	            async : false,//是否异步  
 	            cache : false,//是否使用缓存  
@@ -134,33 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$.fn.zTree.init($("#tree"), setting,treeNodes);	
 			
 			//保存（类型）
-			$("#productSave").click(function(){
-				var id =$("#productId").val();
-				var productName = $("#productName").val();
-				var productUnit = $("#productUnit").val();
-				var productBase = $("#productBase").val();
-				var productRemark = $("#productRemark").val();
-				var parentId = $("#parentId").val();
-				$.post("<%=path%>/productAction!saveProduct.action",
-						{
-							id:id,
-							parentId:parentId,
-							product:productName,
-							unit:productUnit,
-							base:productBase,
-							remark:productRemark
-						},
-						function(data){
-							var obj = eval('(' + data + ')');
-							alert(obj.success);
-							if(obj.success){
-								layer.alert("保存成功");
-								window.location.reload();
-							}else{
-								layer.alert(obj.msg);
-							}
-						})
-			})
+			
 			//保存 （详情）
 			$("#detailSave").click(function(){
 				//保存detail 
@@ -235,10 +218,54 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  content: '<%=path%>/pages/product_add.jsp' //iframe的url
 					}); 
 			})
-			
 		});
-				
-	
+		
+		function productSave(){
+			var id =$("#productId").val();
+			var productName = $("#productName").val();
+			var productUnit = $("#productUnit").val();
+			var productBase = $("#productBase").val();
+			var productRemark = $("#productRemark").val();
+			var parentId = $("#parentId").val();
+			if($("#form1").validate().form()){
+				var reg=/^[-\+]?\d+(\.\d+)?$/;
+					if(productBase  == '' || productBase  == 0){
+						 alert("基础采购量不能为空或0 ,请重新填写");
+						 return false;
+					}
+				if(!reg.test(productBase)){
+					alert("基础采购量数字格式，请重新输入~");
+					$("#productBase").val('');
+					$("#productBase").focus();
+					return false ;
+				}
+				$.post("<%=path%>/productAction!saveProduct.action",{
+							id:id,
+							parentId:parentId,
+							product:productName,
+							unit:productUnit,
+							base:productBase,
+							remark:productRemark
+					},
+						function(data){
+							var obj = eval('(' + data + ')');
+							if(obj.success){
+								layer.alert("保存成功");
+								window.location.reload();
+							}else{
+								layer.alert(obj.msg);
+							}
+						})
+			}
+		};
+	$(function(){
+		$("#form1").validate({
+			errorPlacement: function(error, element) {
+				$( element )
+					.parent().next('span').append( error );
+			}
+		});
+	})
     </script>
   
   </head>
@@ -260,23 +287,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div class="col-md-6"  id="productType">
  		<h4>编辑</h4>
  		
- 		<form class="bs-example bs-example-form" data-example-id="simple-input-groups">
+ 		<form id="form1" class="bs-example bs-example-form" data-example-id="simple-input-groups">
  			<input type="hidden" id="productId">
  			<input type="hidden" id="parentId">
+ 			
 	   		<div class="input-group" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon1">名称</span>
-			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" id="productName">
+			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" id="productName" required>
 			</div>
+			<span class="error"></span>
 		
 			<div class="input-group" id="divUnit" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon2">单位</span>
-			  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" id="productUnit">
+			  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" id="productUnit" required>
 			</div>
+			<span class="error"></span>
 			
 			<div class="input-group" id="divBase" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon3">基础采购量</span>
-			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" id="productBase">
+			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" id="productBase" required>
 			</div>
+			 <span class="error">*基础采购量只填写相应数量即可</span>
 			
 			<div class="input-group" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon4">备注</span>
@@ -284,7 +315,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			
 			<div class="input-group" style="margin-top:10px">
-				<button type="button" class="btn btn-success" style="margin-left:100px" id="productSave">保存</button>
+				<button type="button" class="btn btn-success" style="margin-left:100px" id="productSave()" onclick="productSave()">保存</button>
 			
 				<button type="button" class="btn btn-danger" style="margin-left:100px" id="productDelete">删除</button>
 			</div>
@@ -317,7 +348,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<br>
 			<div class="input-group">
-				<button type="button" class="btn btn-success" style="margin-left:100px" id="detailSave">保存</button>
+				<button type="button" class="btn btn-success" style="margin-left:100px" id="detailSave" >保存</button>
 				
 				<button type="button" class="btn btn-danger" style="margin-left:100px" id="detailDelete">删除</button>
 				

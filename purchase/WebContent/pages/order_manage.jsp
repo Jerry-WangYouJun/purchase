@@ -127,7 +127,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				url: orderUrl,
 				pagination: true,
 				fitColumns: true,
-				singleSelect: true,
+				singleSelect: false,
 				striped:true,
 				toolbar: '#toolbar_company',
 				rowStyler: function(index,row){
@@ -185,32 +185,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						
 					{field:'status',title:'订单状态',width:100,align:'center',
 						formatter : function(value, row, index) {
-							if (value == '1') {
-								return "新订单";
-							} else if (value == '2') {
-								return "已报价";
-							} else if(value =='3' ){
-								if(row.percent != undefined){
-									return  "已付款" + row.percent + "%";
-								}
-								 return "已付款";
-							} else if(value == "4"){
-								return "已收货";
-							} else if(value == "5"){
-								return "已提交采购";
-							}
-	
+							return getDicValue("status",value , row);
 						}
 					},{field:'invoice',title:'发票状态',width:100,align:'center',
 						formatter : function(value, row, index) {
-							if (value == '1') {
-								return "发票已开";
-							}  else if(value == "2"){
-								return "发票已收";
-							}else {
-								return "发票未开";
-							}
-	
+							return  getDicValue("invoice",value , row);
 						}
 					},{field:'invoice_date',title:'开票/接收时间',width:120,align:'center',
 							formatter : function(value, row, index) {
