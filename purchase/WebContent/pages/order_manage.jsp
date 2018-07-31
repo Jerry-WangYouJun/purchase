@@ -143,7 +143,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'confirmId', hidden:'true',editor:'textbox' },
 					//{field:'companyName',title:'公司',width:100,align:'center'},
 					{field:'orderNo',title:'订单编号',width:100,align:'center'},
-					{field:'amount',title:'订单总价',width:100,align:'center'},
+					{field:'amount',title:'订单总金额',width:100,align:'center'},
 					{field:'conirmDate',title:'采购批次',width:120,align:'center',
 						formatter: function(value,row,index){
 							if(row.confirmDate ){
@@ -258,13 +258,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
-	   						{field:'sub_product',title:'产品规格',width:100,align:'center'},
+	   						{field:'sub_product',title:'产品名称',width:100,align:'center'},
+	   						{field:'format',title:'产品规格',width:100,align:'center'},
 	   						{field:'materail',title:'材质/标准',width:100,align:'center'},
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
-	   						{field:'amount',title:'条目总价',width:100,align:'center'},
+	   						{field:'amount',title:'总价',width:100,align:'center'},
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
@@ -356,7 +357,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品规格',width:100,align:'center',
+								{field:'sub_product',title:'产品名称',width:100,align:'center',
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    
@@ -372,6 +373,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });  
 				                                $(ed.target).textbox('setValue',  data.material); 
 				                                $(ed.target).combobox('disable');
+				                                var fmt = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'format'  
+			                                    });  
+				                                $(fmt.target).textbox('setValue',  data.format); 
+				                                $(fmt.target).combobox('disable');
 				                                var idvalue = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
@@ -389,6 +396,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            }  
 				                        },
 				                    	}},
+				                 {field:'format',title:'产品规格',width:100,align:'center',editor:'textbox'},
 								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'},
 								{field:'brand',title:'品牌',width:100,align:'center',editor:{    
 			                        type : 'combobox',    
@@ -462,7 +470,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'detailId', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
-								{field:'amount',title:'条目总价',width:100,align:'center',editor:'textbox'},
+								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];

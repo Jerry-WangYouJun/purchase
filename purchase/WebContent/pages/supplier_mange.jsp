@@ -277,7 +277,7 @@
 							columns : [ [
 									{field : 'product',title : '产品大类',width : 100,align : 'center'},
 									{field : 'type',title : '产品类型',width : 100,align : 'center'},
-									{field : 'sub_product',title : '产品规格',width : 100,align : 'center'},
+									{field : 'sub_product',title : '产品名称',width : 100,align : 'center'},
 									{field : 'materail',title : '材质/标准',width : 100,align : 'center'},
 									{field : 'acount',title : '数量',width : 100,align : 'center',editor : 'textbox'},
 									{field : 'unit',title : '单位',width : 100,align : 'center'},
@@ -334,7 +334,7 @@
 							columns : [ [
 									{field : 'product',title : '产品大类',width : 100,align : 'center'},
 									{field : 'type',title : '产品类型',width : 100,align : 'center'},
-									{field : 'sub_product',title : '产品规格',width : 100,align : 'center'},
+									{field : 'sub_product',title : '产品名称',width : 100,align : 'center'},
 									{field : 'materail',title : '材质/标准',width : 100,align : 'center'},
 									{field : 'acount',title : '数量',width : 100,align : 'center'},
 									{field : 'unit',title : '单位',width : 100,align : 'center'},

@@ -109,6 +109,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							}
 							
 						}},
+					{field:'amount',title:'订单总金额',width:100,align:'center'},
 					{field:'pillDate',title:'付款时间',width:120,align:'center',
 						formatter: function(value,row,index){
 							if(value){
@@ -211,11 +212,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
-	   						{field:'sub_product',title:'产品规格',width:100,align:'center'},
+	   						{field:'sub_product',title:'产品名称',width:100,align:'center'},
+	   					 	{field:'format',title:'产品规格',width:100,align:'center'},
 	   						{field:'materail',title:'材质/标准',width:100,align:'center'},
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
-	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
+	   						{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
+	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'supplierCompanyId', hidden:'true' },
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
@@ -244,7 +247,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });  
 				                                $(ed.target).textbox('setValue',  data.unit);   //赋值
 				                                $(ed.target).combobox('disable');//不可用
-				                                
+				                              //条目总价不可编辑
+				                                 var amount = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'amount'  //根据字段名获取编辑的字段
+				                                    });  
+				                                $(amount.target).textbox('readonly');   //赋值
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
 				                                if(initialValue != data.product){
@@ -311,45 +319,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                        index : rowIndex,  
 				                                        field : 'type'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).combobox('disable');
+					                                $(pro.target).combobox('readonly');
 					                                var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'sub_product'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).combobox('disable');
+					                                $(pro.target).combobox('readonly');
 					                                var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'brand'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).combobox('disable');
+					                                $(pro.target).combobox('readonly');
 					                                
 					                                var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'materail'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).textbox('disable');
+					                                $(pro.target).textbox('readonly');
 					                                var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'acount'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).textbox('disable');
+					                                $(pro.target).textbox('readonly');
 					                                var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'remark'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).textbox('disable');
+					                                $(pro.target).textbox('readonly');
+					                                var fmt = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'format'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(fmt.target).textbox('readonly');
 				                                }else{
 				                                		var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'price'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).textbox('disable');
+					                                $(pro.target).textbox('readonly');
 				                                }
 				                			}  
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品规格',width:100,align:'center',
+								{field:'sub_product',title:'产品名称',width:100,align:'center',
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    
@@ -365,6 +378,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });  
 				                                $(ed.target).textbox('setValue',  data.material); 
 				                                $(ed.target).combobox('disable');
+				                                var fmt = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'format'  
+			                                    });  
+				                                $(fmt.target).textbox('setValue',  data.format); 
+				                                $(fmt.target).combobox('disable');
 				                                var idvalue = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
@@ -382,6 +401,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            } 
 				                        },
 				                    	}},
+				                 {field:'format',title:'产品规格',width:100,align:'center',editor:'textbox'},
 								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'},
 								{field:'brand',title:'品牌',width:100,align:'center',editor:{    
 			                        type : 'combobox',    
@@ -417,10 +437,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                				} 
 			                        }   
 			                    }},
-								{field:'acount',title:'数量',width:100,align:'center',editor:'textbox'},
-								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
-								{field:'price',title:'单价',width:100,align:'center',editor:'textbox'},
+								{field:'acount',title:'数量',width:100,align:'center',editor:{
+									type:'textbox',
+									options:{
+										valueField:'acount' ,   
+			                            textField:'acount',
+			                            onChange:function(newValue,oldValue){
+			                            		 if(newValue == '' || newValue == '0' || newValue==undefined){
+			                            			  return ;
+			                            		 }
+			                            		 changeAmount();
+			                            }
+										
+									}
+								}},
+								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
+								{field:'price',title:'单价',width:100,align:'center',editor:{
+									type:'textbox',
+									options:{
+										valueField:'price' ,   
+			                            textField:'price',
+			                            onChange:function(newValue,oldValue){
+			                            		 if(newValue == '' || newValue == '0' || newValue==undefined){
+			                            			  return ;
+			                            		 }
+			                            		 changeAmount();
+			                            }
+										
+									}
+								}},
+								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 								{field:'detailId', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
@@ -481,7 +528,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			if (editIndex == undefined){
 	 				return true
 	 			}
-	 			checkDetail();
+	 			if(!checkDetail()){
+	 				 return false;
+	 			}
 	 			if ($('#table_add').datagrid('validateRow', editIndex)){
 	 				$('#table_add').datagrid('endEdit', editIndex);
 	 				editIndex = undefined;
@@ -522,7 +571,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	                  index : index ,
 	 	                  field : 'base'      
 	 	              }).target.textbox('getValue');
-	 			 	 if( acount == 0 || acount < base ){
+	 				 if( acount == 0 || eval(acount) < eval(base) ){
 	 		 		    alert('采购数量不应小于最小采购数量');
 	 					return false;		 		
 	 		 	 	 }
@@ -622,6 +671,25 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	 		}
 	 		}
 	 	 	
+	 	 	 function changeAmount(){
+	     		var row = $('#table_add').datagrid('getSelected');  
+	         var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+	          var bra = $("#table_add").datagrid('getEditor', {  
+	                 index : rowIndex,  
+	                 field : 'amount'  
+	             }); 
+	          var price = $("#table_add").datagrid('getEditor', {  
+	              index : rowIndex,  
+	              field : 'price'  
+	          });
+	          
+	          var acount = $("#table_add").datagrid('getEditor', {  
+	              index : rowIndex,  
+	              field : 'acount'  
+	          });
+	         $(bra.target).textbox('setValue', price.target.textbox('getValue') * acount.target.textbox('getValue'));
+	     }
+	 		
 	 	 	/**关闭子页面重载*/
 	     	function company_close(){
 	     		var ops =$('#table_add').datagrid("options");
@@ -642,40 +710,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			});
 	     	}
 	     	
-	     /* 	
-	     	function invoice_status(invoice){
-	     		var row = $('#table_order').datagrid('getSelected');
-	     		if(invoice == '1' && (row.status == '2' || row.status == '1')){
-	     			  alert("订单未付款，不能开具发票，请核对！");
-	     			  return false ;
-	     		}else if(invoice == '2' && row.invoice != '1'){
-	     			 alert("发票未开，不能执行该操作！");
-	     			 return false ;
-	     		}
-	         		if(row){
-	         			$.messager.confirm(
-	         				'提示',
-	         				'确定执行该操作?',
-	         				function(r) {
-	         					if (r) {
-	         						$.ajax({ 
-	         			    			url: '${basePath}/orderAction!updateInvoiceStatus.action?invoice=' + invoice,
-	         			    			data : {"id":row.id},
-	         			    			dataType : 'json',
-	         			    			success : function(obj){
-	         			    				if(obj.success){
-	         			    				 	alert(obj.msg);
-	         			    				 	$('#table_order').datagrid('reload');
-	         			    				}else{
-	         			    					alert(obj.msg);
-	         			    					$('#table_order').datagrid('reload');
-	         			    				}
-	         			    			}
-	         			    		});
-	         					}
-	         				});  		
-	         			}
-	         	} */
 	     	
 	     	/**
 	     	 *  修改订单状态 

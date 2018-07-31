@@ -56,7 +56,7 @@
 	                  index : index ,
 	                  field : 'base'      
 	              }).target.textbox('getValue');
-			 	 if( acount == 0 || acount < base ){
+			 	 if( acount == 0 || eval(acount) < eval(base) ){
 		 		    alert('采购数量不应小于最小采购数量');
 					return false;		 		
 		 	 	 }
