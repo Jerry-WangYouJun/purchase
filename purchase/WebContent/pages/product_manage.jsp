@@ -37,10 +37,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 
 	 <script src="<%=path%>/vendor/layer/layer.js"></script>
 	 <script src="<%=path%>/js/jquery.validate.min.js"></script>
-<script src="<%=path%>/js/jquery.metadata.js"></script>
-<script src="<%=path%>/js/messages_zh.js"></script>
+	<script src="<%=path%>/js/jquery.metadata.js"></script>
+	<script src="<%=path%>/js/messages_zh.js"></script>
 <style type="text/css">
-	.error{
+	.errorColor > label{
 	 color:red;
 	}
 
@@ -89,9 +89,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		})
 		    		$("#detailType").show();
 		    		$("#productType").hide();
-		    	}
-		    else
-		    	{
+		    		$(".errorColor").text('');
+		    	}else	{
 		    		$("#productId").val(id);
 		    		$.post("<%=path%>/productAction!searchProduct.action?id="+id,function(data){
 		    			var product = JSON.parse(data);
@@ -100,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			$("#productBase").val(product.base);		    			
 		    			$("#productRemark").val(product.remark);
 		    			$("#parentId").val(product.parentId);
-		    			$("#divBase").show();
+		    			$(".divBase").show();
 		    			$("#divUnit").show();
 		    			if(product.unit==null || product.unit=="")
 	    				{    					
@@ -108,12 +107,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    				}
 		    			if(product.base==null || product.base=="")
 	    				{	    					
-	    					$("#divBase").hide();
+	    					$(".divBase").hide();
 	    					
 	    				}
 		    		})
 			    	$("#detailType").hide();
 		    		$("#productType").show();
+		    		$(".errorColor").text('');
 		    	}
 		};
 		
@@ -153,20 +153,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				var detailMaterial = $("#detailMaterial").val();
 				var detailRemark = $("#detailRemark").val();
 				var productId = $("#detailProductId").val();
-				
-				$.post("<%=path%>/productAction!saveProductDetail.action",
-						{
-							id:id,
-							subProduct:detailName,
-							format:detailFormat,
-							material:detailMaterial,
-							remark: detailRemark,
-							productId:productId
-						},
-						function(data){
-							layer.alert("保存成功");
-							window.location.reload();
-				})
+				if($("#form_child").validate().form()){
+					$.post("<%=path%>/productAction!saveProductDetail.action",
+							{
+								id:id,
+								subProduct:detailName,
+								format:detailFormat,
+								material:detailMaterial,
+								remark: detailRemark,
+								productId:productId
+							},
+							function(data){
+								layer.alert("保存成功");
+								window.location.reload();
+					})
+				}
 			})
 			//删除详情
 			$("#detailDelete").click(function(index){				
@@ -265,6 +266,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					.parent().next('span').append( error );
 			}
 		});
+		$("#form_child").validate({
+			errorPlacement: function(error, element) {
+				$( element )
+					.parent().next('span').append( error );
+			}
+		});
 	})
     </script>
   
@@ -293,21 +300,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  			
 	   		<div class="input-group" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon1">名称</span>
-			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" id="productName" required>
+			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" name="productName" id="productName" required>
 			</div>
-			<span class="error"></span>
+			<span class="errorColor"></span>
 		
 			<div class="input-group" id="divUnit" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon2">单位</span>
-			  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" id="productUnit" required>
+			  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" name="productUnit" id="productUnit" required>
 			</div>
-			<span class="error"></span>
+			<span class="errorColor"></span>
 			
-			<div class="input-group" id="divBase" style="margin-top:10px">
+			<div class="input-group divBase" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon3">基础采购量</span>
-			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" id="productBase" required>
+			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" name="productBase" id="productBase" required>
 			</div>
-			 <span class="error">*基础采购量只填写相应数量即可</span>
+			 <span class="errorColor"></span>
+			 <div  class="divBase"><span style="color:red">*基础采购量只填写相应数量即可</span></div>
 			
 			<div class="input-group" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon4">备注</span>
@@ -324,27 +332,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	 <div class="col-md-6" style="display:none" id="detailType">
 	 	<h4>编辑</h4>
- 		<form class="bs-example bs-example-form" data-example-id="simple-input-groups" >
+ 		<form class="bs-example bs-example-form" data-example-id="simple-input-groups"  id="form_child">
  			<input type="hidden" id="detailId">
  			<input type="hidden" id="detailProductId">
 	   		<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon1">名称</span>
-			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" id="detailName">
+			  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" name="detailName" id="detailName" required>
 			</div>
+			<span class="errorColor"></span>
 			<br>
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon2">规格</span>
-			  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" id="detailFormat">
+			  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" name="detailFormat" id="detailFormat" required>
 			</div>
+			<span class="errorColor"></span>
 			<br>
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon3">材质/标准</span>
-			  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3" id="detailMaterial">
+			  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3"name="detailMaterial" id="detailMaterial" required>
 			</div>
+			<span class="errorColor"></span>
 			<br>
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon4">备注</span>
-			  <input type="text" class="form-control" placeholder="备注" aria-describedby="basic-addon4" id="detailRemark">
+			  <input type="text" class="form-control" placeholder="备注" aria-describedby="basic-addon4" name="detailRemark" id="detailRemark">
 			</div>
 			<br>
 			<div class="input-group">

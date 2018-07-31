@@ -165,32 +165,40 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		Message j = new Message();
 		List<TConfirm> t = confirmService.list();
 		TConfirm nextDay = getConfirmDay(t) ;
-		LocalDate now = LocalDate.now();
-		int today =  now.getDayOfMonth();
-		int month = now.getMonthValue();
-		if(today > nextDay.getConfirmDate()){
+		if(nextDay == null) {
+			j.setSuccess(false);
+		}else {
+			LocalDate now = LocalDate.now();
+			int today =  now.getDayOfMonth();
+			int month = now.getMonthValue();
+			if(today > nextDay.getConfirmDate()){
 				month += 1 ;
+			}
+			LocalDate plusTwoDay = LocalDate.of(now.getYear(), month, nextDay.getConfirmDate());
+			Period between = Period.between(now, plusTwoDay);
+			if(between.getDays() < 3 ) {
+				j.setSuccess(true);
+				j.setObj(nextDay);
+			}
 		}
-		LocalDate plusTwoDay = LocalDate.of(now.getYear(), month, nextDay.getConfirmDate());
-	    Period between = Period.between(now, plusTwoDay);
-	    if(between.getDays() < 3 ) {
-		    	j.setSuccess(true);
-		    	j.setObj(nextDay);
-	    }
 		super.writeJson(j);
 	}
 	
 	public void findConfirm(){	
 		Message j = new Message();
 		List<TConfirm> list = confirmService.list();
-		Iterator<TConfirm> it = list.iterator();
-		String msg = "";
-		while (it.hasNext()) {
-			TConfirm t = it.next();
-			msg += t.getConfirmDate() + "、";
-			
+		if(list == null || list.size() == 0) {
+			j.setMsg("");
+		}else {
+			Iterator<TConfirm> it = list.iterator();
+			String msg = "";
+			while (it.hasNext()) {
+				TConfirm t = it.next();
+				msg += t.getConfirmDate() + "、";
+				
+			}
+			j.setMsg(msg.substring(0, msg.length()-1));
 		}
-		j.setMsg(msg.substring(0, msg.length()-1));
 		super.writeJson(j);
 	}
 	
