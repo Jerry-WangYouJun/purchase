@@ -233,6 +233,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		String  hql = "from TProductDetail t where t.productId = '" + productId + "' and t.id in ("
 				+  " select m.productDetailId from TUserProduct m where m.companyId = '" + companyId +"' ) ";
 		List<TProductDetail> list = orderDao.find(hql);
+		orderDao.updateSubpro(list);
 		return list;
 	}
 	@Override

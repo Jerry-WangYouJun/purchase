@@ -366,7 +366,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            textField:'subProduct',  
 				                            onSelect:function(data){  
 				                                var row = $('#table_add').datagrid('getSelected');  
-				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号 
 				                                 var ed = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'materail'  
