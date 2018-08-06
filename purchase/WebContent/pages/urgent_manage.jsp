@@ -223,7 +223,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'supplierCompanyId', hidden:'true' },
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
-	   						{field:'base', hidden:'true',editor:'textbox' },
+	   						/* {field:'base', hidden:'true',editor:'textbox' }, */
 	   						{field:'remark',title:'备注',width:100,align:'center'},
 	   						{field:'id', hidden:'true',editor:'textbox' }
 	   					]];
@@ -306,12 +306,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                var data= $(this).combobox("getData");
 				                                var row = $('#table_add').datagrid('getSelected');  
 				                                 var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-				                                 var bra = $("#table_add").datagrid('getEditor', {  
+				                                /*  var bra = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'base'  
 				                                    });  
 				                                $(bra.target).textbox('setValue',  data[0].base);  
-				                                $(bra.target).combobox('disable');//不可用
+				                                $(bra.target).combobox('disable');//不可用 */
 				                                
 				                                //判断为admin时 除了价格都变为不可编辑
 				                                if("${roleId}" == '1'){
@@ -452,7 +452,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										
 									}
 								}},
-								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
+								/* {field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' }, */
 								{field:'price',title:'单价',width:100,align:'center',editor:{
 									type:'textbox',
 									options:{
@@ -567,14 +567,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 	                  index : index ,
 	 	                  field : 'acount'      
 	 	              }).target.textbox('getValue');
-	 				  var base = $("#table_add").datagrid('getEditor', {  
+	 				  /* var base = $("#table_add").datagrid('getEditor', {  
 	 	                  index : index ,
 	 	                  field : 'base'      
-	 	              }).target.textbox('getValue');
-	 				 if( acount == 0 || eval(acount) < eval(base) ){
+	 	              }).target.textbox('getValue'); */
+	 				 /* if( acount == 0 || eval(acount) < eval(base) ){
 	 		 		    alert('采购数量不应小于最小采购数量');
 	 					return false;		 		
-	 		 	 	 }
+	 		 	 	 } */
 	 			}
 	 			 	 return true;
 	 		}

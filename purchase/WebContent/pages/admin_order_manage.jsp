@@ -94,9 +94,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
   	     <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>    
          <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
+          <a onclick="exportOrder()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">导出Excel</a>
     </div>
 		   
     <script type="text/javascript">
+    function exportOrder(){
+    		window.location.href='${pageContext.request.contextPath}/orderAction!exportExcel.action' ;
+    }
     	$(function(){
     		/* $.ajax({ 
     			url: '${pageContext.request.contextPath}/confirm!loadAll.action' ,

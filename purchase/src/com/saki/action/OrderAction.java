@@ -1,5 +1,6 @@
 package com.saki.action;
 
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,6 +10,7 @@ import java.util.Map;
 
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,7 @@ import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
 import com.saki.service.OrderServiceI;
 import com.saki.utils.DateUtil;
+import com.saki.utils.ExcelUtil;
 import com.saki.utils.SystemUtil;
 
 @Namespace("/")
@@ -62,6 +65,35 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 			params.put("companyId", companyId);
 		}
 	}
+	
+	public void exportExcel() {
+		Map<String ,Object> params  = new HashMap<>();
+		getParams(params);
+		Grid grid = orderService.search(params,"companyId", "desc", page, rows ,null);
+		List<TOrder> list = grid.getRows();
+		Map<TOrder ,List<Map<String,Object>> > resultMap = new HashMap<>();
+		if(list!= null && list.size() > 0 ) {
+			for(TOrder order : list) {
+				List<Map<String,Object>>  detailList = orderService.searchDetail(order.getId()+"");
+				resultMap.put(order, detailList);
+			}
+			// excel文件名
+			String fileName = "订单信息表_" + DateUtil.getStringDateShort() + ".xls";
+			try {
+				// 创建HSSFWorkbook
+				HSSFWorkbook wb = ExcelUtil.getHSSFWorkbook(resultMap);
+				// 响应到客户端
+				this.setResponseHeader(getResponse(), fileName);
+				OutputStream os = getResponse().getOutputStream();
+				wb.write(os);
+				os.flush();
+				os.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void loadAll(){
 		String page = getParameter("page");
 		String rows = getParameter("rows");

@@ -21,8 +21,10 @@ body {
 			onChange:function(n,o){
 				 if(n == '2'){
 					  $(".brand").show();
+					  $(".business").css("margin-bottom" , "0px");
 				 }else {
 					 $(".brand").hide(); 
+					 $(".business").css("margin-bottom" , "15px");
 				 }
 		    }
 		});
@@ -99,11 +101,11 @@ body {
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">联系人：</label>
                 <input name="contacts" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
-            <div class="form-group col-md-6">
-            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">主营业务：</label>
+            <div class="form-group col-md-6 business"  style="margin-bottom:0px;">
+            		<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">主营业务：</label>
                 <input name="business" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
-            <div class="form-group col-md-6">
+            <div class="form-group col-md-6 business" style="margin-bottom:0px;">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">企业星级：</label>
                 <select name = "level"  class=" form-control" style="display: inline-block;width: 45%" >
                 	 <option >一星</option>
@@ -114,6 +116,7 @@ body {
                 </select>
             </div>
             
+            	<label class="col-md-12 brand" style="color:red;display: inline-block;text-align: left;margin-bottom: 15px;">注意：请填写主要生产产品，便于平台进行推荐</label>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">联系电话：</label>
                 <input name="telphone" class=" form-control"  style="display: inline-block;width: 45%" placeholder="必填" required>

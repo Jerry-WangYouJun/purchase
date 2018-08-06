@@ -103,7 +103,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								valueField:'markup',
 								textField:'markup'
 							}
-						}}
+					}},
+					{field:'unit',title:'单位',width:20,align:'center'}
 				]],				
 			});
 			if("${roleId}" == '1'){
