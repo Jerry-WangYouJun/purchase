@@ -3,6 +3,8 @@ package com.saki.dao;
 import java.util.List;
 import java.util.Map;
 
+import com.saki.model.TProductDetail;
+
 public interface BaseDaoI<T> {
 	
 	public java.io.Serializable save(T o);
@@ -43,4 +45,6 @@ public interface BaseDaoI<T> {
 	public void  executeUpdate(String sql);
 
 	public List executeSQLquery(String sql);
+
+	public void updateSubpro(List<TProductDetail> list);
 }

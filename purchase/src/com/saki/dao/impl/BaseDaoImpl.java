@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.saki.dao.BaseDaoI;
+import com.saki.model.TProductDetail;
 import com.saki.model.TSupllierOrder;
 
 @Repository("baseDao")
@@ -179,6 +180,16 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	public List executeSQLquery(String sql) {
 		List<Object[]> list = this.getCurrentSession().createSQLQuery(sql).list();  
         return list; 
+	}
+
+	@Override
+	public void updateSubpro(List<TProductDetail> list) {
+		for (TProductDetail tProductDetail : list) {
+			getSessionFactory().getCurrentSession().evict(tProductDetail);
+			String subPro = tProductDetail.getSubProduct() + "/"
+					 + tProductDetail.getMaterial() + "/" + tProductDetail.getFormat();
+			tProductDetail.setSubProduct(subPro);
+		}
 	}
 	
 
