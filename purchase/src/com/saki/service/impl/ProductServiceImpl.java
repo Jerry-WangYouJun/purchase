@@ -424,6 +424,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			tempMap.put("level", company.getLevel());
 			tempMap.put("remark", company.getBrand());
 			tempMap.put("productName", product.getProduct());
+			tempMap.put("unit", product.getUnit());
 			tempMap.put("subProduct", ProductDetail.getSubProduct());
 			tempMap.put("format", ProductDetail.getFormat());
 			tempMap.put("material", ProductDetail.getMaterial());
