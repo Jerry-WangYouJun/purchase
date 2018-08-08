@@ -140,6 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("input.datagrid-editable-input").bind("change",function(evt){
 				reg=/^[-\+]?\d+(\.\d+)?$/;
 				var val  = $("input.datagrid-editable-input").val();
+				if(field == 'price'){
 					if(val  == '' || val  == 0){
 						 alert("不能为空或0 ,请重新填写");
 						 return false;
@@ -150,9 +151,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						$("input.datagrid-editable-input").focus();
 						return false ;
 					}
-				if(field == 'price'){
 					updatePrice(val, target.productDetailId);
 				}else{
+					if(val  == '' ){
+						 alert("不能为空,请重新填写");
+						 return false;
+					}
+					if(!reg.test(val)){
+						alert("不是数字格式，请重新输入~");
+						$("input.datagrid-editable-input").val('');
+						$("input.datagrid-editable-input").focus();
+						return false ;
+					}
 					updatePriceMarkup(val , target.mapid);
 				}
 				$("input.datagrid-editable-input").val(Number(val));
