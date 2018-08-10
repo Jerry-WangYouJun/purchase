@@ -397,6 +397,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   detail.setOrderId(order.getId());
 	    	    	   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
 	    	    	   detail.setBrand(obj.getString("supplierCompanyId"));
+	    	    	   detail.setDefaultFlag(obj.getString("defaultFlag"));
 	    	    	   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    		   detail.setPrice(obj.getDouble("price"));
 	    	    	   }
@@ -422,6 +423,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    		   sum = SystemUtil.sub(sum , detail.getAmount());
 	    	    		   detail.setNum(StringUtils.isEmpty(obj.getString("acount")) ? 0 : obj.getIntValue("acount"));
 	    	    		   detail.setProductDetailId(obj.getInteger("detailId")==0?0:obj.getIntValue("detailId"));
+	    	    		   detail.setDefaultFlag(obj.getString("defaultFlag"));
 	    	    		   if(!StringUtils.isEmpty(obj.getString("price"))){
 	    	    			       detail.setPrice(obj.getDouble("price"));
 	    	    		   }

@@ -24,6 +24,7 @@ public class TOrderDetail implements java.io.Serializable {
 	private Double price;
 	private String brand; 
 	private Double amount;
+	private String defaultFlag;
 	private String remark;
 
 	// Constructors
@@ -124,6 +125,16 @@ public class TOrderDetail implements java.io.Serializable {
 	public void setAmount(Double amount) {
 		this.amount = amount;
 	}
+
+	@Column( name = "defaultFlag")
+	public String getDefaultFlag() {
+		return defaultFlag;
+	}
+
+	public void setDefaultFlag(String defaultFlag) {
+		this.defaultFlag = defaultFlag;
+	}
+	
 
 	
 }

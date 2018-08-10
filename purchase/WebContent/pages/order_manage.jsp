@@ -254,7 +254,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				text:'提交',iconCls: 'icon-ok',
 				handler: function(){submitData();}
 			}];
-		   
+    	 var json = [];
+
+    	 var row1 = {value:'1',text:'托管'}
+
+    	 var row2 = {value:'2',text:'不托管'}
+
+    	 json.push(row1);
+
+    	 json.push(row2);  
+    	 
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
@@ -266,6 +275,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'unit',title:'单位',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center'},
+	   						{field:'defaultFlag',title:'托管采购',width:100, formatter: function(value,row,index){
+									if(value == '1'){
+										return "托管";
+									}else{
+										return "不托管";
+									}
+								}
+			                },
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
@@ -434,6 +451,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                    });  
 		                              	   $(pri.target).textbox('setValue',  data[0].price); 
 		                              		 $(pri.target).combobox('disable');
+		                              		 
 			                			} 
 			                        }   
 			                    }},
@@ -471,6 +489,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
 								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
+								{field:'defaultFlag',title:'托管采购',width:100, editor: {
+			                        type: 'combobox',
+			                        options: {
+			                            data: json ,
+			                            valueField: "value",
+			                            textField: "text",
+			                            editable: false,
+			                            onSelect:function(data){  
+			                                var row = $('#table_add').datagrid('getSelected');  
+			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+		                                	var bra = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'brand'  
+		                                    });  
+			                                var pri = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'price'  
+		                                    });  
+			                                var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'supplierCompanyId'  
+		                                    });  
+		                                	var brandData = $(bra.target).combobox('getData');
+			                                if(data.value == '1' && brandData.length > 0){
+				                                $(bra.target).textbox('setValue',  brandData[0].brand); 
+				                                $(bra.target).combobox("disable" );
+			                              	    $(pri.target).textbox('setValue',  brandData[0].price); 
+			                              		$(pri.target).combobox("disable" );
+			                              		$(pri.target).textbox('setValue',  brandData[0].supplierCompanyId); 
+			                                }else{
+			                                	$(bra.target).combobox("enable" );
+			                                	$(pri.target).combobox("enable" );
+			                                }
+			                            }
+			                        }
+								}, formatter: function(value,row,index){
+										if(value == '1'){
+											return "托管";
+										}else{
+											return "不托管";
+										}
+									}
+				                },
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];

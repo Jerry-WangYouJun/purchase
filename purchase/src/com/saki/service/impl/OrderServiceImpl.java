@@ -193,6 +193,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			if(orderDetail.getPrice() != null && orderDetail.getPrice() > 0 ) {
 				map.put("price", orderDetail.getPrice());
 			}
+			map.put("defaultFlag", orderDetail.getDefaultFlag());
 			map.put("amount", orderDetail.getAmount());
 			map.put("remark", orderDetail.getRemark());
 			
@@ -201,8 +202,9 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("type",  product.getProduct());
 			map.put("base", product.getBase());
 			map.put("productId", product.getId());
-			//前台没改  所以 这个地方 对应的是type
-			map.put("sub_product", detail.getSubProduct());
+			String subPro = detail.getSubProduct() + "/"
+					 + detail.getMaterial() + "/" + detail.getFormat();
+			map.put("sub_product", subPro);
 			map.put("materail", detail.getMaterial());
 			map.put("detailId", detail.getId());
 			map.put("format", detail.getFormat());
@@ -406,10 +408,12 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("brand", company.getBrand());
 			map.put("status", mapper.getStatus());
 			map.put("supplierCompanyId", company.getId());
+			map.put("default", false);
 			mapListTemp.add(map);
 		}
 		for(Map<String , Object> map : mapListTemp){
 			  if("1".equals(map.get("status"))){
+				  map.put("default", true);
 				  mapList.add(map);
 				  mapListTemp.remove(map);
 					  break;
