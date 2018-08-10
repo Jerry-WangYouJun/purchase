@@ -130,14 +130,17 @@
 	   						//document.getElementById('order_form').reset();
 	   						$('#order_dlg').dialog('close');	
 	   						$('#table_order').datagrid('reload');
+	   						$('#table_add').datagrid('reload', {
+	   							id: 0
+	   						});
 	   					}
 	   				});
     		}else{
     			$('#order_dlg').dialog('close');
+    			$('#table_add').datagrid('reload', {
+						id: 0
+				});
     		}
-    		$('#table_add').datagrid('reload', {
-				 id: 0
-			});
     	}
     	
   
