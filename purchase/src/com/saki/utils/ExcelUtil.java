@@ -70,7 +70,7 @@ public class ExcelUtil {
                  if(r % 2 == 0 ) {
 	                	 cell.setCellValue(OrderEnum.values()[i*4 + r].toString());
                  }else {
-                	 	 cell.setCellValue(getValue(order , value).toString());
+                	 	 cell.setCellValue(getValue(order , value));
                  }
                  cell.setCellStyle(style);
             }
@@ -103,13 +103,42 @@ public class ExcelUtil {
         
 	}
 	
-	public static Object getValue(Object dto,String name) throws Exception{  
-        Method[]  m = dto.getClass().getMethods();  
+	public static String getValue(Object dto,String name) throws Exception{  
+        Method[]  m = dto.getClass().getMethods(); 
+        String result = "";
         for(int i=0;i<m.length;i++){  
-        if(("get"+name).toLowerCase().equals(m[i].getName().toLowerCase())){  
-            return  m[i].invoke(dto);  
-         }  
+	        if(("get"+name).toLowerCase().equals(m[i].getName().toLowerCase())){  
+	        	   result =  m[i].invoke(dto).toString();  
+	        }  
        }
-        return "" ;
+        return getDicValue(name, result) ;
+	}
+	
+	public  static String  getDicValue(String name , String value ){
+		String result = value;
+		 if( "status".equals(name)){
+			 switch (value) {
+				case "1":
+					result =  "新订单";
+				case "2":
+					result =  "已报价";
+				case "3":
+					result =  "已付款";
+				case "4":
+					result =  "已收货";
+				case "5":
+					result =  "已提交采购";
+			 }
+		 }else if(name == "invoice"){
+			 switch (value) {
+				case "1":
+					result =  "发票已开";
+				case "2":
+					result =  "发票已收";
+				case "3":
+					result =  "发票未开";
+			 }
+		 }
+		 return result ;
 	}
 }

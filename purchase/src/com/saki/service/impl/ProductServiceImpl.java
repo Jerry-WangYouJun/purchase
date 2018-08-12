@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -399,7 +400,7 @@ public class ProductServiceImpl implements ProductServiceI{
 	}
 	
 	@Override
-	public List<Map<String , Object>> searchProductDetailByCompanyId(Integer companyId) {
+	public List<Map<String , Object>> searchProductDetailByCompanyId(Integer companyId , String cname , String subProName) {
 		Map<String,Object> map = new HashMap<String,Object>();
 		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c  "
 				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id   "   ;
@@ -409,7 +410,13 @@ public class ProductServiceImpl implements ProductServiceI{
 		}else {
 			hql += " and  m.roleId = 2 " ;
 		}
-		hql += " order by  p.product  , d.subProduct , d.format , d.material  ";
+		if(StringUtils.isNotEmpty(cname)) {
+			hql += " and c.name like '%" + cname + "%'";
+		}
+		if(StringUtils.isNotEmpty(subProName)) {
+			hql += " and d.subProduct like '%" + subProName + "%'";
+		}
+		hql += " order by c.name ,  p.product  , d.subProduct , d.format , d.material  ";
 		List<Object[]> list = produceDao.find(hql , map);
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		for (int i = 0; i < list.size(); i++) {

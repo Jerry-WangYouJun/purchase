@@ -267,9 +267,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
-	   						{field:'sub_product',title:'产品名称',width:100,align:'center'},
-	   						{field:'format',title:'产品规格',width:100,align:'center'},
-	   						{field:'materail',title:'材质/标准',width:100,align:'center'},
+	   						{field:'sub_product',title:'产品信息',align:'center'},
+	   						/* {field:'format',title:'产品规格',width:100,align:'center'},
+	   						{field:'materail',title:'材质/标准',width:100,align:'center'}, */
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
@@ -325,13 +325,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                		target.combobox('clear'); //清除原来的数据  
 				                                		//$(target).textbox('setValue',  val);
 				                                }
+				                                var url = '${pageContext.request.contextPath}/orderAction!getProductTypeByParentId.action?parentId='+data.id;  
+				                                target.combobox('reload', url);//联动下拉列表重载   */
 				                                var subtarget = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'sub_product'}).target;  
 												if(initialValue != data.product){
 					                                subtarget.combobox('clear');
 				                                		//$(target).textbox('setValue',  val);
 				                                }
-				                                var url = '${pageContext.request.contextPath}/orderAction!getProductTypeByParentId.action?parentId='+data.id;  
-				                                target.combobox('reload', url);//联动下拉列表重载   */
 				                                
 				                            }  
 				                        }    
@@ -374,7 +374,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品名称',width:100,align:'center',
+								{field:'sub_product',title:'产品信息',align:'center',
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    
@@ -384,7 +384,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            onSelect:function(data){  
 				                                var row = $('#table_add').datagrid('getSelected');  
 				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号 
-				                                 var ed = $("#table_add").datagrid('getEditor', {  
+				                                /*  var ed = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'materail'  
 				                                    });  
@@ -395,7 +395,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'format'  
 			                                    });  
 				                                $(fmt.target).textbox('setValue',  data.format); 
-				                                $(fmt.target).combobox('disable');
+				                                $(fmt.target).combobox('disable'); */
 				                                var idvalue = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
@@ -413,8 +413,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            }  
 				                        },
 				                    	}},
-				                 {field:'format',title:'产品规格',width:100,align:'center',editor:'textbox'},
-								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'},
+				                /*  {field:'format',title:'产品规格',width:100,align:'center',editor:'textbox'},
+								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'}, */
 								{field:'brand',title:'品牌',width:100,align:'center',editor:{    
 			                        type : 'combobox',    
 			                        options : {    

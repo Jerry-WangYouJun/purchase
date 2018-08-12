@@ -217,9 +217,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
-	   						{field:'sub_product',title:'产品名称',width:100,align:'center'},
-	   					 	{field:'format',title:'产品规格',width:100,align:'center'},
-	   						{field:'materail',title:'材质/标准',width:100,align:'center'},
+	   						{field:'sub_product',title:'产品信息',align:'center'},
+	   					 	/* {field:'format',title:'产品规格',width:100,align:'center'},
+	   						{field:'materail',title:'材质/标准',width:100,align:'center'}, */
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
@@ -344,11 +344,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });
 					                                $(pro.target).combobox('readonly');
 					                                
-					                                var pro = $("#table_add").datagrid('getEditor', {  
+					                                /* var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'materail'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(pro.target).textbox('readonly');
+					                                $(pro.target).textbox('readonly'); */
 					                                var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'acount'  //根据字段名获取编辑的字段
@@ -359,11 +359,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                        field : 'remark'  //根据字段名获取编辑的字段
 				                                    });
 					                                $(pro.target).textbox('readonly');
-					                                var fmt = $("#table_add").datagrid('getEditor', {  
+					                                /* var fmt = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'format'  //根据字段名获取编辑的字段
 				                                    });
-					                                $(fmt.target).textbox('readonly');
+					                                $(fmt.target).textbox('readonly'); */
 					                                var defaultFlag = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'defaultFlag'  //根据字段名获取编辑的字段
@@ -380,7 +380,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品名称',width:100,align:'center',
+								{field:'sub_product',title:'产品名称',align:'center',
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    
@@ -390,7 +390,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            onSelect:function(data){  
 				                                var row = $('#table_add').datagrid('getSelected');  
 				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-				                                 var ed = $("#table_add").datagrid('getEditor', {  
+				                                /*  var ed = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'materail'  
 				                                    });  
@@ -401,7 +401,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'format'  
 			                                    });  
 				                                $(fmt.target).textbox('setValue',  data.format); 
-				                                $(fmt.target).combobox('disable');
+				                                $(fmt.target).combobox('disable'); */
 				                                var idvalue = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
@@ -419,8 +419,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            } 
 				                        },
 				                    	}},
-				                 {field:'format',title:'产品规格',width:100,align:'center',editor:'textbox'},
-								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'},
+				                /*  {field:'format',title:'产品规格',width:100,align:'center',editor:'textbox'},
+								{field:'materail',title:'材质/标准',width:100,align:'center',editor:'textbox'}, */
 								{field:'brand',title:'品牌',width:100,align:'center',editor:{    
 			                        type : 'combobox',    
 			                        options : {    
