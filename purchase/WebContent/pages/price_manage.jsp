@@ -30,6 +30,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">价格管理</p>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+ 		 <c:if test="${roleId eq 1 }">
+ 			 <div >
+            	公司名称：
+                <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
+            	产品名称：
+                <input name="subname" id = "subname"class=" form-control" style="display: inline-block;width: 10%">
+                <button onclick="query()">查询</button>
+            </div> 
+		  </c:if>
  		<table id="user_table" class="easyui-datagrid"></table>
  	</div>
  	<div id="toolbar_user" style="padding:2px 5px;">
@@ -39,6 +48,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 	
     <script type="text/javascript">
+    function query(){
+	    	$('#user_table').datagrid('load', {
+	    	    cname: $("#cname").val(),
+	    	    subProName: $("#subname").val()
+	    	});
+	}
     $.extend($.fn.datagrid.methods, {
 		editCell: function(jq,param){
 			return jq.each(function(){
@@ -85,7 +100,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}
 					}},
 					{field:'productName',title:'产品类别',width:20,align:'center'},
-					{field:'subProduct',title:'小类名称',width:20,align:'center'},
+					{field:'subProduct',title:'产品名称',width:20,align:'center'},
 					{field:'format',title:'规格',width:20,align:'center'},
 					{field:'material',title:'材料',width:20,align:'center'},
 					{field:'price',title:'价格设置',width:20,align:'center',
