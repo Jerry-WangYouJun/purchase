@@ -517,6 +517,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                }else{
 			                                	$(bra.target).combobox("enable" );
 			                                }
+			                                if(data.value == '1' ){
+			                               	 	$(bra.target).combobox("disable" );
+			                                }
 			                            }
 			                        }
 								}, formatter: function(value,row,index){

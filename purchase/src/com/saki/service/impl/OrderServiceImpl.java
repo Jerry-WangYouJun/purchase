@@ -202,8 +202,8 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("type",  product.getProduct());
 			map.put("base", product.getBase());
 			map.put("productId", product.getId());
-			String subPro = detail.getSubProduct() + "/"
-					 + detail.getMaterial() + "/" + detail.getFormat();
+			String subPro = detail.getSubProduct() + ";"
+					 + detail.getMaterial() + ";" + detail.getFormat();
 			map.put("sub_product", subPro);
 			map.put("materail", detail.getMaterial());
 			map.put("detailId", detail.getId());

@@ -496,7 +496,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                            valueField: "value",
 			                            textField: "text",
 			                            editable: false,
-			                            onSelect:function(data){  
+			                            onSelect:function(data){ 
+			                            	console.info(data);
 			                                var row = $('#table_add').datagrid('getSelected');  
 			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 		                                	var bra = $("#table_add").datagrid('getEditor', {  
@@ -519,6 +520,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                              		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
 			                                }else{
 			                                	$(bra.target).combobox("enable" );
+			                                }
+			                                if(data.value == '1' ){
+			                               	 	$(bra.target).combobox("disable" );
 			                                }
 			                            }
 			                        }
