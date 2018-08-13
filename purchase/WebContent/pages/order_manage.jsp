@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
- 		<h3>订单管理</h3>
+ 		<h3> 快速下单</h3>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 20px">
  			<div >
@@ -516,11 +516,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                $(bra.target).textbox('setValue',  brandData[0].brand); 
 				                                $(bra.target).combobox("disable" );
 			                              	    $(pri.target).textbox('setValue',  brandData[0].price); 
-			                              		$(pri.target).combobox("disable" );
-			                              		$(pri.target).textbox('setValue',  brandData[0].supplierCompanyId); 
+			                              		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
 			                                }else{
 			                                	$(bra.target).combobox("enable" );
-			                                	$(pri.target).combobox("enable" );
 			                                }
 			                            }
 			                        }

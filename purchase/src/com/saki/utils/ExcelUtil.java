@@ -57,7 +57,9 @@ public class ExcelUtil {
      // 第四步，创建单元格，并设置值表头 设置表头居中
         HSSFCellStyle style = wb.createCellStyle();
         style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 创建一个居中格式
-        
+        if(rowIndex > 0){
+        	rowIndex++;
+        }
         for( int i = 0 ; i < 3 ; i ++ ) {
         	// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制
             HSSFRow row = sheet.createRow(rowIndex + i );

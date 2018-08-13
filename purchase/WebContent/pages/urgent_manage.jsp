@@ -364,6 +364,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                        field : 'format'  //根据字段名获取编辑的字段
 				                                    });
 					                                $(fmt.target).textbox('readonly');
+					                                var defaultFlag = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'defaultFlag'  //根据字段名获取编辑的字段
+				                                    });
+					                                $(defaultFlag.target).combobox('readonly');
 				                                }else{
 				                                		var pro = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
@@ -495,10 +500,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                        index : rowIndex,  
 		                                        field : 'brand'  
 		                                    });  
-			                                var pri = $("#table_add").datagrid('getEditor', {  
+			                               /*  var pri = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
 		                                        field : 'price'  
-		                                    });  
+		                                    }); */  
 			                                var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
 		                                        field : 'supplierCompanyId'  
@@ -507,12 +512,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                if(data.value == '1' && brandData.length > 0){
 				                                $(bra.target).textbox('setValue',  brandData[0].brand); 
 				                                $(bra.target).combobox("disable" );
-			                              	    $(pri.target).textbox('setValue',  brandData[0].price); 
-			                              		$(pri.target).combobox("disable" );
-			                              		$(pri.target).textbox('setValue',  brandData[0].supplierCompanyId); 
+			                              	    //$(pri.target).textbox('setValue',  brandData[0].price); 
+			                              		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
 			                                }else{
 			                                	$(bra.target).combobox("enable" );
-			                                	$(pri.target).combobox("enable" );
 			                                }
 			                            }
 			                        }
