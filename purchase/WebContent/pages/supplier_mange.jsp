@@ -66,7 +66,7 @@
 			var  searchUrl = '${pageContext.request.contextPath}/supplier!loadAll.action' ;
 			var  toolbar = [ {
 				text : '订单详情',
-				iconCls : 'icon-edit',
+				iconCls : 'icon-tip',
 				handler : function() {
 					order_edit();
 				}
@@ -85,7 +85,7 @@
 				searchUrl = '${pageContext.request.contextPath}/supplier!loadByCompanyId.action' ;
 				toolbar=[ {
 					text : '订单详情',
-					iconCls : 'icon-edit',
+					iconCls : 'icon-tip',
 					handler : function() {
 						order_edit();
 					}

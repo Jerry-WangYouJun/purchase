@@ -232,17 +232,17 @@
 							 <c:choose >
 									<c:when test="${roleId eq '1' }">
 										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
-													客户 &供应商 管理</a>
+													客户&供应商管理</a>
 										</li>
 									</c:when>
 									<c:when test="${roleId eq '2' }">
 										<li class="active-menu"><a href="#"  onclick="openTab('供应商管理','${basePath}/pages/company_manage.jsp')">
-													供应商 管理</a>
+													供应商管理</a>
 										</li>
 									</c:when>
 									<c:when test="${roleId eq '3' }">
 										<li class="active-menu"><a href="#"  onclick="openTab('客户管理','${basePath}/pages/company_manage.jsp')">
-													客户 管理</a>
+													客户管理</a>
 										</li>
 									</c:when>
 							 </c:choose>
@@ -338,7 +338,7 @@
 						</c:if>
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 						<ul class="breadcrumb" style="padding:15px 15px">
-							<li><i class="icon-home"></i> <a href="index.jsp">Home</a>
+							<li><i class="icon-home"></i> <a href="index.jsp">首页</a>
 								<i class="icon-angle-right"></i></li>
 							<li><a href="#" id="panelName">Dashboard</a></li>
 							<li class="pull-right no-text-shadow" style="padding-right: 50px">
