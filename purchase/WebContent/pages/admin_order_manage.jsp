@@ -99,7 +99,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   
     <script type="text/javascript">
     function exportOrder(){
-    		window.location.href='${pageContext.request.contextPath}/orderAction!exportExcel.action' ;
+    		window.location.href='${pageContext.request.contextPath}/report!exportExcel.action' ;
     }
     	$(function(){
     		/* $.ajax({ 

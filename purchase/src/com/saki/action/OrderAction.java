@@ -50,21 +50,6 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		this.orderService = orderService;
 	}
 	
-	public void getParams(Map<String, Object> params){
-		String cno = getParameter("ono");
-		String cstatus = getParameter("ostatue");
-		if(StringUtils.isNotEmpty(cno)) {
-			params.put("orderNo", "%" + cno + "%");
-		}
-		if(StringUtils.isNotEmpty(cstatus)) {
-			params.put("status", cstatus);
-		}
-		String roleId = getSession().getAttribute("roleId").toString();
-		if(!"1".equals(roleId)){
-			String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
-			params.put("companyId", companyId);
-		}
-	}
 	
 	public void exportExcel() {
 		Map<String ,Object> params  = new HashMap<>();

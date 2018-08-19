@@ -125,7 +125,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}		
 
 		$(document).ready(function(){
-			
+			$("#productType").hide();
 		  $.ajax({  
 	            async : false,//是否异步  
 	            cache : false,//是否使用缓存  
@@ -219,6 +219,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  content: '<%=path%>/pages/product_add.jsp' //iframe的url
 					}); 
 			})
+			
+			$("#importProduct").click(function(){
+				layer.open({
+					  type: 2,
+					  title: '新增',
+					  shadeClose: true,
+					  shade: 0.8,
+					  area: ['380px', '90%'],
+					  content: '<%=path%>/pages/product_import.jsp' //iframe的url
+				});
+			});
 		});
 		
 		function productSave(){
@@ -283,6 +294,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">订单类别选择</span>
  		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
+ 		<a  id="importProduct" style="background-color:#e05447;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
 <!--  		<a onclick="reset()" id="reset" style="background-color:#007FFF;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px;margin-right:10px">新增</a> 		
  --> 	</div>
  	

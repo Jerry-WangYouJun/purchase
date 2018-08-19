@@ -2,11 +2,13 @@ package com.saki.action;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
@@ -83,6 +85,22 @@ public class BaseAction {
 				response.addHeader("Cache-Control", "no-cache");
 			} catch (Exception ex) {
 				ex.printStackTrace();
+			}
+		}
+		
+		public void getParams(Map<String, Object> params){
+			String cno = getParameter("ono");
+			String cstatus = getParameter("ostatue");
+			if(StringUtils.isNotEmpty(cno)) {
+				params.put("orderNo", "%" + cno + "%");
+			}
+			if(StringUtils.isNotEmpty(cstatus)) {
+				params.put("status", cstatus);
+			}
+			String roleId = getSession().getAttribute("roleId").toString();
+			if(!"1".equals(roleId)){
+				String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
+				params.put("companyId", companyId);
 			}
 		}
 }
