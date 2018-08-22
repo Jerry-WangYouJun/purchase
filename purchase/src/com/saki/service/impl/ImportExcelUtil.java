@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -16,6 +18,8 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.stereotype.Service;
 
 import com.saki.entity.Grid;
+import com.saki.model.TProduct;
+import com.saki.model.TProductDetail;
 import com.saki.service.BaseServiceI;
 
 @Service("importExcelUtil")
@@ -30,7 +34,7 @@ public class ImportExcelUtil  implements BaseServiceI{
 	 * @return
 	 * @throws IOException 
 	 */
-	public  List<List<Object>> getBankListByExcel(InputStream in,String fileName) throws Exception{
+	public  void getBankListByExcel(InputStream in,String fileName) throws Exception{
 		List<List<Object>> list = null;
 		
 		//����Excel������
@@ -63,7 +67,16 @@ public class ImportExcelUtil  implements BaseServiceI{
 			}
 		}
 		work.close();
-		return list;
+		batchInsertProduct( list);
+	}
+	
+	public void batchInsertProduct(List<List<Object>> list ){
+		Map<String , TProduct> parentProMap = new HashMap<>();
+		Map<String , TProduct> childProMap = new HashMap<>();
+		Map<String , TProductDetail> detailProMap = new HashMap<>();
+		for (List<Object> list2 : list) {
+			
+		}
 	}
 	
 	/**

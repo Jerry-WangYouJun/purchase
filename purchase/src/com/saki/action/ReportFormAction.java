@@ -88,6 +88,7 @@ public class ReportFormAction extends BaseAction {
 			try {
 				in = new FileInputStream(fileName);
 				importExcelUtil.getBankListByExcel(in, filename);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
