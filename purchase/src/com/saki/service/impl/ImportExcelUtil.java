@@ -71,12 +71,56 @@ public class ImportExcelUtil  implements BaseServiceI{
 	}
 	
 	public void batchInsertProduct(List<List<Object>> list ){
+		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
 		Map<String , TProduct> parentProMap = new HashMap<>();
 		Map<String , TProduct> childProMap = new HashMap<>();
 		Map<String , TProductDetail> detailProMap = new HashMap<>();
 		for (List<Object> list2 : list) {
-			
+			for(int i = 0 ; i < list2.size() ; i++){
+				TProduct  product =  getProductByList(list2);
+				  System.out.print(i + ":" + list2.get(i).toString());
+				  String parentProName = list2.get(0).toString();
+				  String childProName = list2.get(1).toString();
+				  if(resultMap.containsKey(parentProName)){
+					  Map<String , TProduct> tempMap = resultMap.get(parentProName);
+					  if(tempMap.containsKey(childProName)){
+						   
+					  }else{
+						  tempMap.put(childProName, null);
+					  }
+				  }else{
+					  resultMap.put(parentProName, null);
+				  }
+			}
+			System.out.println();
 		}
+	}
+	
+	private TProduct getProductByList(List<Object> list) {
+		TProduct product = new TProduct();
+		for (int i = 0; i < list.size(); i++) {
+			 if(list.get(i) != null){
+				 String value = list.get(i).toString();
+				  switch (i) {
+				case 0:
+					product.setProduct(value);
+					break;
+				case 1:
+					product.setChildProName(value);
+					break;
+				case 2:
+					break;
+				default:
+					break;
+				}
+			 }
+		}
+		return null;
+	}
+
+	public static void main(String[] args) {
+		 String s = "a  b";
+		 System.out.println(s.split(" ").length);
 	}
 	
 	/**

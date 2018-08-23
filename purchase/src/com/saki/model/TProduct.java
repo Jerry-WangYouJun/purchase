@@ -1,10 +1,13 @@
 package com.saki.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -25,6 +28,8 @@ public class TProduct implements java.io.Serializable {
 	private String remark;
 
 	private Integer parentId;
+	private String childProName;
+	List<TProductDetail> detailList  ;
 	// Constructors
 	
 	/** default constructor */
@@ -139,5 +144,23 @@ public class TProduct implements java.io.Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
+
+	public List<TProductDetail> getDetailList() {
+		return detailList;
+	}
+
+	public void setDetailList(List<TProductDetail> detailList) {
+		this.detailList = detailList;
+	}
+
+	public String getChildProName() {
+		return childProName;
+	}
+
+	public void setChildProName(String childProName) {
+		this.childProName = childProName;
+	}
+	
+	
 
 }
