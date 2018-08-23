@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -144,7 +145,7 @@ public class TProduct implements java.io.Serializable {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-
+	@Transient
 	public List<TProductDetail> getDetailList() {
 		return detailList;
 	}

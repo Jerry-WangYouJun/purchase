@@ -5,7 +5,9 @@ import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -72,50 +74,113 @@ public class ImportExcelUtil  implements BaseServiceI{
 	
 	public void batchInsertProduct(List<List<Object>> list ){
 		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
-		Map<String , TProduct> parentProMap = new HashMap<>();
-		Map<String , TProduct> childProMap = new HashMap<>();
-		Map<String , TProductDetail> detailProMap = new HashMap<>();
 		for (List<Object> list2 : list) {
-			for(int i = 0 ; i < list2.size() ; i++){
-				TProduct  product =  getProductByList(list2);
-				  System.out.print(i + ":" + list2.get(i).toString());
-				  String parentProName = list2.get(0).toString();
-				  String childProName = list2.get(1).toString();
-				  if(resultMap.containsKey(parentProName)){
-					  Map<String , TProduct> tempMap = resultMap.get(parentProName);
-					  if(tempMap.containsKey(childProName)){
-						   
-					  }else{
-						  tempMap.put(childProName, null);
-					  }
-				  }else{
-					  resultMap.put(parentProName, null);
-				  }
+				TProduct  product =  getProductByList(list2);//一条数据
+				Map<String , TProduct> tempMap = new HashMap<>();
+				tempMap.put( product.getChildProName(), product);
+				if(resultMap.containsKey(product.getProduct())) {
+					resultMap.get(product.getProduct()).put(product.getChildProName(), product);
+				}else {
+					resultMap.put(product.getProduct(), tempMap);
+				}
+		}
+		Iterator<String> it = resultMap.keySet().iterator();
+		while(it.hasNext()) {
+			String parent = it.next();
+			System.out.println("一级：" + parent);
+			Iterator<String> child = resultMap.get(parent).keySet().iterator();
+			while(child.hasNext()) {
+				String  pro = child.next();
+				System.out.println( "****二级："+pro);
+				TProduct product =  resultMap.get(parent).get(pro);
+				for(TProductDetail detail : product.getDetailList()) {
+					 System.out.println("***********三级："+ 
+							 	detail.getSubProduct() + 
+							 	detail.getFormat() + 
+							 	detail.getMaterial());
+				}
 			}
-			System.out.println();
 		}
 	}
 	
 	private TProduct getProductByList(List<Object> list) {
 		TProduct product = new TProduct();
+		List<String>  proDetailNameList = new ArrayList<>(); 
+		List<String>  proDetailFormatList = new ArrayList<>(); 
+		List<String>  proDetailMaterialList = new ArrayList<>(); 
 		for (int i = 0; i < list.size(); i++) {
 			 if(list.get(i) != null){
 				 String value = list.get(i).toString();
 				  switch (i) {
-				case 0:
-					product.setProduct(value);
-					break;
-				case 1:
-					product.setChildProName(value);
-					break;
-				case 2:
-					break;
-				default:
-					break;
-				}
+					case 0:
+						product.setProduct(value);
+						break;
+					case 1:
+						product.setChildProName(value);
+						break;
+					case 2:
+						product.setUnit(value);
+						break;
+					case 3 :
+						proDetailNameList = Arrays.asList(value.split(" "));
+						break;
+					case 4 :
+						proDetailFormatList = Arrays.asList(value.split(" "));
+						break;
+					case 5 :
+						proDetailMaterialList = Arrays.asList(value.split(" "));
+						break;
+					}
+				  
 			 }
 		}
-		return null;
+		List<TProductDetail> detailListFirst = new ArrayList<>();
+		//如果有规格（类型名）添加对应数据到list中，没有则添加一条空的，方便后面处理其他数据
+		if(proDetailNameList.size() > 0) {
+			for(String detailName :proDetailNameList) {
+				TProductDetail detailTemp = new TProductDetail();
+				detailTemp.setSubProduct(detailName);
+				detailListFirst.add(detailTemp);
+			}
+		}else {
+			TProductDetail detailTemp = new TProductDetail();
+			detailListFirst.add(detailTemp);
+		}
+		List<TProductDetail> detailListSecond = new ArrayList<>();
+		if(proDetailFormatList.size() > 0) {
+			for(int i = 0 ; i < proDetailFormatList.size() ; i++) {
+				for (TProductDetail detail : detailListFirst) {
+					if(i==0) {
+						detail.setFormat(proDetailFormatList.get(i));
+					}else {
+						TProductDetail detailTemp = new TProductDetail();
+						detailTemp.setFormat(proDetailFormatList.get(i));
+						detailTemp.setSubProduct(detail.getSubProduct());
+						detailListSecond.add(detailTemp);
+					}
+				}
+			}
+		}
+		detailListFirst.addAll(detailListSecond);
+		List<TProductDetail> detailListThird = new ArrayList<>();
+		if(proDetailMaterialList.size() > 0) {
+			for(int i = 0 ; i < proDetailMaterialList.size() ; i++) {
+				for (TProductDetail detail : detailListFirst) {
+					if(i==0) {
+						detail.setMaterial(proDetailMaterialList.get(i));
+					}else {
+						TProductDetail detailTemp = new TProductDetail();
+						detailTemp.setMaterial(proDetailMaterialList.get(i));
+						detailTemp.setSubProduct(detail.getSubProduct());
+						detailTemp.setFormat(detail.getFormat());
+						detailListThird.add(detailTemp);
+					}
+				}
+			}
+		}
+		detailListFirst.addAll(detailListThird);
+		product.setDetailList(detailListFirst);
+		return product;
 	}
 
 	public static void main(String[] args) {
