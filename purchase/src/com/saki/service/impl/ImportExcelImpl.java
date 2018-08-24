@@ -17,15 +17,27 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.saki.entity.Grid;
+import com.saki.dao.BaseDaoI;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
-import com.saki.service.BaseServiceI;
+import com.saki.service.ImportExcelI;
 
-@Service("importExcelUtil")
-public class ImportExcelUtil  implements BaseServiceI{
+@Service("importExcelImpl")
+public class ImportExcelImpl  implements ImportExcelI{
+	
+	private BaseDaoI<TProduct> productDao;
+
+	public BaseDaoI getProductDao() {
+		return productDao;
+	}
+
+	@Autowired
+	public void setProductDao(BaseDaoI productDao) {
+		this.productDao = productDao;
+	}
 	
 	private final static String excel2003L =".xls";    //2003- �汾��excel
 	private final static String excel2007U =".xlsx";   //2007+ �汾��excel
@@ -36,7 +48,8 @@ public class ImportExcelUtil  implements BaseServiceI{
 	 * @return
 	 * @throws IOException 
 	 */
-	public  void getBankListByExcel(InputStream in,String fileName) throws Exception{
+	@Override
+	public  void getListByExcel(InputStream in,String fileName) throws Exception{
 		List<List<Object>> list = null;
 		
 		//����Excel������
@@ -57,7 +70,7 @@ public class ImportExcelUtil  implements BaseServiceI{
 			//������ǰsheet�е�������
 			for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
 				row = sheet.getRow(j);
-				if(row==null||row.getFirstCellNum()==j){continue;}
+				if(row==null||sheet.getFirstRowNum()==j){continue;}
 				
 				//�������е���
 				List<Object> li = new ArrayList<Object>();
@@ -69,10 +82,10 @@ public class ImportExcelUtil  implements BaseServiceI{
 			}
 		}
 		work.close();
-		batchInsertProduct( list);
+		saveProducts( list);
 	}
 	
-	public void batchInsertProduct(List<List<Object>> list ){
+	public void saveProducts(List<List<Object>> list ){
 		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
 		for (List<Object> list2 : list) {
 				TProduct  product =  getProductByList(list2);//一条数据
@@ -87,17 +100,15 @@ public class ImportExcelUtil  implements BaseServiceI{
 		Iterator<String> it = resultMap.keySet().iterator();
 		while(it.hasNext()) {
 			String parent = it.next();
-			System.out.println("一级：" + parent);
+			TProduct productSave = new TProduct();
+			productSave.setProduct(parent);
+			productDao.save(productSave);
+			System.out.println(productSave.getId());
 			Iterator<String> child = resultMap.get(parent).keySet().iterator();
 			while(child.hasNext()) {
 				String  pro = child.next();
-				System.out.println( "****二级："+pro);
 				TProduct product =  resultMap.get(parent).get(pro);
 				for(TProductDetail detail : product.getDetailList()) {
-					 System.out.println("***********三级："+ 
-							 	detail.getSubProduct() + 
-							 	detail.getFormat() + 
-							 	detail.getMaterial());
 				}
 			}
 		}
@@ -245,41 +256,6 @@ public class ImportExcelUtil  implements BaseServiceI{
 		return value;
 	}
 
-	@Override
-	public void add(Object object) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void update(Object object) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void deleteByKey(String key) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Grid loadAll(String sort, String order, String page, String rows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Object getByKey(String key) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Grid search(String row, String text, String sort, String order, String page, String rows) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 	
 
 }

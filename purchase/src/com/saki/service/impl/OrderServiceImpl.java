@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,24 +25,6 @@ import com.saki.utils.SystemUtil;
 @Service("orderService")
 public class OrderServiceImpl implements OrderServiceI{
 	
-	private SessionFactory sessionFactory;
-	public SessionFactory getSessionFactory() {
-		return sessionFactory;
-	}
-	public void setSessionFactory(SessionFactory sessionFactory) {
-		this.sessionFactory = sessionFactory;
-	}
-	private BaseDaoI confirmDao ;
-	
-	public BaseDaoI getConfirmDao() {
-		return confirmDao;
-	}
-	@Autowired
-	public void setConfirmDao(BaseDaoI confirmDao) {
-		this.confirmDao = confirmDao;
-	}
-	
-
 	private BaseDaoI orderDao;
 	public BaseDaoI getOrderDao() {
 		return orderDao;
@@ -258,21 +239,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		List<TOrderDetail> list = orderDao.find(hql);
 		return list;
 	}
-//	@Override
-//	public void updateOrderLocked(String locked , String id ) {
-//		orderDao.updateHql("update TOrder t set t.locked = " + locked 
-//				+ "where t.id = " + id);
-//	}
-//	@Override
-//	public void updateOrderLockedTask() {
-//		Calendar day =Calendar.getInstance();
-//		int s = day.get(Calendar.DAY_OF_MONTH);
-//		List<TConfirm> confirm =confirmDao.find("from TConfirm t where t.confirmDate = " + s);
-//		if(confirm.size() > 0) {
-//			orderDao.updateHql("update TOrder t set t.locked = 1 where t.status = '3'");
-//			orderDao.updateHql("update TOrder t set t.remark='未付款，不予采购' where t.status < 3");
-//		}
-//	}
+	
 	@Override
 	public String getOrderCode(String dayOfOrderNo) {
 		String hql = "select  SUBSTR(max(t.orderNo) ,LENGTH(max(t.orderNo))-2 ,3) + 1  "

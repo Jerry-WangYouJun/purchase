@@ -3,15 +3,11 @@ package com.saki.utils;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -19,11 +15,8 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.ServletActionContext;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.saki.model.TOrder;
-import com.saki.service.impl.ImportExcelUtil;
 
 public class ExcelUtil {
 
@@ -111,26 +104,6 @@ public class ExcelUtil {
 		}
 	}
 	
-	public List<List<Object>>  getDataList(MultipartHttpServletRequest multipartRequest,
-			HttpServletResponse response ) throws Exception {
-		PrintWriter out = null;
-		response.setCharacterEncoding("utf-8");
-		out = response.getWriter();
-		InputStream in = null;
-		List<List<Object>> listob = null;
-		MultipartFile file = multipartRequest.getFile("upfile");
-		if (file == null  || file.isEmpty()) {
-			out.print("未添加上传文件或者文件中内容为空！");
-			out.flush();
-			out.close();
-			return  null;
-		}
-		in = file.getInputStream();
-		listob = new ImportExcelUtil().getBankListByExcel(in,
-				file.getOriginalFilename());
-		in.close();
-		return listob ;
-	}
 	
 	public static String getValue(Object dto,String name) throws Exception{  
         Method[]  m = dto.getClass().getMethods(); 

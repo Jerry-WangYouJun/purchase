@@ -17,8 +17,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.saki.entity.Grid;
 import com.saki.model.TOrder;
+import com.saki.service.ImportExcelI;
 import com.saki.service.OrderServiceI;
-import com.saki.service.impl.ImportExcelUtil;
 import com.saki.utils.DateUtil;
 import com.saki.utils.ExcelUtil;
 
@@ -37,13 +37,14 @@ public class ReportFormAction extends BaseAction {
 	public void setOrderService(OrderServiceI orderService) {
 		this.orderService = orderService;
 	}
-	private ImportExcelUtil importExcelUtil;
+	private ImportExcelI importExcelUtil;
 	
-	public ImportExcelUtil getImportExcelUtil() {
+
+	public ImportExcelI getImportExcelUtil() {
 		return importExcelUtil;
 	}
 	@Autowired
-	public void setImportExcelUtil(ImportExcelUtil importExcelUtil) {
+	public void setImportExcelUtil(ImportExcelI importExcelUtil) {
 		this.importExcelUtil = importExcelUtil;
 	}
 	/**
@@ -84,7 +85,7 @@ public class ReportFormAction extends BaseAction {
 			FileInputStream in;
 			try {
 				in = new FileInputStream(fileName);
-				importExcelUtil.getBankListByExcel(in, filename);
+				importExcelUtil.getListByExcel(in, filename);
 				
 			} catch (Exception e) {
 				e.printStackTrace();
