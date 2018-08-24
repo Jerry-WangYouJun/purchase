@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -28,7 +29,7 @@ import com.saki.service.ImportExcelI;
 @Service("importExcelImpl")
 public class ImportExcelImpl  implements ImportExcelI{
 	
-	private BaseDaoI<TProduct> productDao;
+	private BaseDaoI productDao;
 
 	public BaseDaoI getProductDao() {
 		return productDao;
@@ -43,7 +44,6 @@ public class ImportExcelImpl  implements ImportExcelI{
 	private final static String excel2007U =".xlsx";   //2007+ �汾��excel
 	
 	/**
-	 * ��������ȡIO���е����ݣ���װ��List<List<Object>>����
 	 * @param in,fileName
 	 * @return
 	 * @throws IOException 
@@ -52,7 +52,6 @@ public class ImportExcelImpl  implements ImportExcelI{
 	public  void getListByExcel(InputStream in,String fileName) throws Exception{
 		List<List<Object>> list = null;
 		
-		//����Excel������
 		Workbook work = this.getWorkbook(in,fileName);
 		if(null == work){
 			throw new Exception("����Excel������Ϊ�գ�");
@@ -62,17 +61,14 @@ public class ImportExcelImpl  implements ImportExcelI{
 		Cell cell = null;
 		
 		list = new ArrayList<List<Object>>();
-		//����Excel�����е�sheet
 		for (int i = 0; i < work.getNumberOfSheets(); i++) {
 			sheet = work.getSheetAt(i);
 			if(sheet==null){continue;}
 			
-			//������ǰsheet�е�������
 			for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
 				row = sheet.getRow(j);
 				if(row==null||sheet.getFirstRowNum()==j){continue;}
 				
-				//�������е���
 				List<Object> li = new ArrayList<Object>();
 				for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
 					cell = row.getCell(y);
@@ -100,16 +96,27 @@ public class ImportExcelImpl  implements ImportExcelI{
 		Iterator<String> it = resultMap.keySet().iterator();
 		while(it.hasNext()) {
 			String parent = it.next();
-			TProduct productSave = new TProduct();
-			productSave.setProduct(parent);
-			productDao.save(productSave);
-			System.out.println(productSave.getId());
+			TProduct parentProductForSave = new TProduct();
+			parentProductForSave.setProduct(parent);
+			System.out.println(parentProductForSave.getId());
+			productDao.save(parentProductForSave);
 			Iterator<String> child = resultMap.get(parent).keySet().iterator();
 			while(child.hasNext()) {
+				TProduct childProductForSave = new TProduct();
 				String  pro = child.next();
+				childProductForSave.setProduct(pro);
+				childProductForSave.setParentId(parentProductForSave.getId());
 				TProduct product =  resultMap.get(parent).get(pro);
-				for(TProductDetail detail : product.getDetailList()) {
+				childProductForSave.setBase(product.getBase());
+				productDao.save(childProductForSave);
+				if(StringUtils.isEmpty(parentProductForSave.getUnit())) {
+					parentProductForSave.setUnit(product.getUnit());
 				}
+				for(TProductDetail detail : product.getDetailList()) {
+					detail.setProductId(childProductForSave.getId());
+					productDao.save(detail);
+				}
+				productDao.update(parentProductForSave);
 			}
 		}
 	}

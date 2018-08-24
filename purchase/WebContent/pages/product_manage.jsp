@@ -223,10 +223,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#importProduct").click(function(){
 				layer.open({
 					  type: 2,
-					  title: '新增',
+					  title: '导入',
 					  shadeClose: true,
 					  shade: 0.8,
-					  area: ['380px', '90%'],
+					  area: ['380px', '20%'],
 					  content: '<%=path%>/pages/product_import.jsp' //iframe的url
 				});
 			});
