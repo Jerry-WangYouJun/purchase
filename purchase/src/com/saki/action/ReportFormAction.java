@@ -16,6 +16,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.saki.entity.Grid;
+import com.saki.entity.Message;
 import com.saki.model.TOrder;
 import com.saki.service.ImportExcelI;
 import com.saki.service.OrderServiceI;
@@ -83,13 +84,18 @@ public class ReportFormAction extends BaseAction {
 	public void importExcel() {
 			String fileName = ExcelUtil.copyFile(filename, uploadFile);
 			FileInputStream in;
+			Message j = new Message();
 			try {
 				in = new FileInputStream(fileName);
 				importExcelUtil.getListByExcel(in, filename);
-				
+				j.setSuccess(true);
+				j.setMsg("导入成功");
 			} catch (Exception e) {
 				e.printStackTrace();
+				j.setSuccess(false);
+				j.setMsg(e.getMessage());
 			}
+			super.writeJson(j);
 	}
 
 	// 发送响应流方法

@@ -226,7 +226,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  title: '导入',
 					  shadeClose: true,
 					  shade: 0.8,
-					  area: ['380px', '20%'],
+					  area: ['450px', '40%'],
 					  content: '<%=path%>/pages/product_import.jsp' //iframe的url
 				});
 			});
