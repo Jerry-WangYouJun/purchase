@@ -280,6 +280,7 @@
 								<c:if test="${roleId eq 1 }">
 									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/admin_order_manage.jsp')"> 快速下单</a></li>
 									<li class="active-menu"><a href="#" onclick="openTab('加急订单管理','${basePath}/pages/urgent_manage.jsp')"> 加急订单管理</a></li>
+									<li class="active-menu"><a href="#" onclick="openTab('物流信息管理','${basePath}/pages/transport_manage.jsp')"> 物流信息管理</a></li>
 								</c:if>
 								<c:if test="${roleId eq 3 }">
 									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')">  快速下单</a></li>

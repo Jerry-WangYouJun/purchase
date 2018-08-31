@@ -24,6 +24,7 @@ public class TUserProduct implements java.io.Serializable {
 	private Integer roleId;
 	private Double price ;
 	private Double markup;
+	//private Double taxrate; 
 
 	// Constructors
 
@@ -32,7 +33,8 @@ public class TUserProduct implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TUserProduct(Integer companyId, Integer productDetailId, String status, Integer roleId , Double price) {
+	public TUserProduct(Integer companyId, Integer productDetailId, String status
+			, Integer roleId , Double price ) {
 		this.companyId = companyId;
 		this.productDetailId = productDetailId;
 		this.status = status;
@@ -111,5 +113,13 @@ public class TUserProduct implements java.io.Serializable {
 	public void setMarkup(Double markup) {
 		this.markup = markup;
 	}
+//	@Column(name="taxrate")
+//	public Double getTaxrate() {
+//		return taxrate;
+//	}
+//
+//	public void setTaxrate(Double taxrate) {
+//		this.taxrate = taxrate;
+//	}
 	
 }

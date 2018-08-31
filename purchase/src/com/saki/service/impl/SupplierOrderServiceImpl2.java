@@ -42,6 +42,11 @@ public class SupplierOrderServiceImpl2 implements SupllierOrderServiceI{
 	public void setOrderDao(BaseDaoI supplierOrderDao) {
 		this.supplierOrderDao = supplierOrderDao;
 	}
+	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	@Override
 	public void add(Object object) {

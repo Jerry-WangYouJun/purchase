@@ -62,17 +62,14 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	}
 	
 	public void loadProducntDetailByCompany(){
-			Grid grid = new Grid();
-			String cname = getParameter("cname");
-			String subProName = getParameter("subProName");
-			int companyId =  0 ;
-			if(getSession().getAttribute("companyId")!= null){
-				 companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
-			}
-			List<Map<String, Object>>  l = productService.searchProductDetailByCompanyId(companyId , cname ,subProName);
-			//List<Map<String,Object>>  list = orderService.searchDetail(id);
-			grid.setTotal(l.size());
-			grid.setRows(l);
+		Grid grid = new Grid();
+		String cname = getParameter("cname");
+		String subProName = getParameter("subProName");
+		int companyId =  0 ;
+		if(getSession().getAttribute("companyId")!= null){
+			 companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
+		}
+		grid = productService.searchProductDetailByCompanyId(companyId , cname ,subProName,page,rows);
 		super.writeJson(grid);
 	}
 	
@@ -131,7 +128,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		Message j = new Message();
 		try{
 			userProductService.updateMarkupPrice(  Integer.valueOf(getParameter("mapid")) 
-					, Double.valueOf(getParameter("markup")));
+					, getParameter("column"), Double.valueOf(getParameter("markup")));
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){

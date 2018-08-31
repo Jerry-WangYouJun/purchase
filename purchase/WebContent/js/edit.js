@@ -179,6 +179,9 @@
     
     function changeAmount(){
     		var row = $('#table_add').datagrid('getSelected');  
+    		if(row == null){
+    			return false ;
+    		}
         var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
          var bra = $("#table_add").datagrid('getEditor', {  
                 index : rowIndex,  
@@ -193,7 +196,16 @@
              index : rowIndex,  
              field : 'acount'  
          });
-        $(bra.target).textbox('setValue', price.target.textbox('getValue') * acount.target.textbox('getValue'));
+         var taxrate = $("#table_add").datagrid('getEditor', {  
+             index : rowIndex,  
+             field : 'taxrate'  
+         });
+         var taxflag = $("#taxrate").val();
+         var amount = price.target.textbox('getValue') * acount.target.textbox('getValue');
+//         if(taxflag != '0'){
+//        	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
+//         }
+        $(bra.target).textbox('setValue', amount);
     }
     
     //获取页面URL

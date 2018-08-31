@@ -53,6 +53,13 @@ public class ProductServiceImpl implements ProductServiceI{
 	public void setProductDetailService(ProductDetailServiceI productDetailService) {
 		this.productDetailService = productDetailService;
 	}
+	
+	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public void add(Object object) {
 		this.produceDao.saveOrUpdate(object);
@@ -400,7 +407,9 @@ public class ProductServiceImpl implements ProductServiceI{
 	}
 	
 	@Override
-	public List<Map<String , Object>> searchProductDetailByCompanyId(Integer companyId , String cname , String subProName) {
+	public Grid searchProductDetailByCompanyId(Integer companyId , 
+			String cname , String subProName ,String page , String rows) {
+		Grid grid = new Grid(); 
 		Map<String,Object> map = new HashMap<String,Object>();
 		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c  "
 				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id   "   ;
@@ -417,7 +426,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			hql += " and d.subProduct like '%" + subProName + "%'";
 		}
 		hql += " order by c.name ,  p.product  , d.subProduct , d.format , d.material  ";
-		List<Object[]> list = produceDao.find(hql , map);
+		List<Object[]> list = produceDao.find(hql , map , Integer.valueOf(page), Integer.valueOf(rows));
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		for (int i = 0; i < list.size(); i++) {
 			Object[] objs = list.get(i);
@@ -440,9 +449,13 @@ public class ProductServiceImpl implements ProductServiceI{
 			tempMap.put("mapid", mapper.getId());
 			tempMap.put("status", mapper.getStatus());
 			tempMap.put("markup", mapper.getMarkup());
+			//tempMap.put("taxrate", mapper.getTaxrate());
 			mapList.add(tempMap);
 		}
-		return mapList;
+		Long counts = produceDao.count("select count(*) " + hql, map);
+		grid.setTotal((Integer.valueOf(counts+"")));
+		grid.setRows(mapList);
+		return grid;
 	}
 	
 	@Override

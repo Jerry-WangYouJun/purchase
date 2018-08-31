@@ -26,8 +26,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">
- 		
- 		客户/供应商管理
  				<c:choose >
 									<c:when test="${roleId eq '1' }">
 										客户 &供应商 管理

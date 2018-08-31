@@ -35,6 +35,13 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	
 	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	@Override
 	public void add(Object object) {
 		orderDao.save(object);
 	}
@@ -376,6 +383,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("status", mapper.getStatus());
 			map.put("supplierCompanyId", company.getId());
 			map.put("default", false);
+			//map.put("taxrate", mapper.getTaxrate());
 			mapListTemp.add(map);
 		}
 		for(Map<String , Object> map : mapListTemp){

@@ -65,6 +65,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                	 </c:forEach>
 		                </select>
 		        </div>
+		       <%-- <div class="form-group col-md-6">
+		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">是否含税：</label>
+		                <select name="taxrate" id= "taxrate" class="easyui-combobox" 
+		                 editable="false" style="display: inline-block;width: 40%" 
+		                 class="form-control select2 easyui-combobox" onchange="test()">
+			                	 	 <option value="1"> 含税</option>
+			                	 	 <option value="0"> 不含税</option>
+		                </select>
+		        </div> --%>
 		    	</form>   
 			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
 		</div>
@@ -83,6 +92,44 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 		   
     <script type="text/javascript">
+    $(function(){
+	    /* 	$('#taxrate').combobox({
+	    		onSelect: function(param){
+	    			var tax = $("#taxrate").val();
+	    			if(tax != param.value){
+	    				var rows = $("#table_add").datagrid("getData");
+	    				for(var i in rows.rows){
+ 	    					if(rows.rows[i].price){
+ 	    						$('#table_add').datagrid('beginEdit', i);
+ 	    						var bra = $("#table_add").datagrid('getEditor', {  
+ 	    			                index : i,  
+ 	    			                field : 'amount'  
+ 	    			            }); 
+ 	    						var price = $("#table_add").datagrid('getEditor', {  
+ 	    				             index : i,  
+ 	    				             field : 'price'  
+ 	    				         });
+ 	    				         
+ 	    				         var acount = $("#table_add").datagrid('getEditor', {  
+ 	    				             index : i,  
+ 	    				             field : 'acount'  
+ 	    				         });
+ 	    				         var taxrate = $("#table_add").datagrid('getEditor', {  
+ 	    				             index : i,  
+ 	    				             field : 'taxrate'  
+ 	    				         });
+ 	    				         var amount = price.target.textbox('getValue') * acount.target.textbox('getValue');
+ 	    				         if(param.value == '0'){
+ 	    				        	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
+ 	    				         }
+ 	    				        $(bra.target).textbox('setValue', amount);
+ 	    				       $('#table_add').datagrid('endEdit', i);
+	    					} 
+	    				}
+	    			}
+	    		}
+	    	});
+    }); */
     
     function update_confirm(){
     			$.messager.confirm(
@@ -301,7 +348,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                            onSelect:function(data){ 
 				                            	//console.info(data);
 				                            	//选择的行
-				                                var row = $('#table_add').datagrid('getSelected');  
+				                                var row = $('#table_add').datagrid('getSelected'); 
+				                            	if(row == null){
+				                            		return false;
+				                            	}
 				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 				                                var product = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'product'});
 				                                var initialValue =  $(product.target).textbox('getValue');//产品大类原来的值
@@ -430,6 +480,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                    });  
 			                                $(ed.target).textbox('setValue',  data.price); 
 			                                $(ed.target).combobox('disable');
+			                               /*  var taxrate = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'taxrate'  
+		                                    });  
+		                                $(taxrate.target).textbox('setValue',  data.taxrate); 
+		                                $(taxrate.target).combobox('disable'); */
 			                                var idvalue = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
 		                                        field : 'supplierCompanyId'  
@@ -488,6 +544,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'detailId', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
+							//	{field:'taxrate',title:'不含税(%)',width:100,align:'center',editor:'textbox'},
 								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 								{field:'defaultFlag',title:'托管采购',width:100, editor: {
 			                        type: 'combobox',
@@ -497,7 +554,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                            textField: "text",
 			                            editable: false,
 			                            onSelect:function(data){ 
-			                            	console.info(data);
 			                                var row = $('#table_add').datagrid('getSelected');  
 			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 		                                	var bra = $("#table_add").datagrid('getEditor', {  

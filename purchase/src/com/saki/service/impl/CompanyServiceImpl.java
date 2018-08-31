@@ -130,6 +130,13 @@ public class CompanyServiceImpl implements CompanyServiceI{
 		}
 		return lc;		
 	}
+	
+	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	public UserServiceI getUserService() {
 		return userService;
 	}

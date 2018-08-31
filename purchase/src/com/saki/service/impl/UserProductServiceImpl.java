@@ -107,8 +107,8 @@ public class UserProductServiceImpl implements UserProductServiceI{
 	}
 
 	@Override
-	public void updateMarkupPrice(Integer mapid, Double markup) {
-		String sql = " update t_user_product  set markup = " + markup + "  where id =" + mapid ;
+	public void updateMarkupPrice(Integer mapid, String column,Double markup) {
+		String sql = " update t_user_product  set "+ column+" = " + markup + "  where id =" + mapid ;
 		userProductDao.executeUpdate(sql);
 	}
 

@@ -39,6 +39,13 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	}
 	
 	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
+	@Override
 	public void add(Object object) {
 		supplierOrderDao.save(object);
 	}

@@ -20,6 +20,13 @@ public class UserServiceImpl implements UserServiceI{
 
 	private BaseDaoI userDao;
 	private CompanyServiceI companyService;
+	
+	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	@Override
 	public void add(Object object) {
 		TUser user = (TUser)object ;

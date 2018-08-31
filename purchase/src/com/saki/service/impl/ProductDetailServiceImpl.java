@@ -19,6 +19,12 @@ public class ProductDetailServiceImpl implements ProductDetailServiceI{
 	private BaseDaoI productDetailDao;
 	
 	@Override
+	public Grid search(Map map, String sort, String order, String page, String rows) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	@Override
 	public void add(Object object) {
 		// TODO Auto-generated method stub
 		productDetailDao.saveOrUpdate(object);

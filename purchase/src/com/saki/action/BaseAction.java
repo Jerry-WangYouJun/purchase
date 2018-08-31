@@ -21,8 +21,8 @@ public class BaseAction {
 	
 	String name = getParameter("name");
 	String value = getParameter("value");
-	String page = getParameter("pageNumber");
-	String rows = getParameter("pageSize");
+	String page = getParameter("page");
+	String rows = getParameter("rows");
 	String sort = getParameter("sort");
 	String order = getParameter("order");
 	

@@ -70,13 +70,10 @@ body {
 		  id ="company_form">
 
 		<fieldset>
-			<legend>企业信息注册</legend>
+			<legend>企业信息注册  <a href="${pageContext.request.contextPath}" class="btn btn-primary pull-right">返回</a>
+			</legend>
 		</fieldset>
 
-			<div class="form-group col-md-6">
-            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">公司名称：</label>
-                <input name="name" class="form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
-            </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">企业类型：</label>
                 <select name="roleId" id="roleId"  
@@ -84,6 +81,10 @@ body {
                 	<option value="2">供货商</option>
                 	<option value="3">客户</option>
                 </select>
+            </div>
+			<div class="form-group col-md-6">
+            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">公司名称：</label>
+                <input name="name" class="form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
              <div class="form-group col-md-6 brand">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">品牌：</label>
@@ -104,16 +105,6 @@ body {
             <div class="form-group col-md-6 business"  style="margin-bottom:0px;">
             		<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">主营业务：</label>
                 <input name="business" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
-            </div>
-            <div class="form-group col-md-6 business" style="margin-bottom:0px;">
-            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">企业星级：</label>
-                <select name = "level"  class=" form-control" style="display: inline-block;width: 45%" >
-                	 <option >一星</option>
-                	 <option >二星</option>
-                	 <option >三星</option>
-                	 <option >四星</option>
-                	 <option >五星</option>
-                </select>
             </div>
             
             	<label class="col-md-12 brand" style="color:red;display: inline-block;text-align: left;margin-bottom: 15px;">注意：请填写主要生产产品，便于平台进行推荐</label>
@@ -139,7 +130,7 @@ body {
             </div>
             <input id="id" name="id" style="display:none;"/> 
 			<div class="form-group">
-				<div class="col-sm-6 col-sm-offset-2">
+				<div class="col-sm-8 col-sm-offset-2">
 						<button id="company_save" type="button" class="btn btn-primary btn-block btn-lg" >保存</button>
 				</div>
 			</div>

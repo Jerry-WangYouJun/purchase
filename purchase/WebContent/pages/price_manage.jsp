@@ -119,6 +119,20 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								textField:'markup'
 							}
 					}},
+					{field:'taxrate',title:'不含税比率',width:20,align:'center',
+						editor:{
+							type:'text',
+							options:{
+								valueField:'taxrate',
+								textField:'taxrate'
+							}
+					},formatter: function(value,row,index){
+						if(value ){
+							return value +  "%";
+						}else{
+							return "";
+						}
+					}},
 					{field:'unit',title:'单位',width:20,align:'center'}
 				]],				
 			});
@@ -178,7 +192,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						$("input.datagrid-editable-input").focus();
 						return false ;
 					}
-					updatePriceMarkup(val , target.mapid);
+					updatePriceMarkup(val ,  target.mapid , field);
 				}
 				$("input.datagrid-editable-input").val(Number(val));
 				$("#user_table").datagrid('endEdit',rowIndex);
@@ -202,10 +216,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		});
 		}
 		
-		function updatePriceMarkup(markup , mapid){
+		function updatePriceMarkup(markup , mapid , column){
 			$.ajax({ 
     			url: '${pageContext.request.contextPath}/productAction!updateMarkupPrice.action',
-    			data : {"markup":markup ,"mapid":mapid },
+    			data : {"markup":markup ,"mapid":mapid , "column": column},
     			dataType : 'json',
     			success : function(obj){
     				if(obj.success){
