@@ -32,7 +32,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
 		  <c:if test="${roleId eq 1 }">
  			 <div >
-            	公司名称：
+            	物流名称：
                 <input name="transname" id = "transname"class=" form-control" style="display: inline-block;width: 10%">
             物流单号：
                  <input name="transno" id = "transno"class=" form-control" style="display: inline-block;width: 10%">
@@ -52,8 +52,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript">
     function query(){
 	    	$('#company_table').datagrid('load', {
-	    	    name: $("#transname").val(),
-	    	    roleId: $("#transno").val()
+	    		transname: $("#transname").val(),
+	    		transno: $("#transno").val()
 	    	});
     }
     	$(function(){
@@ -243,7 +243,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">客户订单：</label>
-                <input name="orderNo" id="orderNo" onchange="checkOnly(this.value)"  class="form-control" style="display: inline-block;width: 45%"
+                <input name="orderName" id="orderNo" onchange="checkOnly(this.value)"  class="form-control" style="display: inline-block;width: 45%"
                  placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">

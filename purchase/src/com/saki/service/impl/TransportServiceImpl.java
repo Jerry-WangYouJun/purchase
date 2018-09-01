@@ -133,6 +133,7 @@ public class TransportServiceImpl implements TransportServiceI{
 	@Override
 	public int checkOrderNo(String orderNo) {
 		String hql = "select u.id from TOrder u  where u.orderNo =  '" + orderNo + "'";
-		return (Integer)transDao.get(hql);
+		Object result = transDao.get(hql);
+		return result == null ? 0 : (Integer)transDao.get(hql);
 	}
 }

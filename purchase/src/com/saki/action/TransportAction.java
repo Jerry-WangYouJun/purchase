@@ -115,7 +115,7 @@ public class TransportAction extends BaseAction implements ModelDriven<TTranspor
 		}catch(Exception e){
 			e.printStackTrace();
 			j.setSuccess(false);
-			j.setMsg("删除失败");
+			j.setMsg("操作失败");
 		}
 		super.writeJson(j);
 	}
