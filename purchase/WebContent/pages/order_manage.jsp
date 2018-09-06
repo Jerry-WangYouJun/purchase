@@ -92,44 +92,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
 		   
     <script type="text/javascript">
-    $(function(){
-	    /* 	$('#taxrate').combobox({
-	    		onSelect: function(param){
-	    			var tax = $("#taxrate").val();
-	    			if(tax != param.value){
-	    				var rows = $("#table_add").datagrid("getData");
-	    				for(var i in rows.rows){
- 	    					if(rows.rows[i].price){
- 	    						$('#table_add').datagrid('beginEdit', i);
- 	    						var bra = $("#table_add").datagrid('getEditor', {  
- 	    			                index : i,  
- 	    			                field : 'amount'  
- 	    			            }); 
- 	    						var price = $("#table_add").datagrid('getEditor', {  
- 	    				             index : i,  
- 	    				             field : 'price'  
- 	    				         });
- 	    				         
- 	    				         var acount = $("#table_add").datagrid('getEditor', {  
- 	    				             index : i,  
- 	    				             field : 'acount'  
- 	    				         });
- 	    				         var taxrate = $("#table_add").datagrid('getEditor', {  
- 	    				             index : i,  
- 	    				             field : 'taxrate'  
- 	    				         });
- 	    				         var amount = price.target.textbox('getValue') * acount.target.textbox('getValue');
- 	    				         if(param.value == '0'){
- 	    				        	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
- 	    				         }
- 	    				        $(bra.target).textbox('setValue', amount);
- 	    				       $('#table_add').datagrid('endEdit', i);
-	    					} 
-	    				}
-	    			}
-	    		}
-	    	});
-    }); */
+    	
     
     function update_confirm(){
     			$.messager.confirm(
@@ -154,14 +117,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}
 				}); 
     	 }
-    /* 	$(function(){
-    		$('#confirmId').combobox({
-    			onSelect:function(n,o){
-    				 console.info(n);
-    		    }
-    		});
-    	})
-     */
+    
     	$(function(){
     		$("#order_form").validate();
     		 $("#confirmId").combobox({
@@ -593,7 +549,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];
-    	$(function(){
+		 $(function(){
 				$('#table_add').datagrid({
 					url:'${pageContext.request.contextPath}/orderAction!searchDetail.action' ,
 					pagination: true,
