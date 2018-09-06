@@ -82,38 +82,50 @@ public class ImportExcelImpl  implements ImportExcelI{
 					resultMap.put(product.getProduct(), tempMap);
 				}
 		}
-		Map<Integer , List<TProduct> >  productChildMap = new HashMap<>();
+		Map<String , TProduct >  productChildMap = new HashMap<>();
 		Map<String , TProduct >  productMap = new HashMap<>();
 		List<TProduct> productParentList = productService.searchFirstProductType();
 		for(TProduct parent : productParentList ){
 			List<TProduct> productChildList = productService.searchChildProductType(parent.getId());
 			for(TProduct child : productChildList){
 				child.setDetailList(detailService.loadByProductId(child.getId()));
+				productChildMap.put(child.getProduct(), child);
 			}
-			productChildMap.put(parent.getId(), productChildList);
 			productMap.put(parent.getProduct(), parent);
 		}
 		Iterator<String> it = resultMap.keySet().iterator();
 		while(it.hasNext()) {
 			String parent = it.next(); 
 			TProduct parentProductForSave = new TProduct();
+			if(productMap.containsKey(parent)) {
+				parentProductForSave  = productMap.get(parent);
+			}
 			parentProductForSave.setProduct(parent);
-			productDao.save(parentProductForSave);
+			productDao.saveOrUpdate(parentProductForSave);
 			Iterator<String> child = resultMap.get(parent).keySet().iterator();
 			while(child.hasNext()) {
 				TProduct childProductForSave = new TProduct();
 				String  pro = child.next();
+				if(productChildMap.containsKey(pro)) {
+					childProductForSave = productChildMap.get(pro);
+				}
 				childProductForSave.setProduct(pro);
 				childProductForSave.setParentId(parentProductForSave.getId());
 				TProduct product =  resultMap.get(parent).get(pro);
 				childProductForSave.setBase(product.getBase());
-				productDao.save(childProductForSave);
-				if(StringUtils.isEmpty(parentProductForSave.getUnit())) {
-					parentProductForSave.setUnit(product.getUnit());
-				}
+				productDao.saveOrUpdate(childProductForSave);
+				parentProductForSave.setUnit(product.getUnit());
+				continueOut:
 				for(TProductDetail detail : product.getDetailList()) {
+					if(productChildMap.containsKey(pro)){
+						for(TProductDetail detailOld :childProductForSave.getDetailList() ) {
+							if(detailOld.equals(detail)) {
+								 continue continueOut;
+							}
+						}
+					}
 					detail.setProductId(childProductForSave.getId());
-					productDao.save(detail);
+					productDao.saveOrUpdate(detail);
 				}
 				productDao.update(parentProductForSave);
 			}
