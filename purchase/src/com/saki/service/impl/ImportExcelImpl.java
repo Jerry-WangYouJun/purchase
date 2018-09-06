@@ -25,20 +25,11 @@ import com.saki.dao.BaseDaoI;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.service.ImportExcelI;
+import com.saki.service.ProductDetailServiceI;
+import com.saki.service.ProductServiceI;
 
 @Service("importExcelImpl")
 public class ImportExcelImpl  implements ImportExcelI{
-	
-	private BaseDaoI productDao;
-
-	public BaseDaoI getProductDao() {
-		return productDao;
-	}
-
-	@Autowired
-	public void setProductDao(BaseDaoI productDao) {
-		this.productDao = productDao;
-	}
 	
 	private final static String excel2003L =".xls";    //2003- �汾��excel
 	private final static String excel2007U =".xlsx";   //2007+ �汾��excel
@@ -50,17 +41,15 @@ public class ImportExcelImpl  implements ImportExcelI{
 	 */
 	@Override
 	public  void getListByExcel(InputStream in,String fileName) throws Exception{
-		List<List<Object>> list = null;
-		
 		Workbook work = this.getWorkbook(in,fileName);
 		if(null == work){
-			throw new Exception("����Excel������Ϊ�գ�");
+			throw new Exception("Excel文件中内容为空");
 		}
 		Sheet sheet = null;
 		Row row = null;
 		Cell cell = null;
 		
-		list = new ArrayList<List<Object>>();
+		List<List<Object>> list = new ArrayList<List<Object>>();
 		for (int i = 0; i < work.getNumberOfSheets(); i++) {
 			sheet = work.getSheetAt(i);
 			if(sheet==null){continue;}
@@ -93,12 +82,22 @@ public class ImportExcelImpl  implements ImportExcelI{
 					resultMap.put(product.getProduct(), tempMap);
 				}
 		}
+		Map<Integer , List<TProduct> >  productChildMap = new HashMap<>();
+		Map<String , TProduct >  productMap = new HashMap<>();
+		List<TProduct> productParentList = productService.searchFirstProductType();
+		for(TProduct parent : productParentList ){
+			List<TProduct> productChildList = productService.searchChildProductType(parent.getId());
+			for(TProduct child : productChildList){
+				child.setDetailList(detailService.loadByProductId(child.getId()));
+			}
+			productChildMap.put(parent.getId(), productChildList);
+			productMap.put(parent.getProduct(), parent);
+		}
 		Iterator<String> it = resultMap.keySet().iterator();
 		while(it.hasNext()) {
-			String parent = it.next();
+			String parent = it.next(); 
 			TProduct parentProductForSave = new TProduct();
 			parentProductForSave.setProduct(parent);
-			System.out.println(parentProductForSave.getId());
 			productDao.save(parentProductForSave);
 			Iterator<String> child = resultMap.get(parent).keySet().iterator();
 			while(child.hasNext()) {
@@ -264,5 +263,39 @@ public class ImportExcelImpl  implements ImportExcelI{
 	}
 
 	
+
+	private BaseDaoI productDao;
+
+	public BaseDaoI getProductDao() {
+		return productDao;
+	}
+
+	@Autowired
+	public void setProductDao(BaseDaoI productDao) {
+		this.productDao = productDao;
+	}
+	
+	private ProductServiceI productService;
+	
+	
+	public ProductServiceI getProductService() {
+		return productService;
+	}
+	@Autowired
+	public void setProductService(ProductServiceI productService) {
+		this.productService = productService;
+	}
+	
+	private ProductDetailServiceI detailService ;
+	
+	
+
+	public ProductDetailServiceI getDetailService() {
+		return detailService;
+	}
+	@Autowired
+	public void setDetailService(ProductDetailServiceI detailService) {
+		this.detailService = detailService;
+	}
 
 }

@@ -138,7 +138,7 @@ function submitForm(){
     	url: '${pageContext.request.contextPath}/userAction!login.action',
     	data : $('#log_form').serialize(),
     	dataType : 'json',
-    	success : function(obj){
+    	success : function  test(obj){
     		if(obj.success){
 				location.replace('<%=path%>' + '/index.jsp');
 			}else{

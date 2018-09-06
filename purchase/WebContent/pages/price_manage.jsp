@@ -119,7 +119,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								textField:'markup'
 							}
 					}},
-					{field:'taxrate',title:'不含税比率',width:20,align:'center',
+					/* {field:'taxrate',title:'不含税比率',width:20,align:'center',
 						editor:{
 							type:'text',
 							options:{
@@ -132,7 +132,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}else{
 							return "";
 						}
-					}},
+					}}, */
 					{field:'unit',title:'单位',width:20,align:'center'}
 				]],				
 			});

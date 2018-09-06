@@ -341,7 +341,7 @@
 						<ul class="breadcrumb" style="padding:15px 15px">
 							<li><i class="icon-home"></i> <a href="index.jsp">首页</a>
 								<i class="icon-angle-right"></i></li>
-							<li><a href="#" id="panelName">Dashboard</a></li>
+							<li><a href="#" id="panelName"></a></li>
 							<li class="pull-right no-text-shadow" style="padding-right: 50px">
 								<div id="dashboard-report-range"
 									class="dashboard-date-range no-tooltip-on-touch-device responsive"
