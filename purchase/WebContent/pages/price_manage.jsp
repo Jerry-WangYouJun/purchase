@@ -43,7 +43,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div id="toolbar_user" style="padding:2px 5px;">
  		<c:if test="${roleId eq '1'}">
-        	<a onclick="price_default()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a>    
+        	<a onclick="price_default()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a> 
+        	<a onclick="markup_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a>       
  		</c:if>
     </div>
 	
@@ -251,6 +252,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    				}
 	    			}
 	    		});
+			}
+		}
+		function markup_many(){
+			var flag = confirm("确定进行批量修改加价？");
+			if(flag){
+				var checkedItems = $('#user_table').datagrid('getSelections');
+				$.messager.prompt('','请输入要加价的金额',function(s){
+					$.ajax({ 
+		    			url: '${pageContext.request.contextPath}/productAction!updateMarkupMany.action',
+		    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
+		    			dataType : 'json',
+		    			success : function(obj){
+		    				if(obj.success){
+		    				 	alert(obj.msg);
+		    				 	$('#user_table').datagrid('reload');
+		    				}else{
+		    					alert(obj.msg);
+		    					$('#user_table').datagrid('reload');
+		    				}
+		    			}
+		    		}); 
+				});
 			}
 		}
     </script>
