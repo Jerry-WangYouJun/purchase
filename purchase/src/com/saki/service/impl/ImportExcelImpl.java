@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -70,10 +69,18 @@ public class ImportExcelImpl  implements ImportExcelI{
 		saveProducts( list);
 	}
 	
-	public void saveProducts(List<List<Object>> list ){
+	@SuppressWarnings("unchecked")
+	public void saveProducts(List<List<Object>> list ) throws Exception{
 		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
-		for (List<Object> list2 : list) {
-				TProduct  product =  getProductByList(list2);//一条数据
+		for (int i= 0 ; i < list.size() ; i ++) {
+			 List<Object> list2 = list.get(i);
+				TProduct product;
+				try {
+					product = getProductByList(list2);
+				} catch (Exception e) {
+					throw new Exception("第"+ (i +2) + "行出错:" + e.getMessage());
+				}
+				//一条数据
 				Map<String , TProduct> tempMap = new HashMap<>();
 				tempMap.put( product.getChildProName(), product);
 				if(resultMap.containsKey(product.getProduct())) {
@@ -132,7 +139,7 @@ public class ImportExcelImpl  implements ImportExcelI{
 		}
 	}
 	
-	private TProduct getProductByList(List<Object> list) {
+	private TProduct getProductByList(List<Object> list) throws Exception {
 		TProduct product = new TProduct();
 		List<String>  proDetailNameList = new ArrayList<>(); 
 		List<String>  proDetailFormatList = new ArrayList<>(); 
@@ -164,17 +171,45 @@ public class ImportExcelImpl  implements ImportExcelI{
 			 }
 		}
 		List<TProductDetail> detailListFirst = new ArrayList<>();
-		//如果有规格（类型名）添加对应数据到list中，没有则添加一条空的，方便后面处理其他数据
-		if(proDetailNameList.size() > 0) {
-			for(String detailName :proDetailNameList) {
-				TProductDetail detailTemp = new TProductDetail();
-				detailTemp.setSubProduct(detailName);
-				detailListFirst.add(detailTemp);
-			}
-		}else {
-			TProductDetail detailTemp = new TProductDetail();
-			detailListFirst.add(detailTemp);
+		//根据产品型号  生成详情列表集合
+		setFirstDetailList(proDetailNameList , detailListFirst);
+		//判断 型号和规格是一对一(map)还是多对多(matrix)关系
+		if(list.size()  >=6  &&  "是".equals(list.get(6))){
+			setSecondDetailListAsMap( proDetailFormatList, detailListFirst);
+		}else{
+			setSecondDetailListAsMatrix(proDetailFormatList, detailListFirst);
 		}
+		//根据材料 生成详情列表集合
+		setThirdDetailList(proDetailMaterialList , detailListFirst);
+		product.setDetailList(detailListFirst);
+		return product;
+	}
+	
+	/**
+	 *   获得 型号*规格*材质  一对一的详情信息集合
+	 * @throws Exception 
+	 */
+	private void setSecondDetailListAsMap(
+			List<String> proDetailFormatList,
+			List<TProductDetail> detailListFirst) throws Exception {
+		if(proDetailFormatList.size() > 0) {
+			for(int i = 0 ; i < proDetailFormatList.size() ; i++) {
+					if( i < detailListFirst.size()) {
+						detailListFirst.get(i).setFormat(proDetailFormatList.get(i));
+					}else{
+						throw new Exception("型号规格不匹配，型号与规格中的数量应一致！");
+					}
+			}
+		}
+	}
+
+
+	/**
+	 *   获得 型号*规格*材质  多对多的详情信息集合
+	 */
+	private void setSecondDetailListAsMatrix(
+			List<String> proDetailFormatList,
+			List<TProductDetail> detailListFirst) {
 		List<TProductDetail> detailListSecond = new ArrayList<>();
 		if(proDetailFormatList.size() > 0) {
 			for(int i = 0 ; i < proDetailFormatList.size() ; i++) {
@@ -191,6 +226,36 @@ public class ImportExcelImpl  implements ImportExcelI{
 			}
 		}
 		detailListFirst.addAll(detailListSecond);
+	}
+	
+	/**
+	 * 
+	 * @param proDetailNameList  不同型号集合（产品详情名字）
+	 * @param detailListFirst    根据型号获取的详情集合（后面会在此基础上添加 规格和材料对应的详情集合）
+	 */
+	private void setFirstDetailList(List<String> proDetailNameList,
+			List<TProductDetail> detailListFirst) {
+		//如果有规格（类型名）添加对应数据到list中，没有则添加一条空的，方便后面处理其他数据
+		if(proDetailNameList.size() > 0) {
+			for(String detailName :proDetailNameList) {
+				TProductDetail detailTemp = new TProductDetail();
+				detailTemp.setSubProduct(detailName);
+				detailListFirst.add(detailTemp);
+			}
+		}else {
+			TProductDetail detailTemp = new TProductDetail();
+			detailListFirst.add(detailTemp);
+		}
+		
+	}
+	
+	/**
+	 * 添加材料对象的detailList
+	 * @param proDetailMaterialList （不同材料集合）
+	 * @param detailListFirst   添加了材料种类之后扩充的详情信息集合
+	 */
+	private void setThirdDetailList(List<String> proDetailMaterialList,
+			List<TProductDetail> detailListFirst) {
 		List<TProductDetail> detailListThird = new ArrayList<>();
 		if(proDetailMaterialList.size() > 0) {
 			for(int i = 0 ; i < proDetailMaterialList.size() ; i++) {
@@ -208,8 +273,6 @@ public class ImportExcelImpl  implements ImportExcelI{
 			}
 		}
 		detailListFirst.addAll(detailListThird);
-		product.setDetailList(detailListFirst);
-		return product;
 	}
 
 	public static void main(String[] args) {
