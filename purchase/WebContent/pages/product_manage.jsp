@@ -293,10 +293,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">订单类别选择</span>
- 		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
- 		<a  id="importProduct" style="background-color:#e05447;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
+ 	</div>
+ 
+ 	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
+ 		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
+ 		<a  id="importProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
 <!--  		<a onclick="reset()" id="reset" style="background-color:#007FFF;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px;margin-right:10px">新增</a> 		
- --> 	</div>
+ --></div>
  	
 	<div class='container'>
 	<div class="row">
