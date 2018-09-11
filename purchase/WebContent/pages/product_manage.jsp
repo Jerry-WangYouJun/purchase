@@ -99,18 +99,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			$("#productBase").val(product.base);		    			
 		    			$("#productRemark").val(product.remark);
 		    			$("#parentId").val(product.parentId);
-		    			$(".divBase").show();
+		    			if(product.parentId > 0){
+			    			$(".divBase").show();
+		    			}else{
+		    				$(".divBase").hide();
+		    			}
 		    			$("#divUnit").show();
 		    			if(product.unit==null || product.unit=="")
 	    				{    					
 	    					$("#divUnit").hide();	    				
 	    				}
-		    			if(product.base==null || product.base=="")
+/* 		    			if(product.base==null || product.base=="")
 	    				{	    					
-	    					$(".divBase").hide();
+	    					$(".divBase").show();
 	    					
 	    				}
-		    		})
+ */		    		})
 			    	$("#detailType").hide();
 		    		$("#productType").show();
 		    		$(".errorColor").text('');
@@ -241,10 +245,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			var parentId = $("#parentId").val();
 			if($("#form1").validate().form()){
 				var reg=/^[-\+]?\d+(\.\d+)?$/;
-					if(productBase  == '' || productBase  == 0){
+					/* if(productBase  == '' || productBase  == 0){
 						 alert("基础采购量不能为空或0 ,请重新填写");
 						 return false;
-					}
+					} */
 				if(!reg.test(productBase)){
 					alert("基础采购量数字格式，请重新输入~");
 					$("#productBase").val('');
@@ -327,10 +331,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<div class="input-group divBase" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon3">基础采购量</span>
-			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" name="productBase" id="productBase" required>
+			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" name="productBase" id="productBase" >
 			</div>
 			 <span class="errorColor"></span>
-			 <div  class="divBase"><span style="color:red">*基础采购量只填写相应数量即可</span></div>
+			 <div  class="divBase"><span style="color:red">基础采购量只填写相应数量即可</span></div>
 			
 			<div class="input-group" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon4">备注</span>
@@ -358,13 +362,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<br>
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon2">规格</span>
-			  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" name="detailFormat" id="detailFormat" required>
+			  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" name="detailFormat" id="detailFormat" >
 			</div>
 			<span class="errorColor"></span>
 			<br>
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon3">材质/标准</span>
-			  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3"name="detailMaterial" id="detailMaterial" required>
+			  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3"name="detailMaterial" id="detailMaterial" >
 			</div>
 			<span class="errorColor"></span>
 			<br>

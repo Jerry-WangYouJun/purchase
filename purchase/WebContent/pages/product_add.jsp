@@ -64,7 +64,7 @@
 					<span class="errorColor"></span>
 					<div class="input-group divBase" style="margin-top:10px;display:none">
 					  <span class="input-group-addon" id="basic-addon3">基础采购量</span>
-					  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" id="productBase" name="productBase" required>
+					  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" id="productBase" name="productBase" >
 					</div>
 					<span class="errorColor"></span>
 					<div class="divBase" style="display:none;color:red;"><span >*基础采购量只填写相应数量即可</span></div>
@@ -84,13 +84,13 @@
 					<br>
 					<div class="input-group">
 					  <span class="input-group-addon" id="basic-addon2">规格</span>
-					  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" id="detailFormat" name="detailFormat" required>
+					  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" id="detailFormat" name="detailFormat" >
 					</div>
 					<span class="errorColor"></span>
 					<br>
 					<div class="input-group">
 					  <span class="input-group-addon" id="basic-addon3">材质/标准</span>
-					  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3" id="detailMaterial" name="detailMaterial" required>
+					  <input type="text" class="form-control" placeholder="材质/标准" aria-describedby="basic-addon3" id="detailMaterial" name="detailMaterial" >
 					</div>
 					<span class="errorColor"></span>
 					<br>
