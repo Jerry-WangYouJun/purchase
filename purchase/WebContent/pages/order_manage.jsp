@@ -380,7 +380,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品信息',align:'center',width:'20%',
+								{field:'sub_product',title:'产品信息',align:'center',
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    

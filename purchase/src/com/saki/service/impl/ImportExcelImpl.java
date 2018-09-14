@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
@@ -158,12 +159,23 @@ public class ImportExcelImpl  implements ImportExcelI{
 						product.setUnit(value);
 						break;
 					case 3 :
-						proDetailNameList = Arrays.asList(value.split(" "));
+						if(StringUtils.isNotEmpty(value.trim())){
+							try {
+								product.setBase(Integer.parseInt(value));
+							} catch (Exception e) {
+								product.setBase(1);
+							}
+						}else{
+							product.setBase(1);
+						}
 						break;
 					case 4 :
-						proDetailFormatList = Arrays.asList(value.split(" "));
+						proDetailNameList = Arrays.asList(value.split(" "));
 						break;
 					case 5 :
+						proDetailFormatList = Arrays.asList(value.split(" "));
+						break;
+					case 6 :
 						proDetailMaterialList = Arrays.asList(value.split(" "));
 						break;
 					}
@@ -174,7 +186,7 @@ public class ImportExcelImpl  implements ImportExcelI{
 		//根据产品型号  生成详情列表集合
 		setFirstDetailList(proDetailNameList , detailListFirst);
 		//判断 型号和规格是一对一(map)还是多对多(matrix)关系
-		if(list.size()  >=6  &&  "是".equals(list.get(6))){
+		if(list.size()  >= 7  &&  "是".equals(list.get(7))){
 			setSecondDetailListAsMap( proDetailFormatList, detailListFirst);
 		}else{
 			setSecondDetailListAsMatrix(proDetailFormatList, detailListFirst);

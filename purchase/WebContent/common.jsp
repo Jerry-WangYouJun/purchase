@@ -61,6 +61,16 @@
 		$.messager.confirm('提示','提交将保存当前所有修改，确定执行？',
 			function(r) {
 				if (r) {
+					var rows=$('#table_add').datagrid('getRows');
+					var sum =parseFloat(0) ;
+					for(var index in rows){
+						sum+=  parseFloat(rows[index].amount);
+						 console.info(sum);
+					}
+					if(sum < 2000){
+						alert("订单总额必须超过2000才能下单！");
+						return false;
+					}
 	                //利用easyui控件本身的getChange获取新添加，删除，和修改的内容  
 	                    var inserted = $("#table_add").datagrid('getChanges', "inserted");  
 	                    var deleted = $("#table_add").datagrid('getChanges', "deleted");  
