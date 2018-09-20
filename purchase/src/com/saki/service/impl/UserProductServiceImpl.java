@@ -80,7 +80,7 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		if(price == 0.0){
 			tempPrice = "price";
 		}
-		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price  , role_id ) "
+		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price   , role_id ) "
 				+ " VALUES (" + companyId + " , " + detailId + " , " + price + " , " + roleId + " )"
 				+ " ON DUPLICATE KEY UPDATE price = " + tempPrice + " ";
 		userProductDao.executeUpdate(sql);
@@ -114,7 +114,7 @@ public class UserProductServiceImpl implements UserProductServiceI{
 	
 	@Override
 	public void updateMarkupPriceByPercent(Integer mapid, Double markup) {
-		String sql = " update t_user_product  set markup =  price* ( " + markup+ "/100)  , percent = " + markup + "  where id =  " + mapid ;
+		String sql = " update t_user_product  set markup =  price* ( " + markup+ "/100)  , percent = " + markup + "  where price > 0 and  id =  " + mapid ;
 		userProductDao.executeUpdate(sql);
 	}
 
