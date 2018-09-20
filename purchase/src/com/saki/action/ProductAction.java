@@ -159,6 +159,27 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	}
 	
 	/**
+	 * 批量更新
+	 */
+	public void updateMarkupByPercent(){
+		Message j = new Message();
+		try{
+			String  s = getParameter("obj");
+			 JSONArray jsonArray = JSONArray.parseArray(s);
+			for (Object object : jsonArray) {
+				 JSONObject  json = (JSONObject) object;
+				 userProductService.updateMarkupPriceByPercent(  json.getIntValue("mapid")
+							, Double.valueOf(getParameter("markup")));
+			}
+			j.setSuccess(true);
+			j.setMsg("保存成功");
+		}catch(Exception e){
+			j.setMsg("保存失败");
+		}	
+		super.writeJson(j);
+	}
+	
+	/**
 	 * 更新某种产品在系统中的默认价格
 	 */
 	public void updateMappingStatus(){

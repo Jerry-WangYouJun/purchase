@@ -44,7 +44,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div id="toolbar_user" style="padding:2px 5px;">
  		<c:if test="${roleId eq '1'}">
         	<a onclick="price_default()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a> 
-        	<a onclick="markup_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a>       
+        	<a onclick="markup_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量加价</a> 
+        	<a onclick="markup_many_persent()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量加价（百分比）</a>      
  		</c:if>
     </div>
 	
@@ -120,6 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								textField:'markup'
 							}
 					}},
+					{field:'percent',title:'加价百分比(%)',width:20,align:'center'},
 					/* {field:'taxrate',title:'不含税比率',width:20,align:'center',
 						editor:{
 							type:'text',
@@ -261,6 +263,29 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$.messager.prompt('','请输入要加价的金额',function(s){
 					$.ajax({ 
 		    			url: '${pageContext.request.contextPath}/productAction!updateMarkupMany.action',
+		    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
+		    			dataType : 'json',
+		    			success : function(obj){
+		    				if(obj.success){
+		    				 	alert(obj.msg);
+		    				 	$('#user_table').datagrid('reload');
+		    				}else{
+		    					alert(obj.msg);
+		    					$('#user_table').datagrid('reload');
+		    				}
+		    			}
+		    		}); 
+				});
+			}
+		}
+		
+		function markup_many_persent(){
+			var flag = confirm("确定按照百分比进行批量修改加价？");
+			if(flag){
+				var checkedItems = $('#user_table').datagrid('getSelections');
+				$.messager.prompt('','请输入要加价的百分比，单位%',function(s){
+					$.ajax({ 
+		    			url: '${pageContext.request.contextPath}/productAction!updateMarkupByPercent.action',
 		    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
 		    			dataType : 'json',
 		    			success : function(obj){

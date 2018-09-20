@@ -449,6 +449,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			tempMap.put("mapid", mapper.getId());
 			tempMap.put("status", mapper.getStatus());
 			tempMap.put("markup", mapper.getMarkup());
+			tempMap.put("percent", mapper.getPercent());
 			//tempMap.put("taxrate", mapper.getTaxrate());
 			mapList.add(tempMap);
 		}
