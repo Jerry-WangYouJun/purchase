@@ -186,6 +186,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  	treeObj.removeNode(nodes[i]);
 						  }						  
 						  layer.closeAll();
+						  $("#form_child input").val("");
 					  })
 					  
 					}, function(){
@@ -206,6 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  	treeObj.removeNode(nodes[i]);
 						  }						  
 						  layer.closeAll();
+						  $("#form1 input").val("");
 					  })
 					  
 					}, function(){
