@@ -150,6 +150,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 $('#user_table').datagrid('hideColumn', 'remark');
 				 $('#user_table').datagrid('hideColumn', 'status');
 				 $('#user_table').datagrid('hideColumn', 'markup');
+				 $('#user_table').datagrid('hideColumn', 'percent');
 			}
 		});
     	
@@ -183,7 +184,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						$("input.datagrid-editable-input").focus();
 						return false ;
 					}
-					updatePrice(val, target.productDetailId);
+					console.info(target);
+					updatePrice(val, target.productDetailId , target.mapid);
 				}else{
 					if(val  == '' ){
 						 alert("不能为空,请重新填写");
@@ -202,10 +204,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			});
 		}
     	
-		function updatePrice(price , detailId){
+		function updatePrice(price , detailId , mapid){
 				$.ajax({ 
 		    			url: '${pageContext.request.contextPath}/productAction!updateMappingPrice.action',
-		    			data : {"price":price ,"detailId":detailId },
+		    			data : {"price":price ,"detailId":detailId , "mapid" : mapid },
 		    			dataType : 'json',
 		    			success : function(obj){
 		    				if(obj.success){

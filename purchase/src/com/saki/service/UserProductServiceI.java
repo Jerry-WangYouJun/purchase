@@ -20,4 +20,5 @@ public interface UserProductServiceI{
 	public List<Notice> initSupplierData(Integer cid);
 	public void deleteByList(Integer valueOf, String parameter);
 	public void updateMarkupPriceByPercent(Integer mapid, Double markup);
+	public void updateMarkupPriceWhenPriceUpdate(Integer mapid, Double price);
 }

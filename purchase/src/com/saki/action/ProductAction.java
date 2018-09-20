@@ -110,9 +110,12 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			if(getSession().getAttribute("roleId")!= null){
 				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
 			}
+			Double price = Double.valueOf(getParameter("price")) ;
 			userProductService.updatePrice( Integer.valueOf(getSession().getAttribute("companyId").toString() )
 					, Integer.valueOf(getParameter("detailId")) 
-					, Double.valueOf(getParameter("price")), roleId);
+					, price , roleId);
+			Integer mapid = Integer.valueOf(getParameter("mapid"));
+			userProductService.updateMarkupPriceWhenPriceUpdate(mapid, price);
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){

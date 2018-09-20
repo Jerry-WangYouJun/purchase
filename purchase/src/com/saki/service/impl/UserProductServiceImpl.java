@@ -117,6 +117,12 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		String sql = " update t_user_product  set markup =  price* ( " + markup+ "/100)  , percent = " + markup + "  where price > 0 and  id =  " + mapid ;
 		userProductDao.executeUpdate(sql);
 	}
+	
+	@Override
+	public void updateMarkupPriceWhenPriceUpdate(Integer mapid, Double price) {
+		String sql = " update t_user_product  set markup =  " + price+ " * (percent/100)   where percent > 0 and  id =  " + mapid ;
+		userProductDao.executeUpdate(sql);
+	}
 
 	@Override
 	public List<Notice> initAdminData() {
