@@ -65,10 +65,9 @@
 					var sum =parseFloat(0) ;
 					for(var index in rows){
 						sum+=  parseFloat(rows[index].amount);
-						 console.info(sum);
 					}
-					if(sum < 2000){
-						alert("订单总额必须超过2000才能下单！");
+					if(sum < "${base}"){
+						alert("订单总额必须超过RMB:${base}(元)才能下单！当前总额:" + sum + "元");
 						return false;
 					}
 	                //利用easyui控件本身的getChange获取新添加，删除，和修改的内容  

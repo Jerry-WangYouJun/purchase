@@ -9,6 +9,8 @@
 <title>众联焊割集中采购平台</title>
 <link href="media/css/bootstrap.min.css" rel="stylesheet"
 	type="text/css" />
+	<link href="media/css/bootstrap.min.css" rel="stylesheet"
+	type="text/css" />
 <link href="media/css/bootstrap-responsive.min.css" rel="stylesheet"
 	type="text/css" />
 <link href="media/css/font-awesome.min.css" rel="stylesheet"
@@ -196,7 +198,14 @@
 						<ul class="dropdown-menu extended tasks" id="thirdMsg">
 						</ul></li>
 					<!-- END TODO DROPDOWN -->
-
+					<!-- BEGIN 修改订单金额 -->
+					<c:if test="${roleId eq '1' }"></c:if>
+					<li class="dropdown" ><a href="#" onclick="uploadModal()" class="dropdown-toggle"
+						data-toggle="dropdown" style="padding-right:10px"> <i class="icon-yen"></i> <span class="username"  style="font-size: 20px">
+							订单最低金额设置</span> 
+						</a>
+					</li>
+					<!-- END 修改订单金额 -->
 					<!-- BEGIN 用户登陆 DROPDOWN -->
 					<li class="dropdown" ><a href="#" class="dropdown-toggle"
 						data-toggle="dropdown" style="padding-right:10px">  <span class="username"  style="font-size: 20px">
@@ -421,6 +430,62 @@
     			}
     		});
         }
+        
+        function uploadModal() {
+     		$('#uploadModal').modal({backdrop: 'static'});
+    			$("#uploadModal").modal("show");
+    			
+    		}
+        
+        function uploadPwd(){
+     		var path = "${pageContext.request.contextPath}/orderAction!updateBase.action";
+     		var base = $("#new").val();
+     		if(base=='' ){
+     			 alert("金额不能为空");
+     			 return  false;
+     		}
+     		$.ajax({
+				url : path,
+				type : 'post',
+				data: {'base': base} ,
+				dataType : 'json',
+				success : function(data) {
+					if (data.success) {
+						alert( data.msg);
+						$("#uploadModal").modal("hide");
+					} else {
+						alert( data.msg);
+					}
+	
+				},
+				error : function(transport) {
+					alert( "系统产生错误,请联系管理员!");
+				}
+			});
+     	}
 	</script>
+	<div class="modal fade" id="uploadModal" tabindex="-2" role="dialog"
+		aria-labelledby="uploadModalLabel" aria-hidden="true">
+		<div class="modal-dialog" style="width:400px; ">
+			<div class="modal-content">
+				<div class="modal-body">
+					   	<form class="form-signin" role="form" method="POST"
+						 id="mlbForm"
+						action="${pageContext.request.contextPath}/uploadExcel/upload.do">
+						<div class="form-group">
+						    <label style="width: 70px" for="message-text" class="control-label">最低金额:</label>
+						    <input    id="new" name="new"  value="${base}"/>
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<button type="button"  class="btn btn-primary"  onclick="uploadPwd()">提交</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal -->
+	</div>
 </body>
 </html>

@@ -158,4 +158,12 @@ public class UserServiceImpl implements UserServiceI{
 		String hql = "select 1 from TUser u  where u.userName =  '" + userName + "'";
 		return userDao.count(hql);
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getBase() {
+		String sql = "select base_money from t_base ";
+		List<Integer> list = userDao.executeSQLquery(sql);
+		return list.get(0);
+	}
 }

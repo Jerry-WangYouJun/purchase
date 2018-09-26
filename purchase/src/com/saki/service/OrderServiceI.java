@@ -80,5 +80,7 @@ public interface OrderServiceI extends BaseServiceI{
 	List<Map<String, Object>> searchBrandByProductDetailId(String detailId);
 
 	public void deleteOrderDetailByOrderId(String id);
+
+	public void updateBase(Integer base);
 	
 }

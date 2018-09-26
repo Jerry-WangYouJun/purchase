@@ -365,6 +365,12 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	
 	@Override
+	public void updateBase(Integer base) {
+		String hql ="update t_base  set base_money  =  " + base;
+		orderDao.executeUpdate(hql);
+	}
+	
+	@Override
 	public List<Map<String, Object>> searchBrandByProductDetailId(
 			String detailId) {
 		List<Map<String , Object>>  mapListTemp = new ArrayList<Map<String , Object>>();
@@ -425,5 +431,6 @@ public class OrderServiceImpl implements OrderServiceI{
 		
 		return null;
 	}
+	
 	
 }

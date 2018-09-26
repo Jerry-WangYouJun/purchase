@@ -496,6 +496,21 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		super.writeJson(j);
 	}
 	
+	public void updateBase(){
+		String base = getParameter("base");
+		Message j = new Message();
+		try {
+			orderService.updateBase(Integer.valueOf(base));
+			getSession().setAttribute("base", Integer.valueOf(base));
+			j.setMsg("操作成功");
+			j.setSuccess(true);
+		} catch (Exception e) {
+			j.setMsg("操作失败");
+			j.setSuccess(false);
+		}
+		super.writeJson(j);
+	}
+	
 	public boolean checkOrderJson(String json){
 		if(StringUtils.isEmpty(json)){
 			 return true;

@@ -128,6 +128,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		TUser u =userService.login(user);
 		List<TConfirm> t = confirmService.getWarningList();
 		List<TConfirm> confirm = confirmService.list();
+	    Integer base = userService.getBase();
 		if(u != null){
 			getSession().setAttribute("userName", StringUtils.isEmpty(u.getCompanyName())?"管理员":u.getCompanyName());
 			getSession().setAttribute("roleId", u.getRoleId());
@@ -137,6 +138,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			getSession().setAttribute("warnFlag", nextDay);
 			getSession().setAttribute("warnList", JSON.toJSON(t));
 			getSession().setAttribute("confirm", confirm);
+			getSession().setAttribute("base", base);
 			j.setSuccess(true);
 			j.setMsg("登陆成功!");
 		}else{

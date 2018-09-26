@@ -41,7 +41,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
  	</div>
- 	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:800px;height: 450px"
+ 	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:1000px;height:600px"
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
 		    	<form id="order_form" role="form" style="padding: 20px">
 				<input type="hidden"  id = "id"  name = "id">
@@ -217,7 +217,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   var columnDetail = [[
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
-	   						{field:'sub_product',title:'产品信息',align:'center'},
+	   						{field:'sub_product',title:'产品信息',align:'center',width:'25%'},
 	   					 	/* {field:'format',title:'产品规格',width:100,align:'center'},
 	   						{field:'materail',title:'材质/标准',width:100,align:'center'}, */
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
@@ -380,7 +380,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品名称',align:'center',
+								{field:'sub_product',title:'产品名称',align:'center',width:'25%' ,
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    
