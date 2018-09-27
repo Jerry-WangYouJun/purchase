@@ -186,7 +186,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  	treeObj.removeNode(nodes[i]);
 						  }						  
 						  layer.closeAll();
-						  $("#form_child input").val("");
+						  $("#detailType").hide();
 					  })
 					  
 					}, function(){
@@ -207,7 +207,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						  	treeObj.removeNode(nodes[i]);
 						  }						  
 						  layer.closeAll();
-						  $("#form1 input").val("");
+						  $("#productType").hide();
 					  })
 					  
 					}, function(){
@@ -251,7 +251,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						 alert("基础采购量不能为空或0 ,请重新填写");
 						 return false;
 					} */
-				if(!reg.test(productBase)){
+				if((parentId != '' && parentId > 0) && !reg.test(productBase)){
 					alert("基础采购量数字格式，请重新输入~");
 					$("#productBase").val('');
 					$("#productBase").focus();
