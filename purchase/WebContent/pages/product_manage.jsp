@@ -83,6 +83,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			var detail = JSON.parse(data);
 		    			$("#detailProductId").val(detail.productId);
 		    			$("#detailName").val(detail.subProduct);
+		    			$("#detailFormatNum").val(detail.formatNum);
 		    			$("#detailFormat").val(detail.format);
 		    			$("#detailMaterial").val(detail.material);
 		    			$("#detailRemark").val(detail.remark);		    			
@@ -153,6 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				//保存detail 
 				var id =$("#detailId").val();
 				var detailName = $("#detailName").val();
+				var detailFormatNum = $("#detailFormatNum").val();
 				var detailFormat = $("#detailFormat").val();
 				var detailMaterial = $("#detailMaterial").val();
 				var detailRemark = $("#detailRemark").val();
@@ -163,14 +165,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								id:id,
 								subProduct:detailName,
 								format:detailFormat,
+								formatNum:detailFormatNum,
 								material:detailMaterial,
 								remark: detailRemark,
 								productId:productId
 							},
 							function(data){
-								layer.alert("保存成功");
-								window.location.reload();
-					})
+								layer.alert(data.msg);
+								if(data.success){
+									window.location.reload();
+								}
+					},"json")
 				}
 			})
 			//删除详情
@@ -363,8 +368,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<span class="errorColor"></span>
 			<br>
 			<div class="input-group">
-			  <span class="input-group-addon" id="basic-addon2">规格</span>
-			  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" name="detailFormat" id="detailFormat" >
+			  <span class="input-group-addon" id="basic-addon2">规格数量</span>
+			  <input type="text" class="form-control" placeholder="规格数量" aria-describedby="basic-addon2" name="detailFormatNum" id="detailFormatNum" >
+			</div>
+			<span class="errorColor"></span>
+			<br>
+			<div class="input-group">
+			  <span class="input-group-addon" id="basic-addon2">规格描述</span>
+			  <input type="text" class="form-control" placeholder="规格描述" aria-describedby="basic-addon2" name="detailFormat" id="detailFormat" >
 			</div>
 			<span class="errorColor"></span>
 			<br>

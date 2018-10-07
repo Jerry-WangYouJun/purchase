@@ -187,7 +187,8 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 		for (TProductDetail tProductDetail : list) {
 			getSessionFactory().getCurrentSession().evict(tProductDetail);
 			String subPro = tProductDetail.getSubProduct() + "-"
-					 + tProductDetail.getMaterial() + "-" + tProductDetail.getFormat();
+					 + tProductDetail.getMaterial() + "-"
+					 + tProductDetail.getFormatNum() + tProductDetail.getFormat();
 			tProductDetail.setSubProduct(subPro);
 		}
 	}

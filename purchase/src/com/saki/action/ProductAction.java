@@ -286,29 +286,42 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	//保存 （更新）详情
 	public void saveProductDetail()
 	{
+		Message j = new Message();
 		HttpServletRequest request = this.getRequest();
 		String id = request.getParameter("id");
 		TProductDetail detail;
-		if(id==null || id=="")
-		{
-			 detail = new TProductDetail(null,
-					   Integer.parseInt(request.getParameter("productId")), 
-					   request.getParameter("subProduct"), 
-					   request.getParameter("format"), 
-					   request.getParameter("material"), 
-					   request.getParameter("remark"));
+		try {
+			if(id==null || id==""){
+				detail = new TProductDetail(null,
+						Integer.parseInt(request.getParameter("productId")), 
+						request.getParameter("subProduct"), 
+						request.getParameter("format"), 
+						StringUtils.isEmpty(request.getParameter("formatNum"))?
+								null:Integer.parseInt(request.getParameter("formatNum")),
+								request.getParameter("material"), 
+								request.getParameter("remark"));
+			}else{
+				detail = new TProductDetail(Integer.parseInt(request.getParameter("id")),
+						Integer.parseInt(request.getParameter("productId")), 
+						request.getParameter("subProduct"), 
+						request.getParameter("format"), 
+						StringUtils.isEmpty(request.getParameter("formatNum"))?
+								null:Integer.parseInt(request.getParameter("formatNum")),
+								request.getParameter("material"), 
+								request.getParameter("remark"));
+			}
+			this.productDetailService.add(detail);
+			j.setMsg("保存成功");
+			j.setSuccess(true);
+		} catch (NumberFormatException e) {
+			j.setMsg("保存失败：规格数量只能填写数字！" );
+			j.setSuccess(false); 
+		}finally {
+			super.writeJson(j);
 		}
-		else
-		{
-			 detail = new TProductDetail(Integer.parseInt(request.getParameter("id")),
-					   Integer.parseInt(request.getParameter("productId")), 
-					   request.getParameter("subProduct"), 
-					   request.getParameter("format"), 
-					   request.getParameter("material"), 
-					   request.getParameter("remark"));
-		}
-		this.productDetailService.add(detail);
+		
 	}
+	
 	//保存（更新）类型
 	public void saveProduct() {
 	Message j = new Message();
