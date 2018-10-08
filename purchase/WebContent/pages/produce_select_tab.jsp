@@ -14,6 +14,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   <link rel="stylesheet" href="<%=path %>/vendor/bootstrap/css/bootstrap.vertical-tabs.css">
   <link href="<%=path%>/vendor/easyui/themes/material/easyui.css" rel="stylesheet" type="text/css"> 
   <link href="<%=path%>/vendor/easyui/themes/icon.css" rel="stylesheet" type="text/css">
+   <script src="<%=path%>/vendor/jquery/jquery.min.js"></script>
+   <script src="<%=path%>/vendor/bootstrap/js/bootstrap.js"></script>   
+    <script src="<%=path%>/vendor/layer/layer.js"></script>  
   <style>
     .ccc{
       width: 25%;
@@ -31,6 +34,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </style>
 </head>
 <body>
+<script type="text/javascript">
+var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载的风格，支持0-2
+</script>
 	<div data-options="region:'north',border:false,showHeader:false"  style="height:80px" >
 		<c:if test="${roleId eq  '3' }">
 	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">请在下面选择您要采购的商品明细<br/>点击产品名称，可查看下一级</span>
@@ -54,7 +60,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			              	<a href="#sec_<s:property value="id"/>" data-toggle="tab">
 			              		<input type="checkbox" id="first_check_<s:property value="#product.id"/>" class="aaa" data='<s:property value="#product.id"/>'> 
 									<s:property value="#product.product"/>
-								</input>
 			              	</a>
 			              </li>       			
          		 </s:iterator>
@@ -109,9 +114,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
         </div>
         </div>
-   <script src="<%=path%>/vendor/jquery/jquery.min.js"></script>
-   <script src="<%=path%>/vendor/bootstrap/js/bootstrap.js"></script>   
-    <script src="<%=path%>/vendor/layer/layer.js"></script>  
  <%--  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> --%>
   <script>
@@ -121,15 +123,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     //加载选择的商品
     $(function(){
-    	var index ; //0代表加载的风格，支持0-2
     	
     	$.ajax({
             type: 'POST',
             url: '<%=path%>/productAction!getUserSelectProductDetail.action',//发送请求
             dataType : "json",
-            beforeSend: function (request) {
-    			index = layer.load(2, { shade: [0.3,'#fff'] });
-    		},
             success: function(data) {
             	layer.close(index);
             	for (var i = 0; i < data.length; i++) {

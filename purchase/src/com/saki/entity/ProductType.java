@@ -1,6 +1,6 @@
 package com.saki.entity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import com.saki.model.TProductDetail;
 
@@ -25,7 +25,7 @@ public class ProductType {
 	private String unit;
 	private Integer base;
 	private String remark;
-	private ArrayList<TProductDetail> children;
+	private List<TProductDetail> children;
 	
 	public String getType() {
 		return type;
@@ -51,10 +51,10 @@ public class ProductType {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public ArrayList<TProductDetail> getChildren() {
+	public List<TProductDetail> getChildren() {
 		return children;
 	}
-	public void setChildren(ArrayList<TProductDetail> children) {
+	public void setChildren(List<TProductDetail> children) {
 		this.children = children;
 	}
 
