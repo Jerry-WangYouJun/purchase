@@ -145,24 +145,28 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 			Object[] objs = list.get(i);
 			//主表数据
 			TProduct product = (TProduct) objs[0];
-			TProductDetail detail = (TProductDetail) objs[1];
-			TSupllierOrderDetail oDetail = (TSupllierOrderDetail) objs[3];
+			TProductDetail productDetail = (TProductDetail) objs[1];
+			TSupllierOrderDetail orderDetail = (TSupllierOrderDetail) objs[3];
 			TProduct parentProduct = (TProduct) objs[4];
 			Map<String , Object >  map = new HashMap<String,Object>();
-			map.put("id", oDetail.getId());
+			map.put("id", orderDetail.getId());
+			map.put("acount", orderDetail.getNum());
+			map.put("price",  orderDetail.getPrice() );
+			map.put("initnum", orderDetail.getInitnum());
+			
 			map.put("product", parentProduct.getProduct() );
-			map.put("type",  product.getProduct());
-			map.put("sub_product", detail.getSubProduct());
-			map.put("materail", detail.getMaterial());
-			map.put("acount", oDetail.getNum());
 			map.put("unit", parentProduct.getUnit());
-			map.put("price",  oDetail.getPrice() );
-			map.put("detailId", detail.getId());
 			map.put("productId", product.getId());
-			map.put("initnum", oDetail.getInitnum());
-			if(oDetail.getConpanyId()  != null  && oDetail.getConpanyId()  > 0){
-				map.put("companyId" ,oDetail.getConpanyId() );
-				String hqlCompany = "from TCompany  t where t.id = " + oDetail.getConpanyId() ;
+			map.put("type",  product.getProduct());
+			map.put("sub_product", productDetail.getSubProduct());
+			map.put("materail", productDetail.getMaterial());
+			map.put("detailId", productDetail.getId());
+			map.put("formatNum", productDetail.getFormatNum());
+			map.put("format", productDetail.getFormat());
+			
+			if(orderDetail.getConpanyId()  != null  && orderDetail.getConpanyId()  > 0){
+				map.put("companyId" ,orderDetail.getConpanyId() );
+				String hqlCompany = "from TCompany  t where t.id = " + orderDetail.getConpanyId() ;
 				TCompany company = (TCompany)supplierOrderDao.get(hqlCompany);
 				if(company != null){
 					map.put("companyName",company.getName() );
@@ -355,11 +359,13 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	
 	
 	private void updateSupplierReset(String dayOfOrderNo) {
+		//删除当日新订单
 		String deleteDetail = "delete from TSupllierOrderDetail t where t.supllierOrderId in ("
 				+ "  select  id from TSupllierOrder where status = 1)  ";
 		supplierOrderDao.updateHql(deleteDetail);
 		String hql = "delete from TSupllierOrder where status = 1 ";
 		supplierOrderDao.updateHql(hql);
+		//更新已已付款订单的订单状态
 		String resetOrderStatus = "update TOrder t set t.status = 3  where  "
 				+ " t.confirmDate = " + dayOfOrderNo;
 		supplierOrderDao.updateHql(resetOrderStatus);

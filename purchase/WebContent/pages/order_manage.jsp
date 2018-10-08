@@ -276,6 +276,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
+	   						{field:'boxnum',title:'包装件数',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center'},
 	   						{field:'defaultFlag',title:'托管采购',width:100, formatter: function(value,row,index){
@@ -323,6 +324,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                        field : 'amount'  //根据字段名获取编辑的字段
 				                                    });  
 				                                $(amount.target).textbox('readonly');   //赋值
+				                                
+				                                var boxnum = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'boxnum'  //根据字段名获取编辑的字段
+			                                    });  
+			                                	$(boxnum.target).textbox('readonly');   //赋值
 				                                
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
@@ -380,7 +387,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                        }    
 				                    }
 								},
-								{field:'sub_product',title:'产品信息',align:'center' ,width:'25%',
+								{field:'sub_product',title:'产品信息',align:'center' ,width:'20%',
 									editor : {    
 				                        type : 'combobox',    
 				                        options : {    
@@ -406,7 +413,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
 			                                    });  
-			                               	 $(idvalue.target).textbox('setValue',  data.id );   
+			                               	    $(idvalue.target).textbox('setValue',  data.id );  
+			                               		 var formatNum = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'formatNum'  
+			                                    });  
+			                               	    $(formatNum.target).textbox('setValue',  data.formatNum );  
+			                               	    
 				                               	var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'brand'}).target;  
 				                                target.combobox('clear'); //清除原来的数据  
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductBrand.action?detailId='+data.id;  
@@ -477,12 +490,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                            			  return ;
 			                            		 }
 			                            		 changeAmount();
+			                            		 changeBoxnum();
 			                            }
 										
 									}
 								}},
-								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
+								{field:'boxnum',title:'包装件数',width:100,align:'center',editor:'textbox'},
+								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'price',title:'单价',width:100,align:'center',editor:{
 									type:'textbox',
 									options:{
@@ -498,6 +513,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									}
 								}},
 								{field:'detailId', hidden:'true',editor:'textbox' },
+								{field:'formatNum', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
 							//	{field:'taxrate',title:'不含税(%)',width:100,align:'center',editor:'textbox'},

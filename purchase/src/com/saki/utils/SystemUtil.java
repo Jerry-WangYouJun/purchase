@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
+
 public class SystemUtil {
     public  static String  getSystemName(){
     	String osName =  System.getProperty("os.name");
@@ -136,4 +138,24 @@ public class SystemUtil {
 	        BigDecimal one = new BigDecimal("1");
 	        return b.divide(one,scale, RoundingMode.HALF_UP).doubleValue();
 	    }
+	    
+	    /**
+	     * 从字符串中提取汉字
+	     * @param str
+	     */
+		public static Integer getNumFromString(String str) {
+			str = str.trim();
+			String str2 = "";
+			if (str != null && !"".equals(str)) {
+				for (int i = 0; i < str.length(); i++) {
+					if (str.charAt(i) >= 48 && str.charAt(i) <= 57) {
+						str2 += str.charAt(i);
+					}else{
+						break;
+					}
+				}
+			}
+			return  StringUtils.isNotBlank(str2)?Integer.valueOf(str2):null;
+		}
+
 }  

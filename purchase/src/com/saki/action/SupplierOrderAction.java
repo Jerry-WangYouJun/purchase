@@ -193,7 +193,7 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 	}
 	
 	/**
-	 * 
+	 * 重新生成订单 
 	 */
 	public void getSupllierOrder(){
 		Message j = new Message();

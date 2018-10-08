@@ -27,6 +27,7 @@ import com.saki.model.TProductDetail;
 import com.saki.service.ImportExcelI;
 import com.saki.service.ProductDetailServiceI;
 import com.saki.service.ProductServiceI;
+import com.saki.utils.SystemUtil;
 
 @Service("importExcelImpl")
 public class ImportExcelImpl  implements ImportExcelI{
@@ -143,7 +144,6 @@ public class ImportExcelImpl  implements ImportExcelI{
 	private TProduct getProductByList(List<Object> list) throws Exception {
 		TProduct product = new TProduct();
 		List<String>  proDetailNameList = new ArrayList<>(); 
-		List<String> priDetailFormatNumList = new ArrayList<>();
 		List<String>  proDetailFormatList = new ArrayList<>(); 
 		List<String>  proDetailMaterialList = new ArrayList<>(); 
 		for (int i = 0; i < list.size(); i++) {
@@ -174,38 +174,23 @@ public class ImportExcelImpl  implements ImportExcelI{
 						proDetailNameList = Arrays.asList(value.split(" "));
 						break;
 					case 5 :
-						priDetailFormatNumList = Arrays.asList(value.split(" "));
-						break;
-					case 6 :
 						proDetailFormatList = Arrays.asList(value.split(" "));
 						break;
-					case 7 :
+					case 6 :
 						proDetailMaterialList = Arrays.asList(value.split(" "));
 						break;
 					}
 				  
 			 }
 		}
-		for(String s : priDetailFormatNumList){
-			 try {
-				Integer.valueOf(s);
-			} catch (Exception e) {
-				if(StringUtils.isNotEmpty(s)) {
-					throw new Exception("“规格数量”必须填写数字!");
-				}
-			}
-		}
 		List<TProductDetail> detailListFirst = new ArrayList<>();
 		//根据产品型号  生成详情列表集合
 		setFirstDetailList(proDetailNameList , detailListFirst);
-		if(priDetailFormatNumList.size() != proDetailFormatList.size()) {
-			throw new Exception("“规格数量”与“规格描述”数量不对应!");
-		}
 		//判断 型号和规格是一对一(map)还是多对多(matrix)关系
-		if(list.size()  > 8  &&  "是".equals(list.get(8))){
-			setSecondDetailListAsMap(priDetailFormatNumList, proDetailFormatList, detailListFirst);
+		if(list.size()  > 7  &&  "是".equals(list.get(7))){
+			setSecondDetailListAsMap( proDetailFormatList, detailListFirst);
 		}else{
-			setSecondDetailListAsMatrix(priDetailFormatNumList,proDetailFormatList, detailListFirst);
+			setSecondDetailListAsMatrix(proDetailFormatList, detailListFirst);
 		}
 		//根据材料 生成详情列表集合
 		setThirdDetailList(proDetailMaterialList , detailListFirst);
@@ -217,18 +202,15 @@ public class ImportExcelImpl  implements ImportExcelI{
 	 *   获得 型号*规格*材质  一对一的详情信息集合
 	 * @throws Exception 
 	 */
-	private void setSecondDetailListAsMap(List<String> priDetailFormatNumList,
+	private void setSecondDetailListAsMap(
 			List<String> proDetailFormatList,
 			List<TProductDetail> detailListFirst) throws Exception {
-		if(priDetailFormatNumList.size() == proDetailFormatList.size()) {
+		if(detailListFirst.size() == proDetailFormatList.size()) {
 				for(int i = 0 ; i < proDetailFormatList.size() ; i++) {
 					String format = proDetailFormatList.get(i);
-					String formatNum = priDetailFormatNumList.get(i);
-					if(StringUtils.isNotEmpty(format) &&
-							StringUtils.isNotEmpty(formatNum)) {
-						detailListFirst.get(i).setFormatNum(Integer.parseInt(formatNum));
-						detailListFirst.get(i).setFormat(format);
-					}
+					Integer formatNum = SystemUtil.getNumFromString(format);
+					detailListFirst.get(i).setFormatNum(formatNum);
+					detailListFirst.get(i).setFormat(format.replace(formatNum+"", ""));
 				}
 		}else {
 			throw new Exception("型号规格不匹配，型号与规格中的数量应一致！");
@@ -240,21 +222,22 @@ public class ImportExcelImpl  implements ImportExcelI{
 	 *   获得 型号*规格*材质  多对多的详情信息集合
 	 * @throws Exception 
 	 */
-	private void setSecondDetailListAsMatrix(List<String> priDetailFormatNumList,
+	private void setSecondDetailListAsMatrix(
 			List<String> proDetailFormatList,
 			List<TProductDetail> detailListFirst) throws Exception {
 		List<TProductDetail> detailListSecond = new ArrayList<>();
 		for(int i = 0 ; i < proDetailFormatList.size() ; i++) {
-			if(StringUtils.isNotEmpty(proDetailFormatList.get(i)) && 
-					StringUtils.isNotEmpty(priDetailFormatNumList.get(i))) {
+			String format = proDetailFormatList.get(i);
+			Integer formatNum = SystemUtil.getNumFromString(format);
+			if(StringUtils.isNotEmpty(format)) {
 				for (TProductDetail detail : detailListFirst) {
 					if(i==0) {
-						detail.setFormatNum(Integer.parseInt(priDetailFormatNumList.get(i)));
-						detail.setFormat(proDetailFormatList.get(i));
+						detail.setFormat(format.replace(formatNum+"", ""));
+						detail.setFormatNum(formatNum);
 					}else {
 						TProductDetail detailTemp = new TProductDetail();
-						detailTemp.setFormatNum(Integer.parseInt(priDetailFormatNumList.get(i)));
-						detailTemp.setFormat(proDetailFormatList.get(i));
+						detailTemp.setFormatNum(formatNum);
+						detailTemp.setFormat(format.replace(formatNum+"", ""));
 						detailTemp.setSubProduct(detail.getSubProduct());
 						detailListSecond.add(detailTemp);
 					}
@@ -313,11 +296,8 @@ public class ImportExcelImpl  implements ImportExcelI{
 	}
 
 	public static void main(String[] args) {
-		 String s = "a   ";
-		 String[] arr = s.split(" ");
-		 for(int i = 0 ; i < arr.length ; i ++) {
-			  System.out.println(Integer.valueOf(arr[i]));
-		 }
+		 String s = "";
+		 System.out.println(StringUtils.isNotBlank(s));
 	}
 	
 	/**
@@ -377,7 +357,22 @@ public class ImportExcelImpl  implements ImportExcelI{
 		return value;
 	}
 
-	
+	@Override
+	public void updateFormat() {
+		List<TProductDetail> detailList = productDetailService.searchAllProductDetail();
+		for(TProductDetail proDetail : detailList){
+			 if(proDetail.getFormat().length() > 0){
+				Integer  tempNum = SystemUtil.getNumFromString(proDetail.getFormat());
+				if(tempNum != null){
+					proDetail.setFormatNum(Integer.valueOf(tempNum));
+					proDetail.setFormat(proDetail.getFormat().replace(tempNum+"", ""));
+				}else{
+					continue;
+				}
+			 }
+		}
+		
+	}
 
 	private BaseDaoI productDao;
 
@@ -413,5 +408,12 @@ public class ImportExcelImpl  implements ImportExcelI{
 		this.detailService = detailService;
 	}
 
-	 
+	private ProductDetailServiceI productDetailService;
+	public ProductDetailServiceI getProductDetailService() {
+		return productDetailService;
+	}
+	@Autowired
+	public void setProductDetailService(ProductDetailServiceI productDetailService) {
+		this.productDetailService = productDetailService;
+	}
 }

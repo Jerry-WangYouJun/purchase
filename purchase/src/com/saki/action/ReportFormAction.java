@@ -98,6 +98,10 @@ public class ReportFormAction extends BaseAction {
 			}
 			super.writeJson(j);
 	}
+	
+	public void updateFormat(){
+		importExcelUtil.updateFormat();
+	}
 
 	// 发送响应流方法
 	public void setResponseHeader(HttpServletResponse response, String fileName) {

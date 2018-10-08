@@ -463,7 +463,7 @@ public class ProductServiceImpl implements ProductServiceI{
 	public ArrayList<ProductType>  searchSecProductAndChild()
 	{
 		String hql = "from   TProduct t  where  t.parentId is not null ";
-		String hql1 = "from  TProductDetail t where t.productId = :productId";
+		String childhql = "from  TProductDetail t where t.productId = :productId";
 		List<TProduct> products = produceDao.find(hql);
 		Map<String,Object> map = new HashMap<String,Object>();
 		ArrayList<ProductType> types = new ArrayList<ProductType>();
@@ -475,7 +475,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			product.setId(tProduct.getId());
 			//查询product 的 二级类型
 			map.put("productId", tProduct.getId());
-			ArrayList<TProductDetail> detailList = (ArrayList)produceDao.find(hql1,map);
+			ArrayList<TProductDetail> detailList = (ArrayList)produceDao.find(childhql,map);
 			product.setChildren(detailList);
 			types.add(product);
 		}

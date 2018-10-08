@@ -196,6 +196,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("materail", detail.getMaterial());
 			map.put("detailId", detail.getId());
 			map.put("format", detail.getFormat());
+			map.put("boxnum", (detail.getFormatNum()==0|| detail.getFormatNum()==null)?1:(Math.ceil( Double.valueOf(orderDetail.getNum()+"")/ Double.valueOf(detail.getFormatNum()+""))));
 			map.put("supplierCompanyId", company.getId());
 			map.put("brand", company.getBrand());
 			//detailMap.put(orderDetail.getId(), map);
@@ -205,7 +206,9 @@ public class OrderServiceImpl implements OrderServiceI{
 		return mapList ;
 	}
 	
-	
+	public static void main(String[] args) {
+		 System.out.println(Math.ceil(Double.valueOf("10")/Double.valueOf("300")));
+	}
 	@Override
 	public List<TProduct> searchProduct() {
 		  String hql = "select distinct  new TProduct(product , unit) from TProduct  " ;

@@ -208,6 +208,33 @@
         $(bra.target).textbox('setValue', amount);
     }
     
+    function changeBoxnum(){
+		var row = $('#table_add').datagrid('getSelected');  
+		if(row == null){
+			return false ;
+		}
+	    var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+	     var boxnum = $("#table_add").datagrid('getEditor', {  
+	            index : rowIndex,  
+	            field : 'boxnum'  
+	        }); 
+	     
+	     var acount = $("#table_add").datagrid('getEditor', {  
+	         index : rowIndex,  
+	         field : 'acount'  
+	     });
+	     var formatNum = $("#table_add").datagrid('getEditor', {  
+	         index : rowIndex,  
+	         field : 'formatNum'  
+	     });
+	     
+	     var num = acount.target.textbox('getValue') / formatNum.target.textbox('getValue');
+	//     if(taxflag != '0'){
+	//    	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
+	//     }
+	    $(boxnum.target).textbox('setValue', Math.ceil(num));
+	}
+    
     //获取页面URL
     function getProjectUrl(){
 	    	var hostUrl = "";

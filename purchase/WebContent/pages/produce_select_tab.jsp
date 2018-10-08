@@ -93,8 +93,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                        <input type="checkbox" value="<s:property value="#child.productId"/>" id="third_check_<s:property value="#child.id"/>"data='<s:property value="#child.id"/>' data-parent='<s:property value="#child.productId"/>'>
 			                        <label for="third_check_<s:property value="#child.id"/>" style="font-size:15">
 			                        <a style="text-decoration:none">
-			                        	<s:property value="#child.subProduct"/>/
-			                        	<s:property value="#child.format"/>/
+			                        	<s:property value="#child.subProduct"/>-
+			                        	<s:property value="#child.formatNum"/>
+			                        	<s:property value="#child.format"/>-
 			                        	<s:property value="#child.material"/>
 			                        </a></label>
 			                    </span>	                   

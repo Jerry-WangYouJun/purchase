@@ -272,6 +272,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
+	   						{field:'boxnum',title:'包装件数',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'条目总价',width:100,align:'center'},
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */

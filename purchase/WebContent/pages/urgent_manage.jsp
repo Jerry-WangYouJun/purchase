@@ -221,10 +221,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   					 	/* {field:'format',title:'产品规格',width:100,align:'center'},
 	   						{field:'materail',title:'材质/标准',width:100,align:'center'}, */
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
-	   						{field:'unit',title:'单位',width:100,align:'center'},
-	   						{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
+	   						{field:'unit',title:'单位',width:100,align:'center'},
+	   						{field:'boxnum',title:'包装件数',width:100,align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
+	   						{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 	   						{field:'defaultFlag',title:'托管采购',width:100, formatter: function(value,row,index){
 								if(value == '1'){
 									return "托管";
@@ -266,6 +267,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                        field : 'amount'  //根据字段名获取编辑的字段
 				                                    });  
 				                                $(amount.target).textbox('readonly');   //赋值
+				                                var boxnum = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'boxnum'  //根据字段名获取编辑的字段
+			                                    });  
+			                                	$(boxnum.target).textbox('readonly');   //赋值
+			                                	
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
 				                                if(initialValue != data.product){
@@ -406,7 +413,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
 			                                    });  
-			                               	 $(idvalue.target).textbox('setValue',  data.id );   
+			                               		 $(idvalue.target).textbox('setValue',  data.id );  
+			                               		 var formatNum = $("#table_add").datagrid('getEditor', {  
+				                                        index : rowIndex,  
+				                                        field : 'formatNum'  
+				                                    });  
+				                               	 $(formatNum.target).textbox('setValue',  data.formatNum );  
+			                               		 
 				                               	var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'brand'}).target;  
 				                                target.combobox('clear'); //清除原来的数据  
 				                                var url = '${pageContext.request.contextPath}/orderAction!getProductBrand.action?detailId='+data.id;  
@@ -455,7 +468,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                				} 
 			                        }   
 			                    }},
-								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
 								{field:'acount',title:'数量',width:100,align:'center',editor:{
 									type:'textbox',
 									options:{
@@ -466,10 +478,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                            			  return ;
 			                            		 }
 			                            		 changeAmount();
+			                            		 changeBoxnum();
 			                            }
 										
 									}
 								}},
+								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
+								{field:'boxnum',title:'包装件数',width:100,align:'center',editor:'textbox'},
 								/* {field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' }, */
 								{field:'price',title:'单价',width:100,align:'center',editor:{
 									type:'textbox',
@@ -531,6 +546,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									}
 				                },
 								{field:'detailId', hidden:'true',editor:'textbox' },
+								{field:'formatNum', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
 								{field:'productId', hidden:'true',editor:'textbox' },
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
@@ -751,6 +767,33 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	          });
 	         $(bra.target).textbox('setValue', price.target.textbox('getValue') * acount.target.textbox('getValue'));
 	     }
+	 	 	 
+	 	    function changeBoxnum(){
+	 			var row = $('#table_add').datagrid('getSelected');  
+	 			if(row == null){
+	 				return false ;
+	 			}
+	 		    var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+	 		     var boxnum = $("#table_add").datagrid('getEditor', {  
+	 		            index : rowIndex,  
+	 		            field : 'boxnum'  
+	 		        }); 
+	 		     
+	 		     var acount = $("#table_add").datagrid('getEditor', {  
+	 		         index : rowIndex,  
+	 		         field : 'acount'  
+	 		     });
+	 		     var formatNum = $("#table_add").datagrid('getEditor', {  
+	 		         index : rowIndex,  
+	 		         field : 'formatNum'  
+	 		     });
+	 		     
+	 		     var num = acount.target.textbox('getValue') / formatNum.target.textbox('getValue');
+	 		//     if(taxflag != '0'){
+	 		//    	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
+	 		//     }
+	 		    $(boxnum.target).textbox('setValue', Math.ceil(num));
+	 		}
 	 		
 	 	 	/**关闭子页面重载*/
 	     	function company_close(){

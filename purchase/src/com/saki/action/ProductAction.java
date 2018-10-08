@@ -225,6 +225,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		this.userProductService = userProductService;
 	}
 	
+	/**
+	 * 产品类别页面-三级菜单数据获取
+	 * @return
+	 */
 	public String toProduceSelectTab()
 	{
 		this.getRequest().setAttribute("productList",  productService.searchProductAndChileProduct());
