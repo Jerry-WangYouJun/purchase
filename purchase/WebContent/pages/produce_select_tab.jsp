@@ -110,7 +110,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         </div>
         </div>
    <script src="<%=path%>/vendor/jquery/jquery.min.js"></script>
-   <script src="<%=path%>/vendor/bootstrap/js/bootstrap.js"></script>     
+   <script src="<%=path%>/vendor/bootstrap/js/bootstrap.js"></script>   
+    <script src="<%=path%>/vendor/layer/layer.js"></script>  
  <%--  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> --%>
   <script>
@@ -120,18 +121,28 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     //加载选择的商品
     $(function(){
-    	$.post("<%=path%>/productAction!getUserSelectProductDetail.action",function(data){
-    		var json = JSON.parse(data);   	
-    		for (var i = 0; i < json.length; i++) {
-				var obj = json[i];
-				$("#third_check_"+obj).prop('checked',true);
-				var parentId = $("#third_check_"+obj).attr("data-parent");
-				 $("#sec_check_"+parentId).prop('checked',true);
-				 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
-				 $("#first_check_"+firstIndex).prop('checked',true);
-				
-			} 
-    	})
+    	var index ; //0代表加载的风格，支持0-2
+    	
+    	$.ajax({
+            type: 'POST',
+            url: '<%=path%>/productAction!getUserSelectProductDetail.action',//发送请求
+            dataType : "json",
+            beforeSend: function (request) {
+    			index = layer.load(2, { shade: [0.3,'#fff'] });
+    		},
+            success: function(data) {
+            	layer.close(index);
+            	for (var i = 0; i < data.length; i++) {
+    				var obj = data[i];
+    				$("#third_check_"+obj).prop('checked',true);
+    				var parentId = $("#third_check_"+obj).attr("data-parent");
+    				 $("#sec_check_"+parentId).prop('checked',true);
+    				 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
+    				 $("#first_check_"+firstIndex).prop('checked',true);
+    			} 
+		      }
+		});
+
     	//一级类型选择 
     	$("[id^='first_check_']").change(function(){
     		var obj = $(this).attr("data");
