@@ -199,12 +199,13 @@
 						</ul></li>
 					<!-- END TODO DROPDOWN -->
 					<!-- BEGIN 修改订单金额 -->
-					<c:if test="${roleId eq '1' }"></c:if>
+					<c:if test="${roleId eq '1' }">
 					<li class="dropdown" ><a href="#" onclick="uploadModal()" class="dropdown-toggle"
 						data-toggle="dropdown" style="padding-right:10px"> <i class="icon-yen"></i> <span class="username"  style="font-size: 20px">
 							订单最低金额设置</span> 
 						</a>
 					</li>
+					</c:if>
 					<!-- END 修改订单金额 -->
 					<!-- BEGIN 用户登陆 DROPDOWN -->
 					<li class="dropdown" ><a href="#" class="dropdown-toggle"
