@@ -274,6 +274,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 		//console.log(productlist);			
 		$.ajax({ 
 			url: '${pageContext.request.contextPath}/productAction!saveUserProduct.action',	
+			type: 'POST',
 			data : {'productlist':productlist},		
 			dataType : 'json',
 			success : function(obj){

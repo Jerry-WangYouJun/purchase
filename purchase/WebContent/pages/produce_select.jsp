@@ -63,6 +63,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				}
 			$.ajax({ 
 				url: '${pageContext.request.contextPath}/productAction!saveUserProduct.action',	
+				type: 'POST',
 				data : {'productlist':productlist},		
 				dataType : 'json',
 				success : function(obj){
