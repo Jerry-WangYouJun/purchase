@@ -158,6 +158,9 @@ public class OrderServiceImpl implements OrderServiceI{
 	
 	private List<Map<String, Object>> searchDetailNullPrice(String id) {
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
+		if("0".equals(id)){
+			return mapList;
+		}
 		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od"
 				+ " ,TProduct product , TCompany c "
 				+ " where t.id = d.productId  and o.id = od.orderId"
@@ -202,7 +205,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			//detailMap.put(orderDetail.getId(), map);
 			mapList.add(map);
 		}
-		
+		System.out.println(id);
 		return mapList ;
 	}
 	

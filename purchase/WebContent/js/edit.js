@@ -163,9 +163,13 @@
 				 toolbar:[],
 				 columns:columnDetail
 			 })
-			$('#table_add').datagrid('reload', {
-				 id: $("#id").val()
-			});
+			 setTimeout( function(){
+				 $('#table_add').datagrid('reload', {
+					 id: row.id
+				});
+			 },200)
+			 
+			
 			}
     	}
    
