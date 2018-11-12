@@ -243,7 +243,9 @@
 									<c:when test="${roleId eq '1' }">
 										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
 													客户&供应商管理</a>
+													
 										</li>
+										<li class="active-menu"><a href="#" onclick="openTab('公告管理','${basePath}/pages/notice_manage.jsp')"> 公告管理</a></li>
 									</c:when>
 									<c:when test="${roleId eq '2' }">
 										<li class="active-menu"><a href="#"  onclick="openTab('供应商管理','${basePath}/pages/company_manage.jsp')">
@@ -341,10 +343,10 @@
 							</div>
 						</div>
 						<!-- END BEGIN STYLE CUSTOMIZER -->
-						<c:if test="${roleId eq 3}">
+						<c:if test="${roleId ne 1}">
 							<h3 class="page-title">
-								&nbsp;&nbsp;每月采购日为<span id ="confirm"></span>请在采购日前全额支付，否则订单将延期到下一采购日进行采购 <br/>
-								<span style="color:red">&nbsp;&nbsp; 对订单状态进行任何修改时，请确认无误再行操作。如有疑问，请拨打热线电话</span>
+								&nbsp;&nbsp;<span id ="confirm"></span><br/>
+								<span style="color:red">&nbsp;&nbsp;如有疑问，请拨打热线电话</span>
 							</h3>
 						</c:if>
 						<!-- BEGIN PAGE TITLE & BREADCRUMB-->

@@ -15,17 +15,22 @@ body {
 }
 </style>
 <script type="text/javascript">
+	 function toggleRole(role){
+		 if(role == '2'){
+			  $(".brand").show();
+			  $(".business").css("margin-bottom" , "0px");
+		 }else {
+			 $(".brand").hide(); 
+			 $(".business").css("margin-bottom" , "15px");
+		 }
+	 }
 	$(function(){
+		var role = $("#roleId").val();
+		toggleRole(role);
 		$("#company_form").validate();
 		$('#roleId').combobox({
 			onChange:function(n,o){
-				 if(n == '2'){
-					  $(".brand").show();
-					  $(".business").css("margin-bottom" , "0px");
-				 }else {
-					 $(".brand").hide(); 
-					 $(".business").css("margin-bottom" , "15px");
-				 }
+				toggleRole(n)
 		    }
 		});
 		
@@ -78,7 +83,7 @@ body {
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">企业类型：</label>
                 <select name="roleId" id="roleId"  
                     		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
-                	<option value="2">供货商</option>
+               <!--  	<option value="2">供货商</option>--> 
                 	<option value="3">客户</option>
                 </select>
             </div>

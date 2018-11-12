@@ -202,19 +202,19 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 			int day = currentTime.getDayOfMonth();
 			List<TConfirm> t = confirmService.getWarningList();
     			int num =0;
-    			for(TConfirm temp : t){
-	    			 int betweenDays =  temp.getConfirmDate() -  day ;
-	    			  if(betweenDays == 0 ){
-		    				num = supllierOrderService.getSupllierOrder(temp.getId());
-	    			  }
-	    		 }
-			if(num >0){
+//    			for(TConfirm temp : t){
+//	    			 int betweenDays =  temp.getConfirmDate() -  day ;
+//	    			  if(betweenDays == 0 ){
+//	    			  }
+//	    		 }
+    			num = supllierOrderService.getSupllierOrder(0);
+			//if(num >0){
 				j.setSuccess(true);
 				j.setMsg("操作成功");
-			}else{
-				j.setSuccess(false);
-				j.setMsg("当前不存在已锁定的订单");
-			}
+//			}else{
+//				j.setSuccess(false);
+//				j.setMsg("当前不存在已锁定的订单");
+//			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			j.setSuccess(false);

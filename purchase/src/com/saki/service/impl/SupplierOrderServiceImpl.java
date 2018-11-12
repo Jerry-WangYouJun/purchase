@@ -377,8 +377,12 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	 */
 	private List<TOrderDetail> getOrderDetailsForSupplierOrder(int confirmId) {
 		String  hql = "from TOrderDetail t  where t.orderId in ( "
-				+ "select  id from TOrder o where  o.status='3' and o.percent = '100' "
-				+ " and  confirmId = " + confirmId +" )";
+				+ "select  id from TOrder o where  o.status='3' and o.percent = '100' " ;
+				if(confirmId > 0) {
+					hql += " and  confirmId = " + confirmId +" )";
+				}else {
+					hql += " )";
+				}
 		List<TOrderDetail> list = supplierOrderDao.find(hql);
 		return list;
 	}

@@ -17,8 +17,10 @@ import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Message;
 import com.saki.model.TConfirm;
+import com.saki.model.TNotice;
 import com.saki.model.TUser;
 import com.saki.service.ConfirmServiceI;
+import com.saki.service.NoticeServiceI;
 import com.saki.service.UserServiceI;
 import com.saki.utils.MD5Util;
 
@@ -52,7 +54,12 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 	}
 	private ConfirmServiceI confirmService ;
 	
+	private NoticeServiceI noticeService ;
 	
+	@Autowired
+	public void setNoticeService(NoticeServiceI noticeService) {
+		this.noticeService = noticeService;
+	}
 	public void loadAll(){
 		String roleId = getSession().getAttribute("roleId").toString();
 		if(!"1".equals(roleId)){
@@ -187,18 +194,21 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 	
 	public void findConfirm(){	
 		Message j = new Message();
-		List<TConfirm> list = confirmService.list();
+		List<TNotice> list = noticeService.list();
 		if(list == null || list.size() == 0) {
 			j.setMsg("");
 		}else {
-			Iterator<TConfirm> it = list.iterator();
+			Iterator<TNotice> it = list.iterator();
 			String msg = "";
 			while (it.hasNext()) {
-				TConfirm t = it.next();
-				msg += t.getConfirmDate() + "、";
+				TNotice t = it.next();
+				if("1".equals(t.getFlag())) {
+					msg += t.getMsg() + ";";
+				}
 				
 			}
-			j.setMsg(msg.substring(0, msg.length()-1));
+			//j.setMsg(msg.substring(0, msg.length()-1));
+			j.setMsg(msg);
 		}
 		super.writeJson(j);
 	}

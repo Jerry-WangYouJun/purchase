@@ -285,12 +285,12 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		 params.put("orderNo", "KH" + checkOrderDate + "%");
 		 Grid grid  = orderService.search(params, "startDate", "desc", page, rows ,urgent);
 			 if(StringUtils.isEmpty(orderId)) {
-				 if(grid.getTotal() > 0 ) {
-					 j.setSuccess(false);
-					 j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
-					 super.writeJson(j);
-					 return ;
-				 }
+//				 if(grid.getTotal() > 0 ) {
+//					 j.setSuccess(false);
+//					 j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
+//					 super.writeJson(j);
+//					 return ;
+//				 }
 				 if(insertFlag){
 					 order  = new TOrder();
 					 String dayOfOrderNo = DateUtil.getUserDate("yyyyMMdd");
@@ -318,21 +318,21 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				
 			 }else {
 				 //如果存在多条，数据异常
-				 if(grid.getTotal() > 1 ) {
-					 j.setSuccess(false);
-					 j.setMsg("该采购日已经存在多条订单，请联系管理员查看订单是否正常");
-					 super.writeJson(j);
-					 return ;
-				 }else if(grid.getTotal() ==  1) {
-					 List list = grid.getRows();
-					 TOrder t = (TOrder)list.get(0);
-					 if(t.getId()  !=  Integer.valueOf(orderId)) {
-						 j.setSuccess(false);
-						 j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
-						 super.writeJson(j);
-						 return ;  
-					 }
-				 }
+//				 if(grid.getTotal() > 1 ) {
+//					 j.setSuccess(false);
+//					 j.setMsg("该采购日已经存在多条订单，请联系管理员查看订单是否正常");
+//					 super.writeJson(j);
+//					 return ;
+//				 }else if(grid.getTotal() ==  1) {
+//					 List list = grid.getRows();
+//					 TOrder t = (TOrder)list.get(0);
+//					 if(t.getId()  !=  Integer.valueOf(orderId)) {
+//						 j.setSuccess(false);
+//						 j.setMsg("该采购日已经存在订单，请在原订单上进行修改或选择其他采购日");
+//						 super.writeJson(j);
+//						 return ;  
+//					 }
+//				 }
 				 if(!insertFlag || !updateFlag){
 					 j.setSuccess(false);
 				     j.setMsg("产品类型或产品的数量为必填，请仔细检查！");
