@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		    物流信息管理
  		</p>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
 		  <c:if test="${roleId eq 1 }">
  			 <div >
             	物流名称：
@@ -62,6 +62,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				pagination: true,
 				toolbar:'#toolbar_company',		
 				pagePosition:'top',
+				pageSize: 30,
 				fitColumns: true,
 				striped:true,
 				singleSelect: true,

@@ -39,7 +39,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							 </c:choose>
  		</p>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
 		  <c:if test="${roleId eq 1 }">
  			 <div >
             	公司名称：
@@ -74,11 +74,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	});
     }
     	$(function(){
+    		var role = '${role}';
+    		var flag = true;
+    		if(role != '1'){
+    			 flag = false;
+    		}
 			$('#company_table').datagrid({
-				url:'${pageContext.request.contextPath}/companyAction!loadAll.action',
-				pagination: true,
+				url:'${pageContext.request.contextPath}/companyAction!loadAll.action?roleId=' + role ,
+				pagination: flag,
 				toolbar:'#toolbar_company',		
 				pagePosition:'top',
+				pageSize: 30,
 				fitColumns: true,
 				striped:true,
 				singleSelect: true,

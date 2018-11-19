@@ -411,8 +411,8 @@ public class ProductServiceImpl implements ProductServiceI{
 			String cname , String subProName ,String page , String rows) {
 		Grid grid = new Grid(); 
 		Map<String,Object> map = new HashMap<String,Object>();
-		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c  "
-				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id   "   ;
+		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c ,TProduct g "
+				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id  and p.parentId = g.id  "   ;
 		if(companyId > 0 ){
 			hql += " and  m.companyId like  :companyId" ;
 			map.put("companyId", companyId);
@@ -434,15 +434,24 @@ public class ProductServiceImpl implements ProductServiceI{
 			TProductDetail ProductDetail = (TProductDetail)objs[1];
 			TProduct product = (TProduct) objs[2];
 			TCompany company = (TCompany) objs[3];
+			TProduct productParent = (TProduct) objs[4];
 			Map<String , Object>  tempMap = new HashMap<>();
 			tempMap.put("company", company.getName());
 			tempMap.put("companyId", company.getId());
 			tempMap.put("level", company.getLevel());
 			tempMap.put("remark", company.getBrand());
+			tempMap.put("parentName", productParent.getProduct());
+			tempMap.put("unit", productParent.getUnit());
 			tempMap.put("productName", product.getProduct());
-			tempMap.put("unit", product.getUnit());
 			tempMap.put("subProduct", ProductDetail.getSubProduct());
-			tempMap.put("format", ProductDetail.getFormat());
+			String proFormart = "";
+			if(ProductDetail.getFormatNum() != null && ProductDetail.getFormatNum() > 0){
+				 proFormart += ProductDetail.getFormatNum();
+			}
+			if(StringUtils.isNotBlank(ProductDetail.getFormat())){
+				proFormart += ProductDetail.getFormat();
+			}
+			tempMap.put("format", proFormart);
 			tempMap.put("material", ProductDetail.getMaterial());
 			tempMap.put("price", mapper.getPrice());
 			tempMap.put("productDetailId", mapper.getProductDetailId());

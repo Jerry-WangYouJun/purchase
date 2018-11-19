@@ -241,8 +241,12 @@
 						<ul class="sub-menu">
 							 <c:choose >
 									<c:when test="${roleId eq '1' }">
-										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/pages/company_manage.jsp')">
-													客户&供应商管理</a>
+										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/companyAction!loadCustomer.action?role=3')">
+													客户</a>
+													
+										</li>
+										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/companyAction!loadCustomer.action?role=2')">
+													供应商管理</a>
 													
 										</li>
 										<li class="active-menu"><a href="#" onclick="openTab('公告管理','${basePath}/pages/notice_manage.jsp')"> 公告管理</a></li>

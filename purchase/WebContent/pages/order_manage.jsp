@@ -18,13 +18,16 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
+   
+
    <script src="${basePath}/js/edit.js"></script>
+   <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
  		<h3> 快速下单</h3>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 20px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  			<div >
             	订单编号：
                 <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
@@ -74,11 +77,32 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                	 	 <option value="0"> 不含税</option>
 		                </select>
 		        </div> --%>
-		    	</form>   
+		    	</form>  
+		    	<div>
+				<table  id="table_print"  class="table" style="display: none">
+			    		 <tr>
+			    		 	 <td id="companyNamePrt">公司：<span></span></td>
+			    		 	 <td id="orderNoPrt">订单编号：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="amountPrt">订单总价：<span></span></td>
+			    		 	 <td id="confirmIdPrt">采购批次：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="statusPrt">订单状态：<span></span></td>
+			    		 	 <td id="invoicePrt">发票状态：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="startDatePrt">下单时间：<span></span></td>
+			    		 	 <td id="pillDatePrt">付款时间：<span></span></td>
+			    		 </tr>
+			    	</table>
+		    	</div> 
 			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
+			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -129,6 +153,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#table_order').datagrid({
 				url: orderUrl,
 				pagination: true,
+				pagePosition:'top',
+				pageSize: 30,
 				fitColumns: true,
 				singleSelect: false,
 				striped:true,
@@ -276,7 +302,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
-	   						{field:'boxnum',title:'包装件数',width:100,align:'center'},
+	   						{field:'boxnum',title:'包装件数',width:100, hidden:'true',align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center'},
 	   						{field:'defaultFlag',title:'托管采购',width:100, formatter: function(value,row,index){
@@ -496,7 +522,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									}
 								}},
 								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
-								{field:'boxnum',title:'包装件数',width:100,align:'center',editor:'textbox'},
+								{field:'boxnum',title:'包装件数',width:100,align:'center',hidden:'true',editor:'textbox'},
 								{field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' },
 								{field:'price',title:'单价',width:100,align:'center',editor:{
 									type:'textbox',
@@ -578,6 +604,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				});
 			//$("#table_add").datagrid("hideColumn","amount");
 		});
+		 
+		 function print(){
+	    		var row = $('#table_order').datagrid('getSelected');
+	    		$("#order_form").hide();
+	    		$("#table_print").show();
+	    		$("#companyNamePrt>span").append(row.companyName);
+	    		$("#orderNoPrt>span").append(row.orderNo);
+	    		$("#amountPrt>span").append(row.amount);
+	    		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
+	    		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
+	    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
+	    		$("#startDatePrt>span").append(row.startDate);
+	    		$("#pillDatePrt>span").append(row.pillDate);
+			 $("#order_dlg").jqprint({
+				 debug: false,
+				 importCSS: true,
+				 printContainer: true,
+				 operaSupport: false
+			 });
+	    		$("#order_form").show();
+	    		$("#table_print").hide();
+	    		$("#table_print  span").text('');
+			// company_close();
+		 }
    
     </script>
 </body>

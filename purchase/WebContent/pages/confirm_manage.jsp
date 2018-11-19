@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">采购管理</p>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		<table id="info_table" class="easyui-datagrid" fit="true" ></table>
  	</div>
 	
@@ -45,6 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#info_table').datagrid({
 				url:'${pageContext.request.contextPath}/confirm!loadAll.action',
 				pagination: true,
+				pagePosition:'top',
 				toolbar:'#toolbar_info',				
 				fitColumns: true,
 				striped:true,

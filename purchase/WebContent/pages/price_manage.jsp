@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">价格管理</p>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		 <c:if test="${roleId eq 1 }">
  			 <div >
             	公司名称：
@@ -46,6 +46,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	<a onclick="price_default()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">设置为默认报价</a> 
         	<a onclick="markup_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量加价</a> 
         	<a onclick="markup_many_persent()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量加价（百分比）</a>      
+ 		</c:if>
+ 		<c:if test="${roleId eq '2'}">
+        	<a onclick="price_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量设置价格</a> 
  		</c:if>
     </div>
 	
@@ -81,6 +84,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#user_table').datagrid({
 				url:'${pageContext.request.contextPath}/productAction!loadProducntDetailByCompany.action',
 				pagination: true,
+				pagePosition:'top',
+				pageSize: 30,
 				toolbar:'#toolbar_user',		
 				fitColumns: true,
 				striped:true,
@@ -101,6 +106,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							return "";
 						}
 					}},
+					{field:'parentName',title:'产品',width:20,align:'center'},
 					{field:'productName',title:'产品类别',width:20,align:'center'},
 					{field:'subProduct',title:'产品名称',width:20,align:'center'},
 					{field:'format',title:'规格',width:20,align:'center'},
@@ -184,7 +190,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						$("input.datagrid-editable-input").focus();
 						return false ;
 					}
-					console.info(target);
 					updatePrice(val, target.productDetailId , target.mapid);
 				}else{
 					if(val  == '' ){
@@ -258,25 +263,55 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    		});
 			}
 		}
+		
+		function price_many(){
+			var flag = confirm("确定进行批量修改价格？");
+			if(flag){
+				var checkedItems = $('#user_table').datagrid('getSelections');
+				 $.messager.prompt('','请输入金额',function(s){
+					if(s){
+						$.ajax({ 
+			    			url: '${pageContext.request.contextPath}/productAction!updatePriceMany.action',
+			    			type:'post',
+			    			data : { "obj": JSON.stringify(checkedItems) , price :s},
+			    			dataType : 'json',
+			    			success : function(obj){
+			    				if(obj.success){
+			    				 	alert(obj.msg);
+			    				 	$('#user_table').datagrid('reload');
+			    				}else{
+			    					alert(obj.msg);
+			    					$('#user_table').datagrid('reload');
+			    				}
+			    			}
+			    		}); 
+					}
+				}); 
+			}
+		}
+		
 		function markup_many(){
 			var flag = confirm("确定进行批量修改加价？");
 			if(flag){
 				var checkedItems = $('#user_table').datagrid('getSelections');
 				$.messager.prompt('','请输入要加价的金额',function(s){
-					$.ajax({ 
-		    			url: '${pageContext.request.contextPath}/productAction!updateMarkupMany.action',
-		    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
-		    			dataType : 'json',
-		    			success : function(obj){
-		    				if(obj.success){
-		    				 	alert(obj.msg);
-		    				 	$('#user_table').datagrid('reload');
-		    				}else{
-		    					alert(obj.msg);
-		    					$('#user_table').datagrid('reload');
-		    				}
-		    			}
-		    		}); 
+					if(s){
+						$.ajax({ 
+			    			url: '${pageContext.request.contextPath}/productAction!updateMarkupMany.action',
+			    			type:'post',
+			    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
+			    			dataType : 'json',
+			    			success : function(obj){
+			    				if(obj.success){
+			    				 	alert(obj.msg);
+			    				 	$('#user_table').datagrid('reload');
+			    				}else{
+			    					alert(obj.msg);
+			    					$('#user_table').datagrid('reload');
+			    				}
+			    			}
+			    		}); 
+					}
 				});
 			}
 		}
@@ -286,20 +321,23 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if(flag){
 				var checkedItems = $('#user_table').datagrid('getSelections');
 				$.messager.prompt('','请输入要加价的百分比，单位%',function(s){
-					$.ajax({ 
-		    			url: '${pageContext.request.contextPath}/productAction!updateMarkupByPercent.action',
-		    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
-		    			dataType : 'json',
-		    			success : function(obj){
-		    				if(obj.success){
-		    				 	alert(obj.msg);
-		    				 	$('#user_table').datagrid('reload');
-		    				}else{
-		    					alert(obj.msg);
-		    					$('#user_table').datagrid('reload');
-		    				}
-		    			}
-		    		}); 
+					if(s){
+						$.ajax({ 
+			    			url: '${pageContext.request.contextPath}/productAction!updateMarkupByPercent.action',
+			    			type : 'post',
+			    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
+			    			dataType : 'json',
+			    			success : function(obj){
+			    				if(obj.success){
+			    				 	alert(obj.msg);
+			    				 	$('#user_table').datagrid('reload');
+			    				}else{
+			    					alert(obj.msg);
+			    					$('#user_table').datagrid('reload');
+			    				}
+			    			}
+			    		}); 
+					}
 				});
 			}
 		}

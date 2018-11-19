@@ -16,6 +16,7 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 <jsp:include page="/common.jsp"></jsp:include>
+   <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false,showHeader:false"
@@ -23,7 +24,7 @@
 		<h3>供应商订单管理</h3>
 	</div>
 	<div data-options="region:'center',border:false,showHeader:false"
-		style="padding-bottom: 10px">
+		style="padding-bottom: 30px">
 		<%	
 			if (Integer.valueOf(session.getAttribute("roleId").toString()) == 1) {
 		%>
@@ -34,9 +35,24 @@
 		<%	
 			}
 		%>
+		<div >
+            	订单编号：
+                <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
+            	订单状态：
+                <select name="ostatue" id="ostatue" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">新订单</option>
+	                	<!-- <option value="2">已报价</option> -->
+	                	<option value="3">已付款</option>
+	                	<option value="4">已收货</option>
+	                	<option value="5">提交采购</option>
+                </select>
+                <button onclick="query()">查询</button>
+            </div>
 		<table id="table_order" class="easyui-datagrid" fit="false"></table>
 	</div>
-	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:800px;height: 450px"
+	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:800px;height: 650px"
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
 		    <form id="order_form" role="form" style="padding: 20px">
 			<input type="hidden" id="id" name="id">
@@ -53,15 +69,59 @@
 					style="display: inline-block; width: 30%">
 			</div> -->
 		</form>
-
+		<div>
+				<table  id="table_print"  class="table" style="display: none">
+			    		 <tr>
+			    		 	 <td id="orderNoPrt" colspan="2">订单编号：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="amountPrt">订单总价：<span></span></td>
+			    		 	 <td id="confirmIdPrt">采购批次：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="statusPrt">订单状态：<span></span></td>
+			    		 	 <td id="invoicePrt">发票状态：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="startDatePrt">下单时间：<span></span></td>
+			    		 	 <td id="pillDatePrt">付款时间：<span></span></td>
+			    		 </tr>
+			    	</table>
+		    	</div>
 		<table id="table_add" class="easyui-datagrid" fit="true">  </table>           
 		</div>
 	<div id="company_dlg_buttons"
 		style="width: 600px; height: 40px; text-align: center">
 		<button onclick="company_close()" type="button"
 			class="btn btn-default btn-dialog-right">关闭</button>
+			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>
 	</div>
 	<script type="text/javascript">
+	function print(){
+		var row = $('#table_order').datagrid('getSelected');
+		console.info(row);
+		$("#order_form").hide();
+		$("#table_print").show();
+		$("#companyNamePrt>span").append(row.companyName);
+		$("#orderNoPrt>span").append(row.supplierOrderNo);
+		$("#amountPrt>span").append(row.amount);
+		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
+		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
+		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
+		$("#startDatePrt>span").append(row.startDate);
+		$("#pillDatePrt>span").append(row.pillDate);
+		 $("#order_dlg").jqprint({
+			 debug: false,
+			 importCSS: true,
+			 printContainer: true,
+			 operaSupport: false
+		 });
+			$("#order_form").show();
+			$("#table_print").hide();
+			$("#table_print  span").text('');
+		// company_close();
+	 }
+	
 		$(function() {
 			var  searchUrl = '${pageContext.request.contextPath}/supplier!loadAll.action' ;
 			var  toolbar = [ {
@@ -90,7 +150,7 @@
 						order_edit();
 					}
 				}, '-', {
-					text : '确认付款',
+					text : '确认收款',
 					iconCls : 'icon-ok',
 					handler : function() {
 						order_status('3');
@@ -104,6 +164,8 @@
 			$('#table_order').datagrid({
 								url : searchUrl,
 								pagination : true,
+								pagePosition:'top',
+								pageSize: 30,
 								fitColumns : true,
 								striped:true,
 								singleSelect : true,

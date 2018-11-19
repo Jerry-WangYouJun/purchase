@@ -125,7 +125,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	}
 	
 	/**
-	 * 更新供应商价格
+	 * 更新加价价格
 	 */
 	public void updateMarkupPrice(){
 		Message j = new Message();
@@ -141,7 +141,29 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	}
 	
 	/**
-	 * 批量更新
+	 * 批量更新价格
+	 */
+	public void updatePriceMany(){
+		Message j = new Message();
+		try{
+			String  s = getParameter("obj");
+			JSONArray jsonArray = JSONArray.parseArray(s);
+			Double price = Double.valueOf(getParameter("price")) ;
+			for (Object object : jsonArray) {
+				 JSONObject  json = (JSONObject) object;
+					Integer mapid = json.getIntValue("mapid");
+					userProductService.updateMarkupPrice(mapid, "price" ,  price);
+			}
+			j.setSuccess(true);
+			j.setMsg("保存成功");
+		}catch(Exception e){
+			j.setMsg("保存失败");
+		}	
+		super.writeJson(j);
+	}
+	
+	/**
+	 * 批量更新加价
 	 */
 	public void updateMarkupMany(){
 		Message j = new Message();
@@ -162,7 +184,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	}
 	
 	/**
-	 * 批量更新
+	 * 批量更新加价（百分比）
 	 */
 	public void updateMarkupByPercent(){
 		Message j = new Message();

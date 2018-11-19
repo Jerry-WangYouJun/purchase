@@ -25,7 +25,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
  		<h3>订单管理</h3>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 20px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		<div >
             	订单编号：
                 <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
@@ -145,6 +145,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#table_order').datagrid({
 				url: orderUrl,
 				pagination: true,
+				pagePosition:'top',
+				pageSize: 30,
 				fitColumns: true,
 				singleSelect: false,
 				striped:true,
@@ -272,7 +274,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
 	   						{field:'unit',title:'单位',width:100,align:'center'},
-	   						{field:'boxnum',title:'包装件数',width:100,align:'center'},
+	   						{field:'boxnum',title:'包装件数',width:100, hidden:'true',align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'条目总价',width:100,align:'center'},
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */

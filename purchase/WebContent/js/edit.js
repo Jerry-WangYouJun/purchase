@@ -243,11 +243,11 @@
 	    	acount.target.textbox('setValue' , '');
 	    	 return false ;
 	     }
-	     if(rest != 0 ){
-	    	   alert("为了方便发货，数量必须是" + formatNum.target.textbox('getValue') + "的整数倍");
-	    	  acount.target.textbox('setValue' , '');
-	    	   return false ;
-	     }
+//	     if(rest != 0 ){
+//	    	   alert("为了方便发货，数量必须是" + formatNum.target.textbox('getValue') + "的整数倍");
+//	    	  acount.target.textbox('setValue' , '');
+//	    	   return false ;
+//	     }
 	//     if(taxflag != '0'){
 	//    	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
 	//     }

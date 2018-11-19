@@ -6,6 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -193,13 +194,18 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("type",  product.getProduct());
 			map.put("base", product.getBase());
 			map.put("productId", product.getId());
-			String subPro = detail.getSubProduct() + "-"
-					 + detail.getMaterial() + "-" + detail.getFormatNum() + detail.getFormat();
+			String subPro = detail.getSubProduct()  ;
+			if(StringUtils.isNotBlank(detail.getMaterial()) ){
+				subPro +=  "-" +  detail.getMaterial()  ;
+			}
+			if(detail.getFormatNum() != null ){
+				subPro += "-" + detail.getFormatNum() + detail.getFormat();
+			}
 			map.put("sub_product", subPro);
 			map.put("materail", detail.getMaterial());
 			map.put("detailId", detail.getId());
 			map.put("format", detail.getFormat());
-			map.put("boxnum", (detail.getFormatNum()==0|| detail.getFormatNum()==null)?1:(Math.ceil( Double.valueOf(orderDetail.getNum()+"")/ Double.valueOf(detail.getFormatNum()+""))));
+			map.put("boxnum", (detail.getFormatNum()== null || detail.getFormatNum()==0)?1:(Math.ceil( Double.valueOf(orderDetail.getNum()+"")/ Double.valueOf(detail.getFormatNum()+""))));
 			map.put("supplierCompanyId", company.getId());
 			map.put("brand", company.getBrand());
 			//detailMap.put(orderDetail.getId(), map);

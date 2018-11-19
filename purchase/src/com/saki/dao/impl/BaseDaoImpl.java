@@ -1,5 +1,6 @@
 
 package com.saki.dao.impl;
+import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.io.Serializable;
@@ -186,10 +187,15 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 	public void updateSubpro(List<TProductDetail> list) {
 		for (TProductDetail tProductDetail : list) {
 			getSessionFactory().getCurrentSession().evict(tProductDetail);
-			String subPro = tProductDetail.getSubProduct() + "-"
-					 + tProductDetail.getMaterial() + "-"
-					 + tProductDetail.getFormatNum() + tProductDetail.getFormat();
+			String subPro = tProductDetail.getSubProduct()  ;
+			if(StringUtils.isNotBlank(tProductDetail.getMaterial()) ){
+				subPro +=  "-" +  tProductDetail.getMaterial()  ;
+			}
+			if(tProductDetail.getFormatNum() != null ){
+				subPro += "-" + tProductDetail.getFormatNum() + tProductDetail.getFormat();
+			}
 			tProductDetail.setSubProduct(subPro);
+			
 		}
 	}
 	

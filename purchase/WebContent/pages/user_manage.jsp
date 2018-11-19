@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">用户管理</p>
  	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		<table id="user_table" class="easyui-datagrid" fit="true" ></table>
  	</div>
 	
@@ -44,6 +44,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$('#user_table').datagrid({
 				url:'${pageContext.request.contextPath}/userAction!loadAll.action',
 				pagination: true,
+				pagePosition:'top',
+				pageSize: 30,
 				toolbar:'#toolbar_user',				
 				fitColumns: true,
 				striped:true,
@@ -64,6 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								break;
 							}							
 						}},
+						{field:'userPwd',title:'登陆密码',width:100,align:'center'},
 					{field:'companyName',title:'公司ID',width:150,align:'center'}
 				]],				
 			});

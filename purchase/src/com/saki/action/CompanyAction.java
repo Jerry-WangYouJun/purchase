@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
@@ -20,6 +21,7 @@ import com.saki.service.CompanyServiceI;
 import com.saki.service.UserServiceI;
 
 @Namespace("/")
+@Result(name="loadCustomer",location="/pages/company_manage.jsp")
 @Action(value="companyAction")
 public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 
@@ -65,6 +67,12 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		
 		super.writeJson(companyService.loadQuery(sort, order, page, rows, map));
 		
+	}
+	
+	public String loadCustomer(){
+		String roleId = getParameter("role");
+		this.getRequest().setAttribute("role", roleId);
+		return "loadCustomer";
 	}
 	public void listAll(){
 		super.writeJson(companyService.loadAll(sort, order, page, rows).getRows());

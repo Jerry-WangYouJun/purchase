@@ -123,30 +123,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div style="margin:5px 0px;">
 				<input type="password" name="userPwd" placeholder="请输入密码..."/>
 			</div>
-			<button type="button" onclick="submitForm()" >登<span style="width:20px;"></span>录</button>
+			<button type="button" onclick="submitForm()"  class="log_btn">登<span style="width:20px;"></span>录</button>
 			<div style="margin:15px 0px;">
 				 <a href="register.jsp" style="color: white;padding: 5px">企业注册</a>
 			</div>
 		</form>
 	</div>
 </div>
-	<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
-	<script type="text/javascript" src="js/com.js"></script>
-    <script>
-function submitForm(){
-	$.ajax({ 
-    	url: '${pageContext.request.contextPath}/userAction!login.action',
-    	data : $('#log_form').serialize(),
-    	dataType : 'json',
-    	success : function  test(obj){
-    		if(obj.success){
-				location.replace('<%=path%>' + '/index.jsp');
-			}else{
-				alert(obj.msg);
-			}
-    	}
-    });
-}
+<script type="text/javascript" src="js/jquery-1.8.0.min.js"></script>
+<script type="text/javascript" src="js/com.js"></script>
+<script>
+	function submitForm(){
+		$.ajax({ 
+	    	url: '${pageContext.request.contextPath}/userAction!login.action',
+	    	data : $('#log_form').serialize(),
+	    	dataType : 'json',
+	    	success : function  test(obj){
+	    		if(obj.success){
+					location.replace('<%=path%>' + '/index.jsp');
+				}else{
+					alert(obj.msg);
+				}
+	    	}
+	    });
+	}
+	
+	$(function(){
+	$("#log_form").keydown(function(e){
+		 var e = e || event,
+		 keycode = e.which || e.keyCode;
+		 if (keycode==13) {
+		 $(".log_btn").trigger("click");
+		 }
+	});
+	});
 </script>
   </body>
 </html>
