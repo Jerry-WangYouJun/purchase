@@ -200,11 +200,11 @@
 					<!-- END TODO DROPDOWN -->
 					<!-- BEGIN 修改订单金额 -->
 					<c:if test="${roleId eq '1' }">
-					<li class="dropdown" ><a href="#" onclick="uploadModal()" class="dropdown-toggle"
-						data-toggle="dropdown" style="padding-right:10px"> <i class="icon-yen"></i> <span class="username"  style="font-size: 20px">
-							订单最低金额设置</span> 
-						</a>
-					</li>
+						<li class="dropdown" ><a href="#" onclick="uploadModal()" class="dropdown-toggle"
+							data-toggle="dropdown" style="padding-right:10px"> <i class="icon-yen"></i> <span class="username"  style="font-size: 20px">
+								订单最低金额设置</span> 
+							</a>
+						</li>
 					</c:if>
 					<!-- END 修改订单金额 -->
 					<!-- BEGIN 用户登陆 DROPDOWN -->
@@ -241,11 +241,11 @@
 						<ul class="sub-menu">
 							 <c:choose >
 									<c:when test="${roleId eq '1' }">
-										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/companyAction!loadCustomer.action?role=3')">
+										<li class="active-menu"><a href="#"  onclick="openTab('客户管理','${basePath}/companyAction!loadCustomer.action?role=3')">
 													客户</a>
 													
 										</li>
-										<li class="active-menu"><a href="#"  onclick="openTab('客户 &供应商管理','${basePath}/companyAction!loadCustomer.action?role=2')">
+										<li class="active-menu"><a href="#"  onclick="openTab('供应商管理','${basePath}/companyAction!loadCustomer.action?role=2')">
 													供应商管理</a>
 													
 										</li>
@@ -282,7 +282,10 @@
 					<c:if test="${roleId ne 1 }">
 						<li class="active-menu"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
 								class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
-						</a></li>																 
+						</a></li>	
+						<li class="active-menu"><a href="#" onclick="openTab('收货地址管理','${basePath}/pages/address_manage.jsp')"> <i
+								class="icon-location-arrow"></i> <span class="title">收货地址管理</span>
+						</a></li>															 
 					</c:if>
 					<c:if test="${roleId eq 2 }">
 						 <li class="last active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i

@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">
  				<c:choose >
 									<c:when test="${roleId eq '1' }">
-										客户 &供应商 管理
+										企业信息管理
 									</c:when>
 									<c:when test="${roleId eq '2' }">
 										供应商 管理
@@ -49,7 +49,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
                     <option value="">-选择-</option>
                 	<option value="2">供货商</option>
-                	<option value="3">客户</option>
+                	<!-- <option value="3">客户</option> -->
                 </select>
                 <button onclick="query()">查询</button>
             </div> 
@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		<table id="company_table" class="easyui-datagrid" fit="true" ></table>
  	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
-	<c:if test="${roleId eq 1 }">
+	<c:if test="${roleId eq 1  && role eq 2}">
      	<a onclick="company_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>
 	</c:if>
         <a onclick="company_edit()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">编辑</a>    
