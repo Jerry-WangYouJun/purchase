@@ -3,7 +3,7 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
@@ -35,7 +35,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	
 	<div id="toolbar_user" style="padding:2px 5px;">
-		<a onclick="user_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>  
+		<c:if test="${roleId ne '1' }">
+			<a onclick="user_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>  
+		</c:if>
         <a onclick="user_edit()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">修改</a>    
         <a onclick="user_delete()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-remove fa-fw" style="margin: 2px">删除</a>
     </div>
@@ -51,20 +53,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				striped:true,
 				singleSelect: true,
 				columns:[[
-					{field:'msg',title:'公告内容',width:100,align:'center'},
-					{field:'flag',title:'是否有效',width:100,align:'center',
+					{field:'companyName',title:'公司',width:50,align:'center',formatter:function(value,row,index){
+                        return row.company.name;
+                    }},
+					{field:'name',title:'地址',width:30,align:'center'},
+					{field:'province',title:'省',width:20,align:'center'},
+					{field:'city',title:'市',width:20,align:'center'},
+					{field:'address',title:'详细地址',width:100,align:'center'},
+					{field:'isDefault',title:'默认地址',width:20,align:'center',
 						formatter: function(value,row,index){
 							switch(value){
 								case '1':
-									return '有效';
+									return '是';
 								break;
 								case '0':
-									return '无效';
+									return '否';
 								break;
 							}							
 						}}
 				]],				
 			});
+			
+			if('${roleId}' != '1'){
+				
+			}
 		});
 		function user_add(){
 			$('#user_dlg').dialog('open');	
@@ -152,8 +164,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	<div  id="user_dlg" closed="true" class="easyui-dialog" style="width:600px;height: 300px"
 	data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:50,buttons: '#user_dlg_buttons'">
-    		<form class="form-horizontal" role="form"  style="padding: 20px" id="dataForm">
+    		<form class="form-horizontal" role="form"  style="padding: 20px" id="user_form">
 						<input type="hidden"  name="id" >
+						<input type="hidden"  name="cid" >
 					  <div class="form-group">
 					    <label for="firstname" class="col-sm-2 control-label">地址描述：</label>
 					    <div class="col-sm-4">
@@ -161,7 +174,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					    </div>
 					    <label for="lastname" class="col-sm-2 control-label">是否默认：</label>
 					    <div class="col-sm-4">
-					      <select name="roleId" id="roleId" 
+					      <select name="isDefault" id="isDefault" 
                     		class="form-control " editable="false" required>
                     			<option value="">请选择</option>
 			                	<option value="1">是</option>
