@@ -283,10 +283,10 @@
 						<li class="active-menu"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
 								class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
 						</a></li>	
-						<li class="active-menu"><a href="#" onclick="openTab('收货地址管理','${basePath}/pages/address_manage.jsp')"> <i
-								class="icon-location-arrow"></i> <span class="title">收货地址管理</span>
-						</a></li>															 
 					</c:if>
+					<li class="active-menu"><a href="#" onclick="openTab('收货地址管理','${basePath}/pages/address_manage.jsp')"> <i
+							class="icon-location-arrow"></i> <span class="title">收货地址管理</span>
+					</a></li>															 
 					<c:if test="${roleId eq 2 }">
 						 <li class="last active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
 								class="icon-bar-chart"></i> <span class="title">价格设置</span>

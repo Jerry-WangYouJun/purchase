@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.GenericGenerator;
 
@@ -27,6 +28,7 @@ public class TAddress implements java.io.Serializable {
 	private String area;
 	private String isDefault;
 	// Constructors
+	private TCompany company ;
 
 	/** default constructor */
 	public TAddress() {
@@ -135,7 +137,14 @@ public class TAddress implements java.io.Serializable {
 	public void setIsDefault(String isDefault) {
 		this.isDefault = isDefault;
 	}
-	
+	@Transient
+	public TCompany getCompany() {
+		return company;
+	}
+
+	public void setCompany(TCompany company) {
+		this.company = company;
+	}
 	
 
 }

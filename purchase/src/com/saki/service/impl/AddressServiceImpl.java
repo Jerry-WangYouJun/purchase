@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.saki.dao.BaseDaoI;
 import com.saki.entity.Grid;
 import com.saki.model.TAddress;
+import com.saki.model.TCompany;
 import com.saki.model.TAddress;
 import com.saki.service.AddressServiceI;
 @Service
@@ -49,13 +50,18 @@ public class AddressServiceImpl implements AddressServiceI{
 		}else{
 			 lp = addressDao.find(hql  );
       }	
+		for(TAddress ad : lp) {
+			String hqlDetail =  "from TCompany where id = "  + ad.getCid() ;
+			TCompany com =(TCompany) addressDao.get(hqlDetail); 
+			ad.setCompany(com);
+		}
 		grid.setRows(lp);
 		return grid;
 	}
 
 	@Override
 	public List<TAddress> list() {
-		List<TAddress> l = addressDao.find("from TAddress order by isDefault ");
+		List<TAddress> l = addressDao.find("from TAddress order by isDefault desc ");
 		return l;
 	}
 
@@ -76,6 +82,10 @@ public class AddressServiceImpl implements AddressServiceI{
 
 	@Override
 	public void update(TAddress address) {
+		if("1".equals(address.getIsDefault())) {
+			String hql = "update TAddress  set isDefault = '0' where cid =  " +  address.getCid();
+			addressDao.updateHql(hql);
+		}
 		addressDao.update(address);
 	}
 

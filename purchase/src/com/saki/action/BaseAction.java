@@ -14,6 +14,7 @@ import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.ParentPackage;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 
 @ParentPackage("basePackage")
 @Namespace("/")
@@ -28,7 +29,8 @@ public class BaseAction {
 	
 	public void writeJson(Object object){
 		try {
-			String json = JSON.toJSONStringWithDateFormat(object, "yyyy-MM-dd HH:mm:ss");
+			String json = JSON.toJSONStringWithDateFormat(object, "yyyy-MM-dd HH:mm:ss",SerializerFeature.DisableCircularReferenceDetect);
+
 			ServletActionContext.getResponse().setContentType("text/html;charset=utf-8");
 			ServletActionContext.getResponse().getWriter().write(json);
 			ServletActionContext.getResponse().getWriter().flush();

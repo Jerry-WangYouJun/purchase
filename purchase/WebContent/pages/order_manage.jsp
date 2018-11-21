@@ -47,11 +47,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:1000px;height:600px"
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
+			<div></div>
 		    	<form id="order_form" role="form" style="padding: 20px">
 				<input type="hidden"  id = "id"  name = "id">
 		    		<div class="form-group col-md-6">
 		            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
-		                <input name="orderNo" id="orderNo" required class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
+		                <input  name="orderNo" id="orderNo" required class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
 		        </div>
 		        <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
@@ -68,6 +69,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                	 </c:forEach>
 		                </select>
 		        </div>
+		        <%--  <div class="form-group col-md-6">
+		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
+		               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
+		                <select name="company" id= "company" class="easyui-combobox" 
+		                 editable="false" style="display: inline-block;width: 40%" 
+		                 class="form-control select2 easyui-combobox" >
+			                	 <c:forEach items="${addressList}" var="address" >
+			                	 	<c:if test="${companyId eq address.cid }"></c:if>
+			                	 	 <option value="${address.id}"> ${address.name}</option>
+			                	 </c:forEach>
+		                </select>
+		        </div> --%>
 		       <%-- <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">是否含税：</label>
 		                <select name="taxrate" id= "taxrate" class="easyui-combobox" 

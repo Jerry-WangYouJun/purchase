@@ -65,15 +65,28 @@ public class AddressAction extends BaseAction implements ModelDriven<TAddress>{
 		Message j = new Message();
 		try{
 			if(address.getId() != null && address.getId() > 0 ){
-				addressService.save(address);
-			}else{
 				addressService.update(address);
+			}else{
+				String companyId = getSession().getAttribute("companyId").toString();
+				address.setCid(Integer.valueOf(companyId));
+				Map map = new HashMap();
+				map.put("cid", companyId);
+				int num = addressService.loadQuery(sort, order, page, rows, map).getTotal();
+				if(num < 3) {
+					addressService.save(address);
+				}else {
+					j.setSuccess(false);
+					j.setMsg("地址最多填写三条");
+					super.writeJson(j);
+					return ;
+				}
 			}
 			j.setSuccess(true);
-			j.setMsg("添加成功");
+			j.setMsg("操作成功");
 		}catch(Exception e){
 			j.setSuccess(false);
-			j.setMsg("添加失败");
+			j.setMsg("操作失败");
+			e.printStackTrace();
 		}
 		super.writeJson(j);
 	}

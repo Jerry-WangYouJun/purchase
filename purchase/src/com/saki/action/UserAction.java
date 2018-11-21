@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Message;
+import com.saki.model.TAddress;
 import com.saki.model.TConfirm;
 import com.saki.model.TNotice;
 import com.saki.model.TUser;
+import com.saki.service.AddressServiceI;
 import com.saki.service.ConfirmServiceI;
 import com.saki.service.NoticeServiceI;
 import com.saki.service.UserServiceI;
@@ -56,9 +58,15 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 	
 	private NoticeServiceI noticeService ;
 	
+	private AddressServiceI addressService;
+	
 	@Autowired
 	public void setNoticeService(NoticeServiceI noticeService) {
 		this.noticeService = noticeService;
+	}
+	@Autowired
+	public void setAddressService(AddressServiceI addressService) {
+		this.addressService = addressService;
 	}
 	public void loadAll(){
 		String roleId = getSession().getAttribute("roleId").toString();
@@ -134,6 +142,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		TUser u =userService.login(user);
 		List<TConfirm> t = confirmService.getWarningList();
 		List<TConfirm> confirm = confirmService.list();
+		List<TAddress> addressList = addressService.list();
 	    Integer base = userService.getBase();
 		if(u != null){
 			getSession().setAttribute("userName", StringUtils.isEmpty(u.getCompanyName())?"管理员":u.getCompanyName());
@@ -143,6 +152,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			TConfirm nextDay = getConfirmDay(confirm);
 			getSession().setAttribute("warnFlag", nextDay);
 			getSession().setAttribute("warnList", JSON.toJSON(t));
+			getSession().setAttribute("addressList", addressList);
 			getSession().setAttribute("confirm", confirm);
 			getSession().setAttribute("base", base);
 			j.setSuccess(true);
