@@ -266,6 +266,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		  
 		 String orderId = getParameter("id");
 		 String confirmId = getParameter("confirmId");
+		 String addressId = getParameter("addressId");
 		 String insert = getParameter("inserted");
 		 String update = getParameter("updated");
 		 String delete = getParameter("deleted");
@@ -353,6 +354,9 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				 }
 				 j.setSuccess(true);
 			     j.setMsg("修改成功");
+			 }
+			 if(StringUtils.isNotBlank(addressId)){
+				 order.setAddressId(Integer.valueOf(addressId));
 			 }
 			 orderService.update(order);
 	     super.writeJson(j);

@@ -1,6 +1,7 @@
 package com.saki.action;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
@@ -81,6 +82,8 @@ public class AddressAction extends BaseAction implements ModelDriven<TAddress>{
 					return ;
 				}
 			}
+			List<TAddress> addressList = addressService.list();
+			getSession().setAttribute("addressList", addressList);
 			j.setSuccess(true);
 			j.setMsg("操作成功");
 		}catch(Exception e){

@@ -233,7 +233,7 @@
 	     });
 	     
 	     if(formatNum.target.textbox('getValue') == ''){
-	    	 alert("null");
+	    	
 	    	 return true;
 	     }
 	     var num = acount.target.textbox('getValue') / formatNum.target.textbox('getValue');

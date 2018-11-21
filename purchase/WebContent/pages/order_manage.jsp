@@ -69,10 +69,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                	 </c:forEach>
 		                </select>
 		        </div>
-		        <%--  <div class="form-group col-md-6">
+		        <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
 		               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
-		                <select name="company" id= "company" class="easyui-combobox" 
+		                <select name="addressId"  id= "addressId" class="easyui-combobox" 
 		                 editable="false" style="display: inline-block;width: 40%" 
 		                 class="form-control select2 easyui-combobox" >
 			                	 <c:forEach items="${addressList}" var="address" >
@@ -80,7 +80,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                	 	 <option value="${address.id}"> ${address.name}</option>
 			                	 </c:forEach>
 		                </select>
-		        </div> --%>
+		         </div> 
 		       <%-- <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">是否含税：</label>
 		                <select name="taxrate" id= "taxrate" class="easyui-combobox" 
@@ -108,6 +108,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    		 <tr>
 			    		 	 <td id="startDatePrt">下单时间：<span></span></td>
 			    		 	 <td id="pillDatePrt">付款时间：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="addressPrt" colspan="2">发货地址：<span></span></td>
 			    		 </tr>
 			    	</table>
 		    	</div> 
@@ -243,7 +246,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									return "";
 								}
 							}
-					}
+					},
+					{field:'addressId', hidden:'true'}
 				]],
 				
 			});
@@ -329,6 +333,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
+	   						{field:'address',hidden:'true'},
 	   						{field:'base', hidden:'true',editor:'textbox' },
 	   						{field:'remark',title:'备注',width:100,align:'center'},
 	   						{field:'id', hidden:'true',editor:'textbox' }
@@ -630,6 +635,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
 	    		$("#startDatePrt>span").append(row.startDate);
 	    		$("#pillDatePrt>span").append(row.pillDate);
+	    		var rows = $('#table_add').datagrid('getData');
+	    		$("#addressPrt>span").append(rows.rows[0].address);
 			 $("#order_dlg").jqprint({
 				 debug: false,
 				 importCSS: true,
