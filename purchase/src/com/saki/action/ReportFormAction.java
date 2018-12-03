@@ -13,23 +13,48 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.saki.entity.Grid;
 import com.saki.entity.Message;
 import com.saki.model.TOrder;
+import com.saki.model.TProduct;
+import com.saki.model.TUserProduct;
 import com.saki.service.ImportExcelI;
 import com.saki.service.OrderServiceI;
+import com.saki.service.ProductServiceI;
+import com.saki.service.UserProductServiceI;
 import com.saki.utils.DateUtil;
 import com.saki.utils.ExcelUtil;
 
 @Namespace("/")
+@Result(name="image",location="/pages/image_import.jsp")
 @Action(value = "report")
 public class ReportFormAction extends BaseAction {
 	
 	private File uploadFile;
 	private String filename;
+	private Integer proId;
 	
+	private UserProductServiceI upServicel;
+	
+	public UserProductServiceI getUpServicel() {
+		return upServicel;
+	}
+	@Autowired
+	public void setUpServicel(UserProductServiceI upServicel) {
+		this.upServicel = upServicel;
+	}
+	private ProductServiceI  proService;
+	
+	public ProductServiceI getProService() {
+		return proService;
+	}
+	@Autowired
+	public void setProService(ProductServiceI proService) {
+		this.proService = proService;
+	}
 	private OrderServiceI orderService;
 	public OrderServiceI getOrderService() {
 		return orderService;
@@ -99,6 +124,38 @@ public class ReportFormAction extends BaseAction {
 			super.writeJson(j);
 	}
 	
+	
+	public void importImage() {
+		String roleId = getSession().getAttribute("roleId").toString();
+		String companyId = "";
+		
+		Message j = new Message();
+		try {
+			filename = DateUtil.getUserDate("yyyyMMddhhmm") + "_" + filename ;
+			ExcelUtil.copyFile(filename, uploadFile);
+			if(!"1".equals(roleId)){
+				companyId = getSession().getAttribute("companyId").toString();
+//				TUserProduct  up = upServicel.
+			}else{
+				TProduct pro = (TProduct) proService.getByKey(proId + "");
+				pro.setChildProName(filename );
+				proService.update(pro);
+			}
+			j.setSuccess(true);
+			j.setMsg("导入成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			j.setSuccess(false);
+			j.setMsg(e.getMessage());
+		}
+		super.writeJson(j);
+	}
+	
+	public String  importInit(){
+			this.getRequest().setAttribute("proId", proId);
+		 return "image";
+	}
+	
 	public void updateFormat(){
 		importExcelUtil.updateFormat();
 	}
@@ -130,6 +187,12 @@ public class ReportFormAction extends BaseAction {
 	}
 	public void setFilename(String filename) {
 		this.filename = filename;
+	}
+	public Integer getProId() {
+		return proId;
+	}
+	public void setProId(Integer proId) {
+		this.proId = proId;
 	}
 	
 }

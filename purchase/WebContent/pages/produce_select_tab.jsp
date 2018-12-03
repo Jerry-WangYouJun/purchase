@@ -46,6 +46,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 		</c:if>
  		<button onclick="select_save()" id="select_save" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">保存</button> 		
  		<button onclick="reset()" id="reset" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">重置</button>
+ 		<button  id="imageFile" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">上传产品图片</button>
  	</div>
     <div class="row" style="min-height:600px;">
         <div>
@@ -117,6 +118,19 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
  <%--  <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script> --%>
   <script>
+  $("#imageFile").click(function(){
+	    var proId = $("li.active :input")[1].getAttribute("data");
+		layer.open({
+			  type: 2,
+			  title: '导入',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['450px', '40%'],
+			  content: '<%=path%>/report!importInit.action?proId=' + proId //iframe的url
+		});
+	});
+  	
+  
     $('.aaa').click(function(event){
       event.stopPropagation()
     })

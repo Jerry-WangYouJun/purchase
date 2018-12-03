@@ -67,8 +67,7 @@ public class ProductServiceImpl implements ProductServiceI{
 
 	@Override
 	public void update(Object object) {
-		// TODO Auto-generated method stub
-		
+		this.produceDao.saveOrUpdate(object);
 	}
 
 	@Override
@@ -85,8 +84,7 @@ public class ProductServiceImpl implements ProductServiceI{
 
 	@Override
 	public Object getByKey(String key) {
-		// TODO Auto-generated method stub
-		return null;
+		return produceDao.get("from TProduct where id = " + key);
 	}
 
 	@Override

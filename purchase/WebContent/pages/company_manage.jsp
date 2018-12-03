@@ -81,7 +81,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		}
 			$('#company_table').datagrid({
 				url:'${pageContext.request.contextPath}/companyAction!loadAll.action?roleId=' + role ,
-				pagination: flag,
+				pagination: true,
 				toolbar:'#toolbar_company',		
 				pagePosition:'top',
 				pageSize: 30,
@@ -107,7 +107,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					//$(ed.target).focus();
 					alert(123); */
 				}
-			});
+			});	 
+			if(role == '3'){
+				$('#company_table').datagrid('hideColumn', 'brand');
+   			}
+		
 		});
 		function company_add(){
 			$('#userName').attr("readOnly",false);

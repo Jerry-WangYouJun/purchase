@@ -48,6 +48,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				url:'${pageContext.request.contextPath}/addressAction!loadAll.action',
 				pagination: true,
 				pagePosition:'top',
+				pageSize: 30,
 				toolbar:'#toolbar_user',				
 				fitColumns: true,
 				striped:true,

@@ -673,7 +673,7 @@ public class DateUtil {
 //	 }
 	 
 	 public static void main(String[] args) {
-		String date =  getUserDate("yyyyMMddhh");
+		String date =  getUserDate("yyyyMMddhhmm");
 		System.out.println(date);
 	}
 }

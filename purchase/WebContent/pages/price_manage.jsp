@@ -89,8 +89,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				toolbar:'#toolbar_user',		
 				fitColumns: true,
 				striped:true,
-				singleSelect: false,
+				singleSelect: true,
 				onDblClickCell:onDblClickCell,
+				onUnselect:function(rowIndex, rowData){
+				},
+				onSelect:function(index,row){
+					$("#user_table").datagrid("unselectRow" ,index);
+				},
 				columns:[[
 					{field:'id', checkbox:'true'},
 					{field:'companyId',hidden:'true'},
@@ -293,7 +298,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function markup_many(){
 			var flag = confirm("确定进行批量修改加价？");
 			if(flag){
-				var checkedItems = $('#user_table').datagrid('getSelections');
+				var checkedItems = $('#user_table').datagrid('getChecked');
 				$.messager.prompt('','请输入要加价的金额',function(s){
 					if(s){
 						$.ajax({ 
@@ -319,7 +324,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		function markup_many_persent(){
 			var flag = confirm("确定按照百分比进行批量修改加价？");
 			if(flag){
-				var checkedItems = $('#user_table').datagrid('getSelections');
+				var checkedItems = $('#user_table').datagrid('getChecked');
 				$.messager.prompt('','请输入要加价的百分比，单位%',function(s){
 					if(s){
 						$.ajax({ 

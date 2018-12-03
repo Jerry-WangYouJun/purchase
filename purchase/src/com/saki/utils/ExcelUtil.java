@@ -145,7 +145,7 @@ public class ExcelUtil {
 	}
 	
 	public static String copyFile(String fileName ,File uploadFile) {
-		String savePath = ServletActionContext.getServletContext().getRealPath("/excel");
+		String savePath = "d://uploadFile/upload";
 		try {
 			 File savefile = new File(new File(savePath), fileName);
 			 FileInputStream fis = new FileInputStream(uploadFile);

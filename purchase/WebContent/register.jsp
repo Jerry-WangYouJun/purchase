@@ -73,20 +73,20 @@ body {
 <body>
 	<form class="form-horizontal" style="width: 800px; margin: 50px auto; padding:20px;background: #ffecec "
 		  id ="company_form">
-
+			 <input type="hidden" name="roleId" value="3">
 		<fieldset>
 			<legend>企业信息注册  <a href="${pageContext.request.contextPath}" class="btn btn-primary pull-right">返回</a>
 			</legend>
 		</fieldset>
 
-            <div class="form-group col-md-6">
+            <!-- <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">企业类型：</label>
                 <select name="roleId" id="roleId"  
                     		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
-               <!--  	<option value="2">供货商</option>--> 
+                	<option value="2">供货商</option> 
                 	<option value="3">客户</option>
                 </select>
-            </div>
+            </div> -->
 			<div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">公司名称：</label>
                 <input name="name" class="form-control" style="display: inline-block;width: 45%" placeholder="必填" required>

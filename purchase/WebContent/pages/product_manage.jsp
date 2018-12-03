@@ -102,8 +102,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			$("#parentId").val(product.parentId);
 		    			if(product.parentId > 0){
 			    			$(".divBase").show();
+			    			$("#imageFile").show();
+			    			if(product.childProName){
+			    				$("img").show();
+				    			$("img").attr("src","/ring/upload/"+product.childProName)
+			    			}else{
+			    				$("img").hide();
+			    			}
 		    			}else{
 		    				$(".divBase").hide();
+		    				$("#imageFile").hide();
+		    				$("img").hide();
 		    			}
 		    			$("#divUnit").show();
 		    			if(product.unit==null || product.unit=="")
@@ -115,6 +124,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    					$(".divBase").show();
 	    					
 	    				}
+	    				
  */		    		})
 			    	$("#detailType").hide();
 		    		$("#productType").show();
@@ -238,7 +248,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  shadeClose: true,
 					  shade: 0.8,
 					  area: ['450px', '40%'],
-					  content: '<%=path%>/pages/product_import.jsp' //iframe的url
+					  content: '<%=path%>/pages/image_import.jsp' //iframe的url
+				});
+			});
+			
+			$("#imageFile").click(function(){
+				layer.open({
+					  type: 2,
+					  title: '导入',
+					  shadeClose: true,
+					  shade: 0.8,
+					  area: ['450px', '40%'],
+					  content: '<%=path%>/report!importInit.action?proId=' + $("#productId").val() //iframe的url
 				});
 			});
 		});
@@ -309,8 +330,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
  		<a  id="importProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
-<!--  		<a onclick="reset()" id="reset" style="background-color:#007FFF;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px;margin-right:10px">新增</a> 		
- --></div>
+		
+	</div>
  	
 	<div class='container'>
 	<div class="row">
@@ -349,11 +370,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			
 			<div class="input-group" style="margin-top:10px">
-				<button type="button" class="btn btn-success" style="margin-left:100px" id="productSave()" onclick="productSave()">保存</button>
-			
-				<button type="button" class="btn btn-danger" style="margin-left:100px" id="productDelete">删除</button>
+				<button type="button" class="btn btn-success" style="margin-left:50px" id="imageFile" >上传图片</button>
+				<button type="button" class="btn btn-success" style="margin-left:50px" id="productSave" onclick="productSave()">保存</button>
+				<button type="button" class="btn btn-danger" style="margin-left:50px" id="productDelete">删除</button>
 			</div>
-  		</form>		
+  		</form>	
+  			  <img alt="" src="" class="col-md-12">
 	</div> 
 	
 	 <div class="col-md-6" style="display:none" id="detailType">

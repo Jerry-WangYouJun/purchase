@@ -42,7 +42,9 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		
 	}
 
-
+	/*public TUserProduct getById(int ){
+		
+	}*/
 	@Override
 	public void save(int companyId, String productlist , int roleId) {
 		//delete(companyId);
