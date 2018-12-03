@@ -36,6 +36,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
             	产品名称：
                 <input name="subname" id = "subname"class=" form-control" style="display: inline-block;width: 10%">
+                品牌：
+                <input name="brand" id = "brand"class=" form-control" style="display: inline-block;width: 10%">
+                价格：
+                <input name="price" id = "price" class=" form-control" style="display: inline-block;width: 10%">
+                 材料：
+                <input name="material" id = "material" class=" form-control" style="display: inline-block;width: 10%">
+                <button onclick="query()">查询</button>
+            </div> 
+		  </c:if>
+		   <c:if test="${roleId eq 2 }">
+ 			 <div >
+            	产品类别：
+                <input name="parent" id = "parent"class=" form-control" style="display: inline-block;width: 10%">
+            	产品名称：
+                <input name="subname" id = "subname"class=" form-control" style="display: inline-block;width: 10%">
                 <button onclick="query()">查询</button>
             </div> 
 		  </c:if>
@@ -56,7 +71,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     function query(){
 	    	$('#user_table').datagrid('load', {
 	    	    cname: $("#cname").val(),
-	    	    subProName: $("#subname").val()
+	    	    subProName: $("#subname").val(),
+	    	    brand:$("#brand").val(),
+	    	    price:$("#price").val(),
+	    	material:$("#material").val()
+	    	    
 	    	});
 	}
     $.extend($.fn.datagrid.methods, {

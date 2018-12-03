@@ -406,7 +406,7 @@ public class ProductServiceImpl implements ProductServiceI{
 	
 	@Override
 	public Grid searchProductDetailByCompanyId(Integer companyId , 
-			String cname , String subProName ,String page , String rows) {
+			String cname , String subProName ,String page , String rows, String material, String brand, String price) {
 		Grid grid = new Grid(); 
 		Map<String,Object> map = new HashMap<String,Object>();
 		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c ,TProduct g "
@@ -421,8 +421,18 @@ public class ProductServiceImpl implements ProductServiceI{
 			hql += " and c.name like '%" + cname + "%'";
 		}
 		if(StringUtils.isNotEmpty(subProName)) {
-			hql += " and d.subProduct like '%" + subProName + "%'";
+			hql += " and g.product like '%" + subProName + "%'";
 		}
+		if(StringUtils.isNotEmpty(material)) {
+			hql += " and d.material like '%" + material + "%'";
+		}
+		if(StringUtils.isNotEmpty(brand)) {
+			hql += " and c.brand like '%" + brand + "%'";
+		}
+		if(StringUtils.isNotEmpty(price) ) {
+			hql += " and m.price >= " + price + "";
+		}
+		
 		hql += " order by c.name ,  p.product  , d.subProduct , d.format , d.material  ";
 		List<Object[]> list = produceDao.find(hql , map , Integer.valueOf(page), Integer.valueOf(rows));
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();

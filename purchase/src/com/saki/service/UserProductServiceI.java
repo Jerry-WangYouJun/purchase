@@ -14,6 +14,7 @@ public interface UserProductServiceI{
 	void updatePrice(int companyId, int detailId, double price, int roleId);
 	void updateStatus(int id);
 	void updateStatusReset(int detailId, String companyId);
+	void updateImg(int  productId , String companyId , String img);
 	public void updateMarkupPrice(Integer mapid, String column,  Double markup);
 	public List<Notice> initAdminData();
 	public List<Notice> initCustomerData(Integer cid);

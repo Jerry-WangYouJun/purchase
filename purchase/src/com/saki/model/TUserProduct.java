@@ -25,6 +25,8 @@ public class TUserProduct implements java.io.Serializable {
 	private Double price ;
 	private Double markup;
 	private Double percent;
+	private Integer productId;
+	private String imgUrl;
 	//private Double taxrate; 
 
 	// Constructors
@@ -35,13 +37,14 @@ public class TUserProduct implements java.io.Serializable {
 
 	/** full constructor */
 	public TUserProduct(Integer companyId, Integer productDetailId, String status
-			, Integer roleId , Double price , Double percent ) {
+			, Integer roleId , Double price , Double percent ,Integer productId) {
 		this.companyId = companyId;
 		this.productDetailId = productDetailId;
 		this.status = status;
 		this.roleId = roleId;
 		this.price = price ;
 		this.percent = percent;
+		this.productId = productId;
 	}
 
 	// Property accessors
@@ -123,6 +126,23 @@ public class TUserProduct implements java.io.Serializable {
 	public void setPercent(Double percent) {
 		this.percent = percent;
 	}
+	@Column(name = "product_id")
+	public Integer getProductId() {
+		return productId;
+	}
+
+	public void setProductId(Integer productId) {
+		this.productId = productId;
+	}
+
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	@Column(name = "imgUrl")
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+	
 	
 	
 //	@Column(name="taxrate")

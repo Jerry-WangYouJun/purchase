@@ -145,9 +145,16 @@ public class ExcelUtil {
 	}
 	
 	public static String copyFile(String fileName ,File uploadFile) {
-		String savePath = "d://uploadFile/upload";
+		String osName =  System.getProperty("os.name");
+	    	String path =  System.getProperty("user.dir")  ;
+	    	if(osName.toUpperCase().startsWith("MAC")) {
+	    		path="/Users/wangyoujun/Documents/soft/personal/upload/";
+	    	}else{
+	    		path="D://uploadFile/upload";
+	    	}
+		//String savePath = "d://uploadFile/upload";
 		try {
-			 File savefile = new File(new File(savePath), fileName);
+			 File savefile = new File(new File(path), fileName);
 			 FileInputStream fis = new FileInputStream(uploadFile);
 			 if(!savefile.exists()) {
 				 savefile.createNewFile();
@@ -163,6 +170,6 @@ public class ExcelUtil {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return savePath + "/" + fileName ;
+		return path + "/" + fileName ;
 	}
 }

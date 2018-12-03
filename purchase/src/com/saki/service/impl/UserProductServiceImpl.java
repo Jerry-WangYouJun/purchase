@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.saki.dao.BaseDaoI;
 import com.saki.entity.Notice;
+import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
 import com.saki.service.UserProductServiceI;
 @Service("userProductService")
@@ -82,9 +83,21 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		if(price == 0.0){
 			tempPrice = "price";
 		}
-		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price   , role_id ) "
-				+ " VALUES (" + companyId + " , " + detailId + " , " + price + " , " + roleId + " )"
-				+ " ON DUPLICATE KEY UPDATE price = " + tempPrice + " ";
+		String hql = "from TProductDetail where id = " + detailId ;
+		List<TProductDetail> list  = userProductDao.find(hql);
+		int productId = 0 ;
+		if(list != null && list.size() > 0) {
+			productId = list.get(0).getProductId();
+		}
+		String sql = " INSERT INTO t_user_product  (company_id , product_detail_id ,  price   , role_id  ,product_id) "
+				+ " VALUES (" + companyId + " , " + detailId + " , " + price + " , " + roleId + " , " + productId +" )"
+				+ " ON DUPLICATE KEY UPDATE price = " + tempPrice + " , product_id = " + productId ;
+		userProductDao.executeUpdate(sql);
+	}
+	
+	@Override
+	public void updateImg(int productId, String companyId, String img) {
+		String sql = " update t_user_product set imgUrl =  '" + img + "' where product_id=" + productId + " and  company_id =" + companyId ;
 		userProductDao.executeUpdate(sql);
 	}
 	
@@ -315,6 +328,8 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		list.add(notice3);
 		return list;
 	}
+
+	
 
 
 }

@@ -22,6 +22,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 
    <script src="${basePath}/js/edit.js"></script>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
+   
+      <style type="text/css" media="screen">
+    </style>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -47,40 +50,49 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:1000px;height:600px"
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
-			<div></div>
 		    	<form id="order_form" role="form" style="padding: 20px">
 				<input type="hidden"  id = "id"  name = "id">
-		    		<div class="form-group col-md-6">
-		            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
-		                <input  name="orderNo" id="orderNo" required class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
-		        </div>
-		        <div class="form-group col-md-6">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
-		                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%">
-		        </div>
-		        <div class="form-group col-md-6">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">选择采购日：</label>
-		               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
-		                <select name="confirmId" id= "confirmId" class="easyui-combobox" 
-		                 editable="false" style="display: inline-block;width: 40%" 
-		                 class="form-control select2 easyui-combobox" >
-			                	 <c:forEach items="${confirm}" var="it" >
-			                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
-			                	 </c:forEach>
-		                </select>
-		        </div>
-		        <div class="form-group col-md-6">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
-		               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
-		                <select name="addressId"  id= "addressId" class="easyui-combobox" 
-		                 editable="false" style="display: inline-block;width: 40%" 
-		                 class="form-control select2 easyui-combobox" >
-			                	 <c:forEach items="${addressList}" var="address" >
-			                	 	<c:if test="${companyId eq address.cid }"></c:if>
-			                	 	 <option value="${address.id}"> ${address.name}</option>
-			                	 </c:forEach>
-		                </select>
-		         </div> 
+				<div class="row">
+						<div class="col-md-6">
+					    		<div class="form-group col-md-12">
+					            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
+					                <input  name="orderNo" id="orderNo" required class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
+					        </div>
+						        <div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
+						                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%">
+						        </div>
+						        <div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">选择采购日：</label>
+						               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
+						                <select name="confirmId" id= "confirmId" class="easyui-combobox" 
+						                 editable="false" style="display: inline-block;width: 40%" 
+						                 class="form-control select2 easyui-combobox" >
+							                	 <c:forEach items="${confirm}" var="it" >
+							                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
+							                	 </c:forEach>
+						                </select>
+						        </div>
+						        <div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
+						               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
+						                <select name="addressId"  id= "addressId" class="easyui-combobox" 
+						                 editable="false" style="display: inline-block;width: 40%" 
+						                 class="form-control select2 easyui-combobox" >
+							                	 <c:forEach items="${addressList}" var="address" >
+							                	 	<c:if test="${companyId eq address.cid }">
+								                	 	 <option value="${address.id}"> ${address.name}</option>
+							                	 	</c:if>
+							                	 </c:forEach>
+						                </select>
+						         </div> 
+						</div>
+						<div class="col-md-6">
+					    		<div class="form-group col-md-12 imgdiv">
+					            	  <img alt="" src="##"  class="img-responsive img-thumbnail">
+					        </div>
+						</div>
+				</div>
 		       <%-- <div class="form-group col-md-6">
 		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">是否含税：</label>
 		                <select name="taxrate" id= "taxrate" class="easyui-combobox" 
@@ -118,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
-			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>
+			<!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> -->
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -503,7 +515,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                        index : rowIndex,  
 		                                        field : 'supplierCompanyId'  
 		                                    });  
-		                               	 $(idvalue.target).textbox('setValue',  data.supplierCompanyId );   
+		                               	 $(idvalue.target).textbox('setValue',  data.supplierCompanyId );  
+		                               	$("img").attr("src","/ring/upload/"+data.imgUrl)
 			                            } ,onLoadSuccess:function(){ //数据加载完成执行该代码
 			                                var data= $(this).combobox("getData");
 			                                var row = $('#table_add').datagrid('getSelected');  

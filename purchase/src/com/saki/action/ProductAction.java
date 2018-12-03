@@ -65,11 +65,15 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		Grid grid = new Grid();
 		String cname = getParameter("cname");
 		String subProName = getParameter("subProName");
+		String material = getParameter("material");
+		String brand=getParameter("brand");
+		String price = getParameter("price");
 		int companyId =  0 ;
 		if(getSession().getAttribute("companyId")!= null){
 			 companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
-		}
-		grid = productService.searchProductDetailByCompanyId(companyId , cname ,subProName,page,rows);
+		} 
+		
+		grid = productService.searchProductDetailByCompanyId(companyId , cname ,subProName,page,rows ,material,brand,price );
 		super.writeJson(grid);
 	}
 	

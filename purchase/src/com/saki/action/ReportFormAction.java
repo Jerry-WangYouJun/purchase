@@ -20,7 +20,6 @@ import com.saki.entity.Grid;
 import com.saki.entity.Message;
 import com.saki.model.TOrder;
 import com.saki.model.TProduct;
-import com.saki.model.TUserProduct;
 import com.saki.service.ImportExcelI;
 import com.saki.service.OrderServiceI;
 import com.saki.service.ProductServiceI;
@@ -131,11 +130,12 @@ public class ReportFormAction extends BaseAction {
 		
 		Message j = new Message();
 		try {
+			
 			filename = DateUtil.getUserDate("yyyyMMddhhmm") + "_" + filename ;
 			ExcelUtil.copyFile(filename, uploadFile);
 			if(!"1".equals(roleId)){
 				companyId = getSession().getAttribute("companyId").toString();
-//				TUserProduct  up = upServicel.
+				upServicel.updateImg(proId , companyId, filename);
 			}else{
 				TProduct pro = (TProduct) proService.getByKey(proId + "");
 				pro.setChildProName(filename );

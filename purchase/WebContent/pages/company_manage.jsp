@@ -44,13 +44,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  			 <div >
             	公司名称：
                 <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
-            	企业类型：
-                <select name="roleId" id="role" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-                	<option value="2">供货商</option>
-                	<!-- <option value="3">客户</option> -->
-                </select>
+                主营业务：
+                <input name="business" id = "business"class=" form-control" style="display: inline-block;width: 10%">
+            	地址：
+                <input name="address" id = "address"class=" form-control" style="display: inline-block;width: 10%">
+                品牌：
+                <input name="brand" id = "brand"class=" form-control" style="display: inline-block;width: 10%">
                 <button onclick="query()">查询</button>
             </div> 
 		  </c:if>
@@ -70,7 +69,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     function query(){
 	    	$('#company_table').datagrid('load', {
 	    	    name: $("#cname").val(),
-	    	    roleId: $("#role").val()
+	    	    brand: $("#brand").val(),
+	    	    business:$("#business").val(),
+	    	    address:$("#address").val()
 	    	});
     }
     	$(function(){
@@ -211,7 +212,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 }
 			    }
 			});
-			if('${roleId}' != '1'){
+			if('${roleId}' == '1'){
 				$("#company_table").datagrid("hideColumn","brand");
 			}
 		})

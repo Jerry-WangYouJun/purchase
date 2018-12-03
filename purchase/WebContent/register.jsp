@@ -67,6 +67,14 @@ body {
 		});
 	}
 	
+	function backToLogin(){
+		var flag  ;
+		flag=confirm("确认放弃？");
+		if(flag){
+			window.location.href="${pageContext.request.contextPath}";
+		}
+	}
+	
 </script>
 </head>
 
@@ -75,7 +83,7 @@ body {
 		  id ="company_form">
 			 <input type="hidden" name="roleId" value="3">
 		<fieldset>
-			<legend>企业信息注册  <a href="${pageContext.request.contextPath}" class="btn btn-primary pull-right">返回</a>
+			<legend>企业信息注册  <a href="##" class="btn btn-primary pull-right" onclick="backToLogin()">返回</a>
 			</legend>
 		</fieldset>
 

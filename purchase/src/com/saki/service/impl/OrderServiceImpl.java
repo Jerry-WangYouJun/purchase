@@ -402,6 +402,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("mapid", mapper.getId());
 			map.put("price", isNull(mapper.getPrice()) + isNull(mapper.getMarkup()));
 			map.put("brand", company.getBrand());
+			map.put("imgUrl", mapper.getImgUrl());
 			map.put("status", mapper.getStatus());
 			map.put("supplierCompanyId", company.getId());
 			map.put("default", false);

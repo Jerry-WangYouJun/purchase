@@ -44,8 +44,8 @@
                     <option value="">-选择-</option>
 	                	<option value="1">新订单</option>
 	                	<!-- <option value="2">已报价</option> -->
-	                	<option value="3">已付款</option>
-	                	<option value="4">已收货</option>
+	                	<option value="3">已收款</option>
+	                	<option value="4">已发货</option>
 	                	<option value="5">提交采购</option>
                 </select>
                 <button onclick="query()">查询</button>
@@ -94,7 +94,7 @@
 		style="width: 600px; height: 40px; text-align: center">
 		<button onclick="company_close()" type="button"
 			class="btn btn-default btn-dialog-right">关闭</button>
-			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>
+			<!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> -->
 	</div>
 	<script type="text/javascript">
 	function print(){

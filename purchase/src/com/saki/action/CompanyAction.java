@@ -64,6 +64,18 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		if(StringUtils.isNotEmpty(cname)){
 			map.put("name", "%" + cname + "%");
 		}
+		String business = getParameter("business");
+		if(StringUtils.isNotEmpty(business)){
+			map.put("business", "%" + business + "%");
+		}
+		String address = getParameter("address");
+		if(StringUtils.isNotEmpty(address)){
+			map.put("address", "%" + address + "%");
+		}
+		String brand = getParameter("brand");
+		if(StringUtils.isNotEmpty(brand)){
+			map.put("brand", "%" + brand + "%");
+		}
 		
 		super.writeJson(companyService.loadQuery(sort, order, page, rows, map));
 		

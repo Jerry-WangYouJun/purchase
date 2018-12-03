@@ -17,7 +17,7 @@ public interface ProductServiceI extends BaseServiceI{
 	public TProduct searchParentProduct(Integer id);
 	public ArrayList<Product> searchProductAndChileProduct();
 	public ArrayList<ProductType> searchSecProductAndChild();
-	public Grid searchProductDetailByCompanyId(Integer companyId, String cname, String subProName, String page, String rows);
+	public Grid searchProductDetailByCompanyId(Integer companyId, String cname, String subProName, String page, String rows, String material, String brand, String price);
 	public List<TProduct> searchFirstProductType();
 	public List<TProduct> searchChildProductType(Integer parentId);
 	public void deleteByProduct(TProduct product);
