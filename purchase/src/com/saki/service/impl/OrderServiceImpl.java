@@ -164,11 +164,11 @@ public class OrderServiceImpl implements OrderServiceI{
 			return mapList;
 		}
 		String hql = "from TProduct t , TProductDetail d, TOrder o , TOrderDetail od"
-				+ " ,TProduct product , TCompany c ,TAddress a "
+				+ " ,TProduct product , TCompany c "
 				+ " where t.id = d.productId  and o.id = od.orderId"
 				+ " and od.productDetailId = d.id  and od.brand = c.id"
-				+ " and  o.id = " + id +" and t.parentId = product.id "
-				+ " and  o.addressId = a.id " ;
+				+ " and  o.id = " + id +" and t.parentId = product.id ";
+			//	+ " and  o.addressId = a.id " ;
 		
 		
 		List<Object[]> list = orderDao.find(hql);
@@ -181,7 +181,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			TOrderDetail orderDetail = (TOrderDetail) objs[3];
 			TProduct parentProduct = (TProduct)objs[4];
 			TCompany company = (TCompany)objs[5];
-			TAddress address = (TAddress)objs[6];
+			//TAddress address = (TAddress)objs[6];
 			Map<String , Object >  map = new HashMap<String,Object>();
 			map.put("id", orderDetail.getId());
 			map.put("acount",  orderDetail.getNum());
@@ -211,7 +211,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("boxnum", (detail.getFormatNum()== null || detail.getFormatNum()==0)?1:(Math.ceil( Double.valueOf(orderDetail.getNum()+"")/ Double.valueOf(detail.getFormatNum()+""))));
 			map.put("supplierCompanyId", company.getId());
 			map.put("brand", company.getBrand());
-			map.put("address", address.getProvince() + " " + address.getCity()  + " " + address.getAddress());
+		//	map.put("address", address.getProvince() + " " + address.getCity()  + " " + address.getAddress());
 			//detailMap.put(orderDetail.getId(), map);
 			mapList.add(map);
 		}

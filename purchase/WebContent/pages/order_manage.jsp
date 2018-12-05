@@ -184,7 +184,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				pagePosition:'top',
 				pageSize: 30,
 				fitColumns: true,
-				singleSelect: false,
+				singleSelect: true,
 				striped:true,
 				toolbar: '#toolbar_company',
 				rowStyler: function(index,row){
