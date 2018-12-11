@@ -150,7 +150,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		List<TProduct> ltp = produceDao.find(hql);
 		ArrayList<Product> lp  = new ArrayList<Product>();		
 		ArrayList<String> ls = new ArrayList<String>();
-		ArrayList<Integer> lup = userProductService.getIdByCompany(companyId);
+		List<TUserProduct> lup = userProductService.getIdByCompany(companyId);
 		if(lup == null) {
 			return listAll();
 		}else{
@@ -321,7 +321,7 @@ public class ProductServiceImpl implements ProductServiceI{
 	 */
 	public List<TreeModel> listTreeByCompanyId(Integer companyId) {
 		// TODO Auto-generated method stub
-		ArrayList<Integer> detailIds = userProductService.getIdByCompany(companyId);	
+		List<TUserProduct> detailIds = userProductService.getIdByCompany(companyId);	
 				
 		String hql ="from  TProduct ";
 		//取出所有product
@@ -395,7 +395,7 @@ public class ProductServiceImpl implements ProductServiceI{
 				type.setProduct(tProduct2.getProduct());
 				type.setId(tProduct2.getId());
 				//type.setType(tProduct2.getProduct());
-				type.setParentId(tProduct2.getParentId() + "");			
+				type.setParentId(tProduct2.getParentId() + "");	
 				typeList.add(type);
 			}
 			product.setChildren(typeList);

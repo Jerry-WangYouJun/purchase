@@ -131,7 +131,13 @@ public class ReportFormAction extends BaseAction {
 		Message j = new Message();
 		try {
 			
-			filename = DateUtil.getUserDate("yyyyMMddhhmm") + "_" + filename ;
+			filename = DateUtil.getUserDate("yyyyMMddhhmm") + "_" + filename.trim() ;
+			 long len =uploadFile.length();
+			 if(len > 1024*1024){
+				 j.setSuccess(false);
+				 j.setMsg("图片大小需限制在1M之内");
+				 super.writeJson(j);
+			 }
 			ExcelUtil.copyFile(filename, uploadFile);
 			if(!"1".equals(roleId)){
 				companyId = getSession().getAttribute("companyId").toString();

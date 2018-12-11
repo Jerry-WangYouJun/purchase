@@ -24,6 +24,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
    
       <style type="text/css" media="screen">
+      .form-group {
+		    margin-bottom: 5px;
+		}
+		
+	 img{max-height:150px;}
     </style>
   </head>
  <body class="easyui-layout">
@@ -48,9 +53,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
  	</div>
- 	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:1000px;height:600px"
+ 	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:1000px;height:90%"
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
-		    	<form id="order_form" role="form" style="padding: 20px">
+		    	<form id="order_form" role="form" style="padding: 5px;margin-bottom:0px">
 				<input type="hidden"  id = "id"  name = "id">
 				<div class="row">
 						<div class="col-md-6">
@@ -89,7 +94,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 						<div class="col-md-6">
 					    		<div class="form-group col-md-12 imgdiv">
-					            	  <img alt="" src="##"  class="img-responsive img-thumbnail">
+					            	  <img alt="" src="##"  class="img-responsive img-thumbnail" >
 					        </div>
 						</div>
 				</div>
@@ -378,8 +383,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                 var amount = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
 				                                        field : 'amount'  //根据字段名获取编辑的字段
-				                                    });  
-				                                $(amount.target).textbox('readonly');   //赋值
+				                                    }); 
+				                                $(amount.target).combobox('disable');//不可用
 				                                
 				                                var boxnum = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
@@ -516,7 +521,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                        field : 'supplierCompanyId'  
 		                                    });  
 		                               	 $(idvalue.target).textbox('setValue',  data.supplierCompanyId );  
-		                               	$("img").attr("src","/ring/upload/"+data.imgUrl)
+		                               	 if(data.imgUrl){
+			                               	$("img").attr("src","/ring/upload/"+data.imgUrl)
+		                               	 }else{
+		                               		$("img").attr("src","") 
+		                               	 }
 			                            } ,onLoadSuccess:function(){ //数据加载完成执行该代码
 			                                var data= $(this).combobox("getData");
 			                                var row = $('#table_add').datagrid('getSelected');  
@@ -585,10 +594,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                            onSelect:function(data){ 
 			                                var row = $('#table_add').datagrid('getSelected');  
 			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-		                                	var bra = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'brand'  
-		                                    });  
 			                                var pri = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
 		                                        field : 'price'  
@@ -596,6 +601,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
 		                                        index : rowIndex,  
 		                                        field : 'supplierCompanyId'  
+		                                    });  
+		                                	var bra = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'brand'  
 		                                    });  
 		                                	var brandData = $(bra.target).combobox('getData');
 			                                if(data.value == '1' && brandData.length > 0){

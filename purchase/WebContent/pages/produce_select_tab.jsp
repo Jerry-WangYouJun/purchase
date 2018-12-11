@@ -75,10 +75,10 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 			                  <ul class="nav nav-tabs tabs-left ">
 			                  	<s:iterator id="child" value="#product.children" status='in' >		                  		
 					                  	<li class="secTab">
-							              	<a href="#third_<s:property value="#child.id"/>" data-toggle="tab"> 
+							              	<a href="#third_<s:property value="#child.id"/>" data-toggle="tab" > 
 							              		<input type="checkbox" id='sec_check_<s:property value="#child.id"/>' data='<s:property value="#child.id"/>' class="aaa" data-parent='<s:property value='#child.parentId'/>'> 							              			
 			                      						<s:property value="#child.product"/>							              											              
-							              		</input>
+							              		
 							              	</a>
 							             </li>				             	
 			                  	</s:iterator>					              					             
@@ -107,7 +107,8 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 			                    </span>	                   
 		                    </s:iterator>
 		                  </p>
-		              </div>	                     
+			              <div><img alt="" src="" id="img_<s:property value="#secProduct.id"/>" class="col-md-8"></div>                     
+		              </div>
               </s:iterator>
             </div>
           </div>
@@ -146,8 +147,11 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
             	layer.close(index);
             	for (var i = 0; i < data.length; i++) {
     				var obj = data[i];
-    				$("#third_check_"+obj).prop('checked',true);
-    				var parentId = $("#third_check_"+obj).attr("data-parent");
+    				$("#third_check_"+obj.productDetailId).prop('checked',true);
+    				if(obj.imgUrl){
+    					$("#img_"+obj.productId).attr('src', "/ring/upload/"+obj.imgUrl);
+    				}
+    				var parentId = $("#third_check_"+obj.productDetailId).attr("data-parent");
     				 $("#sec_check_"+parentId).prop('checked',true);
     				 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
     				 $("#first_check_"+firstIndex).prop('checked',true);
@@ -271,6 +275,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
     	$('input[type="checkbox"]').prop('checked',false);
     }
     
+   
     //保存
     function select_save(){
 		var productlist="";	

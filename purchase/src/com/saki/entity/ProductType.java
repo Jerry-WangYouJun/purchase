@@ -25,6 +25,7 @@ public class ProductType {
 	private String unit;
 	private Integer base;
 	private String remark;
+	private String imgUrl;
 	private List<TProductDetail> children;
 	
 	public String getType() {
@@ -64,4 +65,11 @@ public class ProductType {
 	public void setProduct(String product) {
 		this.product = product;
 	}
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+	
 }

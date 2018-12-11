@@ -8,6 +8,7 @@ import org.apache.log4j.Logger;
 import com.saki.entity.TreeModel;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
+import com.saki.model.TUserProduct;
 
 public class TreeUntil {
 
@@ -34,7 +35,7 @@ public class TreeUntil {
 	}
 	
 	public List<TreeModel> convertProductDetailToList(
-			List<TProductDetail> detailList,List<Integer> detailIds){
+			List<TProductDetail> detailList,List<TUserProduct> detailIds){
 		List<TreeModel> list = new ArrayList<TreeModel>();		
 		for (TProductDetail detail : detailList) {
 			TreeModel tree = new TreeModel();
@@ -46,8 +47,8 @@ public class TreeUntil {
 			
 			if(detailIds != null&&detailIds.size() !=0)
 			{
-				for (Integer detailId : detailIds) {
-					if(detailId == detail.getId())
+				for (TUserProduct detailId : detailIds) {
+					if(detailId.getProductDetailId() == detail.getId())
 					{
 						tree.setChecked(true);
 					}

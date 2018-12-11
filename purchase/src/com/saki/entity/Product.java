@@ -13,6 +13,15 @@ public class Product {
 		this.id = id;
 	}
 	
+	private String imgUrl  ;
+	
+	public String getImgUrl() {
+		return imgUrl;
+	}
+	public void setImgUrl(String imgUrl) {
+		this.imgUrl = imgUrl;
+	}
+
 	private String product;
 	private String unit;
 	public String getUnit() {

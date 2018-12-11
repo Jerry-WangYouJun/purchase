@@ -18,6 +18,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
+   <style type="text/css">
+    .form-group {
+		    margin-bottom: 5px;
+		}
+		
+	 img{max-height:150px;}
+   </style>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -46,14 +53,27 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    	<form id="order_form" role="form" style="padding: 20px">
 				<input type="hidden"  id = "id"  name = "id">
 				<input type="hidden"  id = "urgent"  name = "urgent" value ="1">
-		    		<div class="form-group col-md-6">
-		            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
-		                <input name="orderNo" id="orderNo" class="form-control" required style="display: inline-block;width: 40%" disabled="disabled">
-		        </div>
-		        <div class="form-group col-md-6">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
-		                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%">
-		        </div>
+				<div class="row">
+				<div class="col-md-6">
+					<div class="form-group col-md-12">
+						<label class="col-md-4"
+							style="display: inline-block; height: 34px; line-height: 34px; text-align: left; width: 30%">订单编号：</label>
+						<input name="orderNo" id="orderNo" class="form-control" required
+							style="display: inline-block; width: 40%" disabled="disabled">
+					</div>
+					<div class="form-group col-md-12">
+						<label class="col-md-4"
+							style="display: inline-block; height: 34px; line-height: 34px; text-align: left; width: 30%">下单时间：</label>
+						<input name="startDate" id="startDate" class="easyui-datebox"
+							style="display: inline-block; width: 40%">
+					</div>
+				</div>
+				<div class="col-md-6">
+					    		<div class="form-group col-md-12 imgdiv">
+					            	  <img alt="" src="##"  class="img-responsive img-thumbnail" >
+					        </div>
+						</div>
+			</div>
 		    	</form>   
 			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
 		</div>
@@ -450,6 +470,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                        field : 'supplierCompanyId'  
 		                                    });  
 		                               	 $(idvalue.target).textbox('setValue',  data.supplierCompanyId );   
+		                               	 if(data.imgUrl){
+			                               	$("img").attr("src","/ring/upload/"+data.imgUrl)
+		                               	 }else{
+		                               		$("img").attr("src","") 
+		                               	 }
 			                            } ,
 			                            onLoadSuccess:function(){ //数据加载完成执行该代码
 			                                var data= $(this).combobox("getData");

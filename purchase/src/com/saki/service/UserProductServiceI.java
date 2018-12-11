@@ -1,13 +1,12 @@
 package com.saki.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.saki.entity.Notice;
 import com.saki.model.TUserProduct;
 
 public interface UserProductServiceI{
-	public ArrayList<Integer> getIdByCompany(int companyId);
+	public List<TUserProduct> getIdByCompany(int companyId);
 	public List<TUserProduct> listByCompanyId(int companyId);
 	public void save(int companyId, String productlist, int roleId);
 	public void delete(int companyId);

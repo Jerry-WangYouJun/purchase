@@ -29,16 +29,13 @@ public class UserProductServiceImpl implements UserProductServiceI{
 
 
 	@Override
-	public ArrayList<Integer> getIdByCompany(int companyId) {
+	public List<TUserProduct> getIdByCompany(int companyId) {
 		ArrayList<Integer> lp = new ArrayList<Integer>();
 		List<TUserProduct> l = listByCompanyId(companyId);
 		if(l.size() > 0){
-			for(TUserProduct t : l){
-				lp.add(t.getProductDetailId());
-			}
-			return lp;
+			return l;
 		}else{
-			return null;
+			return null; 
 		}		
 		
 	}

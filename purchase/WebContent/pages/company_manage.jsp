@@ -112,6 +112,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			if(role == '3'){
 				$('#company_table').datagrid('hideColumn', 'brand');
    			}
+			if("${roleId}" != '1'){
+				$('#company_table').datagrid({
+					pagination: false,
+				});
+			}
 		
 		});
 		function company_add(){
@@ -212,9 +217,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 }
 			    }
 			});
-			if('${roleId}' == '1'){
-				$("#company_table").datagrid("hideColumn","brand");
-			}
 		})
 		
 		function checkOnly(val){
