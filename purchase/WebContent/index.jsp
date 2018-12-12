@@ -150,6 +150,9 @@
     padding-right: 0px;
      padding-left: 0px;
 }
+        .outBox{width:1400px;height:40px;overflow: hidden;margin:0 auto;position:relative;border-radius:4px;margin-left:50px}
+        .ulPmd{width:600px;height:40px;position:absolute;left:0;top:0;margin-left:250px}
+        .ulPmd li{width:auto;height:40px;float:left;list-style: none;margin-left:20px;line-height:8px;margin-left:250px}
 </style>
 </head>
 <body class="page-header-fixed">
@@ -351,10 +354,49 @@
 								</ul>
 							</div>
 						</div>
+						<script language="javascript" type="text/javascript">
+					        $(function () {
+					            var i=0;
+					            var timer;
+					            timer=setInterval(function(){
+					                    //根据ul的位移来判断一秒钟向左移动的距离；
+					                if(i>$('li').length){
+					                    i=1;
+					                    //如果所有li元素向左移动一遍完成，那滚动重新开始
+					                }else{
+					                    i+=3;
+					                }
+					                    //通过i的值来改变整体li元素的位置
+					                var ulLeft=-($('li').width())*i;
+					                $('.ulPmd').css('left',ulLeft)
+					            },1000);
+					                    //鼠标滑过li的时候，清除定时器
+					            $('li').on('mouseover',function () {
+					                clearInterval(timer)
+					            });
+					                    //鼠标滑出li的时候，继续定时器
+					            $('li').on('mouseout',function () {
+					                timer=setInterval(function() {
+					                    //根据ul的位移来判断一秒钟向左移动的距离；
+					                    if(i>$('li').length){
+					                        i=1;
+					                    }else{
+					                        i+=3;
+					                    }
+					                    var ulLeft=-($('li').width())*i;
+					                    $('.ulPmd').css('left',ulLeft)
+					                },1000);
+					            })
+					        })
+					    </script>
 						<!-- END BEGIN STYLE CUSTOMIZER -->
 						<c:if test="${roleId ne 1}">
+						<div class="outBox">
+						    <ul class="ulPmd">
+						        <li> <h3><span id ="confirm" style="color:red"></span></h3></li>
+						    </ul>
+						</div>
 							<h3 class="page-title">
-								&nbsp;&nbsp;<span id ="confirm"></span><br/>
 								<span style="color:red">&nbsp;&nbsp;如有疑问，请拨打热线电话</span>
 							</h3>
 						</c:if>

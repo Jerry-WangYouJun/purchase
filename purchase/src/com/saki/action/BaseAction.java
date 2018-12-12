@@ -93,11 +93,20 @@ public class BaseAction {
 		public void getParams(Map<String, Object> params){
 			String cno = getParameter("ono");
 			String cstatus = getParameter("ostatue");
+			String colName= getParameter("colName");
+			String colValue=getParameter("colValue");
+			String oinvoice = getParameter("oinvoice");
+			if(StringUtils.isNotEmpty(colName) && StringUtils.isNotEmpty(colValue)) {
+				params.put(colName, "%" + colValue + "%");
+			}
 			if(StringUtils.isNotEmpty(cno)) {
 				params.put("orderNo", "%" + cno + "%");
 			}
 			if(StringUtils.isNotEmpty(cstatus)) {
 				params.put("status", cstatus);
+			}
+			if(StringUtils.isNotEmpty(oinvoice)) {
+				params.put("invoice", oinvoice);
 			}
 			String roleId = getSession().getAttribute("roleId").toString();
 			if(!"1".equals(roleId)){

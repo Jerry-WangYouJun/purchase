@@ -108,7 +108,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				toolbar:'#toolbar_user',		
 				fitColumns: true,
 				striped:true,
-				singleSelect: true,
+				singleSelect: false,
 				onDblClickCell:onDblClickCell,
 				onUnselect:function(rowIndex, rowData){
 				},
@@ -169,11 +169,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'unit',title:'单位',width:20,align:'center'}
 				]],				
 			});
-			if("${roleId}" == '1'){
+			/* if("${roleId}" == '1'){
 				$('#user_table').datagrid({
 					singleSelect: false
 				});
-			}
+			} */
 			 if('${roleId}' != '1'){
 				 $('#user_table').datagrid('hideColumn', 'company');
 				 $('#user_table').datagrid('hideColumn', 'level');
@@ -268,9 +268,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function price_default(){
+			var checkedItems = $('#user_table').datagrid('getChecked');
+			if(checkedItems.length  == 0){
+				return false;
+			}
 			var flag = confirm("同一种产品只能选择一个,确认选择的信息无误？");
 			if(flag){
-				var checkedItems = $('#user_table').datagrid('getSelections');
 				$.ajax({ 
 	    			url: '${pageContext.request.contextPath}/productAction!updateMappingStatus.action',
 	    			data : { "obj": JSON.stringify(checkedItems)},
@@ -289,9 +292,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function price_many(){
+				var checkedItems = $('#user_table').datagrid('getChecked');
+				if(checkedItems.length  == 0){
+					return false;
+				}
 			var flag = confirm("确定进行批量修改价格？");
 			if(flag){
-				var checkedItems = $('#user_table').datagrid('getSelections');
 				 $.messager.prompt('','请输入金额',function(s){
 					if(s){
 						$.ajax({ 
@@ -315,9 +321,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function markup_many(){
+			var checkedItems = $('#user_table').datagrid('getChecked');
+			if(checkedItems.length  == 0){
+				return false;
+			}
 			var flag = confirm("确定进行批量修改加价？");
 			if(flag){
-				var checkedItems = $('#user_table').datagrid('getChecked');
 				$.messager.prompt('','请输入要加价的金额',function(s){
 					if(s){
 						$.ajax({ 
@@ -341,9 +350,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function markup_many_persent(){
+			var checkedItems = $('#user_table').datagrid('getChecked');
+			if(checkedItems.length  == 0){
+				return false;
+			}
 			var flag = confirm("确定按照百分比进行批量修改加价？");
 			if(flag){
-				var checkedItems = $('#user_table').datagrid('getChecked');
 				$.messager.prompt('','请输入要加价的百分比，单位%',function(s){
 					if(s){
 						$.ajax({ 

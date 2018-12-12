@@ -400,7 +400,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			TCompany company = (TCompany)objs[1];
 			Map<String , Object >  map = new HashMap<String,Object>();
 			map.put("mapid", mapper.getId());
-			map.put("price", isNull(mapper.getPrice()) + isNull(mapper.getMarkup()));
+			map.put("price", SystemUtil.add(SystemUtil.add(mapper.getPrice(), mapper.getMarkup()),  SystemUtil.mul(SystemUtil.mul(mapper.getPercent() , 0.01) , mapper.getPrice())));
 			map.put("brand", company.getBrand());
 			map.put("imgUrl", mapper.getImgUrl());
 			map.put("status", mapper.getStatus());

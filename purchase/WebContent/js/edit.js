@@ -175,9 +175,15 @@
    
      	
     function query(){
+    	var col = $("#queryCol").val();
+    	var val = $("#queryValue").val();
+    	var dataParams = {};
+        dataParams[col] = val;
  	    	$('#table_order').datagrid('load', {
- 	    	    ostatue: $("#ostatue").val(),
- 	    	    ono : $("#ono").val()
+ 	    		  colName:col ,
+ 	    		  colValue:val,
+ 	    		 ostatue :$("#ostatue").val(),
+ 	    		oinvoice:$("#oinvoice").val()
  	    	});
   	}
     

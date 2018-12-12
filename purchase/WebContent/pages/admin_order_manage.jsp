@@ -27,17 +27,38 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		<div >
-            	订单编号：
-                <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
-            	订单状态：
+            	查询条件
+                <select name="queryCol" id="queryCol" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="orderNo">订单编号</option>
+	                 <option value="amount">订单金额</option>
+	                	<!-- <option value="2">已报价</option> -->
+	                	<option value="state">订单状态</option>
+	                	<option value="companyName">采购公司</option>
+	                	<option value="invoice">发票未开</option>
+	                	<option value="confirmId">采购批次</option>
+	                	<option value="startDate">下单日期 </option>
+	                <option value="pillDate">付款日期 </option>
+	                	<option value="endDate">收货日期 </option>
+                </select>
+                查询内容
+                <input name="queryValue" id = "queryValue"class=" form-control" style="display: inline-block;width: 10%">
+                	订单状态：
                 <select name="ostatue" id="ostatue" 
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
                     <option value="">-选择-</option>
 	                	<option value="1">新订单</option>
-	                	<!-- <option value="2">已报价</option> -->
 	                	<option value="3">已付款</option>
-	                	<option value="4">已收货</option>
 	                	<option value="5">提交采购</option>
+	                	<option value="4">已收货</option>
+                </select>
+                	发票状态：
+                <select name="oinvoice" id="oinvoice" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">发票已开</option>
+	                	<option value="2">发票已收到</option> 
                 </select>
                 <button onclick="query()">查询</button>
             </div> 
