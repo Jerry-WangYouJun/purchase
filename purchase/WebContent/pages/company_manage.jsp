@@ -19,51 +19,194 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->    
-    
-   <jsp:include page="/common.jsp"></jsp:include>
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+     <!-- Custom Styles-->
+    <link href="assets/css/style.css" rel="stylesheet" />
+     <!-- main Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- TABLE STYLES-->
+    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+        <script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="assets/js/public.js"></script>
+    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+        <script>
+
+        </script>
+         <!-- Custom Js -->
+    <script src="assets/js/custom-scripts.js"></script>
   </head>
   
-  <body class="easyui-layout">
- 	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
- 		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">
- 				<c:choose >
-									<c:when test="${roleId eq '1' }">
-										企业信息管理
-									</c:when>
-									<c:when test="${roleId eq '2' }">
-										供应商 管理
-									</c:when>
-									<c:when test="${roleId eq '3' }">
-										客户 管理
-									</c:when>
-							 </c:choose>
- 		</p>
- 	</div>
- 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
-		  <c:if test="${roleId eq 1 }">
- 			 <div >
-            	公司名称：
-                <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
-                主营业务：
-                <input name="business" id = "business"class=" form-control" style="display: inline-block;width: 10%">
-            	地址：
-                <input name="address" id = "address"class=" form-control" style="display: inline-block;width: 10%">
-                品牌：
-                <input name="brand" id = "brand"class=" form-control" style="display: inline-block;width: 10%">
-                <button onclick="query()">查询</button>
-            </div> 
-		  </c:if>
- 		<table id="company_table" class="easyui-datagrid" fit="true" ></table>
- 	</div>
-	<div id="toolbar_company" style="padding:2px 5px;">
-	<c:if test="${roleId eq 1  && role eq 2}">
-     	<a onclick="company_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>
-	</c:if>
-        <a onclick="company_edit()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">编辑</a>    
-    <c:if test="${roleId eq 1 }">
-        <a onclick="company_delete()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-remove fa-fw" style="margin: 2px">删除</a>
-    </c:if>
-    </div>
+  <body >
+                 <!-- /. ROW  -->
+               
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- Advanced Tables -->
+                    <div class="panel panel-black">
+                        <div class="panel-heading heading-color font20">
+                             企业信息管理
+                        </div>
+                        <div class="panel-body">
+                            <div class="panel-search"><span>公司名称:</span><input class="btn btn-default btn-sm"><span>企业类型：</span><input class="btn btn-default btn-sm"><button class="btn-pri">查询</button></div>
+                            <div class="table-responsive">
+                                <div class="table-edit">
+                                    <a href="#"><i class="fa fa-edit"></i> <span data-toggle="modal" data-target="#myModal-2">编辑</span></a>
+                                    <a data-toggle="modal" data-target="#myModal-4" href="#"><i class="fa fa-times"></i> <span>删除</span></a>
+                                </div>
+                                <table class="table table-striped " id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th>公司名称</th>
+                                            <th>品牌</th>
+                                            <th>联系人</th>
+                                            <th>地址</th>
+                                            <th>主营业务</th>
+                                            <th>企业星级</th>
+                                            <th>联系电话</th>
+                                            <th>税号</th>
+                                            <th>银行账号</th>
+                                            <th>备注</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+                                        <tr class=" gradeX">
+                                            <td>大手海恩</td>
+                                            <td>汉兴切割</td>
+                                            <td>李先生</td>
+                                            <td class="center">山东省青岛市市北区</td>
+                                            <td class="center">切割电气焊1</td>
+                                            <td>5星</td>
+                                            <td>13656568989</td>
+                                            <td>65464564545455</td>
+                                            <td>15654564564564561</td>
+                                            <td>暂无</td>
+                                        </tr>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <!--End Advanced Tables -->
+                </div>
+            </div>
 	
     <script type="text/javascript">
     function query(){

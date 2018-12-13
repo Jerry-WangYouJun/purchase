@@ -7,48 +7,29 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>众联焊割集中采购平台</title>
-<link href="media/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css" />
-	<link href="media/css/bootstrap.min.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/bootstrap-responsive.min.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/font-awesome.min.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/style-metro.css" rel="stylesheet" type="text/css" />
-<link href="media/css/style.css" rel="stylesheet" type="text/css" />
-<link href="media/css/style-responsive.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/default.css" rel="stylesheet" type="text/css"
-	id="style_color" />
-<link href="media/css/uniform.default.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/jquery.gritter.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/daterangepicker.css" rel="stylesheet"
-	type="text/css" />
-<link href="media/css/fullcalendar.css" rel="stylesheet" type="text/css" />
-<link rel="shortcut icon" href="media/image/favicon.ico" />
-<script src="media/js/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="media/js/jquery-migrate-1.2.1.min.js"
-	type="text/javascript"></script>
-<script src="media/js/jquery-ui-1.10.1.custom.min.js"
-	type="text/javascript"></script>
-<script src="media/js/bootstrap.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.slimscroll.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.blockui.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.cookie.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.uniform.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.flot.js" type="text/javascript"></script>
-<script src="media/js/jquery.flot.resize.js" type="text/javascript"></script>
-<script src="media/js/jquery.pulsate.min.js" type="text/javascript"></script>
-<script src="media/js/date.js" type="text/javascript"></script>
-<script src="media/js/daterangepicker.js" type="text/javascript"></script>
-<script src="media/js/jquery.gritter.js" type="text/javascript"></script>
-<script src="media/js/fullcalendar.min.js" type="text/javascript"></script>
-<script src="media/js/jquery.sparkline.min.js" type="text/javascript"></script>
-<script src="media/js/app.js" type="text/javascript"></script>
-<script src="media/js/index.js" type="text/javascript"></script>
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+     <!-- FontAwesome Styles-->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+     <!-- Morris Chart Styles-->
+     <!-- Custom Styles-->
+    <link href="assets/css/style.css" rel="stylesheet" />
+     <!-- main Styles-->
+    <link href="assets/css/custom-styles.css" rel="stylesheet" />
+     <!-- TABLE STYLES-->
+    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
+        <script src="assets/js/jquery-1.10.2.js"></script>
+      <!-- Bootstrap Js -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!-- Metis Menu Js -->
+    <script src="assets/js/jquery.metisMenu.js"></script>
+     <!-- DATA TABLE SCRIPTS -->
+    <script src="assets/js/public.js"></script>
+    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+        <script>
+
+        </script>
+         <!-- Custom Js -->
+    <script src="assets/js/custom-scripts.js"></script>
 
 
 <link href="${pageContext.request.contextPath}/css/bootstrap-datetimepicker.min.css" rel="stylesheet" />  
@@ -155,297 +136,226 @@
         .ulPmd li{width:auto;height:40px;float:left;list-style: none;margin-left:20px;line-height:8px;margin-left:250px}
 </style>
 </head>
-<body class="page-header-fixed">
-	<div class="header navbar navbar-inverse navbar-fixed-top">
-		<!-- BEGIN TOP NAVIGATION BAR -->
-		<div class="navbar-inner">
-			<div class="brand" style="color:#eee;width:225px;margin-left:5px">众联焊割集中采购平台</div>
-			<div class="container-fluid" style="background-color:#fff;margin-left: 225px;">
+<body >
+<div id="wrapper">
+        <nav class="navbar navbar-default top-navbar top-navbar-fix" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".sidebar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="index.html">众联焊割集中采购平台</a>
+                <div class="navbar-brand-nav">
+                    <ul>
+                        <li class="on">首页菜单</li>
+                        <li>内页菜单</li>
+                        <li>用户菜单</li>
+                    </ul>
+                </div>
+            </div>
 
-				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
-				<a href="javascript:;" class="btn-navbar collapsed" 
-					data-toggle="collapse" data-target=".nav-collapse"> <img
-					src="media/image/menu-toggler.png" alt="" />
-				</a>
-				<!-- END RESPONSIVE MENU TOGGLER -->
+            <ul class="nav navbar-top-links navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 
-				<!-- BEGIN 顶部提醒 MENU -->
-				<ul class="nav pull-right">
-					
-					<!-- BEGIN NOTIFICATION DROPDOWN -->
-					<li class="dropdown" id="header_notification_bar"><a href="#"
-						class="dropdown-toggle" data-toggle="dropdown"> <i
-							class="icon-warning-sign"></i> <span class="badge" id="first"> </span>
-					</a>
-						<ul class="dropdown-menu extended notification" id="firstMsg">
-							
-						</ul></li>
-					<!-- END NOTIFICATION DROPDOWN -->
+                        <i class="fa fa-exclamation-triangle fa-lg"><span class="badge" id="first"> </span></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    有580件商品需要加价处理 <i class="fa fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </li>
 
-					<!-- BEGIN INBOX DROPDOWN -->
-					<li class="dropdown" id="header_inbox_bar">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-							 <i class="icon-envelope"></i> <span class="badge" id="second"></span>
-						</a>
-						<ul class="dropdown-menu extended inbox" id="secondMsg">
-							
-						 </ul>
-					 </li>
-					<!-- END INBOX DROPDOWN -->
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
 
-					<!-- BEGIN TODO DROPDOWN -->
-					<li class="dropdown" id="header_task_bar"><a href="#"
-						class="dropdown-toggle" data-toggle="dropdown"> <i
-							class="icon-tasks"></i> <span class="badge" id="third"></span>
-					</a>
-						<ul class="dropdown-menu extended tasks" id="thirdMsg">
-						</ul></li>
-					<!-- END TODO DROPDOWN -->
-					<!-- BEGIN 修改订单金额 -->
-					<c:if test="${roleId eq '1' }">
-						<li class="dropdown" ><a href="#" onclick="uploadModal()" class="dropdown-toggle"
-							data-toggle="dropdown" style="padding-right:10px"> <i class="icon-yen"></i> <span class="username"  style="font-size: 20px">
-								订单最低金额设置</span> 
-							</a>
-						</li>
-					</c:if>
-					<!-- END 修改订单金额 -->
-					<!-- BEGIN 用户登陆 DROPDOWN -->
-					<li class="dropdown" ><a href="#" class="dropdown-toggle"
-						data-toggle="dropdown" style="padding-right:10px">  <span class="username"  style="font-size: 20px">
-							${userName }</span> 
-						</a>
-					</li>
-					<li class="dropdown" >
-						<a href="#" style="padding-right:10px;font-size: 20px"  class="dropdown-toggle" onclick="logout()">退出</a>
-					</li>
-					<!-- END 用户登陆 DROPDOWN -->
-				</ul>
-				<!-- END 顶部提醒  MENU -->
-			</div>
-		</div>
-		<!-- END TOP NAVIGATION BAR -->
-	</div>
-	<!-- END HEADER -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-envelope fa-lg"><span class="badge" id="second"></span></i><i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-messages">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>库存消息</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>今天</em>
+                                    </span>
+                                </div>
+                                <div>用户的库存情况需要及时汇报用户的库存情况需要及时汇报用户的库存情况</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>库存消息</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>昨天</em>
+                                    </span>
+                                </div>
+                                <div>用户的库存情况需要及时汇报用户的库存情况需要及时汇报用户的库存情况</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a href="#">
+                                <div>
+                                    <strong>库存消息</strong>
+                                    <span class="pull-right text-muted">
+                                        <em>昨天</em>
+                                    </span>
+                                </div>
+                                <div>用户的库存情况需要及时汇报用户的库存情况需要及时汇报用户的库存情况</div>
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        <li>
+                            <a class="text-center" href="#">
+                                <strong>查看全部消息</strong>
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-messages -->
+                </li>
 
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
 
-	<!-- BEGIN CONTAINER -->
-	<div class="page-container">
-	
-		<!-- BEGIN 左侧目录树 -->
-		<div class="page-sidebar nav-collapse collapse">
-			<!-- BEGIN SIDEBAR MENU -->
-			<ul class="page-sidebar-menu">
+                        <i class="fa fa-list fa-lg"><span class="badge" id="third"></span></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-alerts">
+                        <li>
+                            <a href="#">
+                                <div>
+                                    加急订单未完成 <i class="fa fa-arrow-right"></i>
+                                </div>
+                            </a>
+                        </li>
 
-					<li class="">
-						<a href="javascript:;"> <i class="icon-cogs"></i>
-							<span class="title">信息管理</span> <span class="arrow "></span>
-						</a>
-						<ul class="sub-menu">
-							 <c:choose >
-									<c:when test="${roleId eq '1' }">
-										<li class="active-menu"><a href="#"  onclick="openTab('客户管理','${basePath}/companyAction!loadCustomer.action?role=3')">
-													客户</a>
-													
-										</li>
-										<li class="active-menu"><a href="#"  onclick="openTab('供应商管理','${basePath}/companyAction!loadCustomer.action?role=2')">
-													供应商管理</a>
-													
-										</li>
-										<li class="active-menu"><a href="#" onclick="openTab('公告管理','${basePath}/pages/notice_manage.jsp')"> 公告管理</a></li>
-									</c:when>
-									<c:when test="${roleId eq '2' }">
-										<li class="active-menu"><a href="#"  onclick="openTab('供应商管理','${basePath}/companyAction!loadCustomer.action?role=2')">
-													供应商管理</a>
-										</li>
-									</c:when>
-									<c:when test="${roleId eq '3' }">
-										<li class="active-menu"><a href="#"  onclick="openTab('客户管理','${basePath}/companyAction!loadCustomer.action?role=3')">
-													客户管理</a>
-										</li>
-									</c:when>
-							 </c:choose>
-							<li class="active-menu"><a href="#"  onclick="openTab('密码管理','${basePath}/pages/user_manage.jsp')"> 
-										密码管理</a>
-							</li>
-							<c:if test="${roleId eq '1' }">
-								<li class="active-menu">
-					                <a href="#"  class="active" onclick="openTab('产品类别管理','${basePath}/pages/product_manage.jsp')">
-					                      产品类别管理</a>
-					            </li>
-								<li class="active-menu"><a href="#"  onclick="openTab('采购日管理','${basePath}/pages/confirm_manage.jsp')"> 
-											采购日管理</a>
-								</li>
-								<li class="active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> 
-										<span class="title">价格设置</span></a>
-								</li>
-							</c:if>
-						</ul>
-					</li>
-					<c:if test="${roleId ne 1 }">
-						<li class="active-menu"><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
-								class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
-						</a></li>	
-					</c:if>
-					<c:if test="${roleId ne 2 }">
-					<li class="active-menu"><a href="#" onclick="openTab('收货地址管理','${basePath}/pages/address_manage.jsp')"> <i
-							class="icon-location-arrow"></i> <span class="title">收货地址管理</span>
-					</a></li>
-					</c:if>															 
-					<c:if test="${roleId eq 2 }">
-						 <li class="last active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> <i
-								class="icon-bar-chart"></i> <span class="title">价格设置</span>
-						</a></li>
-					</c:if>
-					<li class="">
-							<a href="javascript:;"> <i class="icon-th"></i>
-								<span class="title">订单管理</span> <span class="arrow "></span></a>
-							<ul class="sub-menu">
-								<c:if test="${roleId eq 1 }">
-									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/admin_order_manage.jsp')"> 快速下单</a></li>
-									<li class="active-menu"><a href="#" onclick="openTab('加急订单管理','${basePath}/pages/urgent_manage.jsp')"> 加急订单管理</a></li>
-									<li class="active-menu"><a href="#" onclick="openTab('物流信息管理','${basePath}/pages/transport_manage.jsp')"> 物流信息管理</a></li>
-								</c:if>
-								<c:if test="${roleId eq 3 }">
-									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')">  快速下单</a></li>
-									<li class="active-menu"><a href="#" onclick="openTab('加急订单管理','${basePath}/pages/urgent_manage.jsp')"> 加急订单管理</a></li>
-								</c:if>
-								<c:if test="${roleId ne 3 }">
-									<li class="active-menu"><a href="#" onclick="openTab('供应商管理','${basePath}/pages/supplier_mange.jsp')"> 采购订单管理</a></li>
-								</c:if>
-							</ul>
-					</li>
-			</ul>
-			<!-- END SIDEBAR MENU -->
-		</div>
-		<!-- END 左侧目录树 -->
+                    </ul>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                   <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" onclick="uploadModal()" aria-expanded="false">
 
-		<!-- BEGIN PAGE -->
-		<div class="page-content">
-			<!-- BEGIN SAMPLE PORTLET CONFIGURATION MODAL FORM-->
-			<div id="portlet-config" class="modal hide">
-				<div class="modal-header">
-					<button data-dismiss="modal" class="close" type="button"></button>
-					<h3>Widget Settings</h3>
-				</div>
-				<div class="modal-body">Widget settings form goes here</div>
-			</div>
-			<!-- END SAMPLE PORTLET CONFIGURATION MODAL FORM-->
+                        <div data-toggle="modal" data-target="#myModal">
+                            <i class="fa fa-yen fa-lg"></i><span> 订金最低金额设置 </span><i class="fa fa-caret-down"></i>
+                        </div>
 
-			<!-- BEGIN PAGE CONTAINER-->
-			<div class="container-fluid">
-				<!-- BEGIN PAGE HEADER-->
-				<div class="row-fluid">
-					<div class="span12">
-						<!-- BEGIN STYLE CUSTOMIZER -->
-						<div class="color-panel hidden-phone">
-							<div class="color-mode-icons icon-color"></div>
-							<div class="color-mode-icons icon-color-close"></div>
-							<div class="color-mode">
-								<p>THEME COLOR</p>
-								<ul class="inline">
-									<li class="color-black current color-default"
-										data-style="default"></li>
-									<li class="color-blue" data-style="blue"></li>
-									<li class="color-brown" data-style="brown"></li>
-									<li class="color-purple" data-style="purple"></li>
-									<li class="color-grey" data-style="grey"></li>
-									<li class="color-white color-light" data-style="light"></li>
-								</ul>
-							</div>
-						</div>
-						<script language="javascript" type="text/javascript">
-					        $(function () {
-					            var i=0;
-					            var timer;
-					            timer=setInterval(function(){
-					                    //根据ul的位移来判断一秒钟向左移动的距离；
-					                if(i>$('li').length){
-					                    i=1;
-					                    //如果所有li元素向左移动一遍完成，那滚动重新开始
-					                }else{
-					                    i+=3;
-					                }
-					                    //通过i的值来改变整体li元素的位置
-					                var ulLeft=-($('li').width())*i;
-					                $('.ulPmd').css('left',ulLeft)
-					            },1000);
-					                    //鼠标滑过li的时候，清除定时器
-					            $('li').on('mouseover',function () {
-					                clearInterval(timer)
-					            });
-					                    //鼠标滑出li的时候，继续定时器
-					            $('li').on('mouseout',function () {
-					                timer=setInterval(function() {
-					                    //根据ul的位移来判断一秒钟向左移动的距离；
-					                    if(i>$('li').length){
-					                        i=1;
-					                    }else{
-					                        i+=3;
-					                    }
-					                    var ulLeft=-($('li').width())*i;
-					                    $('.ulPmd').css('left',ulLeft)
-					                },1000);
-					            })
-					        })
-					    </script>
-						<!-- END BEGIN STYLE CUSTOMIZER -->
-						<c:if test="${roleId ne 1}">
-						<div class="outBox">
-						    <ul class="ulPmd">
-						        <li> <h3><span id ="confirm" style="color:red"></span></h3></li>
-						    </ul>
-						</div>
-							<h3 class="page-title">
-								<span style="color:red">&nbsp;&nbsp;如有疑问，请拨打热线电话</span>
-							</h3>
-						</c:if>
-						<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-						<ul class="breadcrumb" style="padding:15px 15px">
-							<li><i class="icon-home"></i> <a href="index.jsp">首页</a>
-								<i class="icon-angle-right"></i></li>
-							<li><a href="#" id="panelName"></a></li>
-							<li class="pull-right no-text-shadow" style="padding-right: 50px">
-								<div id="dashboard-report-range"
-									class="dashboard-date-range no-tooltip-on-touch-device responsive"
-									data-tablet="" data-desktop="tooltips" data-placement="top"
-									data-original-title="Change dashboard date range">
-									<i class="icon-calendar"></i> <span></span> 
-								</div>
-							</li>
-						</ul>
-						<!-- END PAGE TITLE & BREADCRUMB-->
-					</div>
-				</div>
-				<!-- END PAGE HEADER-->
+                    </a>
+                    <!-- /.dropdown-alerts -->
+                </li>
+                <!-- /.dropdown -->
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
+                        <i class="fa fa-user fa-fw"></i> <i class="fa fa-caret-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-user">
+                        <li><a href="#"><i class="fa fa-user fa-fw"></i> ${userName }</a>
+                        </li>
+                        <!-- <li><a href="#"><i class="fa fa-gear fa-fw"></i> 设置</a>
+                        </li> -->
+                        <li class="divider"></li>
+                        <li><a href="#" onclick="logout()"><i class="fa fa-sign-out fa-fw"></i> 登出</a>
+                        </li>
+                    </ul>
+                    <!-- /.dropdown-user -->
+                </li>
+                <!-- /.dropdown -->
+            </ul>
+        </nav>
+        <!--/. NAV TOP  -->
 
-				<!-- BEGIN 主面板 STATS -->
-				<div id="dashboard">
+        <nav class="navbar-default navbar-side left-menu-bg" role="navigation">
+                <div class="sidebar-collapse">
+                    <ul class="nav main-menu" id="main-menu">
+                        <li>
+                            <a href="#"><i class="fa fa-list font18"></i><span>信息管理</span><span class="fa arrow font18"></span></a>
+                            <ul class="nav nav-second-level in">
+                                <li class="on">
+                                    <a href="#"  onclick="openTab('客户管理','${basePath}/companyAction!loadCustomer.action?role=3')">客户</a>
+                                </li>
+                                <li>
+                                    <a href="02信息管理-供应商管理.html">供应商管理</a>
+                                </li>
+                                <li>
+                                    <a href="03信息管理-公告管理.html">公告管理</a>
+                                </li>
+                                <li>
+                                    <a href="04信息管理-密码管理.html">密码管理</a>
+                                </li>
+                                <li>
+                                    <a href="05产品类别管理-采购日管理.html">产品类别管理</a>
+                                </li>
+                                <li>
+                                    <a href="06信息管理-采购日管理.html">采购日管理</a>
+                                </li>
+                                <li>
+                                    <a href="07信息管理-价格设置.html">价格设置</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa fa-paste font18"></i><span>订单管理</span><span class="fa arrow font18"></span></a>
+                            <ul class="nav nav-second-level">
+                                <li>
+                                    <a href="08订单管理-快速下单.html">快速下单</a>
+                                </li>
+                                <li>
+                                    <a href="09订单管理-加急订单管理.html">加急订单管理</a>
+                                </li>
+                                <li>
+                                    <a href="10订单管理-物流信息管理.html">物流信息管理</a>
+                                </li>
+                                <li>
+                                    <a href="11订单管理-采购订单管理.html">采购订单管理</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="menu-one">
+                            <a href="12订单管理-收货地址管理.html"><i class="fa fa-map-marker font20"></i><span>收货地址管理</span></a>
+                        </li>
+                    </ul>
+
+            </div>
+            <!--<div class="navbar-side-bg-b"></div>-->
+
+        </nav>
+        <!-- /. NAV SIDE  -->
+        <div id="page-wrapper" class="page-wrapper bgh">
+            <div id="page-inner">
+			 <div class="row">
+                    <div class="col-md-12">
+                        <h1 class="page-header page-header-font">
+                            首页<small><i class="fa fa-angle-right"></i>客户管理</small>
+                            <div class="page-header-right">  <i class="fa fa-calendar"></i> 当前日期：2018-01-01</div>
+                        </h1>
+                    </div>
+                </div> 
+                 <!-- /. ROW  -->
+               <div id="dashboard">
 	 					<div  id ="home" class="tab-content" style="margin-left: 20px">
 									
 						</div>
 				</div>
-				<!-- END 主面板 STATS -->
-				
-			</div>
-			<!-- END PAGE CONTAINER-->
 
-		</div>
-		<!-- END PAGE -->
-		<!-- END CONTAINER -->
-			
-		<!-- BEGIN FOOTER -->
-		<div class="footer">
-			<div class="footer-inner">
-				2013 &copy; Metronic by keenthemes.Collect from 
-			</div>
-			<div class="footer-tools">
-				<span class="go-top"> <i class="icon-angle-up"></i>
-				</span>
-			</div>
-		</div>
-		<!-- END FOOTER -->
-	</div>
+        </div>
+    </div>
+             <!-- /. PAGE INNER  -->
+    </div>
+
+	
+
+	<!-- BEGIN CONTAINER -->
 	 <script>
 		/**
          * 增加标签页
