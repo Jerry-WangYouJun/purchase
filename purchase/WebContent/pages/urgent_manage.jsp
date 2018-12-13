@@ -88,6 +88,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<input name="startDate" id="startDate" class="easyui-datebox"
 							style="display: inline-block; width: 40%">
 					</div>
+					<div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
+						               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
+						                <select name="addressId"  id= "addressId" class="easyui-combobox" 
+						                 editable="false" style="display: inline-block;width: 40%" 
+						                 class="form-control select2 easyui-combobox" >
+							                	 <c:forEach items="${addressList}" var="address" >
+							                	 	<c:if test="${companyId eq address.cid }">
+								                	 	 <option value="${address.id}"> ${address.name}</option>
+							                	 	</c:if>
+							                	 </c:forEach>
+						                </select>
+						         </div> 
 				</div>
 				<div class="col-md-6">
 					    		<div class="form-group col-md-12 imgdiv">
@@ -999,6 +1012,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			});
 	 			$('#order_dlg').dialog('open');	
 	 			$('#order_dlg').dialog('setTitle','添加订单');
+	 			$("#addressId").combobox("readonly" , false);
 	 		}
 	    	
 	      	
@@ -1009,6 +1023,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			    return false ;
 	 			}
 	     		if(row){
+	 				$("#addressId").combobox("readonly" , false);
 	     			$("#order_dlg").dialog({
 	     				onOpen: function () {
 	                         $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
@@ -1077,6 +1092,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 id: row.id
 				});
 			 },200)
+			 	$("#addressId").combobox("readonly" , true);
 	 			}
 	     	}
 	    

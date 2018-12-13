@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.sf.json.JSONArray;
+
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -554,5 +556,14 @@ public class ProductServiceImpl implements ProductServiceI{
 		public int checkProductByName(String productName) {
 			String hql = "from TProduct t where t.product = '" + productName + "'" ; 
 			return produceDao.count(hql);
+		}
+		@Override
+		public List getImgInfoByproductId(Integer companyId, String productId) {
+			String sql = "select DISTINCT c.brand , pp.product parentProduct , p.product "
+					+ " from t_user_product m  , t_company  c, t_product p , t_product  pp "
+					+ "where m.company_id=c.id and m.product_id = p.id and p.parent_id = pp.id  "
+					+ " and roleId = 2  and c.id = " +  companyId + " and p.id=" + productId; 
+			List list =   produceDao.executeSQLquery(sql);
+			return list;
 		}
 }

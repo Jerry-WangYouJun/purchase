@@ -101,7 +101,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </div> 
 <div id="contPar" class="contPar">
 	<div id="page1"  style="z-index:1;">
-		<div class="title0">众联焊割集中采购平台</div>
+		<div class="title0">众联集中采购平台</div>
 		<div class="title1"><!-- 旅游、交通、气象、公共安全、大数据 --></div>
 		<div class="imgGroug">
 			<ul>

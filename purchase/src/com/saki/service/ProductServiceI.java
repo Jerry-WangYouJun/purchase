@@ -23,4 +23,5 @@ public interface ProductServiceI extends BaseServiceI{
 	public void deleteByProduct(TProduct product);
 	public List<TreeModel> listTree();
 	public int checkProductByName(String productName);
+	public List getImgInfoByproductId(Integer valueOf, String parameter);
 }

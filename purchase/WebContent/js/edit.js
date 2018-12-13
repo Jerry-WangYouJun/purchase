@@ -168,8 +168,7 @@
 					 id: row.id
 				});
 			 },200)
-			 
-			
+			$("#addressId").combobox("readonly" , true);
 			}
     	}
    

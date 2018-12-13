@@ -272,6 +272,7 @@
 		});
 		$('#order_dlg').dialog('open');	
 		$('#order_dlg').dialog('setTitle','添加订单');
+		$("#addressId").combobox("readonly" , false);
 	}
 	
  	
@@ -291,6 +292,7 @@
                     $('#confirmId').combobox('select', row.confirmId);
                 }
 			});
+			$("#addressId").combobox("readonly" , false);
 			$('#order_dlg').dialog('open');	
 			$('#order_dlg').dialog('setTitle','编辑订单');
 		$("#startDate").val(row.startDate);
