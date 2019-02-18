@@ -229,6 +229,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						layer.closeAll();
 					});
 			})
+			$("#productSave").click(function(){
+				productSave()
+			});
+			
 			//新增
 			$("#addProduct").click(function(){
 				layer.open({
@@ -259,7 +263,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  shadeClose: true,
 					  shade: 0.8,
 					  area: ['450px', '40%'],
-					  content: '<%=path%>/report!importInit.action?proId=' + $("#productId").val() //iframe的url
+					  content: '<%=path%>/pages/file_import.jsp' //iframe的url
 				});
 			});
 		});
@@ -294,12 +298,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						function(data){
 							var obj = eval('(' + data + ')');
 							if(obj.success){
-								layer.alert("保存成功");
+								alert("保存成功");
 								window.location.reload();
 							}else{
-								layer.alert(obj.msg);
+								alert(obj.msg);
 							}
-						})
+				})
 			}
 		};
 	$(function(){
@@ -321,15 +325,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
  <body class="">
-
-
- 	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
- 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">订单类别选择</span>
- 	</div>
- 
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
- 		<a  id="importProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
+ 		<a  id="imageFile" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
 		
 	</div>
  	
@@ -371,7 +369,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			
 			<div class="input-group" style="margin-top:10px">
 				<button type="button" class="btn btn-success" style="margin-left:50px" id="imageFile" >上传图片</button>
-				<button type="button" class="btn btn-success" style="margin-left:50px" id="productSave" onclick="productSave()">保存</button>
+				<button type="button" class="btn btn-success" style="margin-left:50px" id="productSave" >保存</button>
 				<button type="button" class="btn btn-danger" style="margin-left:50px" id="productDelete">删除</button>
 			</div>
   		</form>	

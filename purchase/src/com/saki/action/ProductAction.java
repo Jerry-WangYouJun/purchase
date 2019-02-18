@@ -26,6 +26,7 @@ import com.saki.model.TProductDetail;
 import com.saki.service.ProductDetailServiceI;
 import com.saki.service.ProductServiceI;
 import com.saki.service.UserProductServiceI;
+import com.saki.utils.SystemUtil;
 
 @Namespace("/")
 @Result(name="toProduceSelectTab",location="/pages/produce_select_tab.jsp")
@@ -63,27 +64,20 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	
 	public void loadProducntDetailByCompany(){
 		Grid grid = new Grid();
-		String cname = getParameter("cname");
-		String subProName = getParameter("subProName");
-		String material = getParameter("material");
-		String brand=getParameter("brand");
-		String price = getParameter("price");
+		String page = getParameter("page");
+		String rows = getParameter("rows");
 		int companyId =  0 ;
 		if(getSession().getAttribute("companyId")!= null){
 			 companyId = Integer.valueOf(getSession().getAttribute("companyId").toString());
 		} 
-		
-		grid = productService.searchProductDetailByCompanyId(companyId , cname ,subProName,page,rows ,material,brand,price );
+		Map<String ,Object> params  = new HashMap<>();
+		getParams(params);
+		grid = productService.searchProductDetailByCompanyId(companyId ,page,rows ,params );
 		super.writeJson(grid);
 	}
 	
 	
-	/**
-	 *  根据productid获取品牌   产品大类 产品类型 获取图片路径
-	 */
-	public void getImgInfoByproductId(){
-		super.writeJson(productService.getImgInfoByproductId(Integer.valueOf(getSession().getAttribute("companyId").toString()) , getParameter("proId")));
-	}
+	
 	/**
 	 * 产品选择页面 —— ztree 
 	 */
@@ -110,6 +104,13 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	}
 	
 	/**
+	 *  根据productid获取品牌   产品大类 产品类型 获取图片路径
+	 */
+	public void getImgInfoByproductId(){
+		super.writeJson(productService.getImgInfoByproductId(Integer.valueOf(getSession().getAttribute("companyId").toString()) , getParameter("proId")));
+	}
+	
+	/**
 	 * 更新供应商价格
 	 */
 	public void updateMappingPrice(){
@@ -122,9 +123,9 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			Double price = Double.valueOf(getParameter("price")) ;
 			userProductService.updatePrice( Integer.valueOf(getSession().getAttribute("companyId").toString() )
 					, Integer.valueOf(getParameter("detailId")) 
-					, price , roleId);
+					, SystemUtil.round(price, 2) , roleId);
 			Integer mapid = Integer.valueOf(getParameter("mapid"));
-			userProductService.updateMarkupPriceWhenPriceUpdate(mapid, price);
+			userProductService.updateMarkupPriceWhenPriceUpdate(mapid, SystemUtil.round(price, 2));
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){
@@ -140,7 +141,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		Message j = new Message();
 		try{
 			userProductService.updateMarkupPrice(  Integer.valueOf(getParameter("mapid")) 
-					, getParameter("column"), Double.valueOf(getParameter("markup")));
+					, getParameter("column"), SystemUtil.round(Double.valueOf(getParameter("markup")), 2));
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){
@@ -161,7 +162,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			for (Object object : jsonArray) {
 				 JSONObject  json = (JSONObject) object;
 					Integer mapid = json.getIntValue("mapid");
-					userProductService.updateMarkupPrice(mapid, "price" ,  price);
+					userProductService.updateMarkupPrice(mapid, "price" ,  SystemUtil.round(price, 2));
 			}
 			j.setSuccess(true);
 			j.setMsg("保存成功");
@@ -182,7 +183,30 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			for (Object object : jsonArray) {
 				 JSONObject  json = (JSONObject) object;
 				 userProductService.updateMarkupPrice(  json.getIntValue("mapid")
-							, "markup", Double.valueOf(getParameter("markup")));
+							, "markup", SystemUtil.round(Double.valueOf(getParameter("markup")), 2));
+			}
+			j.setSuccess(true);
+			j.setMsg("保存成功");
+		}catch(Exception e){
+			j.setMsg("保存失败");
+		}	
+		super.writeJson(j);
+	}
+	
+	/**
+	 * 批量更新加价
+	 */
+	public void updateSupMarkupMany(){
+		Message j = new Message();
+		try{
+			String  s = getParameter("obj");
+			 JSONArray jsonArray = JSONArray.parseArray(s);
+			for (Object object : jsonArray) {
+				 JSONObject  json = (JSONObject) object;
+				 userProductService.updateMarkupPrice(  json.getIntValue("mapid")
+							, "price", 
+							SystemUtil.round(SystemUtil.add(json.getDoubleValue("price"), Double.valueOf(getParameter("markup"))), 2))
+							;
 			}
 			j.setSuccess(true);
 			j.setMsg("保存成功");
@@ -203,7 +227,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 			for (Object object : jsonArray) {
 				 JSONObject  json = (JSONObject) object;
 				 userProductService.updateMarkupPriceByPercent(  json.getIntValue("mapid")
-							, Double.valueOf(getParameter("markup")));
+							, SystemUtil.round(Double.valueOf(getParameter("markup")),2));
 			}
 			j.setSuccess(true);
 			j.setMsg("保存成功");
@@ -266,7 +290,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 		this.getRequest().setAttribute("secProduct", productService.searchSecProductAndChild());
 		return "toProduceSelectTab";
 	}
-	
+	public void toProduceSelectThirdTab()
+	{
+		super.writeJson(productService.searchSecProductAndChild());
+	}
 	
 	public void searchProduct()
 	{

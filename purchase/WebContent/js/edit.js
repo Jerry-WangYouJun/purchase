@@ -168,7 +168,8 @@
 					 id: row.id
 				});
 			 },200)
-			$("#addressId").combobox("readonly" , true);
+			 
+			
 			}
     	}
    
@@ -243,11 +244,11 @@
 	     }
 	     var num = acount.target.textbox('getValue') / formatNum.target.textbox('getValue');
 	     var rest = acount.target.textbox('getValue') % formatNum.target.textbox('getValue');
-	     if(parseInt(acount.target.textbox('getValue')) < parseInt(formatNum.target.textbox('getValue'))){
-	    	 alert("为了方便发货，数量不得少于" +formatNum.target.textbox('getValue') ); 
-	    	acount.target.textbox('setValue' , '');
-	    	 return false ;
-	     }
+//	     if(parseInt(acount.target.textbox('getValue')) < parseInt(formatNum.target.textbox('getValue'))){
+//	    	 alert("为了方便发货，数量不得少于" +formatNum.target.textbox('getValue') ); 
+//	    	acount.target.textbox('setValue' , '');
+//	    	 return false ;
+//	     }
 //	     if(rest != 0 ){
 //	    	   alert("为了方便发货，数量必须是" + formatNum.target.textbox('getValue') + "的整数倍");
 //	    	  acount.target.textbox('setValue' , '');

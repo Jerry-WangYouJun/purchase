@@ -22,7 +22,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
     
    <jsp:include page="/common.jsp"></jsp:include>
-
+<link href="${basePath}/assets/css/style.css" rel="stylesheet" />
   </head>
   
   <body class="easyui-layout">
@@ -35,9 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	
 	
 	<div id="toolbar_user" style="padding:2px 5px;">
-		<c:if test="${roleId ne '1' }">
-			<a onclick="user_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>  
-		</c:if>
+		<a onclick="user_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>  
         <a onclick="user_edit()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">修改</a>    
         <a onclick="user_delete()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-remove fa-fw" style="margin: 2px">删除</a>
     </div>
@@ -45,7 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript">
     	$(function(){
 			$('#user_table').datagrid({
-				url:'${pageContext.request.contextPath}/addressAction!loadAll.action',
+				url:'${pageContext.request.contextPath}/addressAction!loadAll.action?cid=${cid}',
 				pagination: true,
 				pagePosition:'top',
 				pageSize: 30,
@@ -57,7 +55,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'companyName',title:'公司',width:50,align:'center',formatter:function(value,row,index){
                         return row.company.name;
                     }},
-					{field:'name',title:'地址',width:30,align:'center'},
+					{field:'name',title:'地址标签',width:30,align:'center'},
 					{field:'province',title:'省',width:20,align:'center'},
 					{field:'city',title:'市',width:20,align:'center'},
 					{field:'address',title:'详细地址',width:100,align:'center'},
@@ -81,10 +79,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		function user_add(){
 			$('#user_dlg').dialog('open');	
-			$('#user_dlg').dialog('setTitle','添加公告');
+			$('#user_dlg').dialog('setTitle','添加地址');
 			$("#user_save").unbind('click').click(function(){
   				$.ajax({
-					url : '${pageContext.request.contextPath}/addressAction!edit.action',
+					url : '${pageContext.request.contextPath}/addressAction!edit.action?cid=${cid}',
 					data : $('#user_form').serialize(),
 					dataType : 'json',
 					success : function(obj) {
@@ -102,7 +100,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			var row = $('#user_table').datagrid('getSelected');
     		if(row){
     			$('#user_dlg').dialog('open');	
-    			$('#user_dlg').dialog('setTitle','编辑用户');
+    			$('#user_dlg').dialog('setTitle','编辑地址');
     			$('#user_form').form('load', row);
     			//updateCombox(roleId,row.roleId);
     			//updateCombox(companyId,row.companyId);
@@ -132,7 +130,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     				function(r) {
     					if (r) {
     						$.ajax({ 
-    			    			url: '${pageContext.request.contextPath}/addressAction!delete.action',
+    			    			url: '${pageContext.request.contextPath}/addressAction!delete.action?cid=${cid}',
     			    			data : {"id":row.id},
     			    			dataType : 'json',
     			    			success : function(obj){
@@ -169,7 +167,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<input type="hidden"  name="id" >
 						<input type="hidden"  name="cid" >
 					  <div class="form-group">
-					    <label for="firstname" class="col-sm-2 control-label">地址描述：</label>
+					    <label for="firstname" class="col-sm-2 control-label">地址标签：</label>
 					    <div class="col-sm-4">
 					      <input type="text" class="form-control" id="name" name="name" placeholder="必填" required>
 					    </div>

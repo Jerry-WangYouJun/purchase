@@ -96,8 +96,14 @@ public class BaseAction {
 			String colName= getParameter("colName");
 			String colValue=getParameter("colValue");
 			String oinvoice = getParameter("oinvoice");
+			
+			String colName2= getParameter("colName2");
+			String colValue2=getParameter("colValue2");
 			if(StringUtils.isNotEmpty(colName) && StringUtils.isNotEmpty(colValue)) {
 				params.put(colName, "%" + colValue + "%");
+			}
+			if(StringUtils.isNotEmpty(colName2) && StringUtils.isNotEmpty(colValue2)) {
+				params.put(colName2, "%" + colValue2 + "%");
 			}
 			if(StringUtils.isNotEmpty(cno)) {
 				params.put("orderNo", "%" + cno + "%");

@@ -43,10 +43,11 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 		</c:if>
 		<c:if test="${roleId eq  '2' }">
 	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">产品类别选择</span>
+	 		<button  id="imageFile" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">上传产品图片</button>
 		</c:if>
  		<button onclick="select_save()" id="select_save" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">保存</button> 		
- 		<button onclick="reset()" id="reset" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">重置</button>
- 		<button  id="imageFile" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">上传产品图片</button>
+ 		<button onclick="reset()" id="reset" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">全不选</button>
+ 		<button onclick="selectAll()" id="reset" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">全选</button>
  	</div>
     <div class="row" style="min-height:600px;">
         <div>
@@ -58,7 +59,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
             <ul class="nav nav-tabs tabs-left">
             	<s:iterator  id="product" status="st" value="#request.productList">            							
           				 <li class="" onclick="activeThird(this)">
-			              	<a href="#sec_<s:property value="id"/>" data-toggle="tab">
+			              	<a href="#sec_<s:property value="id"/>" data-toggle="tab" >
 			              		<input type="checkbox" id="first_check_<s:property value="#product.id"/>" class="aaa" data='<s:property value="#product.id"/>'> 
 									<s:property value="#product.product"/>
 			              	</a>
@@ -69,8 +70,8 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
   			<!-- 第二级 -->
           <div class="col-xs-2">
             <!-- Tab panes -->
-            <div class="tab-content">			            
-            	 <s:iterator id="product" status='st' value='#request.productList'>           	 	
+            <div class="tab-content" id="sec">			            
+            	   <s:iterator id="product" status='st' value='#request.productList'>           	 	
 	            	 	 <div class="tab-pane clearfix" id="sec_<s:property value="id"/>">             
 			                  <ul class="nav nav-tabs tabs-left ">
 			                  	<s:iterator id="child" value="#product.children" status='in' >		                  		
@@ -84,14 +85,14 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 			                  	</s:iterator>					              					             
 			          		  </ul>
 		             	 </div>	            	 	            	       	
-            	</s:iterator>             	         
+            	</s:iterator>            	         
             </div>
           </div> 
   			<!-- 第三级 -->
   			<div class="col-xs-8">
             <!-- Tab panes -->
-            <div class="tab-content">
-            <s:iterator id="secProduct" value="#request.secProduct" status="st">       	              
+            <div class="tab-content" id="third">
+            <%-- <s:iterator id="secProduct" value="#request.secProduct" status="st">       	              
 		              <div class="tab-pane  clearfix" id="third_<s:property value="#secProduct.id"/>">            
 		                 <p class="clearfix">
 		                 	<s:iterator value="#secProduct.children" id='child'>
@@ -109,7 +110,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 		                  </p>
 			              <div><img alt="" src="" id="img_<s:property value="#secProduct.id"/>" class="col-md-8"></div>                     
 		              </div>
-              </s:iterator>
+              </s:iterator> --%>
             </div>
           </div>
           <div class="clearfix"></div>
@@ -136,6 +137,8 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 			   })
 		   }
 	  }
+	  
+	 // getThird(id);
   }
   $("#imageFile").click(function(){
 	    var proId = $("li.active :input")[1].getAttribute("data");
@@ -154,8 +157,73 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
       event.stopPropagation()
     })
     
+    <%-- function getSecond(id){
+     	$.ajax({
+            type: 'POST',
+            url: '<%=path%>/productAction!searchChildProductType.action?parentId=' + id,//发送请求
+            dataType : "json",
+            success: function(data) {
+            		layer.close(index);
+            		var htmlStr= "";
+            		for(var index = 0 ; index < data.length ; index ++ ){
+            			  console.info(data[index]);
+            			  htmlStr += '<div class="tab-pane clearfix active" id="sec_' + id + '">' +           
+ 		                 '<ul class="nav nav-tabs tabs-left ">' + 
+              			'<li class="secTab">' + 
+				              	'<a href="#third_' + data[index].id + '" data-toggle="tab" onclick="getImg(this)"> '+
+				              	   '<input type="checkbox" id="sec_check_' + data[index].id + '" data='+ data[index].id+
+				              	    'class="aaa" data-parent="data[index].id.parentId">' + data[index].product	 + 
+				              	    '</a> </li>	</ul> </div>	';
+            		}
+            		$("#sec").html(htmlStr);
+		    }
+		});
+    } --%>
+    
     //加载选择的商品
     $(function(){
+    	
+     	$.ajax({
+            type: 'POST',
+            url: '<%=path%>/productAction!toProduceSelectThirdTab.action',//发送请求
+            dataType : "json",
+            success: function(data) {
+            	layer.close(index);
+            	var htmlStr  = "";
+	            	for(var index = 0 ; index < data.length ; index ++ ){
+	            		htmlStr+= '<div class="tab-pane  clearfix" id="third_'+data[index].id +'">' + 
+	            		    ' <p class="clearfix">'  ; 
+	            		for(var i = 0 ; i < data[index].children.length ; i ++ ){
+	            			htmlStr+= ' <span class="ccc">' + 
+	            			  '<input type="checkbox" value="'+data[index].children[i].productId + '"' + 
+	            			  ' id="third_check_'+data[index].children[i].id +'"  data='+data[index].children[i].id+ 
+	            			  ' data-parent='+data[index].children[i].productId + '>' + 
+	            			  '<label for="third_check_'+data[index].children[i].id + '" style="font-size:15">' + 
+	            			  ' <a style="text-decoration:none">' +  data[index].children[i].subProduct +
+	            			  '-' + data[index].children[i].formatNum+'-' + data[index].children[i].format +'-' + 
+	            			   data[index].children[i].material + ' </a></label> </span>';
+	            		}
+	            		htmlStr += '</p> <div><img alt="" src="" id="img_<s:property value="'+data[index].id+'"/>" class="col-md-8"></div> </div>';
+			    }
+	            	$("#third").html(htmlStr)
+	             	$.ajax({
+	                    type: 'POST',
+	                    url: '<%=path%>/productAction!getUserSelectProductDetail.action',//发送请求
+	                    dataType : "json",
+	                    success: function(data) {
+	                    	layer.close(index);
+	        	            	for (var i = 0; i < data.length; i++) {
+	        	    				var obj = data[i];
+	        	    				$("#third_check_"+obj.productDetailId).prop('checked',true);
+	        	    				if(obj.imgUrl){
+	        	    					$("#img_"+obj.productId).attr('src', "/ring/upload/"+obj.imgUrl);
+	        	    				}
+	        	    			} 
+	        		      }
+	        		});
+            }
+		});
+     	
     	
     	$.ajax({
             type: 'POST',
@@ -163,17 +231,17 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
             dataType : "json",
             success: function(data) {
             	layer.close(index);
-            	for (var i = 0; i < data.length; i++) {
-    				var obj = data[i];
-    				$("#third_check_"+obj.productDetailId).prop('checked',true);
-    				if(obj.imgUrl){
-    					$("#img_"+obj.productId).attr('src', "/ring/upload/"+obj.imgUrl);
-    				}
-    				var parentId = $("#third_check_"+obj.productDetailId).attr("data-parent");
-    				 $("#sec_check_"+parentId).prop('checked',true);
-    				 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
-    				 $("#first_check_"+firstIndex).prop('checked',true);
-    			} 
+      //      	if(data){
+	            	for (var i = 0; i < data.length; i++) {
+	    				var obj = data[i];
+	    				var parentId = obj.productId;
+	    				 $("#sec_check_"+parentId).prop('checked',true);
+	    				 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
+	    				 $("#first_check_"+firstIndex).prop('checked',true);
+	    			} 
+  //          	}else{
+  //          		$('input[type="checkbox"]').prop('checked',true);
+  //          	}
 		      }
 		});
 
@@ -293,7 +361,9 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
     	$('input[type="checkbox"]').prop('checked',false);
     }
     
-   
+   function selectAll(){
+	   $('input[type="checkbox"]').prop('checked',true);
+   }
     //保存
     function select_save(){
 		var productlist="";	

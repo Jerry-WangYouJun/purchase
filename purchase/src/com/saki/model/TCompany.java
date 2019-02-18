@@ -32,6 +32,7 @@ public class TCompany implements java.io.Serializable {
 	private String tax ;
 	private String card;
 	private String brand;
+	private String colorImg;
 	
 	// Constructors
 
@@ -181,6 +182,13 @@ public class TCompany implements java.io.Serializable {
 		this.brand = brand;
 	}
 	
-	
+	@Column(name = "colorImg", length = 100)
+	public String getColorImg() {
+		return colorImg;
+	}
+
+	public void setColorImg(String colorImg) {
+		this.colorImg = colorImg;
+	}
 
 }

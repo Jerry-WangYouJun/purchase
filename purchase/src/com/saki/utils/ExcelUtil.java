@@ -150,7 +150,7 @@ public class ExcelUtil {
 	    	if(osName.toUpperCase().startsWith("MAC")) {
 	    		path="/Users/wangyoujun/Documents/soft/personal/upload/";
 	    	}else{
-	    		path="D://uploadFile/upload";
+	    		path="C://uploadFile/upload";
 	    	}
 		//String savePath = "d://uploadFile/upload";
 		try {

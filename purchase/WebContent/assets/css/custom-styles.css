@@ -394,7 +394,7 @@ line-height: 1.428571429;
  @media(min-width:768px) {
      #page-wrapper{
                margin: 0 0 0 220px;
-        padding: 75px 30px 30px 30px;
+        padding: 70px 30px 30px 0px;
         min-height: 800px;
 		
     }

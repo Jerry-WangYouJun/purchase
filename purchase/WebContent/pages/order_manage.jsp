@@ -18,7 +18,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
-   
+   <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
 
    <script src="${basePath}/js/edit.js"></script>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
@@ -156,7 +156,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
-			<!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> -->
+			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> 
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -349,6 +349,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	 json.push(row2);  
     	 
 		   var columnDetail = [[
+	   						{field:'defaultFlag',title:'托管采购',width:100 ,align:'center', formatter: function(value,row,index){
+									if(value == '1'){
+										return "托管";
+									}else{
+										return "不托管";
+									}
+								}
+			                },
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
 	   						{field:'sub_product',title:'产品信息',width:'25%',align:'center'},
@@ -360,14 +368,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'boxnum',title:'包装件数',width:100, hidden:'true',align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center'},
-	   						{field:'defaultFlag',title:'托管采购',width:100, formatter: function(value,row,index){
-									if(value == '1'){
-										return "托管";
-									}else{
-										return "不托管";
-									}
-								}
-			                },
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
@@ -377,6 +377,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'id', hidden:'true',editor:'textbox' }
 	   					]];
 		   var columnEdit = [[
+							{field:'defaultFlag',title:'托管采购',align:'center',width:100, editor: {
+							    type: 'combobox',
+							    options: {
+							        data: json ,
+							        valueField: "value",
+							        textField: "text",
+							        editable: false,
+							        onSelect:function(data){ 
+							            var row = $('#table_add').datagrid('getSelected');  
+							            var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+							            var pri = $("#table_add").datagrid('getEditor', {  
+							                index : rowIndex,  
+							                field : 'price'  
+							            });  
+							            var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
+							                index : rowIndex,  
+							                field : 'supplierCompanyId'  
+							            });  
+							        	var bra = $("#table_add").datagrid('getEditor', {  
+							                index : rowIndex,  
+							                field : 'brand'  
+							            });  
+							        	var brandData = $(bra.target).combobox('getData');
+							            if(data.value == '1' && brandData.length > 0){
+							                $(bra.target).textbox('setValue',  brandData[0].brand); 
+							                $(bra.target).combobox("disable" );
+							          	    $(pri.target).textbox('setValue',  brandData[0].price); 
+							          		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
+							            }else{
+							            	$(bra.target).combobox("enable" );
+							            }
+							            if(data.value == '1' ){
+							           	 	$(bra.target).combobox("disable" );
+							            }
+							        }
+							    }
+							}, formatter: function(value,row,index){
+									if(value == '1'){
+										return "托管";
+									}else{
+										return "不托管";
+									}
+								}
+							},
 								{field:'product',title:'产品大类',width:100,align:'center',
 									editor : {    
 				                        type : 'combobox',    
@@ -439,7 +483,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                           // url:'${pageContext.request.contextPath}/orderAction!getProduct.action',  
 				                            valueField:'product' ,   
 				                            textField:'product',  
-				                            onSelect:function(data){  
+				                            onSelect:function(data){ 
+				                            	console.info(data);
 				                                var row = $('#table_add').datagrid('getSelected');  
 				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 				                                var thisTarget = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
@@ -449,6 +494,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'productId'  
 			                                    });  
 			                                $(idvalue.target).textbox('setValue',  data.id ); 
+			                                var ed = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'unit'  //根据字段名获取编辑的字段
+		                                    });  
+			                                $(ed.target).textbox('setValue',  data.unit);   //赋值
+			                                $(ed.target).combobox('disable');//不可用
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'sub_product'}).target;  
 				                                if(value != data.product){
 					                                target.combobox('clear'); //清除原来的数据  
@@ -465,6 +516,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    });  
 				                                $(bra.target).textbox('setValue',  data[0].base);  
 				                                $(bra.target).combobox('disable');//不可用
+				                               
 				                			}  
 				                        }    
 				                    }
@@ -605,50 +657,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								{field:'productId', hidden:'true',editor:'textbox' },
 							//	{field:'taxrate',title:'不含税(%)',width:100,align:'center',editor:'textbox'},
 								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
-								{field:'defaultFlag',title:'托管采购',width:100, editor: {
-			                        type: 'combobox',
-			                        options: {
-			                            data: json ,
-			                            valueField: "value",
-			                            textField: "text",
-			                            editable: false,
-			                            onSelect:function(data){ 
-			                                var row = $('#table_add').datagrid('getSelected');  
-			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-			                                var pri = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'price'  
-		                                    });  
-			                                var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'supplierCompanyId'  
-		                                    });  
-		                                	var bra = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'brand'  
-		                                    });  
-		                                	var brandData = $(bra.target).combobox('getData');
-			                                if(data.value == '1' && brandData.length > 0){
-				                                $(bra.target).textbox('setValue',  brandData[0].brand); 
-				                                $(bra.target).combobox("disable" );
-			                              	    $(pri.target).textbox('setValue',  brandData[0].price); 
-			                              		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
-			                                }else{
-			                                	$(bra.target).combobox("enable" );
-			                                }
-			                                if(data.value == '1' ){
-			                               	 	$(bra.target).combobox("disable" );
-			                                }
-			                            }
-			                        }
-								}, formatter: function(value,row,index){
-										if(value == '1'){
-											return "托管";
-										}else{
-											return "不托管";
-										}
-									}
-				                },
+								
 								{field:'remark',title:'备注',width:100,align:'center',editor:'textbox'},
 								{field:'id', hidden:'true',editor:'textbox' }
 							]];

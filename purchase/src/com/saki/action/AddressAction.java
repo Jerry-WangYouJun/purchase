@@ -46,16 +46,13 @@ public class AddressAction extends BaseAction implements ModelDriven<TAddress>{
 	public void loadAll(){
 		try {
 			String roleId = getSession().getAttribute("roleId").toString();
-			String companyId = "";
+			String companyId = getParameter("cid");
 			Map map = new HashMap();
-			if(!"1".equals(roleId)){
+			if("0".equals(companyId)){
 				companyId = getSession().getAttribute("companyId").toString();
 				map.put("cid", companyId);
 			}
-			String cname = getParameter("cname");
-			if(StringUtils.isNotEmpty(cname)){
-				map.put("name", "%" + cname + "%");
-			}
+			map.put("cid", companyId);
 			super.writeJson(addressService.loadQuery(sort, order, page, rows, map));
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -68,7 +65,7 @@ public class AddressAction extends BaseAction implements ModelDriven<TAddress>{
 			if(address.getId() != null && address.getId() > 0 ){
 				addressService.update(address);
 			}else{
-				String companyId = getSession().getAttribute("companyId").toString();
+				String companyId = getParameter("cid");
 				address.setCid(Integer.valueOf(companyId));
 				Map map = new HashMap();
 				map.put("cid", companyId);

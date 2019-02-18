@@ -8,6 +8,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
+import com.saki.utils.SystemUtil;
+
 /**
  * TOrder entity. @author MyEclipse Persistence Tools
  */
@@ -168,7 +170,7 @@ public class TOrder implements java.io.Serializable {
 	}
 
 	public void setAmount(double amount) {
-		this.amount = amount;
+		this.amount = SystemUtil.round(amount, 2);
 	}
 
 	@Column(name = "remark")

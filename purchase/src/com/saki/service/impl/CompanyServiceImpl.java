@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.saki.dao.BaseDaoI;
 import com.saki.entity.Grid;
+import com.saki.model.TColor;
 import com.saki.model.TCompany;
 import com.saki.model.TOrder;
 import com.saki.model.TUser;
@@ -86,6 +87,29 @@ public class CompanyServiceImpl implements CompanyServiceI{
       }	
 		return grid;
 	}
+	
+	@Override
+	public Grid loadColor(String sort, String order, String page, String rows , Map<String,Object> params) {
+		Grid grid = new Grid();
+		String hql = "from TColor t where 1=1 ";
+		if(sort!=null && order!=null){
+			hql = "from TColor t order by " + sort + " " + order;
+		}
+		Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<String, Object> entry = it.next() ;
+			hql +=  " and " +  entry.getKey() + " like '" + entry.getValue()  +"'";
+		}
+		grid.setTotal(companyDao.count(hql));
+		if(page!=null && rows !=null){
+			List<TColor> lp = companyDao.find(hql,  Integer.valueOf(page),  Integer.valueOf(rows));
+			grid.setRows(lp);
+		}else{
+			List<TColor> l = companyDao.find(hql  );
+			grid.setRows(l);
+      }	
+		return grid;
+	}
 
 	@Override
 	public Object getByKey(String key) {
@@ -129,6 +153,12 @@ public class CompanyServiceImpl implements CompanyServiceI{
 			}			
 		}
 		return lc;		
+	}
+	
+	@Override
+	public void updateColorDelete(String id) {
+		String sql = " update t_company set colorImg =  '' where id=" + id  ;
+		companyDao.executeUpdate(sql);
 	}
 	
 	@Override

@@ -10,14 +10,17 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Grid;
 import com.saki.entity.Message;
+import com.saki.model.TColor;
 import com.saki.model.TOrder;
 import com.saki.model.TProduct;
 import com.saki.service.ImportExcelI;
@@ -28,13 +31,22 @@ import com.saki.utils.DateUtil;
 import com.saki.utils.ExcelUtil;
 
 @Namespace("/")
-@Result(name="image",location="/pages/image_import.jsp")
-@Action(value = "report")
-public class ReportFormAction extends BaseAction {
+@Action(value = "report" ,results = 
+{@Result(name="image",location="/pages/image_import.jsp") ,
+@Result(name="color",location="/pages/color_import.jsp")}
+
+)
+public class ReportFormAction extends BaseAction implements ModelDriven<TColor>{
 	
 	private File uploadFile;
 	private String filename;
 	private Integer proId;
+	TColor tColor = new TColor();
+	
+	@Override
+	public TColor getModel() {
+		return tColor;
+	}
 	
 	private UserProductServiceI upServicel;
 	
@@ -157,9 +169,45 @@ public class ReportFormAction extends BaseAction {
 		super.writeJson(j);
 	}
 	
+	public void importColorImage() {
+		String roleId = getSession().getAttribute("roleId").toString();
+		String companyId = "";
+		
+		Message j = new Message();
+		try {
+			
+			filename = DateUtil.getUserDate("yyyyMMddhhmm") + "_" + filename.trim() ;
+			 long len =uploadFile.length();
+			 if(len > 1024*1024*10){
+				 j.setSuccess(false);
+				 j.setMsg("图片大小需限制在10M之内");
+				 super.writeJson(j);
+			 }
+			 ExcelUtil.copyFile(filename, uploadFile);
+			 tColor.setImgUrl(filename);
+			 upServicel.updateColorImg(tColor );
+			j.setSuccess(true);
+			j.setMsg("导入成功");
+		} catch (Exception e) {
+			e.printStackTrace();
+			j.setSuccess(false);
+			j.setMsg(e.getMessage());
+		}
+		super.writeJson(j);
+	}
+	
 	public String  importInit(){
 			this.getRequest().setAttribute("proId", proId);
 		 return "image";
+	}
+	
+	public String importColorInit(){
+		String id = getParameter("id");
+		if(StringUtils.isNotBlank(id)){
+		 TColor color=	upServicel.getByKey(id);
+		 getRequest().setAttribute("color", color);
+		}
+		 return "color";
 	}
 	
 	public void updateFormat(){

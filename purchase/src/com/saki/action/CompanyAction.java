@@ -15,14 +15,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.alibaba.fastjson.JSON;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Message;
+import com.saki.model.TAddress;
 import com.saki.model.TCompany;
 import com.saki.model.TUser;
+import com.saki.service.AddressServiceI;
 import com.saki.service.CompanyServiceI;
 import com.saki.service.UserServiceI;
 
 @Namespace("/")
-@Result(name="loadCustomer",location="/pages/company_manage.jsp")
-@Action(value="companyAction")
+
+@Action(value = "companyAction" ,results = 
+{@Result(name="loadCustomer",location="/pages/company_manage.jsp") ,
+@Result(name="address",location="/pages/address_manage.jsp")}
+
+)
 public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 
 	private static final Logger logger = Logger.getLogger(CompanyAction.class);
@@ -37,6 +43,14 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 	public void setUserService(UserServiceI userService) {
 		this.userService = userService;
 	}
+	private AddressServiceI addressService;
+	public AddressServiceI getAddressService() {
+		return addressService;
+	}
+	@Autowired
+	public void setAddressService(AddressServiceI addressService) {
+		this.addressService = addressService;
+	}
 	@Override
 	public TCompany getModel() {
 		return company;
@@ -47,6 +61,21 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 	@Autowired
 	public void setCompanyService(CompanyServiceI companyService) {
 		this.companyService = companyService;
+	}
+	
+	
+	public String loadAddress(){
+			String roleId = getSession().getAttribute("roleId").toString();
+			String companyId = getParameter("companyId");
+			getRequest().setAttribute("cid", companyId);
+			return "address";
+//			Map map = new HashMap();
+//			String cname = getParameter("cname");
+//			if(StringUtils.isNotEmpty(cname)){
+//				map.put("name", "%" + cname + "%");
+//			}
+//			map.put("cid", companyId);
+//			super.writeJson(addressService.loadQuery(sort, order, page, rows, map));
 	}
 	public void loadAll(){
 		String roleId = getSession().getAttribute("roleId").toString();
@@ -60,24 +89,30 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		if(StringUtils.isNotEmpty(role)){
 			map.put("roleId", role);
 		}
-		String cname = getParameter("name");
-		if(StringUtils.isNotEmpty(cname)){
-			map.put("name", "%" + cname + "%");
-		}
-		String business = getParameter("business");
-		if(StringUtils.isNotEmpty(business)){
-			map.put("business", "%" + business + "%");
-		}
-		String address = getParameter("address");
-		if(StringUtils.isNotEmpty(address)){
-			map.put("address", "%" + address + "%");
-		}
-		String brand = getParameter("brand");
-		if(StringUtils.isNotEmpty(brand)){
-			map.put("brand", "%" + brand + "%");
-		}
+		String colName= getParameter("colName");
+		String colValue=getParameter("colValue");
 		
+		String colName2= getParameter("colName2");
+		String colValue2=getParameter("colValue2");
+		if(StringUtils.isNotEmpty(colName) && StringUtils.isNotEmpty(colValue)) {
+			map.put(colName, "%" + colValue + "%");
+		}
+		if(StringUtils.isNotEmpty(colName2) && StringUtils.isNotEmpty(colValue2)) {
+			map.put(colName2, "%" + colValue2 + "%");
+		}
 		super.writeJson(companyService.loadQuery(sort, order, page, rows, map));
+		
+	}
+	
+	public void loadColor(){
+		String roleId = getSession().getAttribute("roleId").toString();
+		String companyId = "";
+		Map map = new HashMap();
+		String role = getParameter("roleId");
+		if(StringUtils.isNotEmpty(role)){
+			map.put("roleId", role);
+		}
+		super.writeJson(companyService.loadColor("imgUrl", "desc", page, rows, map));
 		
 	}
 	
@@ -107,10 +142,14 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		super.writeJson(j);
 	}
 	public void add(){
+		String roleId = getParameter("roleId");
 			String userName = getParameter("userName");
+			if(roleId != null){
+				
+				company.setRoleId(Integer.valueOf(roleId));
+			}
 			companyService.add(company);
 			TUser user = new TUser();
-			String roleId = getParameter("roleId");
 			user.setRoleId(Integer.valueOf(roleId));
 			user.setCompanyId(company.getId());
 			user.setCompanyName(company.getName());
@@ -120,14 +159,31 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 	}
 	
 	public void update(){
+			String roleId = getParameter("roleId");
+			if(roleId != null){
+				company.setRoleId(Integer.valueOf(roleId));
+			}
 			companyService.update(company);
 			TUser user = userService.getByCompanyId(company.getId());
-			String roleId = getParameter("roleId");
 			String userName = getParameter("userName");
 			user.setRoleId(Integer.valueOf(roleId));
 			user.setCompanyId(company.getId());
 			user.setUserName(userName);
 			userService.update(user);
+	}
+	public void updateColor(){
+		Message j = new Message();
+		try{
+			String id = getParameter("id");
+			companyService.updateColorDelete(id);
+			j.setSuccess(true);
+			j.setMsg("添加成功");
+		}catch(Exception e){
+			j.setSuccess(false);
+			j.setMsg("添加失败");
+		}
+		super.writeJson(j);
+		
 	}
 	public void delete(){
 		Message j = new Message();

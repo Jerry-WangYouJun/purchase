@@ -19,202 +19,102 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<!--
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->    
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-     <!-- FontAwesome Styles-->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
-     <!-- Morris Chart Styles-->
-     <!-- Custom Styles-->
-    <link href="assets/css/style.css" rel="stylesheet" />
-     <!-- main Styles-->
-    <link href="assets/css/custom-styles.css" rel="stylesheet" />
-     <!-- TABLE STYLES-->
-    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-        <script src="assets/js/jquery-1.10.2.js"></script>
-      <!-- Bootstrap Js -->
-    <script src="assets/js/bootstrap.min.js"></script>
-    <!-- Metis Menu Js -->
-    <script src="assets/js/jquery.metisMenu.js"></script>
-     <!-- DATA TABLE SCRIPTS -->
-    <script src="assets/js/public.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
-        <script>
-
-        </script>
-         <!-- Custom Js -->
-    <script src="assets/js/custom-scripts.js"></script>
+    
+   <jsp:include page="/common.jsp"></jsp:include>
+    <script src="${basePath}/vendor/layer/layer.js"></script>
+     <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
+<style type="text/css">
+    .form-control {
+        background-color: rgb(85, 85, 85);
+   	 	color: rgb(255, 255, 255);    border-width: 0px;
+   	 	
+    }
+    
+    #_easyui_textbox_input1,#_easyui_textbox_input2{
+    	    background-color: black;
+    }
+</style>
+     
   </head>
   
-  <body >
-                 <!-- /. ROW  -->
-               
-            <div class="row">
-                <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-black">
-                        <div class="panel-heading heading-color font20">
-                             企业信息管理
-                        </div>
-                        <div class="panel-body">
-                            <div class="panel-search"><span>公司名称:</span><input class="btn btn-default btn-sm"><span>企业类型：</span><input class="btn btn-default btn-sm"><button class="btn-pri">查询</button></div>
-                            <div class="table-responsive">
-                                <div class="table-edit">
-                                    <a href="#"><i class="fa fa-edit"></i> <span data-toggle="modal" data-target="#myModal-2">编辑</span></a>
-                                    <a data-toggle="modal" data-target="#myModal-4" href="#"><i class="fa fa-times"></i> <span>删除</span></a>
-                                </div>
-                                <table class="table table-striped " id="dataTables-example">
-                                    <thead>
-                                        <tr>
-                                            <th>公司名称</th>
-                                            <th>品牌</th>
-                                            <th>联系人</th>
-                                            <th>地址</th>
-                                            <th>主营业务</th>
-                                            <th>企业星级</th>
-                                            <th>联系电话</th>
-                                            <th>税号</th>
-                                            <th>银行账号</th>
-                                            <th>备注</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-                                        <tr class=" gradeX">
-                                            <td>大手海恩</td>
-                                            <td>汉兴切割</td>
-                                            <td>李先生</td>
-                                            <td class="center">山东省青岛市市北区</td>
-                                            <td class="center">切割电气焊1</td>
-                                            <td>5星</td>
-                                            <td>13656568989</td>
-                                            <td>65464564545455</td>
-                                            <td>15654564564564561</td>
-                                            <td>暂无</td>
-                                        </tr>
-
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <!--End Advanced Tables -->
-                </div>
-            </div>
+  <body class="easyui-layout">
+ 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
+		  <c:if test="${roleId eq 1 }">
+ 			 <div >
+            	查询条件
+                <select name="queryCol" id="queryCol" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;background-color:black;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="name">企业名称</option>
+	                 <option value="brand">品牌</option>
+	                	<!-- <option value="2">已报价</option> -->
+	                	<option value="address">地址</option>
+	                	<option value="business">主营业务</option>
+	                	<option value="level">企业星级</option>
+                </select>
+              		  查询内容
+                <input name="queryValue" id = "queryValue"class=" form-control" style="display: inline-block;width: 10%">
+                
+              	  查询条件
+                <select name="queryCol" id="queryCol2" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="name">企业名称</option>
+	                 <option value="brand">品牌</option>
+	                	<!-- <option value="2">已报价</option> -->
+	                	<option value="address">地址</option>
+	                	<option value="business">主营业务</option>
+	                	<option value="level">企业星级</option>
+                </select>
+              		  查询内容
+                <input name="queryValue2" id = "queryValue2"class=" form-control" style="display: inline-block;width: 10%">
+                <button onclick="query()" class="btn btn-default queryBtn" >查询</button>
+            </div> 
+		  </c:if>
+ 		<table id="company_table" class="easyui-datagrid" fit="true"  height="100%"></table>
+ 	</div>
+	<div id="toolbar_company" style="padding:2px 5px;">
+	<c:if test="${roleId eq 1 }">
+     	<a onclick="company_add()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-plus fa-fw" style="margin: 2px">新增</a>
+	</c:if>
+        <a onclick="company_edit()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px">编辑</a>    
+    <c:if test="${roleId eq 1 }">
+        <a onclick="company_delete()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-remove fa-fw" style="margin: 2px">删除</a>
+    </c:if>
+    <c:if test="${roleId ne 2 }">
+        <a onclick="address_manager()" class="easyui-linkbutton"  plain="true"  style="margin: 2px">地址管理</a>
+    </c:if>
+    </div>
 	
     <script type="text/javascript">
+    function  address_manager(){
+		var row = $('#company_table').datagrid('getSelected');
+		var id = 0;
+		
+		if(row ){
+			id = row.id
+		}else {
+			if("${roleId}" == '1'){
+				layer.alert("请选择要修改的企业");
+				return false ;
+			}
+		}
+		layer.open({
+				  type: 2,
+				  title: '管理地址',
+				  shadeClose: false,
+				  shade: 0.8,
+				  area: ['90%', '90%'],
+				  content: '<%=path%>/companyAction!loadAddress.action?companyId='+ id 
+			});
+	}
+    
     function query(){
 	    	$('#company_table').datagrid('load', {
-	    	    name: $("#cname").val(),
-	    	    brand: $("#brand").val(),
-	    	    business:$("#business").val(),
-	    	    address:$("#address").val()
+	    		colName: $("#queryCol").val(),
+	    		colName2: $("#queryCol2").val(),
+	    		colValue:$("#queryValue").val(),
+	    		colValue2:$("#queryValue2").val()
 	    	});
     }
     	$(function(){
@@ -232,8 +132,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				fitColumns: true,
 				striped:true,
 				singleSelect: true,
-				columns:[[
+				columns:[[{field:'id',title:'id',width:100,align:'center'},
 					{field:'name',title:'公司名称',width:100,align:'center'},
+					{field:'id',hidden:'true'},
 					{field:'brand',title:'品牌',width:100,align:'center'},
 					{field:'contacts',title:'联系人',width:100,align:'center'},
 					{field:'address',title:'地址',width:150,align:'center'},
@@ -269,7 +170,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			$("#company_save").unbind('click').click(function(){
 				if($("#company_form").validate().form()){
 		  				$.ajax({
-							url : '${pageContext.request.contextPath}/companyAction!edit.action',
+							url : '${pageContext.request.contextPath}/companyAction!edit.action?roleId=${role}',
 							data : $('#company_form').serialize(),
 							dataType : 'json',
 							success : function(obj) {
@@ -295,7 +196,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				$("#company_save").unbind('click').click(function(){
 					if($("#company_form").validate().form()){
 	  					$.ajax({
-							url : '${pageContext.request.contextPath}/companyAction!edit.action',
+							url : '${pageContext.request.contextPath}/companyAction!edit.action?roleId=${role}',
 							data : $('#company_form').serialize(),
 							dataType : 'json',
 							success : function(obj) {
@@ -390,18 +291,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">公司名称：</label>
                 <input name="name" class="form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
-            <div class="form-group col-md-6">
-            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>
-                <select name="roleId" id="roleId"  
-                    		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
-                	<option value="2">供货商</option>
-                	<option value="3">客户</option>
-                </select>
-            </div>
+            <c:if test="${role == 1 }">
+	            <div class="form-group col-md-6">
+	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>
+	                <select name="roleId" id="roleId"  
+	                    		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
+	                	<option value="2">供货商</option>
+	                	<option value="3">客户</option>
+	                </select>
+	            </div>
+            </c:if>
+            <c:if test="${role == 3 }">
+	            <div class="form-group col-md-6">
+	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>
+	                <select name="roleId" id="roleId"  
+	                    		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
+	                	<option value="3">客户</option>
+	                </select>
+	            </div>
+            </c:if>
+            <c:if test="${role == 2 }">
             <div class="form-group col-md-6 brand">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">品牌：</label>
                 <input name="brand" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
+            </c:if>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">登录账号：</label>
                 <input name="userName" id="userName" onchange="checkOnly(this.value)"  class="form-control" style="display: inline-block;width: 45%"

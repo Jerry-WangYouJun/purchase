@@ -3,6 +3,7 @@ package com.saki.service;
 import java.util.List;
 
 import com.saki.entity.Notice;
+import com.saki.model.TColor;
 import com.saki.model.TUserProduct;
 
 public interface UserProductServiceI{
@@ -21,4 +22,6 @@ public interface UserProductServiceI{
 	public void deleteByList(Integer valueOf, String parameter);
 	public void updateMarkupPriceByPercent(Integer mapid, Double markup);
 	public void updateMarkupPriceWhenPriceUpdate(Integer mapid, Double price);
+	public void updateColorImg(TColor color);
+	public TColor getByKey(String id);
 }

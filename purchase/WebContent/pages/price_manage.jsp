@@ -23,6 +23,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     
    <jsp:include page="/common.jsp"></jsp:include>
 	<script src="${basePath}/js/edit.js"></script>
+	 <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
   </head>
   
   <body class="easyui-layout">
@@ -30,30 +31,40 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">价格管理</p>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
- 		 <c:if test="${roleId eq 1 }">
  			 <div >
-            	公司名称：
-                <input name="name" id = "cname"class=" form-control" style="display: inline-block;width: 10%">
-            	产品名称：
-                <input name="subname" id = "subname"class=" form-control" style="display: inline-block;width: 10%">
-                品牌：
-                <input name="brand" id = "brand"class=" form-control" style="display: inline-block;width: 10%">
-                价格：
-                <input name="price" id = "price" class=" form-control" style="display: inline-block;width: 10%">
-                 材料：
-                <input name="material" id = "material" class=" form-control" style="display: inline-block;width: 10%">
-                <button onclick="query()">查询</button>
+            
+            	查询条件
+                <select name="queryCol" id="queryCol" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+                    	<c:if test="${roleId eq '1'}">
+	                	<option value="c.name">公司名称</option>
+	                	</c:if>
+	                 <option value="g.product">产品</option>
+	                	 <option value="p.product">产品类别</option> 
+	                	<option value="d.subProduct">产品名称</option>
+	                	<option value="d.format">规格</option>
+	                	<option value="d.material">材料</option>
+                </select>
+               		 查询内容
+                <input name="queryValue" id = "queryValue"class=" form-control" style="display: inline-block;width: 10%">
+                	查询条件：
+                <select name="queryCol2" id="queryCol2" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+                    <c:if test="${roleId eq '1'}">
+	                	<option value="c.name">公司名称</option>
+	                	</c:if>
+	                 <option value="g.product">产品</option>
+	                	<!-- <option value="2">产品类别</option> -->
+	                	<option value="d.subProduct">产品名称</option>
+	                	<option value="d.format">规格</option>
+	                	<option value="d.material">材料</option>
+                </select>
+               查询内容
+                <input name="queryValue2" id = "queryValue2"class=" form-control" style="display: inline-block;width: 10%">
+                <button onclick="query()"  class="btn btn-default queryBtn" >查询</button>
             </div> 
-		  </c:if>
-		   <c:if test="${roleId eq 2 }">
- 			 <div >
-            	产品类别：
-                <input name="parent" id = "parent"class=" form-control" style="display: inline-block;width: 10%">
-            	产品名称：
-                <input name="subname" id = "subname"class=" form-control" style="display: inline-block;width: 10%">
-                <button onclick="query()">查询</button>
-            </div> 
-		  </c:if>
  		<table id="user_table" class="easyui-datagrid"></table>
  	</div>
  	<div id="toolbar_user" style="padding:2px 5px;">
@@ -63,18 +74,18 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         	<a onclick="markup_many_persent()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量加价（百分比）</a>      
  		</c:if>
  		<c:if test="${roleId eq '2'}">
-        	<a onclick="price_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量设置价格</a> 
+        	<!-- <a onclick="price_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量设置价格</a>  -->
+        	<a onclick="sup_markup_many()" class="easyui-linkbutton"  plain="true" iconCls="fa fa-edit fa-fw" style="margin: 2px"> 批量加价</a> 
  		</c:if>
     </div>
 	
     <script type="text/javascript">
     function query(){
 	    	$('#user_table').datagrid('load', {
-	    	    cname: $("#cname").val(),
-	    	    subProName: $("#subname").val(),
-	    	    brand:$("#brand").val(),
-	    	    price:$("#price").val(),
-	    	material:$("#material").val()
+	    		colName: $("#queryCol").val(),
+	    		colValue: $("#queryValue").val(),
+	    		colName2:$("#queryCol2").val(),
+	    		colValue2:$("#queryValue2").val()
 	    	    
 	    	});
 	}
@@ -204,8 +215,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				reg=/^[-\+]?\d+(\.\d+)?$/;
 				var val  = $("input.datagrid-editable-input").val();
 				if(field == 'price'){
-					if(val  == '' || val  == 0){
-						 alert("不能为空或0 ,请重新填写");
+					if(val  == '' ){
+						 alert("不能为空,请重新填写");
 						 return false;
 					}
 					if(!reg.test(val)){
@@ -215,6 +226,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						return false ;
 					}
 					updatePrice(val, target.productDetailId , target.mapid);
+					/* var e = $('#user_table').datagrid('getEditor', {'index':rowIndex,'field':field}).target;  
+                    	$(e).textbox('setValue',  Math.round(val * 100) / 100); */
+					$('#user_table').datagrid('load');
 				}else{
 					if(val  == '' ){
 						 alert("不能为空,请重新填写");
@@ -227,13 +241,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						return false ;
 					}
 					updatePriceMarkup(val ,  target.mapid , field);
+					$('#user_table').datagrid('load');
 				}
-				$("input.datagrid-editable-input").val(Number(val));
-				$("#user_table").datagrid('endEdit',rowIndex);
 			});
 		}
     	
 		function updatePrice(price , detailId , mapid){
+			price = Math.round(price * 100) / 100;
 				$.ajax({ 
 		    			url: '${pageContext.request.contextPath}/productAction!updateMappingPrice.action',
 		    			data : {"price":price ,"detailId":detailId , "mapid" : mapid },
@@ -251,6 +265,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 		
 		function updatePriceMarkup(markup , mapid , column){
+			markup = Math.round(markup * 100) / 100;
 			$.ajax({ 
     			url: '${pageContext.request.contextPath}/productAction!updateMarkupPrice.action',
     			data : {"markup":markup ,"mapid":mapid , "column": column},
@@ -320,7 +335,37 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			}
 		}
 		
+		function sup_markup_many(){
+			var checkedItems = $('#user_table').datagrid('getChecked');
+			if(checkedItems.length  == 0){
+				return false;
+			}
+			var flag = confirm("确定进行批量修改加价？");
+			if(flag){
+				$.messager.prompt('','请输入要加价的金额',function(s){
+					if(s){
+						$.ajax({ 
+			    			url: '${pageContext.request.contextPath}/productAction!updateSupMarkupMany.action',
+			    			type:'post',
+			    			data : { "obj": JSON.stringify(checkedItems) , markup :s},
+			    			dataType : 'json',
+			    			success : function(obj){
+			    				if(obj.success){
+			    				 	alert(obj.msg);
+			    				 	$('#user_table').datagrid('reload');
+			    				}else{
+			    					alert(obj.msg);
+			    					$('#user_table').datagrid('reload');
+			    				}
+			    			}
+			    		}); 
+					}
+				});
+			}
+		}
+		
 		function markup_many(){
+			
 			var checkedItems = $('#user_table').datagrid('getChecked');
 			if(checkedItems.length  == 0){
 				return false;

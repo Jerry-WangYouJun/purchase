@@ -82,5 +82,7 @@ public interface OrderServiceI extends BaseServiceI{
 	public void deleteOrderDetailByOrderId(String id);
 
 	public void updateBase(Integer base);
+
+	public void updateTrans(Integer valueOf);
 	
 }

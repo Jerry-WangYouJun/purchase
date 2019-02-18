@@ -144,6 +144,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		List<TConfirm> confirm = confirmService.list();
 		List<TAddress> addressList = addressService.list();
 	    Integer base = userService.getBase();
+	    Integer trans = userService.getTrans();
 		if(u != null){
 			getSession().setAttribute("userName", StringUtils.isEmpty(u.getCompanyName())?"管理员":u.getCompanyName());
 			getSession().setAttribute("roleId", u.getRoleId());
@@ -155,6 +156,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			getSession().setAttribute("addressList", addressList);
 			getSession().setAttribute("confirm", confirm);
 			getSession().setAttribute("base", base);
+			getSession().setAttribute("trans", trans);
 			j.setSuccess(true);
 			j.setMsg("登陆成功!");
 		}else{

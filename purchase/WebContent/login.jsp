@@ -20,7 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
 	<link rel="stylesheet" type="text/css" href="css/style2.0.css">
-	<link rel="shortcut icon" href="media/image/favicon.ico" />
+	<link rel="shortcut icon" href="img/logo.jpg" />
 	<style type="text/css">
 	ul li{font-size: 30px;color:#2ec0f6;}
 	.tyg-div{z-index:-1000;float:left;position:absolute;left:5%;top:20%;}
@@ -140,7 +140,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	dataType : 'json',
 	    	success : function  test(obj){
 	    		if(obj.success){
-					location.replace('<%=path%>' + '/index.jsp');
+					location.replace('<%=path%>' + '/index2.jsp');
 				}else{
 					alert(obj.msg);
 				}

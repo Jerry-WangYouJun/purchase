@@ -24,6 +24,7 @@ public class TUserProduct implements java.io.Serializable {
 	private Integer roleId;
 	private Double price ;
 	private Double markup;
+	private Double supMarkup;
 	private Double percent;
 	private Integer productId;
 	private String imgUrl;
@@ -37,7 +38,7 @@ public class TUserProduct implements java.io.Serializable {
 
 	/** full constructor */
 	public TUserProduct(Integer companyId, Integer productDetailId, String status
-			, Integer roleId , Double price , Double percent ,Integer productId) {
+			, Integer roleId , Double price , Double percent ,Integer productId , Double supMarkup ) {
 		this.companyId = companyId;
 		this.productDetailId = productDetailId;
 		this.status = status;
@@ -45,6 +46,7 @@ public class TUserProduct implements java.io.Serializable {
 		this.price = price ;
 		this.percent = percent;
 		this.productId = productId;
+		this.supMarkup = supMarkup;
 	}
 
 	// Property accessors
@@ -141,6 +143,14 @@ public class TUserProduct implements java.io.Serializable {
 	@Column(name = "imgUrl")
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
+	}
+
+	@Column(name = "sup_markup")
+	public Double getSupMarkup() {
+		return supMarkup;
+	}
+	public void setSupMarkup(Double supMarkup) {
+		this.supMarkup = supMarkup;
 	}
 	
 	

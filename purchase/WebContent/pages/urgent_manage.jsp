@@ -18,6 +18,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
+   <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
+   <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
    <style type="text/css">
     .form-group {
 		    margin-bottom: 5px;
@@ -32,6 +34,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  			<div >
+ 				 	订单状态：
+                <select name="ostatue" id="ostatue" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">新订单</option>
+	                	<option value="3">已付款</option>
+	                	<option value="5">提交采购</option>
+	                	<option value="4">已收货</option>
+                </select>
+                	发票状态：
+                <select name="oinvoice" id="oinvoice" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">发票已开</option>
+	                	<option value="2">发票已收到</option> 
+                </select>
             		 	查询条件
                 <select name="queryCol" id="queryCol" 
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
@@ -49,23 +67,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </select>
                 查询内容
                 <input name="queryValue" id = "queryValue"class=" form-control" style="display: inline-block;width: 10%">
-                	订单状态：
-                <select name="ostatue" id="ostatue" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-	                	<option value="1">新订单</option>
-	                	<option value="3">已付款</option>
-	                	<option value="5">提交采购</option>
-	                	<option value="4">已收货</option>
-                </select>
-                	发票状态：
-                <select name="oinvoice" id="oinvoice" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-	                	<option value="1">发票已开</option>
-	                	<option value="2">发票已收到</option> 
-                </select>
-                <button onclick="query()">查询</button>
+               
+                <button onclick="query()" class="btn btn-default queryBtn">查询</button>
             </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
  	</div>
@@ -100,7 +103,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							                	 	</c:if>
 							                	 </c:forEach>
 						                </select>
-						         </div> 
+						         </div>
 				</div>
 				<div class="col-md-6">
 					    		<div class="form-group col-md-12 imgdiv">
@@ -109,10 +112,31 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						</div>
 			</div>
 		    	</form>   
-			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>              
+			    	<table id="table_add" class="easyui-datagrid" fit="true" ></table>   
+			    	<div>
+				<table  id="table_print"  class="table" style="display: none">
+			    		 <tr>
+			    		 	 <td id="companyNamePrt">公司：<span></span></td>
+			    		 	 <td id="orderNoPrt">订单编号：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="amountPrt">订单总价：<span></span></td>
+			    		 	 <td id="confirmIdPrt">采购批次：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="statusPrt">订单状态：<span></span></td>
+			    		 	 <td id="invoicePrt">发票状态：<span></span></td>
+			    		 </tr>
+			    		 <tr>
+			    		 	 <td id="startDatePrt">下单时间：<span></span></td>
+			    		 	 <td id="pillDatePrt">付款时间：<span></span></td>
+			    		 </tr>
+			    	</table>
+		    	</div>           
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
+			 <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -133,6 +157,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		   
     <script type="text/javascript">
 	
+    function print(){
+		var row = $('#table_order').datagrid('getSelected');
+		$("#order_form").hide();
+		$("#table_print").show();
+		$("#companyNamePrt>span").append(row.companyName);
+		$("#orderNoPrt>span").append(row.orderNo);
+		$("#amountPrt>span").append(row.amount);
+		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
+		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
+		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
+		$("#startDatePrt>span").append(row.startDate);
+		$("#pillDatePrt>span").append(row.pillDate);
+	 $("#order_dlg").jqprint({
+		 debug: false,
+		 importCSS: true,
+		 printContainer: true,
+		 operaSupport: false
+	 });
+		$("#order_form").show();
+		$("#table_print").hide();
+		$("#table_print  span").text('');
+	// company_close();
+ }
+    
     	$(function(){
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadUrgentOrder.action' ;
 			$('#table_order').datagrid({
@@ -271,6 +319,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    	 json.push(row2);  
 		   
 		   var columnDetail = [[
+	   						{field:'defaultFlag',title:'托管采购',width:100,align:'center', formatter: function(value,row,index){
+								if(value == '1'){
+									return "托管";
+								}else{
+									return "不托管";
+								}
+							}
+		               		 },
 	   						{field:'product',title:'产品大类',width:100,align:'center'},
 	   						{field:'type',title:'产品类型',width:100,align:'center'},
 	   						{field:'sub_product',title:'产品信息',align:'center',width:'25%'},
@@ -282,14 +338,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'boxnum',title:'包装件数',width:100,hidden:'true',align:'center'},
 	   						{field:'price',title:'单价',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
-	   						{field:'defaultFlag',title:'托管采购',width:100, formatter: function(value,row,index){
-								if(value == '1'){
-									return "托管";
-								}else{
-									return "不托管";
-								}
-							}
-		               		 },
 	   						{field:'supplierCompanyId', hidden:'true' },
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
 	   						{field:'productId', hidden:'true',editor:'textbox' },
@@ -298,6 +346,50 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'id', hidden:'true',editor:'textbox' }
 	   					]];
 		   var columnEdit = [[
+							{field:'defaultFlag',title:'托管采购',align:'center',width:100, editor: {
+							    type: 'combobox',
+							    options: {
+							        data: json ,
+							        valueField: "value",
+							        textField: "text",
+							        editable: false,
+							        onSelect:function(data){  
+							            var row = $('#table_add').datagrid('getSelected');  
+							            var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
+							        	var bra = $("#table_add").datagrid('getEditor', {  
+							                index : rowIndex,  
+							                field : 'brand'  
+							            });  
+							           /*  var pri = $("#table_add").datagrid('getEditor', {  
+							                index : rowIndex,  
+							                field : 'price'  
+							            }); */  
+							            var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
+							                index : rowIndex,  
+							                field : 'supplierCompanyId'  
+							            });  
+							        	var brandData = $(bra.target).combobox('getData');
+							            if(data.value == '1' && brandData.length > 0){
+							                $(bra.target).textbox('setValue',  brandData[0].brand); 
+							                $(bra.target).combobox("disable" );
+							          	    //$(pri.target).textbox('setValue',  brandData[0].price); 
+							          		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
+							            }else{
+							            	$(bra.target).combobox("enable" );
+							            }
+							            if(data.value == '1' ){
+							           	 	$(bra.target).combobox("disable" );
+							            }
+							        }
+							    }
+							}, formatter: function(value,row,index){
+									if(value == '1'){
+										return "托管";
+									}else{
+										return "不托管";
+									}
+								}
+							},
 								{field:'product',title:'产品大类',width:100,align:'center',
 									editor : {    
 				                        type : 'combobox',    
@@ -372,6 +464,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                        field : 'productId'  
 			                                    });  
 			                                $(idvalue.target).textbox('setValue',  data.id ); 
+			                                var ed = $("#table_add").datagrid('getEditor', {  
+		                                        index : rowIndex,  
+		                                        field : 'unit'  //根据字段名获取编辑的字段
+		                                    });  
+			                                $(ed.target).textbox('setValue',  data.unit);   //赋值
+			                                $(ed.target).combobox('disable');//不可用
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'sub_product'}).target;  
 				                                if(value != data.product){
 					                                target.combobox('clear'); //清除原来的数据  
@@ -562,50 +660,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 									}
 								}},
 								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
-								{field:'defaultFlag',title:'托管采购',width:100, editor: {
-			                        type: 'combobox',
-			                        options: {
-			                            data: json ,
-			                            valueField: "value",
-			                            textField: "text",
-			                            editable: false,
-			                            onSelect:function(data){  
-			                                var row = $('#table_add').datagrid('getSelected');  
-			                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-		                                	var bra = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'brand'  
-		                                    });  
-			                               /*  var pri = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'price'  
-		                                    }); */  
-			                                var supplierCompanyId = $("#table_add").datagrid('getEditor', {  
-		                                        index : rowIndex,  
-		                                        field : 'supplierCompanyId'  
-		                                    });  
-		                                	var brandData = $(bra.target).combobox('getData');
-			                                if(data.value == '1' && brandData.length > 0){
-				                                $(bra.target).textbox('setValue',  brandData[0].brand); 
-				                                $(bra.target).combobox("disable" );
-			                              	    //$(pri.target).textbox('setValue',  brandData[0].price); 
-			                              		$(supplierCompanyId.target).textbox('setValue',  brandData[0].supplierCompanyId); 
-			                                }else{
-			                                	$(bra.target).combobox("enable" );
-			                                }
-			                                if(data.value == '1' ){
-			                               	 	$(bra.target).combobox("disable" );
-			                                }
-			                            }
-			                        }
-								}, formatter: function(value,row,index){
-										if(value == '1'){
-											return "托管";
-										}else{
-											return "不托管";
-										}
-									}
-				                },
+								
 								{field:'detailId', hidden:'true',editor:'textbox' },
 								{field:'formatNum', hidden:'true',editor:'textbox' },
 								{field:'supplierCompanyId', hidden:'true',editor:'textbox' },
@@ -718,17 +773,17 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			 	 return true;
 	 		}
 	 		function onClickRow(index){
-	 			if (editIndex != index){
-	 				if (endEditing()){
-	 					$('#table_add').datagrid('selectRow', index)
-	 							.datagrid('beginEdit', index);
-	 					//订单信息选中行
-	 					editIndex = index;
-	 				} else {
-	 					$('#table_add').datagrid('selectRow', editIndex);
-	 				}
-	 			}
-	 		}
+				if (editIndex != index){
+					if (endEditing()){
+						$('#table_add').datagrid('selectRow', index)
+								.datagrid('beginEdit', index);
+						//订单信息选中行
+						editIndex = index;
+					} else {
+						$('#table_add').datagrid('selectRow', editIndex);
+					}
+				}
+			}
 	 		function append(){
 	 			
 	 			if (endEditing()){
@@ -772,6 +827,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		 */
 	 	 	function submitData() {
 	 	 		//alert($("#table_add").datagrid('getChanges').length);
+	 	 		if($("#addressId").combobox("getValue") ==''){
+	 				 alert("送货地址为必填项，不能为空。如您没有添加送货地址，请到‘客户管理’模块中添加收货地址");
+	 				$("#addressId").focus();
+	 				return false ;
+	 			}
 	 	 		if($('#table_add').datagrid('getRows').length == 0 ){
 	 	 				 alert("请添加订单详情信息");
 	 	 				 return false;
@@ -798,7 +858,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			                    } 
 	 			                    $.post("${basePath}/orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
 	 			                				if(obj.success){
-	 			    			    				 	alert(obj.msg);
+	 			    			    				 	alert(obj.msg  + ";订单总金额包含运费${trans}元");
 	 			    			    				 	 $('#order_dlg').dialog('close');	
 	 			    			    				 	$('#table_order').datagrid('reload');
 	 			    			    				}else{
@@ -854,12 +914,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		     }
 	 		     var num = acount.target.textbox('getValue') / formatNum.target.textbox('getValue');
 	 		     var rest = acount.target.textbox('getValue') % formatNum.target.textbox('getValue');
-	 		     if(parseInt(acount.target.textbox('getValue')) < parseInt(formatNum.target.textbox('getValue'))){
+	 		    /* if(parseInt(acount.target.textbox('getValue')) < parseInt(formatNum.target.textbox('getValue'))){
 	 		    	 alert("为了方便发货，数量不得少于" +formatNum.target.textbox('getValue') ); 
 	 		    	acount.target.textbox('setValue' , '');
 	 		    	 return false ;
 	 		     }
-	 		     /* if(rest != 0 ){
+	 		    if(rest != 0 ){
 	 		    	   alert("为了方便发货，数量必须是" + formatNum.target.textbox('getValue') + "的整数倍");
 	 		    	  acount.target.textbox('setValue' , '');
 	 		    	   return false ;
@@ -912,6 +972,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 						if(Math.round(s) == s){
 	 							if(!isRealNum(s)){
 	 								return false ;
+	 							}
+	 							if(Math.round(s) > 100 || Math.round(s) <=0){
+	 								alert("只能填写1-100内的数字");
+	 								return false;
 	 							}
 	 							percent = "&percent="   + s;
 	 				    			$.messager.confirm(
@@ -1012,7 +1076,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			});
 	 			$('#order_dlg').dialog('open');	
 	 			$('#order_dlg').dialog('setTitle','添加订单');
-	 			$("#addressId").combobox("readonly" , false);
 	 		}
 	    	
 	      	
@@ -1023,7 +1086,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			    return false ;
 	 			}
 	     		if(row){
-	 				$("#addressId").combobox("readonly" , false);
 	     			$("#order_dlg").dialog({
 	     				onOpen: function () {
 	                         $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
@@ -1092,7 +1154,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 id: row.id
 				});
 			 },200)
-			 	$("#addressId").combobox("readonly" , true);
 	 			}
 	     	}
 	    

@@ -17,6 +17,14 @@
 <meta http-equiv="description" content="This is my page">
 <jsp:include page="/common.jsp"></jsp:include>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
+   <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
+   <style type="text/css">
+   		.datagrid-toolbar td {
+		    border-bottom: 0px solid rgba(255, 255, 255, 0.1) !important;
+		    border-top: 0px solid rgba(255, 255, 255, 0.1) !important;
+		}
+   
+   </style>
 </head>
 <body class="easyui-layout">
 	<div data-options="region:'north',border:false,showHeader:false"
@@ -36,8 +44,6 @@
 			}
 		%>
 		<div >
-            	订单编号：
-                <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
             	订单状态：
                 <select name="ostatue" id="ostatue" 
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
@@ -48,7 +54,9 @@
 	                	<option value="4">已发货</option>
 	                	<option value="5">提交采购</option>
                 </select>
-                <button onclick="query()">查询</button>
+            	订单编号：
+                <input name="ono" id = "ono"class=" form-control" style="display: inline-block;width: 10%">
+                <button onclick="query()" class="btn btn-default queryBtn">查询</button>
             </div>
 		<table id="table_order" class="easyui-datagrid" fit="false"></table>
 	</div>
@@ -94,7 +102,7 @@
 		style="width: 600px; height: 40px; text-align: center">
 		<button onclick="company_close()" type="button"
 			class="btn btn-default btn-dialog-right">关闭</button>
-			<!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> -->
+		  <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> 
 	</div>
 	<script type="text/javascript">
 	function print(){

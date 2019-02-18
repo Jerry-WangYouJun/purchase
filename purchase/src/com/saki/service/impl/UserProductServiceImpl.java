@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.saki.dao.BaseDaoI;
 import com.saki.entity.Notice;
+import com.saki.model.TColor;
 import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
 import com.saki.service.UserProductServiceI;
@@ -59,6 +60,15 @@ public class UserProductServiceImpl implements UserProductServiceI{
 			userProductDao.delete(t);
 		}
 	}
+	
+	
+
+	@Override
+	public TColor getByKey(String id) {
+		
+		return (TColor)userProductDao.get("from TColor t where t.id = " + id);
+	}
+
 
 	@Override
 	public List<TUserProduct> listByCompanyId(int companyId) {
@@ -96,6 +106,11 @@ public class UserProductServiceImpl implements UserProductServiceI{
 	public void updateImg(int productId, String companyId, String img) {
 		String sql = " update t_user_product set imgUrl =  '" + img + "' where product_id=" + productId + " and  company_id =" + companyId ;
 		userProductDao.executeUpdate(sql);
+	}
+	
+	@Override
+	public void updateColorImg(TColor color) {
+		userProductDao.saveOrUpdate(color);
 	}
 	
 	@Override

@@ -8,4 +8,5 @@ public interface UserServiceI extends BaseServiceI{
 	public void deleteByCompanyId(Integer id);
 	public int searchUserOnly(String userName);
 	public Integer getBase();
+	public Integer getTrans();
 }

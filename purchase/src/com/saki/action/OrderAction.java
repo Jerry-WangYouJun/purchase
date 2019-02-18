@@ -305,6 +305,8 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 					 if(StringUtils.isNotBlank(confirmId)) {
 						 order.setConfirmId(Integer.valueOf(confirmId));
 					 }
+					 Integer trans =(Integer) getSession().getAttribute("trans");
+					 order.setAmount(order.getAmount() + trans);
 					 orderService.add(order);
 					 if(StringUtils.isNotEmpty(insert) ) {
 						 insertDetail(insert);
@@ -506,6 +508,21 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		try {
 			orderService.updateBase(Integer.valueOf(base));
 			getSession().setAttribute("base", Integer.valueOf(base));
+			j.setMsg("操作成功");
+			j.setSuccess(true);
+		} catch (Exception e) {
+			j.setMsg("操作失败");
+			j.setSuccess(false);
+		}
+		super.writeJson(j);
+	}
+	
+	public void updateTrans(){
+		String base = getParameter("trans");
+		Message j = new Message();
+		try {
+			orderService.updateTrans(Integer.valueOf(base));
+			getSession().setAttribute("trans", Integer.valueOf(base));
 			j.setMsg("操作成功");
 			j.setSuccess(true);
 		} catch (Exception e) {

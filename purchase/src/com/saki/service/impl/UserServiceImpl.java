@@ -166,4 +166,12 @@ public class UserServiceImpl implements UserServiceI{
 		List<Integer> list = userDao.executeSQLquery(sql);
 		return list.get(0);
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Integer getTrans() {
+		String sql = "select tran_money from t_carriage ";
+		List<Integer> list = userDao.executeSQLquery(sql);
+		return list.get(0);
+	}
 }

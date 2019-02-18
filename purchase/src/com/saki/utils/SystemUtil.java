@@ -34,7 +34,7 @@ public class SystemUtil {
 		}
 	}
 	 public static void main(String[] args) {
-		System.out.println(sub(1.0 , 0.0));
+		System.out.println(round(10.5545, 2));
 	}
 	 private static final Integer DEF_DIV_SCALE = 2;
 
@@ -138,7 +138,7 @@ public class SystemUtil {
 	        BigDecimal one = new BigDecimal("1");
 	        return b.divide(one,scale, RoundingMode.HALF_UP).doubleValue();
 	    }
-	    
+	   
 	    /**
 	     * 从字符串中提取汉字
 	     * @param str

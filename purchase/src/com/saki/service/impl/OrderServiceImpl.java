@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import com.saki.dao.BaseDaoI;
 import com.saki.entity.Grid;
-import com.saki.model.TAddress;
 import com.saki.model.TCompany;
 import com.saki.model.TOrder;
 import com.saki.model.TOrderDetail;
@@ -193,7 +192,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("remark", orderDetail.getRemark());
 			
 			map.put("product",parentProduct.getProduct() );
-			map.put("unit", parentProduct.getUnit());
+			map.put("unit", product.getUnit());
 			map.put("type",  product.getProduct());
 			map.put("base", product.getBase());
 			map.put("productId", product.getId());
@@ -385,6 +384,11 @@ public class OrderServiceImpl implements OrderServiceI{
 		String hql ="update t_base  set base_money  =  " + base;
 		orderDao.executeUpdate(hql);
 	}
+	@Override
+	public void updateTrans(Integer trans) {
+		String hql ="update  t_carriage   set tran_money  =  " + trans;
+		orderDao.executeUpdate(hql);
+	}
 	
 	@Override
 	public List<Map<String, Object>> searchBrandByProductDetailId(
@@ -400,7 +404,11 @@ public class OrderServiceImpl implements OrderServiceI{
 			TCompany company = (TCompany)objs[1];
 			Map<String , Object >  map = new HashMap<String,Object>();
 			map.put("mapid", mapper.getId());
-			map.put("price", SystemUtil.add(SystemUtil.add(mapper.getPrice(), mapper.getMarkup()),  SystemUtil.mul(SystemUtil.mul(mapper.getPercent() , 0.01) , mapper.getPrice())));
+			map.put("price", 
+					SystemUtil.add(
+							SystemUtil.add(mapper.getPrice(), mapper.getMarkup()), 
+							SystemUtil.mul(SystemUtil.mul(mapper.getPercent() , 0.01) , mapper.getPrice())
+							));
 			map.put("brand", company.getBrand());
 			map.put("imgUrl", mapper.getImgUrl());
 			map.put("status", mapper.getStatus());
@@ -448,6 +456,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		
 		return null;
 	}
+	
 	
 	
 }

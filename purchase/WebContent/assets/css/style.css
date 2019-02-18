@@ -21,7 +21,7 @@ ul,li{
     z-index: 1;
 }
 .panel-body td{
-    background-color: #252525;
+    background-color: #252525; 
     color:#fff;
 }
 .table-striped > tbody > tr:nth-child(odd) > td, .table-striped > tbody > tr:nth-child(odd) > th {
@@ -207,11 +207,7 @@ li.bg-2f>a{
     right:15px;
     bottom:35px;
     color: #ffffff !important;
-    background-image: -moz-linear-gradient(45deg, #4a19c8 0%, #7979ff 100%) !important;
-    background-image: -webkit-linear-gradient(45deg, #4a19c8 0%, #7979ff 100%) !important;
-    background-image: -ms-linear-gradient(45deg, #4a19c8 0%, #7979ff 100%) !important;
     border-color: transparent;
-    background-color: #4a19c8 !important;
     border-radius: 25px;
     font-size: 18px;
     height: 35px;
@@ -335,10 +331,10 @@ a.text-dark:hover, a.text-dark:focus {
 .table-edit{
     color:#f9c9ff;
     font-size: 16px;
-    margin-top:20px;
+    /* margin-top:20px; */
     height: 40px;
     line-height: 30px;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important;
+    /* border-bottom: 2px solid rgba(255, 255, 255, 0.1) !important; */
 }
 .table-edit a{
     color:#f9c9ff;
@@ -507,4 +503,101 @@ a.text-dark:hover, a.text-dark:focus {
     outline: none;
     padding:0 20px;
     margin-left:10px;
+}
+
+.panel-body {
+    background-color: #252525;
+}
+.datagrid-header td, .datagrid-body td, .datagrid-footer td {
+    border-color: #252525;
+}
+.datagrid-toolbar, .datagrid-pager {
+    background: #252525;
+}
+table {
+    background-color: #252525;
+}
+.datagrid-header {
+    overflow: hidden;
+    cursor: default;
+    border-width: 0 0 1px 0;
+}
+.datagrid-header, .datagrid-toolbar, .datagrid-pager, .datagrid-footer-inner {
+    border-color: #252525;
+}
+
+.datagrid-header,
+.datagrid-td-rownumber {
+  background-color: #252525;
+}
+.panel-header, .panel-body {
+    border-width: 0px;
+    border-style: solid;
+}
+.pagination-page-list, .pagination .pagination-num {
+    border-color: #ddd;
+    background: #252525; 
+}
+
+.pagination-page-list, .pagination  td  span{
+    border-color: #fff;
+   /*  background: #252525; */
+}
+.datagrid-header .datagrid-cell, .datagrid-header .datagrid-cell-group {
+    color: white;
+    font-weight: bold;
+    filter: alpha(opacity=80);
+    opacity: 0.80;
+}
+.panel-body {
+    color: white;
+}
+
+.panel-fit, .panel-fit body {
+    margin: 10;
+}
+
+.page-header {
+    margin: 10px 0 10px;
+}
+
+.l-btn-text {
+    line-height: 30px;
+    font-size: 16px;
+}
+
+.datagrid-cell, .datagrid-cell-group, .datagrid-header-rownumber, .datagrid-cell-rownumber {
+    margin: 5 0 ;
+    font-size: 14px;
+}
+
+.datagrid-header .datagrid-cell span {
+    font-size: 14px;
+}
+.panel-body td {
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+.pagination td{
+ 		border-bottom: 0px solid rgba(255, 255, 255, 0.1) !important;
+        border-top: 0px solid rgba(255, 255, 255, 0.1) !important;
+}
+.datagrid-header-over{
+	background-color: #252525;
+}
+.datagrid-row-selected  td{
+   background: #e9ecef !important;
+    color: #495057 !important;
+}
+.form-control {
+        background-color: rgb(85, 85, 85);
+   	 	color: rgb(255, 255, 255);    border-width: 0px;
+   	 	
+}
+ #_easyui_textbox_input1,#_easyui_textbox_input2,#_easyui_textbox_input3{
+    	    background-color: black;
+    }
+.queryBtn{
+	margin-bottom: 5px;
+	
 }

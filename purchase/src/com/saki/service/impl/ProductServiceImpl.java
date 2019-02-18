@@ -2,10 +2,9 @@ package com.saki.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import net.sf.json.JSONArray;
 
 import org.apache.commons.lang.xwork.StringUtils;
 import org.apache.log4j.Logger;
@@ -407,36 +406,43 @@ public class ProductServiceImpl implements ProductServiceI{
 	}
 	
 	@Override
-	public Grid searchProductDetailByCompanyId(Integer companyId , 
-			String cname , String subProName ,String page , String rows, String material, String brand, String price) {
+	public Grid searchProductDetailByCompanyId(Integer companyId , String page , String rows, Map params) {
 		Grid grid = new Grid(); 
 		Map<String,Object> map = new HashMap<String,Object>();
 		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c ,TProduct g "
 				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id  and p.parentId = g.id  "   ;
 		if(companyId > 0 ){
-			hql += " and  m.companyId like  :companyId" ;
-			map.put("companyId", companyId);
+			hql += " and  m.companyId  =  " + companyId ;
 		}else {
 			hql += " and  m.roleId = 2 " ;
 		}
-		if(StringUtils.isNotEmpty(cname)) {
-			hql += " and c.name like '%" + cname + "%'";
+		
+		if(params.containsKey("companyId")){
+			params.remove("companyId");
 		}
-		if(StringUtils.isNotEmpty(subProName)) {
-			hql += " and g.product like '%" + subProName + "%'";
+		Iterator<Map.Entry<String, Object>> it = params.entrySet().iterator();
+		while(it.hasNext()){
+			Map.Entry<String, Object> entry = it.next() ;
+				hql +=  " and " +  entry.getKey() + " like '" + entry.getValue()  +"'";
 		}
-		if(StringUtils.isNotEmpty(material)) {
-			hql += " and d.material like '%" + material + "%'";
-		}
-		if(StringUtils.isNotEmpty(brand)) {
-			hql += " and c.brand like '%" + brand + "%'";
-		}
-		if(StringUtils.isNotEmpty(price) ) {
-			hql += " and m.price >= " + price + "";
-		}
+//		if(StringUtils.isNotEmpty(cname)) {
+//			hql += " and c.name like '%" + cname + "%'";
+//		}
+//		if(StringUtils.isNotEmpty(subProName)) {
+//			hql += " and g.product like '%" + subProName + "%'";
+//		}
+//		if(StringUtils.isNotEmpty(material)) {
+//			hql += " and d.material like '%" + material + "%'";
+//		}
+//		if(StringUtils.isNotEmpty(brand)) {
+//			hql += " and c.brand like '%" + brand + "%'";
+//		}
+//		if(StringUtils.isNotEmpty(price) ) {
+//			hql += " and m.price >= " + price + "";
+//		}
 		
 		hql += " order by c.name ,  p.product  , d.subProduct , d.format , d.material  ";
-		List<Object[]> list = produceDao.find(hql , map , Integer.valueOf(page), Integer.valueOf(rows));
+		List<Object[]> list = produceDao.find(hql  , Integer.valueOf(page), Integer.valueOf(rows));
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		for (int i = 0; i < list.size(); i++) {
 			Object[] objs = list.get(i);

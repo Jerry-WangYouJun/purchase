@@ -47,6 +47,11 @@
 <script type="text/javascript">
 
 	function submitData() {
+		if($("#addressId").combobox("getValue") ==''){
+			 alert("送货地址为必填项，不能为空。如您没有添加送货地址，请到‘客户管理’模块中添加收货地址");
+			$("#addressId").focus();
+			return false ;
+		}
 		if($("#confirmId").combobox("getValue") ==''){
 			 alert("采购日为必填项，不能为空");
 			$("#confirmId").focus();
@@ -88,7 +93,8 @@
 	                    } 
 	                    $.post("${basePath}/orderAction!getChanges.action?"  + data  , effectRow, function(obj) {
 	                				if(obj.success){
-	    			    				 	alert(obj.msg);
+	    			    				 	alert(obj.msg + ";订单总金额包含运费${trans}元");
+	    			    				 	
 	    			    				 	 $('#order_dlg').dialog('close');	
 	    			    				 	$('#table_order').datagrid('reload');
 	    			    				}else{
@@ -172,6 +178,10 @@
 						if(!isRealNum(s)){
 							return false ;
 						}
+						if(Math.round(s) > 100 || Math.round(s) <=0){
+								alert("只能填写1-100内的数字");
+								return false;
+							}
 						percent = "&percent="   + s;
 			    			$.messager.confirm(
 			    				'提示',
@@ -272,7 +282,6 @@
 		});
 		$('#order_dlg').dialog('open');	
 		$('#order_dlg').dialog('setTitle','添加订单');
-		$("#addressId").combobox("readonly" , false);
 	}
 	
  	
@@ -292,7 +301,6 @@
                     $('#confirmId').combobox('select', row.confirmId);
                 }
 			});
-			$("#addressId").combobox("readonly" , false);
 			$('#order_dlg').dialog('open');	
 			$('#order_dlg').dialog('setTitle','编辑订单');
 		$("#startDate").val(row.startDate);

@@ -20,6 +20,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <jsp:include page="/common.jsp"></jsp:include>
    <script src="${basePath}/js/edit.js"></script>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
+   <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -27,6 +28,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		<div >
+ 		 	订单状态：
+                <select name="ostatue" id="ostatue" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">新订单</option>
+	                	<option value="3">已付款</option>
+	                	<option value="5">提交采购</option>
+	                	<option value="4">已收货</option>
+                </select>
+                	发票状态：
+                <select name="oinvoice" id="oinvoice" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">发票已开</option>
+	                	<option value="2">发票已收到</option> 
+                </select>
             	查询条件
                 <select name="queryCol" id="queryCol" 
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
@@ -44,23 +61,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </select>
                 查询内容
                 <input name="queryValue" id = "queryValue"class=" form-control" style="display: inline-block;width: 10%">
-                	订单状态：
-                <select name="ostatue" id="ostatue" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-	                	<option value="1">新订单</option>
-	                	<option value="3">已付款</option>
-	                	<option value="5">提交采购</option>
-	                	<option value="4">已收货</option>
-                </select>
-                	发票状态：
-                <select name="oinvoice" id="oinvoice" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-	                	<option value="1">发票已开</option>
-	                	<option value="2">发票已收到</option> 
-                </select>
-                <button onclick="query()">查询</button>
+               
+                <button onclick="query()"  class="btn btn-default queryBtn" >查询</button>
             </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
  	</div>
@@ -109,7 +111,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
-			<!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> -->
+			 <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> 
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -144,7 +146,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     		$("#companyNamePrt>span").append(row.companyName);
     		$("#orderNoPrt>span").append(row.orderNo);
     		$("#amountPrt>span").append(row.amount);
-    		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
     		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
     		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
     		$("#startDatePrt>span").append(row.startDate);

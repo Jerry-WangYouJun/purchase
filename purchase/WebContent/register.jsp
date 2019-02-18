@@ -8,7 +8,7 @@
 <title>注册</title>
 
  <jsp:include page="/common.jsp"></jsp:include>
-<link rel="shortcut icon" href="media/image/favicon.ico" />
+<link rel="shortcut icon" href="img/logo.jpg" />
 <style type="text/css">
 body {
 	background: #191c2c !important;
@@ -71,8 +71,28 @@ body {
 		var flag  ;
 		flag=confirm("确认放弃？");
 		if(flag){
-			window.location.href="${pageContext.request.contextPath}";
+			window.history.back();
 		}
+	}
+	
+	function user_add(){
+		$('#user_dlg').dialog('open');	
+		$('#user_dlg').dialog('setTitle','添加地址');
+		$("#user_save").unbind('click').click(function(){
+				$.ajax({
+				url : '${pageContext.request.contextPath}/addressAction!edit.action',
+				data : $('#user_form').serialize(),
+				dataType : 'json',
+				success : function(obj) {
+					if (obj.success) {
+						alert(obj.msg);
+						user_close();
+					} else {
+						alert(obj.msg);
+					}
+				}
+			});
+		});
 	}
 	
 </script>
@@ -149,4 +169,48 @@ body {
 			</div>
 	</form>
 </body>
+
+
+ <div id="user_dlg_buttons" style="width:800px;height: 40px;text-align: center">
+		<button id="user_save" type="button" class="btn btn-primary btn-dialog-left">保存</button>
+		<button onclick="user_close()" type="button" class="btn btn-default btn-dialog-right">取消</button>
+	</div>
+<div  id="user_dlg" closed="true" class="easyui-dialog" style="width:600px;height: 300px"
+	data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:50,buttons: '#user_dlg_buttons'">
+    		<form class="form-horizontal" role="form"  style="padding: 20px" id="user_form">
+						<input type="hidden"  name="id" >
+						<input type="hidden"  name="cid" >
+					  <div class="form-group">
+					    <label for="firstname" class="col-sm-2 control-label">地址描述：</label>
+					    <div class="col-sm-4">
+					      <input type="text" class="form-control" id="name" name="name" placeholder="必填" required>
+					    </div>
+					    <label for="lastname" class="col-sm-2 control-label">是否默认：</label>
+					    <div class="col-sm-4">
+					      <select name="isDefault" id="isDefault" 
+                    		class="form-control " editable="false" required>
+                    			<option value="">请选择</option>
+			                	<option value="1">是</option>
+			                	<option value="0">否</option>
+			                </select>
+					    </div>
+					  </div>
+					  <div class="form-group">
+					   		 <label class="col-sm-2 control-label" >所在省：</label>
+					   		 <div class="col-sm-4">
+                				<input name="province" class=" form-control"  placeholder="必填" required>
+                			 </div>
+                			 <label class="col-sm-2 control-label" >所在市：</label>
+					   		 <div class="col-sm-4">
+                				<input name="city" class="form-control"  placeholder="必填" required>
+                			 </div>
+					  </div>
+					  <div class="form-group">
+					    <label for="lastname" class="col-sm-2 control-label">地址：</label>
+					    <div class="col-sm-10">
+					      <input type="text" class="form-control"  name="address" placeholder="必填" required>
+					    </div>
+					  </div>
+				</form>                
+    </div>
 </html>

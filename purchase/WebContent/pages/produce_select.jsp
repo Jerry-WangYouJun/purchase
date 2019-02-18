@@ -36,11 +36,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   </head>
   
  <body class="easyui-layout">
- 	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
- 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">订单类别选择</span>
- 		<a onclick="select_save()" id="select_save" style="background-color:#e05447;color:#fff;float: right;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">保存</a>
- 	</div>
- 	
 	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 3px" class="production-menu" id="pro_datalist" fit="true">
  		<div class='menu' id='firstMenu'>
 			<!-- <div id='result' style='display:none' ></div> -->

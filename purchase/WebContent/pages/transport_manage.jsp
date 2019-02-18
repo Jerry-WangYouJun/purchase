@@ -21,6 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->    
     
    <jsp:include page="/common.jsp"></jsp:include>
+   <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
   </head>
   
   <body class="easyui-layout">
@@ -36,7 +37,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 <input name="transname" id = "transname"class=" form-control" style="display: inline-block;width: 10%">
             物流单号：
                  <input name="transno" id = "transno"class=" form-control" style="display: inline-block;width: 10%">
-                <button onclick="query()">查询</button>
+                <button onclick="query()" class="btn btn-default queryBtn">查询</button>
             </div> 
 		  </c:if>
  		<table id="company_table" class="easyui-datagrid" fit="true" ></table>

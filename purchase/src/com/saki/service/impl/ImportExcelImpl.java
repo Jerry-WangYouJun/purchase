@@ -122,8 +122,9 @@ public class ImportExcelImpl  implements ImportExcelI{
 				childProductForSave.setParentId(parentProductForSave.getId());
 				TProduct product =  resultMap.get(parent).get(childPro);
 				childProductForSave.setBase(product.getBase());
+				childProductForSave.setUnit(product.getUnit());
 				productDao.saveOrUpdate(childProductForSave);
-				parentProductForSave.setUnit(product.getUnit());
+				//parentProductForSave.setUnit(product.getUnit());
 				continueOut:
 				for(TProductDetail detail : product.getDetailList()) {
 					if(productChildMap.containsKey(childPro)){

@@ -9,4 +9,9 @@ public interface CompanyServiceI extends BaseServiceI{
 	Grid loadQuery(String sort, String order, String page, String rows,
 			Map<String, Object> params);
 
+	Grid loadColor(String sort, String order, String page, String rows,
+			Map<String, Object> params);
+	
+	void updateColorDelete(String id);
+
 }
