@@ -324,7 +324,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   </head>
   
- <body class="">
+ <body class="" style="margin:10px;">
+
+
+ 	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
+ 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">订单类别选择</span>
+ 	</div>
+ 
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
  		<a  id="imageFile" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>

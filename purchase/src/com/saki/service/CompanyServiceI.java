@@ -13,5 +13,8 @@ public interface CompanyServiceI extends BaseServiceI{
 			Map<String, Object> params);
 	
 	void updateColorDelete(String id);
-
+	
+	void addMapDataByUser(int companyId , int  role);
+	
+	void addMapDataByProDetail(int proDetailId , int  proId);
 }

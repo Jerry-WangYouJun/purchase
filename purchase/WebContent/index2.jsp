@@ -393,7 +393,7 @@
                     </div>
                 </div> 
                 
-                <div id = "contact" style= "margin:0px 20px">
+                <div id = "contact" style= "margin:0px 20px;color: white;">
 									  <h3 style="margin:2px">
 									   对公账户：</h3>
 									   <h3 style="margin:2px">

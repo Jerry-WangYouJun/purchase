@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import com.saki.dao.BaseDaoI;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
+import com.saki.service.CompanyServiceI;
 import com.saki.service.ImportExcelI;
 import com.saki.service.ProductDetailServiceI;
 import com.saki.service.ProductServiceI;
@@ -136,12 +137,19 @@ public class ImportExcelImpl  implements ImportExcelI{
 					}
 					detail.setProductId(childProductForSave.getId());
 					productDao.saveOrUpdate(detail);
+					companyService.addMapDataByProDetail(detail.getId(), detail.getProductId());
 				}
 				productDao.update(parentProductForSave);
 			}
 		}
 	}
 	
+	/**
+	 * 把每一行数据放到一个product对象中
+	 * @param list
+	 * @return
+	 * @throws Exception
+	 */
 	private TProduct getProductByList(List<Object> list) throws Exception {
 		TProduct product = new TProduct();
 		List<String>  proDetailNameList = new ArrayList<>(); 
@@ -399,8 +407,6 @@ public class ImportExcelImpl  implements ImportExcelI{
 	
 	private ProductDetailServiceI detailService ;
 	
-	
-
 	public ProductDetailServiceI getDetailService() {
 		return detailService;
 	}
@@ -417,4 +423,16 @@ public class ImportExcelImpl  implements ImportExcelI{
 	public void setProductDetailService(ProductDetailServiceI productDetailService) {
 		this.productDetailService = productDetailService;
 	}
+	
+	private CompanyServiceI companyService;
+
+	public CompanyServiceI getCompanyService() {
+		return companyService;
+	}
+	@Autowired
+	public void setCompanyService(CompanyServiceI companyService) {
+		this.companyService = companyService;
+	}
+	
+	
 }

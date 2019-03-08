@@ -111,13 +111,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
-			 <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> 
+			 <!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>  -->
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
   	     <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>    
-         <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已开</a>
+         <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true"  style="margin: 2px">发票已开</a>
           <a onclick="exportOrder()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">导出Excel</a>
+          <a onclick="print()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">打印</a>
     </div>
 		   
     <script type="text/javascript">
@@ -139,28 +140,35 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     			}
     		});  */
     	})
-	 function print(){
-    		var row = $('#table_order').datagrid('getSelected');
-    		$("#order_form").hide();
-    		$("#table_print").show();
-    		$("#companyNamePrt>span").append(row.companyName);
-    		$("#orderNoPrt>span").append(row.orderNo);
-    		$("#amountPrt>span").append(row.amount);
-    		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
-    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
-    		$("#startDatePrt>span").append(row.startDate);
-    		$("#pillDatePrt>span").append(row.pillDate);
-		 $("#order_dlg").jqprint({
-			 debug: false,
-			 importCSS: true,
-			 printContainer: true,
-			 operaSupport: false
-		 });
-    		$("#order_form").show();
-    		$("#table_print").hide();
-    		$("#table_print  span").text('');
-		// company_close();
-	 }
+	function print(){
+			 order_detail();
+	    		var row = $('#table_order').datagrid('getSelected');
+	    		
+	    		setTimeout( function(){
+		    		$("#order_form").hide();
+		    		$("#table_print").show();
+		    		$("#companyNamePrt>span").append(row.companyName);
+		    		$("#orderNoPrt>span").append(row.orderNo);
+		    		$("#amountPrt>span").append(row.amount);
+		    		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
+		    		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
+		    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
+		    		$("#startDatePrt>span").append(row.startDate);
+		    		$("#pillDatePrt>span").append(row.pillDate);
+		    		var rows = $('#table_add').datagrid('getData');
+		    		$("#addressPrt>span").append($("#addressId").find("option:selected").text()); 
+				 $("#order_dlg").jqprint({
+					 debug: false,
+					 importCSS: true,
+					 printContainer: true,
+					 operaSupport: false
+				 });
+		    		$("#order_form").show();
+		    		$("#table_print").hide();
+		    		$("#table_print  span").text('');
+			 	 company_close();
+				 },1000)
+		 }
     
     	$(function(){
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;

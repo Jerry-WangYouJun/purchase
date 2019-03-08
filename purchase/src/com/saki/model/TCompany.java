@@ -30,6 +30,7 @@ public class TCompany implements java.io.Serializable {
 	
 	private String telphone;
 	private String tax ;
+	private String bank;
 	private String card;
 	private String brand;
 	private String colorImg;
@@ -163,6 +164,16 @@ public class TCompany implements java.io.Serializable {
 	public void setTax(String tax) {
 		this.tax = tax;
 	}
+	
+	@Column(name = "bank", length = 30)
+	public String getBank() {
+		return bank;
+	}
+
+	public void setBank(String bank) {
+		this.bank = bank;
+	}
+
 	@Column(name = "card", length = 30)
 	public String getCard() {
 		return card;

@@ -203,7 +203,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 	            			  '-' + data[index].children[i].formatNum+'-' + data[index].children[i].format +'-' + 
 	            			   data[index].children[i].material + ' </a></label> </span>';
 	            		}
-	            		htmlStr += '</p> <div><img alt="" src="" id="img_<s:property value="'+data[index].id+'"/>" class="col-md-8"></div> </div>';
+	            		htmlStr += '</p> <div><img alt="" src="" id="img_'+data[index].id+'" class="col-md-8"></div> </div>';
 			    }
 	            	$("#third").html(htmlStr)
 	             	$.ajax({

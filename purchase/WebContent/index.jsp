@@ -310,7 +310,7 @@
 					</c:if>
 					<li class="">
 							<a href="javascript:;"> <i class="icon-th"></i>
-								<span class="title">订单管理</span> <span class="arrow "></span></a>
+								<span class="title" style="font-weight: 900;">订单管理</span> <span class="arrow "></span></a>
 							<ul class="sub-menu">
 								<c:if test="${roleId eq 1 }">
 									<li class="active-menu"><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/admin_order_manage.jsp')"> 快速下单</a></li>
@@ -446,7 +446,7 @@
 										<h3>开户银行:农行市北区郑州路支</h3>
 									<h3>	账号:38080401040016852
 										</h3>
-										
+										<h3>热线电话:18661852354</h3>
 										<h3>售后服务请扫下方二维码添加微信联系人：</h3>
 										<img alt="" src="img/code.jpeg">
 								</div>

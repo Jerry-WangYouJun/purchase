@@ -280,6 +280,7 @@
 				 $('#confirmId').combobox('setValue', "${warnFlag.id}");
            }
 		});
+		$("img").attr("src","") 
 		$('#order_dlg').dialog('open');	
 		$('#order_dlg').dialog('setTitle','添加订单');
 	}

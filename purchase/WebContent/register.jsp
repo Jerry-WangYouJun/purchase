@@ -146,12 +146,16 @@ body {
                 <input name="telphone" class=" form-control"  style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">
-            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">税号：</label>
-                <input name="tax" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">开户银行：</label>
+                <input name="bank" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">银行账号：</label>
                 <input name="card" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+            </div>
+            <div class="form-group col-md-6">
+            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">税号：</label>
+                <input name="tax" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
             <div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">地址：</label>

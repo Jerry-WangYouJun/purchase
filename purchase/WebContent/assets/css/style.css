@@ -64,10 +64,10 @@ li.bg-2f>a{
 .nav-second-level li.on,.separate{
     color: #ffffff !important;
     background-image: -moz-linear-gradient(45deg, #8226f5 0%, #e625ea 100%) !important;
-    background-image: -webkit-linear-gradient(45deg, #8226f5 0%, #e625ea 100%) !important;
+    
     background-image: -ms-linear-gradient(45deg, #8226f5 0%, #e625ea 100%) !important;
     border-color: transparent;
-    background-color: #8226f5 !important;
+    
     background-size: cover;
     background-repeat: repeat;
 }

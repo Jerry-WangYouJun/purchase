@@ -66,6 +66,10 @@ public class AddressAction extends BaseAction implements ModelDriven<TAddress>{
 				addressService.update(address);
 			}else{
 				String companyId = getParameter("cid");
+				String roleId = getSession().getAttribute("roleId").toString();
+				if(!"1".equals(roleId)) {
+					companyId  =  getSession().getAttribute("companyId").toString();
+				}
 				address.setCid(Integer.valueOf(companyId));
 				Map map = new HashMap();
 				map.put("cid", companyId);

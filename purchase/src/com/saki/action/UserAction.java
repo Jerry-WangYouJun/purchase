@@ -215,7 +215,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			while (it.hasNext()) {
 				TNotice t = it.next();
 				if("1".equals(t.getFlag())) {
-					msg += t.getMsg() + ";";
+					msg += t.getMsg() + ";      ";
 				}
 				
 			}

@@ -107,7 +107,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						                 class="form-control select2 easyui-combobox" >
 							                	 <c:forEach items="${addressList}" var="address" >
 							                	 	<c:if test="${companyId eq address.cid }">
-								                	 	 <option value="${address.id}"> ${address.name}</option>
+								                	 	 <option value="${address.id}"> ${address.address}</option>
 							                	 	</c:if>
 							                	 </c:forEach>
 						                </select>
@@ -156,7 +156,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		</div>
 	<div id="company_dlg_buttons" style="width:600px;height: 40px;text-align: center">
 			<button onclick="company_close()" type="button" class="btn btn-default btn-dialog-right">关闭</button>
-			<button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button> 
+			<!-- <button onclick="print()" type="button" class="btn btn-default btn-dialog-right">打印</button>  -->
 	</div>
 	<div id="toolbar_company" style="padding:2px 5px;">
 	     <a onclick="order_detail()" class="easyui-linkbutton"  plain="true" iconCls="icon-tip" style="margin: 2px">详情</a>
@@ -165,7 +165,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        <a onclick="order_edit()" class="easyui-linkbutton"  plain="true" iconCls="icon-edit" style="margin: 2px">修改订单</a>
 	        <a onclick="order_delete()" class="easyui-linkbutton"  plain="true" iconCls="icon-remove" style="margin: 2px">删除订单</a>
 	        <a onclick="order_status('4')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认收货</a>
-	        <a onclick="invoice_status('2')" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">发票已收</a>
+	        <a onclick="invoice_status('2')" class="easyui-linkbutton"  plain="true"  style="margin: 2px">发票已收</a>
+	         <a onclick="print()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">打印</a>
 	    </c:if>
     </div>
 		   
@@ -676,29 +677,34 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		});
 		 
 		 function print(){
+			 order_detail();
 	    		var row = $('#table_order').datagrid('getSelected');
-	    		$("#order_form").hide();
-	    		$("#table_print").show();
-	    		$("#companyNamePrt>span").append(row.companyName);
-	    		$("#orderNoPrt>span").append(row.orderNo);
-	    		$("#amountPrt>span").append(row.amount);
-	    		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
-	    		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
-	    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
-	    		$("#startDatePrt>span").append(row.startDate);
-	    		$("#pillDatePrt>span").append(row.pillDate);
-	    		var rows = $('#table_add').datagrid('getData');
-	    		$("#addressPrt>span").append(rows.rows[0].address);
-			 $("#order_dlg").jqprint({
-				 debug: false,
-				 importCSS: true,
-				 printContainer: true,
-				 operaSupport: false
-			 });
-	    		$("#order_form").show();
-	    		$("#table_print").hide();
-	    		$("#table_print  span").text('');
-			// company_close();
+	    		if(row){
+		    		setTimeout( function(){
+			    		$("#order_form").hide();
+			    		$("#table_print").show();
+			    		$("#companyNamePrt>span").append(row.companyName);
+			    		$("#orderNoPrt>span").append(row.orderNo);
+			    		$("#amountPrt>span").append(row.amount);
+			    		$("#confirmIdPrt>span").append($("#confirmId").find("option:selected").text());
+			    		$("#statusPrt>span").append(getDicValue('status',row.status ,row));
+			    		$("#invoicePrt>span").append(getDicValue('invoice',row.invoice ,row));
+			    		$("#startDatePrt>span").append(row.startDate);
+			    		$("#pillDatePrt>span").append(row.pillDate);
+			    		var rows = $('#table_add').datagrid('getData');
+			    		$("#addressPrt>span").append($("#addressId").find("option:selected").text()); 
+					 $("#order_dlg").jqprint({
+						 debug: false,
+						 importCSS: true,
+						 printContainer: true,
+						 operaSupport: false
+					 });
+			    		$("#order_form").show();
+			    		$("#table_print").hide();
+			    		$("#table_print  span").text('');
+				 	 company_close();
+					 },1000)
+	    		}
 		 }
    
     </script>

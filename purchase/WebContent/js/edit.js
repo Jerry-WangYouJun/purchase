@@ -128,7 +128,8 @@
 	   				function(r) {
 	   					if (r) {
 	   						//document.getElementById('order_form').reset();
-	   						$('#order_dlg').dialog('close');	
+	   						$('#order_dlg').dialog('close');
+	   						$("img").attr("src","");
 	   						$('#table_order').datagrid('reload');
 	   						$('#table_add').datagrid('reload', {
 	   							id: 0
