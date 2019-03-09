@@ -21,7 +21,8 @@ public class TUser implements java.io.Serializable {
 	private Integer companyId;
 	private Integer roleId;
 	private String userName;
-	private String userPwd;
+	private String userPwd;//密文
+	private String pwd;
 
 	private String companyName;
 	
@@ -32,11 +33,11 @@ public class TUser implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TUser(Integer companyId, Integer roleId, String userName, String userPwd , String companyName) {
+	public TUser(Integer companyId, Integer roleId, String userName, String pwd , String companyName) {
 		this.companyId = companyId;
 		this.roleId = roleId;
 		this.userName = userName;
-		this.userPwd = userPwd;
+		this.pwd = pwd;
 		this.companyName = companyName;
 	}
 
@@ -103,5 +104,16 @@ public class TUser implements java.io.Serializable {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
+
+	@Column(name="pwd")
+	public String getPwd() {
+		return pwd;
+	}
+
+	public void setPwd(String pwd) {
+		this.pwd = pwd;
+	}
+	
+	
 
 }

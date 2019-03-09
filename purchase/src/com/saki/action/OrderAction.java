@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
+import org.apache.struts2.convention.annotation.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.alibaba.fastjson.JSON;
@@ -33,6 +34,7 @@ import com.saki.utils.SystemUtil;
 
 @Namespace("/")
 @Action(value="orderAction")
+@Result(name="print",location="/pages/print_order_manage.jsp")
 public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 
 	private static final Logger logger = Logger.getLogger(OrderAction.class);
@@ -79,6 +81,8 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		}
 	}
 	
+	
+	
 	public void loadAll(){
 		String page = getParameter("page");
 		String rows = getParameter("rows");
@@ -93,6 +97,17 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		Map<String ,Object> params  = new HashMap<>();
 		getParams(params);
 		super.writeJson(orderService.search(params, "startDate", "desc", page, rows ,null));
+	}
+	
+	public String loadByOrderId() {
+		getRequest().setAttribute( "amount" , getParameter("amount"));
+		getRequest().setAttribute( "companyName" , getParameter("companyName"));
+		getRequest().setAttribute( "orderNo" , getParameter("orderNo"));
+		getRequest().setAttribute( "startDate", getParameter("startDate"));
+		getRequest().setAttribute( "address" , getParameter("address"));
+		getRequest().setAttribute( "status" , getParameter("status"));
+		getRequest().setAttribute( "confirm" , getParameter("confirm"));
+		return "print";
 	}
 	
 	public void loadUrgentOrder(){

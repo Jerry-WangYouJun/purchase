@@ -44,7 +44,7 @@
 	   	 	<div class="form-group col-md-12">
 	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 35%">旧密码：</label>
 	               <input name="userName" type="hidden" value = "${userName}">
-	                <input name="userPwd" id="oldpwd"  type="password" class="form-control"  style="display: inline-block;width: 70%">
+	                <input name="pwd" id="oldpwd"  type="password" class="form-control"  style="display: inline-block;width: 70%">
 	        </div>
 	    		<div class="form-group col-md-12">
 	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 35%">新密码：</label>

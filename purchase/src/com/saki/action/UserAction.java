@@ -92,7 +92,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		String pwd = getParameter("newPwd");
 		Message j = new Message();
 		try{
-			user.setUserPwd(MD5Util.md5(pwd));
+			user.setPwd(pwd);
 			userService.update(user);
 			j.setSuccess(true);
 			j.setMsg("更新成功");
@@ -249,7 +249,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 			TUser u =userService.login(user);
 			String newPwd = getParameter("newPwd");
 			if(u != null){
-				u.setUserPwd(MD5Util.md5(newPwd));
+				u.setPwd(newPwd);
 				try {
 					userService.update(u);
 				} catch (Exception e) {

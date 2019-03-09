@@ -61,7 +61,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
                 </select>
                 查询内容
                 <input name="queryValue" id = "queryValue"class=" form-control" style="display: inline-block;width: 10%">
-               
+                	订单状态：
+                <select name="ostatue" id="ostatue" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">新订单</option>
+	                	<option value="3">已付款</option>
+	                	<option value="5">提交采购</option>
+	                	<option value="4">已收货</option>
+                </select>
+                	发票状态：
+                <select name="oinvoice" id="oinvoice" 
+                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
+                    <option value="">-选择-</option>
+	                	<option value="1">发票已开</option>
+	                	<option value="2">发票已收到</option> 
+                </select>
                 <button onclick="query()"  class="btn btn-default queryBtn" >查询</button>
             </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
@@ -118,6 +133,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   	     <a onclick="order_status('3')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认付款</a>    
          <a onclick="invoice_status('1')" class="easyui-linkbutton"  plain="true"  style="margin: 2px">发票已开</a>
           <a onclick="exportOrder()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">导出Excel</a>
+         <a onclick="printSign()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">带印章打印</a>
           <a onclick="print()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">打印</a>
     </div>
 		   
@@ -143,7 +159,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	function print(){
 			 order_detail();
 	    		var row = $('#table_order').datagrid('getSelected');
-	    		
 	    		setTimeout( function(){
 		    		$("#order_form").hide();
 		    		$("#table_print").show();
@@ -326,7 +341,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    				});
 			//$("#table_add").datagrid("hideColumn","amount");
 		});
-    	
+    	function printSign(){
+    		var row = $('#table_order').datagrid('getSelected');
+    		if(row){
+	    		var str= "?falg=1";
+	    		for(col in row){
+	    			 str  += ("&" + col + "=" + row[col])
+	    		}
+	    		str += ("&address=" + $("#addressId").find("option:selected").text().replace(/\s+/g,""))
+	    		str += ("&confirm=" + $("#confirmId").find("option:selected").text().replace(/\s+/g,""))
+	    		
+	    		window.open("${pageContext.request.contextPath}/orderAction!loadByOrderId.action" + str);
+    		}
+	 }
     </script>
 </body>
 </html>

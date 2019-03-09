@@ -12,6 +12,7 @@ import com.saki.dao.BaseDaoI;
 import com.saki.entity.Grid;
 import com.saki.model.TColor;
 import com.saki.model.TCompany;
+import com.saki.model.TOrder;
 import com.saki.model.TUser;
 import com.saki.service.CompanyServiceI;
 import com.saki.service.UserServiceI;

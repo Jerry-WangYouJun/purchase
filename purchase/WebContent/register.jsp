@@ -129,7 +129,7 @@ body {
             </div>
 			<div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">登录密码：</label>
-                <input name="userPwd" type="password" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
+                <input name="pwd" type="password" class=" form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
 			<div class="form-group col-md-6">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: right;width: 30%">联系人：</label>

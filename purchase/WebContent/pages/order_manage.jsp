@@ -166,6 +166,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	        <a onclick="order_delete()" class="easyui-linkbutton"  plain="true" iconCls="icon-remove" style="margin: 2px">删除订单</a>
 	        <a onclick="order_status('4')" class="easyui-linkbutton"  plain="true" iconCls="icon-ok" style="margin: 2px">确认收货</a>
 	        <a onclick="invoice_status('2')" class="easyui-linkbutton"  plain="true"  style="margin: 2px">发票已收</a>
+	        <a onclick="printSign()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">带印章打印</a>
 	         <a onclick="print()" class="easyui-linkbutton"  plain="true" iconCls="icon-print" style="margin: 2px">打印</a>
 	    </c:if>
     </div>
@@ -706,7 +707,21 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					 },1000)
 	    		}
 		 }
-   
+		 
+		 function printSign(){
+	    		var row = $('#table_order').datagrid('getSelected');
+	    		if(row){
+		    		var str= "?falg=1";
+		    		for(col in row){
+		    			 str  += ("&" + col + "=" + row[col])
+		    		}
+		    		str += ("&address=" + $("#addressId").find("option:selected").text().replace(/\s+/g,""))
+		    		str += ("&confirm=" + $("#confirmId").find("option:selected").text().replace(/\s+/g,""))
+		    		
+		    		window.open("${pageContext.request.contextPath}/orderAction!loadByOrderId.action" + str);
+	    		}
+		 }
+
     </script>
 </body>
 </html>

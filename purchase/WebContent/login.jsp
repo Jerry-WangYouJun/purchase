@@ -121,7 +121,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				<input type="text" name="userName" placeholder="请输入账号..."/>
 			</div>
 			<div style="margin:5px 0px;">
-				<input type="password" name="userPwd" placeholder="请输入密码..."/>
+				<input type="password" name="pwd" placeholder="请输入密码..."/>
 			</div>
 			<button type="button" onclick="submitForm()"  class="log_btn">登<span style="width:20px;"></span>录</button>
 			<div style="margin:15px 0px;">

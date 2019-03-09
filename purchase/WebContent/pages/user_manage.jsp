@@ -66,7 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								break;
 							}							
 						}},
-						{field:'userPwd',title:'登陆密码',width:100,align:'center'},
+						{field:'pwd',title:'登陆密码',width:100,align:'center'},
 					{field:'companyName',title:'公司ID',width:150,align:'center'}
 				]],				
 			});

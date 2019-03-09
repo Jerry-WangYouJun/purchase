@@ -30,10 +30,10 @@ public class UserServiceImpl implements UserServiceI{
 	@Override
 	public void add(Object object) {
 		TUser user = (TUser)object ;
-		if(user.getUserPwd()==null || "".equals(user.getUserPwd())){
-			user.setUserPwd(MD5Util.md5("000000"));
+		if(user.getPwd()==null || "".equals(user.getPwd())){
+			user.setPwd("000000");
 		}else{
-			user.setUserPwd(MD5Util.md5(user.getUserPwd()));
+			user.setPwd(user.getPwd());
 		}
 		userDao.save(user);
 	}
@@ -130,9 +130,9 @@ public class UserServiceImpl implements UserServiceI{
 	public TUser login(TUser user) {
 		Map<String, Object> params = new HashMap<String, Object>();
 		params.put("userName",user.getUserName());
-		params.put("userPwd", MD5Util.md5(user.getUserPwd()));
+		params.put("pwd", user.getPwd());
 		
-		TUser t = (TUser) userDao.get("from TUser t where t.userName = :userName and t.userPwd = :userPwd", params);
+		TUser t = (TUser) userDao.get("from TUser t where t.userName = :userName and t.pwd = :pwd", params);
 		if(t!=null){
 			return t;
 		}
