@@ -1,7 +1,6 @@
 package com.saki.action;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Iterator;
 import java.util.List;
@@ -24,7 +23,6 @@ import com.saki.service.AddressServiceI;
 import com.saki.service.ConfirmServiceI;
 import com.saki.service.NoticeServiceI;
 import com.saki.service.UserServiceI;
-import com.saki.utils.MD5Util;
 
 @Results({
 	@Result(name="password",location="/pages/password.jsp")

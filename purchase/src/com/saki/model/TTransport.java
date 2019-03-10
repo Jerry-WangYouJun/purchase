@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "t_transport", catalog = "order")
+@Table(name = "t_transport")
 public class TTransport implements java.io.Serializable{
 	 private Integer id ;
 	 private Integer orderid;

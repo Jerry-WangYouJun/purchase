@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductServiceI{
 				productType.setBase(ltp.get(i).getBase());
 				productType.setRemark(ltp.get(i).getRemark());
 				productType.setType(ltp.get(i).getType());
-				productType.setUnit(ltp.get(i).getUnit());
+				//productType.setUnit(ltp.get(i).getUnit());
 				
 				ltd = (ArrayList<TProductDetail>) productDetailService.loadByProductId(ltp.get(i).getId());
 				
@@ -127,7 +127,7 @@ public class ProductServiceImpl implements ProductServiceI{
 				productType.setBase(ltp.get(i).getBase());
 				productType.setRemark(ltp.get(i).getRemark());
 				productType.setType(ltp.get(i).getType());
-				productType.setUnit(ltp.get(i).getUnit());
+				//productType.setUnit(ltp.get(i).getUnit());
 				
 				ltd = (ArrayList<TProductDetail>) productDetailService.loadByProductId(ltp.get(i).getId());
 				
@@ -164,7 +164,7 @@ public class ProductServiceImpl implements ProductServiceI{
 					productType.setBase(ltp.get(i).getBase());
 					productType.setRemark(ltp.get(i).getRemark());
 					productType.setType(ltp.get(i).getType());
-					productType.setUnit(ltp.get(i).getUnit());
+					//productType.setUnit(ltp.get(i).getUnit());
 					
 					ltd = (ArrayList<TProductDetail>) productDetailService.loadByProductId(ltp.get(i).getId());
 					for(TProductDetail t : ltd){
@@ -189,7 +189,7 @@ public class ProductServiceImpl implements ProductServiceI{
 					productType.setBase(ltp.get(i).getBase());
 					productType.setRemark(ltp.get(i).getRemark());
 					productType.setType(ltp.get(i).getType());
-					productType.setUnit(ltp.get(i).getUnit());
+					//productType.setUnit(ltp.get(i).getUnit());
 					
 					ltd = (ArrayList<TProductDetail>) productDetailService.loadByProductId(ltp.get(i).getId());
 					for(TProductDetail t : ltd){
@@ -226,7 +226,6 @@ public class ProductServiceImpl implements ProductServiceI{
 		for (TProduct tProduct : products) {
 			//创建新的 product  
 			Product product = new Product();
-			product.setUnit(tProduct.getUnit());
 			product.setProduct(tProduct.getProduct());	
 			product.setId(tProduct.getId());
 			//查询product 的 二级类型
@@ -277,7 +276,6 @@ public class ProductServiceImpl implements ProductServiceI{
 			for (TProduct tProduct : products) {
 				//创建新的 product  
 				Product product = new Product();
-				product.setUnit(tProduct.getUnit());
 				product.setProduct(tProduct.getProduct());
 				product.setId(tProduct.getId());			
 				//查询product 的 二级类型
@@ -382,7 +380,6 @@ public class ProductServiceImpl implements ProductServiceI{
 		for (TProduct tProduct : products) {
 			//创建新的 product  
 			Product product = new Product();
-			product.setUnit(tProduct.getUnit());
 			product.setProduct(tProduct.getProduct());
 			product.setId(tProduct.getId());
 			//查询product 的 二级类型
@@ -441,7 +438,7 @@ public class ProductServiceImpl implements ProductServiceI{
 //			hql += " and m.price >= " + price + "";
 //		}
 		
-		hql += " order by c.name ,  p.product  , d.subProduct , d.format , d.material  ";
+		hql += " order by c.name ,  p.product  , d.subProduct , d.unit ,d.format , d.material  ";
 		List<Object[]> list = produceDao.find(hql  , Integer.valueOf(page), Integer.valueOf(rows));
 		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
 		for (int i = 0; i < list.size(); i++) {
@@ -457,15 +454,17 @@ public class ProductServiceImpl implements ProductServiceI{
 			tempMap.put("level", company.getLevel());
 			tempMap.put("remark", company.getBrand());
 			tempMap.put("parentName", productParent.getProduct());
-			tempMap.put("unit", productParent.getUnit());
 			tempMap.put("productName", product.getProduct());
 			tempMap.put("subProduct", ProductDetail.getSubProduct());
 			String proFormart = "";
 			if(ProductDetail.getFormatNum() != null && ProductDetail.getFormatNum() > 0){
 				 proFormart += ProductDetail.getFormatNum();
 			}
+			if(StringUtils.isNotBlank(ProductDetail.getUnit())) {
+				proFormart +=ProductDetail.getUnit();
+			}
 			if(StringUtils.isNotBlank(ProductDetail.getFormat())){
-				proFormart += ProductDetail.getFormat();
+				proFormart +=  ("/" + ProductDetail.getFormat());
 			}
 			tempMap.put("format", proFormart);
 			tempMap.put("material", ProductDetail.getMaterial());
@@ -495,7 +494,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		for (TProduct tProduct : products) {
 			//创建新的 product  
 			ProductType product = new ProductType();
-			product.setUnit(tProduct.getUnit());
+//			product.setUnit(tProduct.getUnit());
 			product.setProduct(tProduct.getProduct());
 			product.setId(tProduct.getId());
 			List<TProductDetail> childlList = new ArrayList<>();

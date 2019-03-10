@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
  * TConfirm entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_confirm", catalog = "order")
+@Table(name = "t_confirm")
 
 public class TConfirm implements java.io.Serializable {
 

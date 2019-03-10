@@ -158,7 +158,6 @@ public class SupplierOrderServiceImpl2 implements SupllierOrderServiceI{
 			map.put("sub_product", detail.getSubProduct());
 			map.put("materail", detail.getMaterial());
 			map.put("acount", oDetail.getNum());
-			map.put("unit", parentProduct.getUnit());
 			map.put("price",  oDetail.getPrice() );
 			map.put("detailId", detail.getId());
 			map.put("productId", product.getId());

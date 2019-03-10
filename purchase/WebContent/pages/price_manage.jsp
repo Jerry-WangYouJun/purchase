@@ -43,6 +43,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                 <option value="g.product">产品</option>
 	                	 <option value="p.product">产品类别</option> 
 	                	<option value="d.subProduct">产品名称</option>
+	                	<option value="d.unit">单位</option>
 	                	<option value="d.format">规格</option>
 	                	<option value="d.material">材料</option>
                 </select>
@@ -58,6 +59,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	                 <option value="g.product">产品</option>
 	                	<!-- <option value="2">产品类别</option> -->
 	                	<option value="d.subProduct">产品名称</option>
+	                		<option value="d.unit">单位</option>
 	                	<option value="d.format">规格</option>
 	                	<option value="d.material">材料</option>
                 </select>
@@ -144,7 +146,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'parentName',title:'产品',width:20,align:'center'},
 					{field:'productName',title:'产品类别',width:20,align:'center'},
 					{field:'subProduct',title:'产品名称',width:20,align:'center'},
-					{field:'format',title:'规格',width:20,align:'center'},
 					{field:'material',title:'材料',width:20,align:'center'},
 					{field:'price',title:'价格设置',width:20,align:'center',
 					editor:{
@@ -154,6 +155,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							textField:'price'
 						}
 					}},
+					{field:'unit',title:'单位',width:20,align:'center'},
+					{field:'format',title:'规格',width:20,align:'center'},
 					{field:'markup',title:'加价设置',width:20,align:'center',
 						editor:{
 							type:'text',

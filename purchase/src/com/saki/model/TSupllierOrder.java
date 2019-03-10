@@ -12,7 +12,7 @@ import org.hibernate.annotations.GenericGenerator;
  * TSupllierOrder entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_supllier_order", catalog = "order")
+@Table(name = "t_supllier_order")
 
 public class TSupllierOrder implements java.io.Serializable {
 

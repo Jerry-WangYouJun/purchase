@@ -200,7 +200,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
 	            			  ' data-parent='+data[index].children[i].productId + '>' + 
 	            			  '<label for="third_check_'+data[index].children[i].id + '" style="font-size:15">' + 
 	            			  ' <a style="text-decoration:none">' +  data[index].children[i].subProduct +
-	            			  '-' + data[index].children[i].formatNum+'-' + data[index].children[i].format +'-' + 
+	            			  '-' + data[index].children[i].formatNum+'-' + data[index].children[i].unit+'/' + data[index].children[i].format +'-' + 
 	            			   data[index].children[i].material + ' </a></label> </span>';
 	            		}
 	            		htmlStr += '</p> <div><img alt="" src="" id="img_'+data[index].id+'" class="col-md-8"></div> </div>';

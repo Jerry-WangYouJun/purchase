@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
  * TUser entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_address", catalog = "order")
+@Table(name = "t_address", catalog = "orderBak")
 
 public class TAddress implements java.io.Serializable {
 

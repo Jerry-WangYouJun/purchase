@@ -11,7 +11,7 @@ import org.hibernate.annotations.GenericGenerator;
 
 
 @Entity
-@Table(name = "t_color", catalog = "order")
+@Table(name = "t_color")
 public class TColor implements java.io.Serializable{
 	 private Integer id;
 	 private String brand;

@@ -123,9 +123,7 @@ public class ImportExcelImpl  implements ImportExcelI{
 				childProductForSave.setParentId(parentProductForSave.getId());
 				TProduct product =  resultMap.get(parent).get(childPro);
 				childProductForSave.setBase(product.getBase());
-				childProductForSave.setUnit(product.getUnit());
 				productDao.saveOrUpdate(childProductForSave);
-				//parentProductForSave.setUnit(product.getUnit());
 				continueOut:
 				for(TProductDetail detail : product.getDetailList()) {
 					if(productChildMap.containsKey(childPro)){
@@ -166,7 +164,6 @@ public class ImportExcelImpl  implements ImportExcelI{
 						product.setChildProName(value);
 						break;
 					case 2:
-						product.setUnit(value);
 						break;
 					case 3 :
 						if(StringUtils.isNotEmpty(value.trim())){
@@ -219,7 +216,13 @@ public class ImportExcelImpl  implements ImportExcelI{
 					String format = proDetailFormatList.get(i);
 					Integer formatNum = SystemUtil.getNumFromString(format);
 					detailListFirst.get(i).setFormatNum(formatNum);
-					detailListFirst.get(i).setFormat(format.replace(formatNum+"", ""));
+					String formatAndUnit = format.replace(formatNum+"", "");
+					if(formatAndUnit.indexOf("/") >= 0) {
+						detailListFirst.get(i).setUnit(formatAndUnit.split("/")[0]);
+						detailListFirst.get(i).setFormat(formatAndUnit.split("/")[1]);
+					}else {
+						detailListFirst.get(i).setUnit(formatAndUnit);
+					}
 				}
 		}else {
 			throw new Exception("型号规格不匹配，型号与规格中的数量应一致！");
@@ -241,12 +244,24 @@ public class ImportExcelImpl  implements ImportExcelI{
 			if(StringUtils.isNotEmpty(format)) {
 				for (TProductDetail detail : detailListFirst) {
 					if(i==0) {
-						detail.setFormat(format.replace(formatNum+"", ""));
 						detail.setFormatNum(formatNum);
+						String formatAndUnit = format.replace(formatNum+"", "");
+						if(formatAndUnit.indexOf("/") >= 0) {
+							detail.setUnit(formatAndUnit.split("/")[0]);
+							detail.setFormat(formatAndUnit.split("/")[1]);
+						}else {
+							detail.setUnit(formatAndUnit);
+						}
 					}else {
 						TProductDetail detailTemp = new TProductDetail();
 						detailTemp.setFormatNum(formatNum);
-						detailTemp.setFormat(format.replace(formatNum+"", ""));
+						String formatAndUnit = format.replace(formatNum+"", "");
+						if(formatAndUnit.indexOf("/") >= 0) {
+							detailTemp.setUnit(formatAndUnit.split("/")[0]);
+							detailTemp.setFormat(formatAndUnit.split("/")[1]);
+						}else {
+							detailTemp.setUnit(formatAndUnit);
+						}
 						detailTemp.setSubProduct(detail.getSubProduct());
 						detailListSecond.add(detailTemp);
 					}
@@ -296,6 +311,7 @@ public class ImportExcelImpl  implements ImportExcelI{
 						detailTemp.setSubProduct(detail.getSubProduct());
 						detailTemp.setFormatNum(detail.getFormatNum());
 						detailTemp.setFormat(detail.getFormat());
+						detailTemp.setUnit(detail.getUnit());
 						detailListThird.add(detailTemp);
 					}
 				}
@@ -375,6 +391,13 @@ public class ImportExcelImpl  implements ImportExcelI{
 				if(tempNum != null){
 					proDetail.setFormatNum(Integer.valueOf(tempNum));
 					proDetail.setFormat(proDetail.getFormat().replace(tempNum+"", ""));
+					String formatAndUnit = proDetail.getFormat().replace(tempNum+"", "");
+					if(formatAndUnit.indexOf("/") >= 0) {
+						proDetail.setUnit(formatAndUnit.split("/")[0]);
+						proDetail.setFormat(formatAndUnit.split("/")[1]);
+					}else {
+						proDetail.setUnit(formatAndUnit);
+					}
 				}else{
 					continue;
 				}

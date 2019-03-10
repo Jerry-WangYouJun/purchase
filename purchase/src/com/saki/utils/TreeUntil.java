@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.util.StringUtils;
 
 import com.saki.entity.TreeModel;
 import com.saki.model.TProduct;
@@ -70,7 +71,7 @@ public class TreeUntil {
 			tree.setPid(detail.getProductId()+"");
 			tree.setName(detail.getSubProduct()+"-"
 					+ (detail.getFormatNum()==null?"":detail.getFormatNum() )
-					+ detail.getFormat()+"-"+detail.getMaterial());		
+					+ ((detail.getUnit() == null || "".equals(detail.getUnit())) ?"":(detail.getUnit() + "/") )+ detail.getFormat()+"-"+detail.getMaterial());		
 			
 			list.add(tree);
 		}

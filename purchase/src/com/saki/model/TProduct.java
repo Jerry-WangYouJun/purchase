@@ -15,7 +15,7 @@ import org.hibernate.annotations.GenericGenerator;
  * TProduct entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_product", catalog = "order")
+@Table(name = "t_product")
 
 public class TProduct implements java.io.Serializable {
 
@@ -24,7 +24,6 @@ public class TProduct implements java.io.Serializable {
 	private Integer id;
 	private String product;
 	private String type;
-	private String unit;
 	private Integer base;
 	private String remark;
 
@@ -48,30 +47,20 @@ public class TProduct implements java.io.Serializable {
 	}
 
 	/** full constructor */
-	public TProduct(Integer parentId,String product, String type, String unit, Integer base, String remark) {
+	public TProduct(Integer parentId,String product, String type,  Integer base, String remark) {
 		this.parentId = parentId;
 		this.product = product;
 		this.type = type;
-		this.unit = unit;
 		this.base = base;
 		this.remark = remark;
 	}
-	public TProduct(Integer id,Integer parentId, String product, String type, String unit, Integer base, String remark) {
+	public TProduct(Integer id,Integer parentId, String product, String type,  Integer base, String remark) {
 		this.parentId = parentId;
 		this.id = id;
 		this.product = product;
 		this.type = type;
-		this.unit = unit;
 		this.base = base;
 		this.remark = remark;
-	}
-	 /**
-     * distinct constructor 
-     * @param produnct
-     */
-	public TProduct(String produnct , String  unit) {
-		 this.product = produnct;
-		 this.unit = unit ;
 	}
 	// Property accessors
 	@GenericGenerator(name = "generator", strategy = "increment")
@@ -114,16 +103,6 @@ public class TProduct implements java.io.Serializable {
 
 	public void setType(String type) {
 		this.type = type;
-	}
-
-	@Column(name = "unit", length = 10)
-
-	public String getUnit() {
-		return this.unit;
-	}
-
-	public void setUnit(String unit) {
-		this.unit = unit;
 	}
 
 	@Column(name = "base", length = 10)

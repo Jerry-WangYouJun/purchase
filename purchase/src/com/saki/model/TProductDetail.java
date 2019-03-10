@@ -13,7 +13,7 @@ import org.hibernate.annotations.GenericGenerator;
  * TProductDetail entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_product_detail", catalog = "order")
+@Table(name = "t_product_detail")
 
 public class TProductDetail implements java.io.Serializable {
 
@@ -22,6 +22,7 @@ public class TProductDetail implements java.io.Serializable {
 	private Integer id;
 	private Integer productId;
 	private String subProduct;
+	private String unit;
 	private Integer formatNum;
 	private String format;
 	private String material;
@@ -47,10 +48,11 @@ public class TProductDetail implements java.io.Serializable {
 	}
 	
 	
-	public TProductDetail(Integer id,Integer productId, String subProduct, String format, Integer formatNum, String material, String remark) {
+	public TProductDetail(Integer id,Integer productId, String subProduct, String unit ,String format, Integer formatNum, String material, String remark) {
 		this.id = id;
 		this.productId = productId;
 		this.subProduct = subProduct;
+		this.unit = unit ;
 		this.format = format;
 		this.formatNum = formatNum;
 		this.material = material;
@@ -153,6 +155,7 @@ public class TProductDetail implements java.io.Serializable {
 		this.product = product;
 	}*/
 
+	
 	public TUserProduct getMapper() {
 		return mapper;
 	}
@@ -161,6 +164,15 @@ public class TProductDetail implements java.io.Serializable {
 		this.mapper = mapper;
 	}
 
+	
+	@Column(name = "unit")
+	public String getUnit() {
+		return unit;
+	}
+
+	public void setUnit(String unit) {
+		this.unit = unit;
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -189,8 +201,11 @@ public class TProductDetail implements java.io.Serializable {
 		if (StringUtils.isBlank(subProduct)) {
 			if (StringUtils.isNotBlank(other.subProduct ))
 				return false;
-		} else if (!subProduct.equals(other.subProduct))
+		} else if (!subProduct.equals(other.subProduct)) {
 			return false;
+		}else if(!unit.equals(other.unit)) {
+			return false;
+		}
 		return true;
 	}
 }

@@ -192,7 +192,6 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("remark", orderDetail.getRemark());
 			
 			map.put("product",parentProduct.getProduct() );
-			map.put("unit", product.getUnit());
 			map.put("type",  product.getProduct());
 			map.put("base", product.getBase());
 			map.put("productId", product.getId());
@@ -201,7 +200,7 @@ public class OrderServiceImpl implements OrderServiceI{
 				subPro +=  "-" +  detail.getMaterial()  ;
 			}
 			if(detail.getFormatNum() != null ){
-				subPro += "-" + detail.getFormatNum() + detail.getFormat();
+				subPro += "-" + detail.getFormatNum() + detail.getUnit() + "/" +  detail.getFormat();
 			}
 			map.put("sub_product", subPro);
 			map.put("materail", detail.getMaterial());

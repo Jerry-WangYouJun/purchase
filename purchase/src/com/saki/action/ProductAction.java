@@ -357,6 +357,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				detail = new TProductDetail(null,
 						Integer.parseInt(request.getParameter("productId")), 
 						request.getParameter("subProduct"), 
+						request.getParameter("unit"),
 						request.getParameter("format"), 
 						StringUtils.isEmpty(request.getParameter("formatNum"))?
 								null:Integer.parseInt(request.getParameter("formatNum")),
@@ -366,6 +367,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				detail = new TProductDetail(Integer.parseInt(request.getParameter("id")),
 						Integer.parseInt(request.getParameter("productId")), 
 						request.getParameter("subProduct"), 
+						request.getParameter("unit"),
 						request.getParameter("format"), 
 						StringUtils.isEmpty(request.getParameter("formatNum"))?
 								null:Integer.parseInt(request.getParameter("formatNum")),
@@ -419,7 +421,6 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 				 parentId, 
 				getParameter("product"), 
 				getParameter("type"), 
-				getParameter("unit"), 
 				getParameter("base") != null
 						&& StringUtils.isNotEmpty(getParameter("base")
 								.toString()) ? Integer.valueOf(getParameter("base")) : 0,

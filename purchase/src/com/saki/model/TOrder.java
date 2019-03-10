@@ -14,7 +14,7 @@ import com.saki.utils.SystemUtil;
  * TOrder entity. @author MyEclipse Persistence Tools
  */
 @Entity
-@Table(name = "t_order", catalog = "order")
+@Table(name = "t_order")
 
 public class TOrder implements java.io.Serializable {
 

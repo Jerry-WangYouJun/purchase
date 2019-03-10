@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.hibernate.annotations.GenericGenerator;
 
 @Entity
-@Table(name = "t_order_mapping", catalog = "order")
+@Table(name = "t_order_mapping")
 public class TOrderMapping implements java.io.Serializable{
 	   private Integer id;
 	   private Integer orderId;

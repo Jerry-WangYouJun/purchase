@@ -155,14 +155,13 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 			map.put("initnum", orderDetail.getInitnum());
 			
 			map.put("product", parentProduct.getProduct() );
-			map.put("unit", parentProduct.getUnit());
 			map.put("productId", product.getId());
 			map.put("type",  product.getProduct());
 			map.put("sub_product", productDetail.getSubProduct());
 			map.put("materail", productDetail.getMaterial());
 			map.put("detailId", productDetail.getId());
 			map.put("formatNum", productDetail.getFormatNum());
-			map.put("format", productDetail.getFormat());
+			map.put("format", productDetail.getUnit() + "/" + productDetail.getFormat());
 			
 			if(orderDetail.getConpanyId()  != null  && orderDetail.getConpanyId()  > 0){
 				map.put("companyId" ,orderDetail.getConpanyId() );

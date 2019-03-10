@@ -84,6 +84,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			$("#detailProductId").val(detail.productId);
 		    			$("#detailName").val(detail.subProduct);
 		    			$("#detailFormatNum").val(detail.formatNum);
+		    			$("#productUnit").val(detail.unit);
 		    			$("#detailFormat").val(detail.format);
 		    			$("#detailMaterial").val(detail.material);
 		    			$("#detailRemark").val(detail.remark);		    			
@@ -165,6 +166,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				var id =$("#detailId").val();
 				var detailName = $("#detailName").val();
 				var detailFormatNum = $("#detailFormatNum").val();
+				var detailUnit = $("#productUnit").val();
 				var detailFormat = $("#detailFormat").val();
 				var detailMaterial = $("#detailMaterial").val();
 				var detailRemark = $("#detailRemark").val();
@@ -175,6 +177,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								id:id,
 								subProduct:detailName,
 								format:detailFormat,
+								unit:detailUnit,
 								formatNum:detailFormatNum,
 								material:detailMaterial,
 								remark: detailRemark,
@@ -355,12 +358,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			</div>
 			<span class="errorColor"></span>
 		
-			<div class="input-group" id="divUnit" style="margin-top:10px">
-			  <span class="input-group-addon" id="basic-addon2">单位</span>
-			  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" name="productUnit" id="productUnit" required>
-			</div>
-			<span class="errorColor"></span>
-			
 			<div class="input-group divBase" style="margin-top:10px">
 			  <span class="input-group-addon" id="basic-addon3">基础采购量</span>
 			  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" name="productBase" id="productBase" >
@@ -396,6 +393,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			<div class="input-group">
 			  <span class="input-group-addon" id="basic-addon2">规格数量</span>
 			  <input type="text" class="form-control" placeholder="规格数量" aria-describedby="basic-addon2" name="detailFormatNum" id="detailFormatNum" >
+			</div>
+			<span class="errorColor"></span>
+			<br>
+			<div class="input-group" >
+			  <span class="input-group-addon" id="basic-addon2">单位</span>
+			  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" name="productUnit" id="productUnit" >
 			</div>
 			<span class="errorColor"></span>
 			<br>

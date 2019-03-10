@@ -1,6 +1,5 @@
 package com.saki.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.saki.model.TProductDetail;
