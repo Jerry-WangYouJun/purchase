@@ -200,14 +200,11 @@ public class SupplierOrderAction extends BaseAction implements ModelDriven<TSupl
 		try {
 			LocalDateTime currentTime = LocalDateTime.now();
 			int day = currentTime.getDayOfMonth();
-			List<TConfirm> t = confirmService.getWarningList();
-    			int num =0;
-//    			for(TConfirm temp : t){
-//	    			 int betweenDays =  temp.getConfirmDate() -  day ;
-//	    			  if(betweenDays == 0 ){
-//	    			  }
-//	    		 }
-    			num = supllierOrderService.getSupllierOrder(0);
+			List<TConfirm> t = confirmService.list( );
+    			TConfirm nextDay =  getConfirmDay(t);
+    			TConfirm nowDay = getLastConfirmDay(t);
+    			supllierOrderService.getSupllierOrder(0);
+       		supllierOrderService.updateSupplierOrderConfirmDay(nowDay.getId(), nextDay.getId());
 			//if(num >0){
 				j.setSuccess(true);
 				j.setMsg("操作成功");

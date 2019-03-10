@@ -357,6 +357,17 @@ public class SupplierOrderServiceImpl implements SupllierOrderServiceI{
 	    supplierOrderDao.updateHql(updateOrderStatus);
 	}
 	
+	/**
+	 * 生成、重新生成供应商订单时，讲当前批次为进入采购的订单，添加入下一批次
+	 * @param dayOfOrderNo
+	 */
+	public void updateSupplierOrderConfirmDay(Integer dayOfOrderNo , Integer nextDay) {
+		//把新订单推入下一个订单日
+		String resetOrderStatus = "update TOrder t set  t.confirmId = " + nextDay 
+				+ " where t.status = '1'  and t.confirmId = " + dayOfOrderNo;
+		supplierOrderDao.updateHql(resetOrderStatus);
+	}
+	
 	
 	private void updateSupplierReset(String dayOfOrderNo) {
 		//删除当日新订单

@@ -36,4 +36,6 @@ public interface SupllierOrderServiceI  extends BaseServiceI{
 	String updateSupllierPrice(String update);
 
 	String getOrderCode(String dayOfOrderNo);
+	
+	public void updateSupplierOrderConfirmDay(Integer dayOfOrderNo , Integer nextDay) ;
 }

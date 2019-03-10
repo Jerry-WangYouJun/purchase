@@ -28,7 +28,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
         
     </style>
   </head>
- <body class="easyui-layout" style="height: 100%">
+ <body class="easyui-layout" style="height: 120%">
 		   <div class="easyui-layout"data-options="fit:true" id="order_dlg">
 	            <div data-options="region:'center'">
 			    		<div>
@@ -57,7 +57,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					    		 	 <td id="">公司：<span>${companyName }</span></td>
 					    		 	 <td id="">订单编号：<span>${orderNo }</span></td>
 					    		 	 <td id="">订单总价：<span>${amount }</span></td>
-					    		 	 <td id="">发票状态：<span>已付款</span></td>
+					    		 	 <td id="">发票状态：<span id="invoice"></span></td>
 					    		 </tr>
 					    		 <tr>
 					    		 	 <td id="">采购批次：<span>${confirm }</span></td>
@@ -112,7 +112,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     <script type="text/javascript">
     	$(function(){
     		    		 $('#table_add').datagrid({
-    		    		     url:'${pageContext.request.contextPath}/orderAction!searchDetail.action?id=1' ,
+    		    		     url:'${pageContext.request.contextPath}/orderAction!searchDetail.action?id=${id}' ,
 					fitColumns: true,
 					singleSelect: true,
 					collapsible:true,
@@ -146,7 +146,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						{field:'id', hidden:'true',editor:'textbox' }
 					]]
 			 })
-
+			$("#invoice").text(getDicValue("invoice",'${invoice}' , null));
 			 setTimeout( function(){
 			 $("#order_dlg").jqprint({
 				 debug: false,
@@ -154,7 +154,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 printContainer: true,
 				 operaSupport: false
 			 });
-			 },1000)
+			 },3000)
     	})
     </script>
 </body>

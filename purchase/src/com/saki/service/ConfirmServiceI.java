@@ -9,5 +9,5 @@ public interface ConfirmServiceI{
 	public void save(TConfirm record);
 	public void delete(int id);
 	public void update(TConfirm confirm);
-	public List<TConfirm> getWarningList();
+	public List<TConfirm> getWarningList(int start , int end);
 }

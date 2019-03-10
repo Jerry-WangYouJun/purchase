@@ -107,6 +107,8 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		getRequest().setAttribute( "address" , getParameter("address"));
 		getRequest().setAttribute( "status" , getParameter("status"));
 		getRequest().setAttribute( "confirm" , getParameter("confirm"));
+		getRequest().setAttribute( "invoice" , getParameter("invoice"));
+		getRequest().setAttribute( "id" , getParameter("id"));
 		return "print";
 	}
 	

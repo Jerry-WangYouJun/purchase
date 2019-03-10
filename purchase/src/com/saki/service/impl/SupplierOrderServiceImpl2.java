@@ -396,4 +396,9 @@ public class SupplierOrderServiceImpl2 implements SupllierOrderServiceI{
 		List<Integer> list =supplierOrderDao.find(hql);
 		return   SystemUtil.getOrderResult(list);
 	}
+	@Override
+	public void updateSupplierOrderConfirmDay(Integer dayOfOrderNo, Integer nextDay) {
+		// TODO Auto-generated method stub
+		
+	}
 }

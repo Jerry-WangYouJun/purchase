@@ -140,7 +140,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 	public void login(){	
 		Message j = new Message();
 		TUser u =userService.login(user);
-		List<TConfirm> t = confirmService.getWarningList();
+		List<TConfirm> t = confirmService.getWarningList(0 , 3 );
 		List<TConfirm> confirm = confirmService.list();
 		List<TAddress> addressList = addressService.list();
 	    Integer base = userService.getBase();
@@ -166,21 +166,7 @@ public class UserAction extends BaseAction implements ModelDriven<TUser>{
 		super.writeJson(j);
 	}
 	
-	private TConfirm getConfirmDay(List<TConfirm> confirm) {
-		 LocalDateTime currentTime = LocalDateTime.now();
-			int today =  currentTime.getDayOfMonth();
-			TConfirm nextDay =  null ;
-			for(TConfirm con : confirm) {
-				 if(con.getConfirmDate() > today ) {
-					 nextDay = con  ;
-					 break;
-				 }
-			}
-			if(nextDay == null  && confirm.size() > 0) {
-				nextDay = confirm.get(0);
-			}
-			return nextDay;
-	}
+	
 	public void checkConfirm(){	
 		Message j = new Message();
 		List<TConfirm> t = confirmService.list();

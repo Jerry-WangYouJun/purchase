@@ -37,13 +37,19 @@ public class SupllierTask {
 	 * 
 	 */
     public void getSupllierOrder(){  
-    		List<TConfirm> t = confirmService.getWarningList();
+    		List<TConfirm> t = confirmService.list();
     		LocalDateTime currentTime = LocalDateTime.now();
     		 int day = currentTime.getDayOfMonth();
-    		 for(TConfirm temp : t){
+    		 for(int i = 0 ; i < t.size(); i  ++){
+    			 TConfirm temp = t.get(i);
     			 int betweenDays =  temp.getConfirmDate() -  day ;
     			  if(betweenDays == 0 ){
 	    				supllierOrderService.getSupllierOrder(temp.getId());
+	    				if(i ==  t.size()-1 ) {
+	    					supllierOrderService.updateSupplierOrderConfirmDay(temp.getId(), t.get(0).getId());
+	    				}else {
+	    					supllierOrderService.updateSupplierOrderConfirmDay(temp.getId(), t.get(i+1).getId());
+	    				}
     			  }
     		 }
     }  

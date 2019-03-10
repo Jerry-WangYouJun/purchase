@@ -2,6 +2,8 @@ package com.saki.action;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +17,7 @@ import org.apache.struts2.convention.annotation.ParentPackage;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.saki.model.TConfirm;
 
 @ParentPackage("basePackage")
 @Namespace("/")
@@ -119,5 +122,43 @@ public class BaseAction {
 				String companyId  = String.valueOf((Integer)getSession().getAttribute("companyId"));
 				params.put("companyId", companyId);
 			}
+		}
+		
+		
+		public TConfirm getConfirmDay(List<TConfirm> confirm) {
+			 LocalDateTime currentTime = LocalDateTime.now();
+				int today =  currentTime.getDayOfMonth();
+				TConfirm nextDay =  null ;
+				for(TConfirm con : confirm) {
+					 if(con.getConfirmDate() > today ) {
+						 nextDay = con  ;
+						 break;
+					 }
+				}
+				if(nextDay == null  && confirm.size() > 0) {
+					nextDay = confirm.get(0);
+				}
+				return nextDay;
+		}
+		
+		
+		public TConfirm getLastConfirmDay(List<TConfirm> confirm) {
+			 LocalDateTime currentTime = LocalDateTime.now();
+				int today =  currentTime.getDayOfMonth();
+				TConfirm now =  null ;
+				for(int i = 1 ; i <=  confirm.size(); i  ++) {
+					if(confirm.get(i).getConfirmDate()  == today ) {
+						now = confirm.get(i);
+						break;
+					}else if(confirm.get(i).getConfirmDate()  > today ) {
+						now = confirm.get(i-1);
+						break;
+					}
+				}
+				
+				if(now ==null && confirm.size() > 0) {
+					 now = confirm.get(confirm.size() -1);
+				}
+				return now;
 		}
 }
