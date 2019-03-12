@@ -35,7 +35,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 </head>
 <body>
 <script type="text/javascript">
-var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载的风格，支持0-2
+var index = layer.load(2, { shade:[0.3,'#fff'] , time:100 });  //0代表加载的风格，支持0-2
 </script>
 	<div data-options="region:'north',border:false,showHeader:false"  style="height:80px" >
 		<c:if test="${roleId eq  '3' }">
@@ -92,25 +92,26 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
   			<div class="col-xs-8">
             <!-- Tab panes -->
             <div class="tab-content" id="third">
-            <%-- <s:iterator id="secProduct" value="#request.secProduct" status="st">       	              
+             <s:iterator id="secProduct" value="#request.secProduct" status="st">       	              
 		              <div class="tab-pane  clearfix" id="third_<s:property value="#secProduct.id"/>">            
 		                 <p class="clearfix">
 		                 	<s:iterator value="#secProduct.children" id='child'>
 			                    <span class="ccc">
-			                        <input type="checkbox" value="<s:property value="#child.productId"/>" id="third_check_<s:property value="#child.id"/>"data='<s:property value="#child.id"/>' data-parent='<s:property value="#child.productId"/>'>
+			                        <input type="checkbox" value="<s:property value="#child.productId"/>" <s:if test="#child.mapper.status == 1">checked="checked"</s:if> id="third_check_<s:property value="#child.id"/>"data='<s:property value="#child.id"/>' data-parent='<s:property value="#child.productId"/>'>
 			                        <label for="third_check_<s:property value="#child.id"/>" style="font-size:15">
 			                        <a style="text-decoration:none">
 			                        	<s:property value="#child.subProduct"/>-
 			                        	<s:property value="#child.formatNum"/>
+			                        	<s:property value="#child.unit"/>/
 			                        	<s:property value="#child.format"/>-
-			                        	<s:property value="#child.material"/>
+			                        	<s:property value="#child.material"/> 
 			                        </a></label>
 			                    </span>	                   
 		                    </s:iterator>
 		                  </p>
 			              <div><img alt="" src="" id="img_<s:property value="#secProduct.id"/>" class="col-md-8"></div>                     
 		              </div>
-              </s:iterator> --%>
+              </s:iterator> 
             </div>
           </div>
           <div class="clearfix"></div>
@@ -183,67 +184,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:10000 });  //0代表加载
     //加载选择的商品
     $(function(){
     	
-     	$.ajax({
-            type: 'POST',
-            url: '<%=path%>/productAction!toProduceSelectThirdTab.action',//发送请求
-            dataType : "json",
-            success: function(data) {
-            	layer.close(index);
-            	var htmlStr  = "";
-	            	for(var index = 0 ; index < data.length ; index ++ ){
-	            		htmlStr+= '<div class="tab-pane  clearfix" id="third_'+data[index].id +'">' + 
-	            		    ' <p class="clearfix">'  ; 
-	            		for(var i = 0 ; i < data[index].children.length ; i ++ ){
-	            			htmlStr+= ' <span class="ccc">' + 
-	            			  '<input type="checkbox" value="'+data[index].children[i].productId + '"' + 
-	            			  ' id="third_check_'+data[index].children[i].id +'"  data='+data[index].children[i].id+ 
-	            			  ' data-parent='+data[index].children[i].productId + '>' + 
-	            			  '<label for="third_check_'+data[index].children[i].id + '" style="font-size:15">' + 
-	            			  ' <a style="text-decoration:none">' +  data[index].children[i].subProduct +
-	            			  '-' + data[index].children[i].formatNum+'-' + data[index].children[i].unit+'/' + data[index].children[i].format +'-' + 
-	            			   data[index].children[i].material + ' </a></label> </span>';
-	            		}
-	            		htmlStr += '</p> <div><img alt="" src="" id="img_'+data[index].id+'" class="col-md-8"></div> </div>';
-			    }
-	            	$("#third").html(htmlStr)
-	             	$.ajax({
-	                    type: 'POST',
-	                    url: '<%=path%>/productAction!getUserSelectProductDetail.action',//发送请求
-	                    dataType : "json",
-	                    success: function(data) {
-	                    	layer.close(index);
-	        	            	for (var i = 0; i < data.length; i++) {
-	        	    				var obj = data[i];
-	        	    				$("#third_check_"+obj.productDetailId).prop('checked',true);
-	        	    				if(obj.imgUrl){
-	        	    					$("#img_"+obj.productId).attr('src', "/ring/upload/"+obj.imgUrl);
-	        	    				}
-	        	    			} 
-	        		      }
-	        		});
-            }
-		});
-     	
     	
-    	$.ajax({
-            type: 'POST',
-            url: '<%=path%>/productAction!getUserSelectProductDetail.action',//发送请求
-            dataType : "json",
-            success: function(data) {
-            	layer.close(index);
-      //      	if(data){
-	            	for (var i = 0; i < data.length; i++) {
-	    				var obj = data[i];
-	    				var parentId = obj.productId;
-	    				 $("#sec_check_"+parentId).prop('checked',true);
-	    				 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
-	    				 $("#first_check_"+firstIndex).prop('checked',true);
-	    			} 
-  //          	}else{
-  //          		$('input[type="checkbox"]').prop('checked',true);
-  //          	}
-		      }
-		});
 
     	//一级类型选择 
     	$("[id^='first_check_']").change(function(){

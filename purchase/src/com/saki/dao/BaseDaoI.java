@@ -47,4 +47,6 @@ public interface BaseDaoI<T> {
 	public List executeSQLquery(String sql);
 
 	public void updateSubpro(List<TProductDetail> list);
+
+	public void evict(Object detail);
 }

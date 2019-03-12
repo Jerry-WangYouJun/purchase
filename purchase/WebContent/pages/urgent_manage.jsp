@@ -98,7 +98,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						<label class="col-md-4"
 							style="display: inline-block; height: 34px; line-height: 34px; text-align: left; width: 30%">订单编号：</label>
 						<input name="orderNo" id="orderNo" class="form-control" required
-							style="display: inline-block; width: 40%" disabled="disabled">
+							style="display: inline-block; width: 40%" >
 					</div>
 					<div class="form-group col-md-12">
 						<label class="col-md-4"
@@ -109,13 +109,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					<div class="form-group col-md-12">
 						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
 						               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
-						                <select name="addressId"  id= "addressId" class="easyui-combobox" 
+						                <select name="addressId"  id= "addressId" 
 						                 editable="false" style="display: inline-block;width: 40%" 
-						                 class="form-control select2 easyui-combobox" >
+						                 class="form-control" >
 							                	 <c:forEach items="${addressList}" var="address" >
-							                	 	<c:if test="${companyId eq address.cid }">
-								                	 	 <option value="${address.id}"> ${address.name}</option>
-							                	 	</c:if>
+								                	 	 <option value="${address.id}"> ${address.address}</option>
 							                	 </c:forEach>
 						                </select>
 						         </div>
@@ -299,6 +297,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    	}
 			   
 			});
+			$("#_easyui_textbox_input7").css("background","rgb(85, 85, 85)");
 			if("${roleId}" == '3'){
 		    		$('#table_order').datagrid('hideColumn', 'companyName');
 	    		}
@@ -349,9 +348,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'materail',title:'材质/标准',width:100,align:'center'}, */
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
-	   						{field:'unit',title:'单位',width:100,align:'center'},
-	   						{field:'boxnum',title:'包装件数',width:100,hidden:'true',align:'center'},
-	   						{field:'price',title:'单价',width:100,align:'center'},
+	   						/* {field:'boxnum',title:'包装件数',width:100,hidden:'true',align:'center'}, */
+	   						{field:'price',title:'价格',width:100,align:'center'},
+	   						{field:'format',title:'单位',width:100,align:'center'},
 	   						{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 	   						{field:'supplierCompanyId', hidden:'true' },
 	   						{field:'detailId', hidden:'true',editor:'textbox' },
@@ -418,12 +417,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
 				                                var product = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'product'});
 				                                var initialValue =  $(product.target).textbox('getValue');//产品大类原来的值
-				                                 var ed = $("#table_add").datagrid('getEditor', {  
-				                                        index : rowIndex,  
-				                                        field : 'unit'  //根据字段名获取编辑的字段
-				                                    });  
-				                                $(ed.target).textbox('setValue',  data.unit);   //赋值
-				                                $(ed.target).combobox('disable');//不可用
 				                              //条目总价不可编辑
 				                                 var amount = $("#table_add").datagrid('getEditor', {  
 				                                        index : rowIndex,  
@@ -578,6 +571,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                                    });  
 				                                $(fmt.target).textbox('setValue',  data.format); 
 				                                $(fmt.target).combobox('disable'); */
+				                                var ed = $("#table_add").datagrid('getEditor', {  
+			                                        index : rowIndex,  
+			                                        field : 'unit'  //根据字段名获取编辑的字段
+			                                    });  
+				                                $(ed.target).textbox('setValue',  data.format);   //赋值
+				                                $(ed.target).combobox('disable');//不可用
 				                                var idvalue = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'detailId'  
@@ -657,8 +656,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										
 									}
 								}},
-								{field:'unit',title:'单位',width:100,align:'center',editor:'textbox'},
-								{field:'boxnum',title:'包装件数',hidden:'true',width:100,align:'center',editor:'textbox'},
+								
+								/* {field:'boxnum',title:'包装件数',hidden:'true',width:100,align:'center',editor:'textbox'}, */
 								/* {field:'base', title:'最低采购量',width:100,align:'center',editor:'textbox' }, */
 								{field:'price',title:'单价',width:100,align:'center',editor:{
 									type:'textbox',
@@ -674,6 +673,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 										
 									}
 								}},
+								{field:'format',title:'单位',width:100,align:'center',editor:'textbox'},
 								{field:'amount',title:'总价',width:100,align:'center',editor:'textbox'},
 								
 								{field:'detailId', hidden:'true',editor:'textbox' },
@@ -842,7 +842,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		 */
 	 	 	function submitData() {
 	 	 		//alert($("#table_add").datagrid('getChanges').length);
-	 	 		if($("#addressId").combobox("getValue") ==''){
+	 	 		if($("#addressId").val() ==''){
 	 				 alert("送货地址为必填项，不能为空。如您没有添加送货地址，请到‘客户管理’模块中添加收货地址");
 	 				$("#addressId").focus();
 	 				return false ;
@@ -924,7 +924,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		         field : 'formatNum'  
 	 		     });
 	 		     if(formatNum.target.textbox('getValue') == ''){
-	 		    	  alert("null");
+	 		    	 // alert("null");
 	 		    	  return true;
 	 		     }
 	 		     var num = acount.target.textbox('getValue') / formatNum.target.textbox('getValue');
@@ -1101,12 +1101,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 			    alert("订单状态有误，不能修改！");
 	 			    return false ;
 	 			}
+	 			console.info(row);
 	     		if(row){
 	     			$("#order_dlg").dialog({
 	     				onOpen: function () {
 	                         $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
 	                         $("#orderNo").val(row.orderNo);   
 	                         $("#id").val(row.id); 
+	                         $("#addressId").val(row.addressId);
 	                     }
 	     			});
 	     			$('#order_dlg').dialog('open');	

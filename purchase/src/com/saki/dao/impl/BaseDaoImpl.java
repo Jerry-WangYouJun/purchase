@@ -198,6 +198,11 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 			
 		}
 	}
+
+	@Override
+	public void evict(Object obj) {
+		getSessionFactory().getCurrentSession().evict(obj);
+	}
 	
 
 }

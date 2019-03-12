@@ -128,10 +128,21 @@ public class UserProductServiceImpl implements UserProductServiceI{
 	}
 	
 	@Override
+	public void updateStatusByIds(Integer companyId, String productDetailIds) {
+		String sqlUpdate1 = "update  TUserProduct  t set t.status = '0' where   t.companyId = " + companyId ;
+		 userProductDao.updateHql(sqlUpdate1);
+		String sql = "update  TUserProduct  t set t.status = '1' where   t.companyId = " + companyId
+			 	+ " and t.productDetailId  in (" + productDetailIds + ")";
+		userProductDao.updateHql(sql);
+	}
+	
+	@Override
 	public void updateStatusReset(int detailId ,String companyId ) {
 		String sql = " update t_user_product  set status = 0  where product_detail_id =" + detailId ;
 		userProductDao.executeUpdate(sql);
 	}
+	
+	
 
 	@Override
 	public void updateMarkupPrice(Integer mapid, String column,Double markup) {
@@ -340,6 +351,8 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		list.add(notice3);
 		return list;
 	}
+
+	
 
 	
 

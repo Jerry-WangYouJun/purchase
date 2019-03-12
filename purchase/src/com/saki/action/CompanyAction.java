@@ -18,7 +18,6 @@ import com.saki.entity.Message;
 import com.saki.model.TAddress;
 import com.saki.model.TCompany;
 import com.saki.model.TUser;
-import com.saki.model.TUserProduct;
 import com.saki.service.AddressServiceI;
 import com.saki.service.CompanyServiceI;
 import com.saki.service.UserServiceI;
@@ -63,6 +62,7 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 	public void setCompanyService(CompanyServiceI companyService) {
 		this.companyService = companyService;
 	}
+	
 	
 	public String loadAddress(){
 			String roleId = getSession().getAttribute("roleId").toString();
@@ -132,7 +132,6 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 				update();
 			}else{
 				add();
-				
 			}
 			j.setSuccess(true);
 			j.setMsg("添加成功");

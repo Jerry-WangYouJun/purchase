@@ -15,4 +15,6 @@ public interface ProductDetailServiceI extends BaseServiceI{
 
 	public void deleteByProductDetail(TProductDetail tProductDetail);
 
+	List<TProductDetail> searchSelectDetailByCompanyId(String companyId);
+
 }

@@ -235,7 +235,7 @@ public class OrderServiceImpl implements OrderServiceI{
 	}
 	public List<TProductDetail> searchDetailByProductId(String productId , String companyId) {
 		String  hql = "from TProductDetail t where t.productId = '" + productId + "' and t.id in ("
-				+  " select m.productDetailId from TUserProduct m where m.companyId = '" + companyId +"' ) ";
+				+  " select m.productDetailId from TUserProduct m where m.companyId = '" + companyId +"' and m.status = '1' ) ";
 		List<TProductDetail> list = orderDao.find(hql);
 		orderDao.updateSubpro(list);
 		return list;

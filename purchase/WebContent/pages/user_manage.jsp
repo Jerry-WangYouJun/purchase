@@ -67,7 +67,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							}							
 						}},
 						{field:'pwd',title:'登陆密码',width:100,align:'center'},
-					{field:'companyName',title:'公司ID',width:150,align:'center'}
+					{field:'companyName',title:'公司名称',width:150,align:'center'}
 				]],				
 			});
 		});
@@ -164,7 +164,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     	<form id="user_form" role="form" style="padding: 20px">
     		<div class="form-group col-md-12">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">重置密码：</label>
-                <input name="newPwd" type="password" style="display: inline-block;width: 70%">
+                <input name="newPwd"  class = "form-control"type="text" style="display: inline-block;width: 70%">
             </div>
             <input id="id" name="id" style="display:none;"/> 
             <input id="roleId" name="roleId" value="1" style="display:none;"/>

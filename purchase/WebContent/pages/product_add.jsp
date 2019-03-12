@@ -57,11 +57,6 @@
 					  <input type="text" class="form-control" placeholder="名称" aria-describedby="basic-addon1" id="productName" name="productName" required>
 					</div>
 					<span class="errorColor"></span>
-					<div class="input-group" id="divUnit" style="margin-top:10px">
-					  <span class="input-group-addon" id="basic-addon2">单位</span>
-					  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" id="productUnit" name="productUnit" required>
-					</div>
-					<span class="errorColor"></span>
 					<div class="input-group divBase" style="margin-top:10px;display:none">
 					  <span class="input-group-addon" id="basic-addon3">基础采购量</span>
 					  <input type="text" class="form-control" placeholder="基础采购量" aria-describedby="basic-addon3" id="productBase" name="productBase" >
@@ -83,8 +78,20 @@
 					<span class="errorColor"></span>
 					<br>
 					<div class="input-group">
-					  <span class="input-group-addon" id="basic-addon2">规格</span>
-					  <input type="text" class="form-control" placeholder="规格" aria-describedby="basic-addon2" id="detailFormat" name="detailFormat" >
+					  <span class="input-group-addon" id="basic-addon2">规格数量</span>
+					  <input type="text" class="form-control" placeholder="规格数量" aria-describedby="basic-addon2" name="detailFormatNum" id="detailFormatNum" >
+					</div>
+					<span class="errorColor"></span>
+					<br>
+					<div class="input-group" >
+					  <span class="input-group-addon" id="basic-addon2">单位</span>
+					  <input type="text" class="form-control" placeholder="单位" aria-describedby="basic-addon2" name="productUnit" id="productUnit" >
+					</div>
+					<span class="errorColor"></span>
+					<br>
+					<div class="input-group">
+					  <span class="input-group-addon" id="basic-addon2">规格描述</span>
+					  <input type="text" class="form-control" placeholder="规格描述" aria-describedby="basic-addon2" name="detailFormat" id="detailFormat" >
 					</div>
 					<span class="errorColor"></span>
 					<br>
@@ -177,6 +184,8 @@
 							if(secTypeId != null && secTypeId != ''){
 									//保存detail 
 									var detailName = $("#detailName").val();
+									var detailFormatNum = $("#detailFormatNum").val();
+									var detailUnit = $("#productUnit").val();
 									var detailFormat = $("#detailFormat").val();
 									var detailMaterial = $("#detailMaterial").val();
 									var detailRemark = $("#detailRemark").val();
@@ -188,6 +197,8 @@
 													productId:secTypeId,
 													subProduct:detailName,
 													format:detailFormat,
+													unit:detailUnit,
+													formatNum:detailFormatNum,
 													material:detailMaterial,
 													remark: detailRemark
 												},

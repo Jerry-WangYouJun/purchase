@@ -21,6 +21,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
    <script src="${basePath}/js/edit.js"></script>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
    <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
+   <style type="text/css">
+   
+   	.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+	    cursor: not-allowed;
+	    background-color: #252525 !important;
+	    opacity: 1;
+	}
+   </style>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -28,22 +36,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  		<div >
- 		 	订单状态：
-                <select name="ostatue" id="ostatue" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-	                	<option value="1">新订单</option>
-	                	<option value="3">已付款</option>
-	                	<option value="5">提交采购</option>
-	                	<option value="4">已收货</option>
-                </select>
-                	发票状态：
-                <select name="oinvoice" id="oinvoice" 
-                    		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
-                    <option value="">-选择-</option>
-	                	<option value="1">发票已开</option>
-	                	<option value="2">发票已收到</option> 
-                </select>
             	查询条件
                 <select name="queryCol" id="queryCol" 
                     		class="form-control select2 easyui-combobox" style="width: 10%;" editable="false">
@@ -81,26 +73,42 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             </div> 
  				<table id="table_order" class="easyui-datagrid" fit="true" ></table>
  	</div>
- 	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:800px;height: 450px"
+ 	<div  id="order_dlg" closed="true" class="easyui-dialog" style="width:1000px;height: 90%"
 			data-options="border:'thin',cls:'c1',collapsible:false,modal:true,closable:false,top:10,buttons: '#company_dlg_buttons'">
 		    	<form id="order_form" role="form" style="padding: 20px">
 				<input type="hidden"  id = "id"  name = "id">
-		    		<div class="form-group col-md-6">
-		            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
-		                <input name="orderNo" id="orderNo" class="form-control" style="display: inline-block;width: 40%" disabled="disabled">
-		        </div>
-		        <div class="form-group col-md-6">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
-		                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%"  disabled="disabled">
-		        </div>
-		        <div class="form-group col-md-8">
-		                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">请选择采购日：</label>
-		                <select name="confirmId" id= "confirmId" class="easyui-combobox" style="display: inline-block;width: 20%"  disabled="disabled">
-		                	 <c:forEach items="${confirm}" var="it">
-		                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
-		                	 </c:forEach>
-		                </select>
-		        </div>
+				<div class="row">
+						<div class="col-md-6">
+					    		<div class="form-group col-md-12">
+					            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">订单编号：</label>
+					                <input  name="orderNo" id="orderNo" required class="form-control"  style="display: inline-block;width: 40%" disabled="disabled">
+					        </div>
+						        <div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">下单时间：</label>
+						                <input name="startDate" id = "startDate" class="easyui-datebox" style="display: inline-block;width: 40%;background:black;">
+						        </div>
+						        <div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">选择采购日：</label>
+						               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
+						                <select name="confirmId" id= "confirmId"   class="form-control" 
+						                 editable="false" style="display: inline-block;width: 40%" disabled="disabled" >
+							                	 <c:forEach items="${confirm}" var="it" >
+							                	 	 <option value="${it.id}"> ${it.confirmDate}日</option>
+							                	 </c:forEach>
+						                </select>
+						        </div>
+						        <div class="form-group col-md-12">
+						                	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">配送地址：</label>
+						               <!-- login时获取list存入session中,加载数据是根据给select赋值confirmID -->
+						                <select name="addressId"  id= "addressId" class="form-control" 
+						                 editable="false" style="display: inline-block;width: 40%"  disabled="disabled">
+							                	 <c:forEach items="${addressList}" var="address" >
+								                	 	 <option value="${address.id}"> ${address.address}</option>
+							                	 </c:forEach>
+						                </select>
+						         </div> 
+						</div>
+		         </div>
 		    	</form>   
 		    	<div>
 				<table  id="table_print"  class="table" style="display: none">
@@ -303,7 +311,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			    	}
 			   
 			});
-			
+			$("#_easyui_textbox_input5").css("background","rgb(85, 85, 85)");
 			$(".datagrid-row-alt").css("backgroundColor" , "#a9f9f9")
 		});
     	
@@ -317,10 +325,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	   						{field:'sub_product',title:'产品规格',align:'center'},
 	   						
 	   						{field:'brand',title:'品牌',width:100,align:'center'},
+	   						/* {field:'boxnum',title:'包装件数',width:100, hidden:'true',align:'center'}, */
+	   						{field:'price',title:'价格',width:100,align:'center'},
 	   						{field:'acount',title:'数量',width:100,align:'center'},
-	   						{field:'unit',title:'单位',width:100,align:'center'},
-	   						{field:'boxnum',title:'包装件数',width:100, hidden:'true',align:'center'},
-	   						{field:'price',title:'单价',width:100,align:'center'},
+	   						{field:'format',title:'单位',width:100,align:'center'},
 	   						{field:'amount',title:'条目总价',width:100,align:'center'},
 	   						/* {field:'sprice',title:'供应商报价',width:100,align:'center',editor:'textbox'}, */
 	   						{field:'detailId', hidden:'true',editor:'textbox' },

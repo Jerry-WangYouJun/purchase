@@ -26,6 +26,7 @@ public class ProductType {
 	private Integer base;
 	private String remark;
 	private String imgUrl;
+	private String status;
 	private List<TProductDetail> children;
 	
 	public String getType() {
@@ -71,5 +72,12 @@ public class ProductType {
 	public void setImgUrl(String imgUrl) {
 		this.imgUrl = imgUrl;
 	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 	
 }

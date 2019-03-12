@@ -88,7 +88,6 @@
    			dataType : 'json',
    			success : function(obj){
    				for(var o in obj){
-   					console.info(obj[o])
    					if(obj[o].msg == 0 ){
    						$("#"+obj[o].key).removeClass("badge");
    						continue;

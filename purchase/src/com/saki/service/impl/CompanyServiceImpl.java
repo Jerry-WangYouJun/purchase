@@ -176,16 +176,16 @@ public class CompanyServiceImpl implements CompanyServiceI{
 	}
 	@Override
 	public void addMapDataByUser(int companyId , int  role) {
-		String sql = " insert  into  t_user_product ( company_id , product_detail_id , role_id , product_id ) "  + 
-				"select '" + companyId + "' , id ,  '" + role+ "' , product_id from t_product_detail  "   ;
+		String sql = " insert  into  t_user_product ( company_id , product_detail_id , role_id , product_id , status ) "  + 
+				"select '" + companyId + "' , id ,  '" + role+ "' , product_id , '1' from t_product_detail  "   ;
 		System.out.println(sql);
 		companyDao.executeUpdate(sql);
 	}
 	
 	@Override
 	public void addMapDataByProDetail(int proDetailId , int  proId) {
-		String sql = " insert  into  t_user_product ( company_id , product_detail_id , role_id , product_id ) "  + 
-				"select   id , '" + proDetailId +"' , roleid , '" + proId + "' from t_company   where roleid is not null  "   ;
+		String sql = " insert  into  t_user_product ( company_id , product_detail_id , role_id , product_id  , status ) "  + 
+				"select   id , '" + proDetailId +"' , roleid , '" + proId + "' , '1' from t_company   where roleid is not null  "   ;
 		System.out.println(sql);
 		companyDao.executeUpdate(sql);
 	}

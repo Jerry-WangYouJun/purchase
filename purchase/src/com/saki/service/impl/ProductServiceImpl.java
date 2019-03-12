@@ -407,7 +407,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		Grid grid = new Grid(); 
 		Map<String,Object> map = new HashMap<String,Object>();
 		String hql = "from  TUserProduct  m  , TProductDetail d,  TProduct p , TCompany c ,TProduct g "
-				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id  and p.parentId = g.id  "   ;
+				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id  and p.parentId = g.id   and m.status = '1' "   ;
 		if(companyId > 0 ){
 			hql += " and  m.companyId  =  " + companyId ;
 		}else {
@@ -466,6 +466,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			if(StringUtils.isNotBlank(ProductDetail.getFormat())){
 				proFormart +=  ("/" + ProductDetail.getFormat());
 			}
+			tempMap.put("unit", ProductDetail.getUnit());
 			tempMap.put("format", proFormart);
 			tempMap.put("material", ProductDetail.getMaterial());
 			tempMap.put("price", mapper.getPrice());
@@ -484,12 +485,11 @@ public class ProductServiceImpl implements ProductServiceI{
 	}
 	
 	@Override
-	public ArrayList<ProductType>  searchSecProductAndChild()
+	public ArrayList<ProductType>  searchSecProductAndChild(String companyId)
 	{
 		String hql = "from   TProduct t  where  t.parentId is not null ";
-		String childhql = "from  TProductDetail t where t.productId = :productId";
 		List<TProduct> products = produceDao.find(hql);
-		List<TProductDetail> detailList = productDetailService.searchAllProductDetail();
+		List<TProductDetail> detailList = productDetailService.searchSelectDetailByCompanyId(companyId);
 		ArrayList<ProductType> types = new ArrayList<ProductType>();
 		for (TProduct tProduct : products) {
 			//创建新的 product  

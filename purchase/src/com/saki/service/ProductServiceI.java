@@ -17,7 +17,7 @@ public interface ProductServiceI extends BaseServiceI{
 	public List<TreeModel> listTreeByCompanyId(Integer companyId);
 	public TProduct searchParentProduct(Integer id);
 	public ArrayList<Product> searchProductAndChileProduct();
-	public ArrayList<ProductType> searchSecProductAndChild();
+	public ArrayList<ProductType> searchSecProductAndChild(String companyId);
 	public Grid searchProductDetailByCompanyId(Integer companyId , String page , String rows, Map params);
 	public List<TProduct> searchFirstProductType();
 	public List<TProduct> searchChildProductType(Integer parentId);

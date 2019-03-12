@@ -153,7 +153,8 @@
                         $("#startDate").textbox("setValue",row.startDate.split(" ")[0]);   
                         $("#orderNo").val(row.orderNo);   
                         $("#id").val(row.id); 
-                        $('#confirmId').combobox('setValue', row.confirmId);
+                        $('#confirmId').val(row.confirmId);
+                        $('#addressId').val(row.addressId);
                     }
     			});
     			$('#order_dlg').dialog('open');	

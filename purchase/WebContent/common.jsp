@@ -47,12 +47,12 @@
 <script type="text/javascript">
 
 	function submitData() {
-		if($("#addressId").combobox("getValue") ==''){
+		if($("#addressId").val() ==''){
 			 alert("送货地址为必填项，不能为空。如您没有添加送货地址，请到‘客户管理’模块中添加收货地址");
 			$("#addressId").focus();
 			return false ;
 		}
-		if($("#confirmId").combobox("getValue") ==''){
+		if($("#confirmId").val() ==''){
 			 alert("采购日为必填项，不能为空");
 			$("#confirmId").focus();
 			return false ;
@@ -299,7 +299,9 @@
                     $("#orderNo").val(row.orderNo);   
                     $("#id").val(row.id); 
                     //$('#confirmId').combobox('setValue', row.confirmId);
-                    $('#confirmId').combobox('select', row.confirmId);
+                    //$('#confirmId').combobox('select', row.confirmId);
+                    $('#confirmId').val(row.confirmId);
+                    $('#addressId').val(row.addressId);
                 }
 			});
 			$('#order_dlg').dialog('open');	

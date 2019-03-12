@@ -23,6 +23,7 @@ import com.saki.entity.Message;
 import com.saki.entity.Notice;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
+import com.saki.service.CompanyServiceI;
 import com.saki.service.ProductDetailServiceI;
 import com.saki.service.ProductServiceI;
 import com.saki.service.UserProductServiceI;
@@ -49,7 +50,12 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	private ProductServiceI productService;
 	private UserProductServiceI userProductService;
 	private ProductDetailServiceI productDetailService;
+	private  CompanyServiceI companyService;
 	
+	@Autowired
+	public void setCompanyService(CompanyServiceI companyService) {
+		this.companyService = companyService;
+	}
 	@Autowired
 	public void setProductDetailService(ProductDetailServiceI productDetailService) {
 		this.productDetailService = productDetailService;
@@ -89,12 +95,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	public void saveUserProduct(){
 		Message j = new Message();
 		try{
-			int roleId =  0 ;
-			if(getSession().getAttribute("roleId")!= null){
-				roleId = Integer.valueOf(getSession().getAttribute("roleId").toString());
-			}
-			userProductService.deleteByList(Integer.valueOf(getSession().getAttribute("companyId").toString()),getParameter("productlist"));
-			userProductService.save(Integer.valueOf(getSession().getAttribute("companyId").toString()), getParameter("productlist") , roleId);
+			userProductService.updateStatusByIds(Integer.valueOf(getSession().getAttribute("companyId").toString()), getParameter("productlist") );
 			j.setSuccess(true);
 			j.setMsg("保存成功");
 		}catch(Exception e){
@@ -286,13 +287,10 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	 */
 	public String toProduceSelectTab()
 	{
+			String companyId = getSession().getAttribute("companyId").toString();
 		this.getRequest().setAttribute("productList",  productService.searchProductAndChileProduct());
-		this.getRequest().setAttribute("secProduct", productService.searchSecProductAndChild());
+		this.getRequest().setAttribute("secProduct", productService.searchSecProductAndChild(companyId));
 		return "toProduceSelectTab";
-	}
-	public void toProduceSelectThirdTab()
-	{
-		super.writeJson(productService.searchSecProductAndChild());
 	}
 	
 	public void searchProduct()
@@ -375,6 +373,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 								request.getParameter("remark"));
 			}
 			this.productDetailService.add(detail);
+			companyService.addMapDataByProDetail(detail.getId(), detail.getProductId());
 			j.setMsg("保存成功");
 			j.setSuccess(true);
 		} catch (NumberFormatException e) {

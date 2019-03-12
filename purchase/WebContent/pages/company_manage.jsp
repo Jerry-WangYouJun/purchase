@@ -306,20 +306,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">公司名称：</label>
                 <input name="name" class="form-control" style="display: inline-block;width: 45%" placeholder="必填" required>
             </div>
-            <c:if test="${role == 1 }">
 	            <div class="form-group col-md-6">
 	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>
-	                <select name="roleId" id="roleId"  
-	                    		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
-	                	<option value="2">供货商</option>
-	                	<option value="3">客户</option>
-	                </select>
-	            </div>
-            </c:if>
-	            <div class="form-group col-md-6">
-	            	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业类型：</label>
-	                <select name="roleId" id="roleId"  
-	                    		class="form-control select2 easyui-combobox" style="width: 45%;height: 86%" editable="false">
+	                <select name="roleId" 
+	                    		class="form-control" style="display: inline-block;width: 45%" >
 	            <c:if test="${role == 3 }">
 	                	<option value="3">客户</option>
 	            </c:if>
@@ -355,7 +345,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
             
             <div class="form-group col-md-6 ">
             	<label class="col-md-4" style="display: inline-block;height: 34px;line-height: 34px;text-align: left;width: 30%">企业星级：</label>
-                <select name = "level"  class=" form-control" style="display: inline-block;width: 45%" >
+                <select name = "level"  class="form-control" style="display: inline-block;width: 45%" >
                 	 <option >一星</option>
                 	 <option >二星</option>
                 	 <option >三星</option>

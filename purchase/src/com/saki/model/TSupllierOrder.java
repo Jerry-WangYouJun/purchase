@@ -21,6 +21,7 @@ public class TSupllierOrder implements java.io.Serializable {
 	private Integer id;
 	private String supplierOrderNo;
 	private Date transportDate;
+	private String confirmDate;
 	private String status;
 	private double amount;
 	private String remark;
@@ -138,5 +139,13 @@ public class TSupllierOrder implements java.io.Serializable {
 		this.invoiceGet = invoiceGet;
 	}
 	
+	@Column(name = "confirm_date", length = 10)
 
+	public String getConfirmDate() {
+		return this.confirmDate;
+	}
+
+	public void setConfirmDate(String confirmDate) {
+		this.confirmDate = confirmDate;
+	}
 }

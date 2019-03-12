@@ -155,7 +155,15 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							textField:'price'
 						}
 					}},
-					{field:'unit',title:'单位',width:20,align:'center'},
+					{field:'priceUnit',title:'单价',width:20,align:'center',formatter: function(value,row,index){
+						
+						console.info(row)
+						if(row.price ){
+							return  row.price + "/" + row.unit;
+						}else{
+							return "";
+						}
+					}},
 					{field:'format',title:'规格',width:20,align:'center'},
 					{field:'markup',title:'加价设置',width:20,align:'center',
 						editor:{
@@ -165,7 +173,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 								textField:'markup'
 							}
 					}},
-					{field:'percent',title:'加价百分比(%)',width:20,align:'center'},
+					{field:'percent',title:'加价百分比(%)',width:20,align:'center'}
 					/* {field:'taxrate',title:'不含税比率',width:20,align:'center',
 						editor:{
 							type:'text',
@@ -180,7 +188,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 							return "";
 						}
 					}}, */
-					{field:'unit',title:'单位',width:20,align:'center'}
+					
 				]],				
 			});
 			/* if("${roleId}" == '1'){

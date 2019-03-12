@@ -24,4 +24,5 @@ public interface UserProductServiceI{
 	public void updateMarkupPriceWhenPriceUpdate(Integer mapid, Double price);
 	public void updateColorImg(TColor color);
 	public TColor getByKey(String id);
+	public void updateStatusByIds(Integer valueOf, String parameter);
 }
