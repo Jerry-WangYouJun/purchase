@@ -21,7 +21,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	-->    
     
    <jsp:include page="/common.jsp"></jsp:include>
-   
+    <jsp:include page="/loadingDiv.jsp"></jsp:include>
     <script src="${basePath}/vendor/layer/layer.js"></script> 
      <link href="${basePath}/assets/css/style.css" rel="stylesheet" /> 
   </head>

@@ -554,7 +554,7 @@ table {
 }
 
 .panel-fit, .panel-fit body {
-    margin: 10;
+    margin: 0;
 }
 
 .page-header {

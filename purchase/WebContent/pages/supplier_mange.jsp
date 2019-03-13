@@ -16,6 +16,7 @@
 <meta http-equiv="keywords" content="keyword1,keyword2,keyword3">
 <meta http-equiv="description" content="This is my page">
 <jsp:include page="/common.jsp"></jsp:include>
+ <jsp:include page="/loadingDiv.jsp"></jsp:include>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
    <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
    <style type="text/css">

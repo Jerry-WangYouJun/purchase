@@ -203,7 +203,11 @@ public class TProductDetail implements java.io.Serializable {
 				return false;
 		} else if (!subProduct.equals(other.subProduct)) {
 			return false;
-		}else if(!unit.equals(other.unit)) {
+		}
+		if (StringUtils.isBlank(unit)) {
+			if (StringUtils.isNotBlank(other.unit ))
+				return false;
+		} else if (!unit.equals(other.unit)) {
 			return false;
 		}
 		return true;

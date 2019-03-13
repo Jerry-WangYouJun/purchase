@@ -60,7 +60,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:100 });  //0代表加载�
             	<s:iterator  id="product" status="st" value="#request.productList">            							
           				 <li class="" onclick="activeThird(this)">
 			              	<a href="#sec_<s:property value="id"/>" data-toggle="tab" >
-			              		<input type="checkbox" id="first_check_<s:property value="#product.id"/>" class="aaa" data='<s:property value="#product.id"/>'> 
+			              		<input type="checkbox" id="first_check_<s:property value="#product.id"/>" class="aaa" <s:if test="#product.unit == 1">checked="checked"</s:if>  data='<s:property value="#product.id"/>'> 
 									<s:property value="#product.product"/>
 			              	</a>
 			              </li>       			
@@ -77,7 +77,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:100 });  //0代表加载�
 			                  	<s:iterator id="child" value="#product.children" status='in' >		                  		
 					                  	<li class="secTab">
 							              	<a href="#third_<s:property value="#child.id"/>" data-toggle="tab" onclick="getImg(this)"> 
-							              		<input type="checkbox" id='sec_check_<s:property value="#child.id"/>' data='<s:property value="#child.id"/>' class="aaa" data-parent='<s:property value='#child.parentId'/>'> 							              			
+							              		<input type="checkbox" id='sec_check_<s:property value="#child.id"/>'  <s:if test="#child.status == 1">checked="checked"</s:if>   data='<s:property value="#child.id"/>' class="aaa" data-parent='<s:property value='#child.parentId'/>'> 							              			
 			                      						<s:property value="#child.product"/>							              											              
 							              		
 							              	</a>
@@ -264,34 +264,6 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:100 });  //0代表加载�
 				 $("#first_check_"+firstIndex).prop('checked',true);
  			 }
     	})
-    	
-    	
-    	$("[id^='third_check_']").each(function(){
-    		var parentId = $(this).attr("data-parent");
-    		if($(this).prop("checked"))
-			{
-			 var parentId = $(this).attr("data-parent");
-			 $("#sec_check_"+parentId).prop('checked',true);
-			 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
-			 $("#first_check_"+firstIndex).prop('checked',true);
-			}
-    		//判断是否应该取消二级选择
-    		var parentId = $(this).attr("data-parent");
-    		if($("#third_"+parentId).find("input:checked").length==0){
-    				$("#sec_check_"+parentId).prop('checked',false);
-    		}else if($("#third_"+parentId).find("input:checked").length ==$("#third_"+parentId).find("input:checkbox").length){
-					$("#sec_check_"+parentId).prop('checked',true);
-    		}
-    		
-    		 var firstIndex  = $("#sec_check_"+parentId).attr("data-parent");
-			 $("#first_check_"+firstIndex).prop('checked',true);
-			 if($("#sec_"+firstIndex).find("input:checked").length==0){
- 				 $("#first_check_"+firstIndex).prop('checked',false);
- 			 }else if($("#sec_"+firstIndex).find("input:checked").length ==$("#sec_"+firstIndex).find("input:checkbox").length){
-				 $("#first_check_"+firstIndex).prop('checked',true);
- 			 }
-    	})
-    	
     	
     })
     

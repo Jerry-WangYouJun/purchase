@@ -373,7 +373,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		if(detailIds == null||detailIds.size() ==0)
 		return  listAll1();*/
 		//循环 
-		List<TProduct> products = produceDao.find(hql);
+		List<TProduct> products = produceDao.find(hql);//一级产品
 		Map<String,Object> map = new HashMap<String,Object>();
 		logger.info("products Size = "+products.size());
 		//循环2层 
@@ -384,7 +384,7 @@ public class ProductServiceImpl implements ProductServiceI{
 			product.setId(tProduct.getId());
 			//查询product 的 二级类型
 			map.put("parentId", tProduct.getId());
-			List<TProduct> productType = produceDao.find(hql1,map);
+			List<TProduct> productType = produceDao.find(hql1,map);//二级产品
 			//封装成 productType 对象
 			ArrayList<ProductType> typeList = new ArrayList<ProductType>();
 			for (TProduct tProduct2 : productType) {
@@ -396,8 +396,8 @@ public class ProductServiceImpl implements ProductServiceI{
 				type.setParentId(tProduct2.getParentId() + "");	
 				typeList.add(type);
 			}
-			product.setChildren(typeList);
-			productList.add(product);
+			product.setChildren(typeList);//一级
+			productList.add(product);//一级集合
 		}	
 		return productList;
 	}
@@ -491,7 +491,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		List<TProduct> products = produceDao.find(hql);
 		List<TProductDetail> detailList = productDetailService.searchSelectDetailByCompanyId(companyId);
 		ArrayList<ProductType> types = new ArrayList<ProductType>();
-		for (TProduct tProduct : products) {
+		for (TProduct tProduct : products) {//二级
 			//创建新的 product  
 			ProductType product = new ProductType();
 //			product.setUnit(tProduct.getUnit());
@@ -500,6 +500,9 @@ public class ProductServiceImpl implements ProductServiceI{
 			List<TProductDetail> childlList = new ArrayList<>();
 			for(TProductDetail detail : detailList){
 				 if(detail.getProductId().equals(tProduct.getId())){
+					 if("1".equals(detail.getMapper().getStatus())) {
+						  product.setStatus("1");
+					 }
 					 childlList.add(detail);
 				 }
 			}

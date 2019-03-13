@@ -432,7 +432,7 @@
             //tabUrl:当前tab所指向的URL地址
             
                 var content = '';
-                    content = '<iframe id="myframe" src="' + tabUrl + '" width="100%"  height="1450px"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe>';
+                    content = '<iframe id="myframe" src="' + tabUrl + '" width="100%"  height="700px"  frameborder="no" border="0" marginwidth="0" marginheight="0" scrolling="yes" allowtransparency="yes"></iframe>';
                    $("#panelName").text(panelName);
                     $("#home").empty();
                     $("#home").append(content);

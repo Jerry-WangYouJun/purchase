@@ -18,8 +18,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	-->
    <jsp:include page="/common.jsp"></jsp:include>
+   <jsp:include page="/loadingDiv.jsp"></jsp:include>
    <script src="${basePath}/js/edit.js"></script>
    <script language="javascript" src="${basePath}/js/jquery.jqprint-0.3.js"></script>
+   <script src="<%=path%>/vendor/layer/layer.js"></script> 
    <link href="${basePath}/assets/css/style.css" rel="stylesheet" />
    <style type="text/css">
    
@@ -29,6 +31,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	    opacity: 1;
 	}
    </style>
+   <script type="text/javascript">
+  /*  var index = layer.load(1, {
+		  shade: [1,'#fff'] //0.1透明度的白色背景
+		}); */
+   </script>
   </head>
  <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:60px" >
@@ -194,6 +201,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		 }
     
     	$(function(){
+    		
     		var  orderUrl = '${pageContext.request.contextPath}/orderAction!loadAll.action' ;
 			$('#table_order').datagrid({
 				url: orderUrl,
@@ -280,7 +288,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				]],
 				
 			});
-		
+			
 			$('#dlg-frame').dialog( {
 				title : '新增订单',
 				width :  909,

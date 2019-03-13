@@ -21,6 +21,8 @@ import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Grid;
 import com.saki.entity.Message;
 import com.saki.entity.Notice;
+import com.saki.entity.Product;
+import com.saki.entity.ProductType;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.service.CompanyServiceI;
@@ -288,8 +290,24 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 	public String toProduceSelectTab()
 	{
 			String companyId = getSession().getAttribute("companyId").toString();
-		this.getRequest().setAttribute("productList",  productService.searchProductAndChileProduct());
-		this.getRequest().setAttribute("secProduct", productService.searchSecProductAndChild(companyId));
+			ArrayList<Product> productList = productService.searchProductAndChileProduct();
+			 ArrayList<ProductType>  secProduct = productService.searchSecProductAndChild(companyId) ; 
+			 for(Product  p : productList) {
+				  List<ProductType>  secList = p.getChildren(); 
+				  for(ProductType pt : secList) {
+					   for(ProductType pts : secProduct) {
+						    if(pt.getId() .equals(pts.getId())) {
+						    		   pt.setStatus(pts.getStatus());
+						    		   if("1".equals(pts.getStatus())) {
+						    			    p.setUnit("1");
+						    		   }
+						    		   break;
+						    }
+					   }
+				  }
+			 }
+		this.getRequest().setAttribute("productList", productList );
+		this.getRequest().setAttribute("secProduct", secProduct);
 		return "toProduceSelectTab";
 	}
 	
