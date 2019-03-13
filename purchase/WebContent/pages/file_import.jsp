@@ -29,6 +29,7 @@
 <script type="text/javascript">
 	function importImg() {
 		var filename = $("#uploadFile").val().split("\\")[2];
+		var index = layer.load(1); 
 		$('#ImportForm')
 				.ajaxSubmit(
 						{
@@ -43,6 +44,7 @@
 	function resutlMsg(data) {
 		var json = JSON.parse(data) ;
 		var index = parent.layer.getFrameIndex(window.name); 
+		layer.close(index); 
 		if(json.success){
 			alert(json.msg);
 			parent.location.reload();  

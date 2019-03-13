@@ -331,7 +331,7 @@ public class OrderServiceImpl implements OrderServiceI{
 	 */
 	@Override
 	public List<TUserProduct> searchUserProductByCompanyId(String companyId) {
-		String hql = "from  TUserProduct  t  where t.companyId = :companyId";
+		String hql = "from  TUserProduct  t  where t.companyId = :companyId and t.status = '1'";
 		Map<String,Object> map = new HashMap<String,Object>();
 		map.put("companyId", Integer.parseInt(companyId));
 		List<TUserProduct> userProduct = orderDao.find(hql,map);		
