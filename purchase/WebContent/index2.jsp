@@ -83,26 +83,6 @@
 		$('#dashboard-report-range').show();
 		
 		
-		$.ajax({ 
-   			url: '${pageContext.request.contextPath}/productAction!countSituation.action',
-   			dataType : 'json',
-   			success : function(obj){
-   				for(var o in obj){
-   					if(obj[o].msg == 0 ){
-   						$("#"+obj[o].key).removeClass("badge");
-   						continue;
-   					}else{
-   					 $("#"+obj[o].key).text(obj[o].msg);
-   					}
-   					for(var index in obj[o].obj){
-						  if( obj[o].obj[index])
-						  $("#" + obj[o].key +"Msg").append('<li class="external" ><a href="#" > '
-							+ obj[o].obj[index]
-						    + '<i class="m-icon-swapright"></i></a></li>'); 
-					 }
-   				}
-   			}
-   		});
 	});
 	function formatDay(day){
 		if(day < 10 ) {
