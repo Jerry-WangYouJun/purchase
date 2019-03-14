@@ -97,6 +97,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					alert(123); */
 				}
 			});
+			$("#loadingDiv").remove();
 		});
 		function company_add(){
 			$('#userName').attr("readOnly",false);

@@ -205,6 +205,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				 $('#user_table').datagrid('hideColumn', 'markup');
 				 $('#user_table').datagrid('hideColumn', 'percent');
 			}
+			 $("#loadingDiv").remove();
 		});
     	
     	function onDblClickCell(rowIndex, field){

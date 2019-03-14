@@ -169,6 +169,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					alert(123); */
 				}
 			});	 
+			
 			if(role == '3'){
 				$('#company_table').datagrid('hideColumn', 'brand');
    			}
@@ -177,7 +178,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					pagination: false,
 				});
 			}
-		
+			$("#loadingDiv").remove();
 		});
 		function company_add(){
 			$('#userName').attr("readOnly",false);

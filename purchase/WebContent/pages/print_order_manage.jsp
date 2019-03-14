@@ -148,6 +148,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					]]
 			 })
 			$("#invoice").text(getDicValue("invoice",'${invoice}' , null));
+			 $("#loadingDiv").remove();
 			 setTimeout( function(){
 			 $("#order_dlg").jqprint({
 				 debug: false,

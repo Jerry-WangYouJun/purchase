@@ -66,6 +66,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}}
 				]],				
 			});
+			$("#loadingDiv").remove();
 		});
 		function user_add(){
 			$('#user_dlg').dialog('open');	

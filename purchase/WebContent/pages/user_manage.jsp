@@ -71,6 +71,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'companyName',title:'公司名称',width:150,align:'center'}
 				]],				
 			});
+			$("#loadingDiv").remove();
 		});
 		function user_add(){
 			$('#user_dlg').dialog('open');	

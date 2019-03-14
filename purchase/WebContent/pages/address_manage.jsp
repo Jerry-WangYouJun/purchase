@@ -73,7 +73,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						}}
 				]],				
 			});
-			
+			$("#loadingDiv").remove();
 			if('${roleId}' != '1'){
 				
 			}

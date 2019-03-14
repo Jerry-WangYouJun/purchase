@@ -286,7 +286,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				]],
 				
 			});
-		
+			$("#loadingDiv").remove();
 			$('#dlg-frame').dialog( {
 				title : '新增订单',
 				width :  909,

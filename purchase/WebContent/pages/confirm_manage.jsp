@@ -56,6 +56,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'remark',title:'备注',width:100,align:'center'}
 				]],				
 			});
+			$("#loadingDiv").remove();
 		});
 		function info_add(){
 			$('#info_dlg').dialog('open');	

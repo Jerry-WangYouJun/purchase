@@ -1,20 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
          pageEncoding="UTF-8"%>
 <div id='loadingDiv' style="position: absolute; z-index: 1000; top: 0px; left: 0px;
-width: 100%; height: 100%; background: url('${basePath}/img/index.jpeg'); background-size: 100% 100%; text-align: center;">
+width: 100%; height: 100%; background: black;  text-align: center;">
+	  <img alt="" src="${basePath}/img/load.gif" width="150px" height="150px" style="margin: 0 auto;margin-top: 200px;border-radius: 150px" >
 </div>
  <script src="${basePath}/vendor/layer/layer.js"></script> 
 <script type="text/JavaScript">
-var index = layer.load(1); 
     function closeLoading() {
         $("#loadingDiv").fadeOut("normal", function () {
-        		layer.close(index); 
             $(this).remove();
         });
     }
     var no;
     $.parser.onComplete = function () {
         if (no) clearTimeout(no);
-        no = setTimeout(closeLoading, 1000);
+        no = setTimeout(closeLoading, 3000);
     }
 </script>

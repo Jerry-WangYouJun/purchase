@@ -136,7 +136,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				     {field:'descrip',title:'描述',width:'20%',align:'center'}
 				]]	
 			});	 
-			
+			$("#loadingDiv").remove();
 		});
 		function company_add(){
 			var row = $('#company_table').datagrid('getSelected');
