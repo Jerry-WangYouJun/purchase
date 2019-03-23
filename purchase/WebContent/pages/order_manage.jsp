@@ -717,10 +717,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    		var str= "?falg=1";
 		    		for(col in row){
 		    			 str  += ("&" + col + "=" + row[col])
+		    			 if(col == 'addressId'){
+		    				 <c:forEach items="${addressList}" var="address" >
+		                	 	 if("${address.cid}"  ==  row.companyId && "${address.id}" == row.addressId)
+							    		str += ("&address=${address.address}")
+		                	 </c:forEach>
+		    			 }
 		    		}
-		    		str += ("&address=" + $("#addressId").find("option:selected").text().replace(/\s+/g,""))
-		    		str += ("&confirm=" + $("#confirmId").find("option:selected").text().replace(/\s+/g,""))
-		    		
 		    		window.open("${pageContext.request.contextPath}/orderAction!loadByOrderId.action" + str);
 	    		}
 		 }
