@@ -15,6 +15,7 @@ import com.saki.entity.Grid;
 import com.saki.model.TCompany;
 import com.saki.model.TOrder;
 import com.saki.model.TOrderDetail;
+import com.saki.model.TOrderPre;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
@@ -144,7 +145,13 @@ public class OrderServiceImpl implements OrderServiceI{
 		return t;
 	}
 
-	
+//	@Override
+//	public TOrderPre checkPreOrder(String companyId) {
+//		Map<String, Object> params = new HashMap<String, Object>();
+//		params.put("companyId", Integer.valueOf(companyId));
+//		TOrderPre t = (TOrderPre) orderDao.get("from TOrderPre t where t.companyId = :companyId", params);
+//		return t;
+//	}
 	@Override
 	public List<Map<String, Object>> searchDetail(String id ) {
 		/*int  num = orderDao.count("from  TOrder o , TOrderMapping m  where o.id = m.orderId and o.id= " + id );
@@ -206,7 +213,7 @@ public class OrderServiceImpl implements OrderServiceI{
 			map.put("materail", detail.getMaterial());
 			map.put("detailId", detail.getId());
 			map.put("format", detail.getFormat());
-			map.put("boxnum", (detail.getFormatNum()== null || detail.getFormatNum()==0)?1:(Math.ceil( Double.valueOf(orderDetail.getNum()+"")/ Double.valueOf(detail.getFormatNum()+""))));
+			//map.put("boxnum", (detail.getFormatNum()== null || detail.getFormatNum()==0)?1:(Math.ceil( Double.valueOf(orderDetail.getNum()+"")/ Double.valueOf(detail.getFormatNum()+""))));
 			map.put("supplierCompanyId", company.getId());
 			map.put("brand", company.getBrand());
 		//	map.put("address", address.getProvince() + " " + address.getCity()  + " " + address.getAddress());
@@ -215,6 +222,55 @@ public class OrderServiceImpl implements OrderServiceI{
 		}
 		System.out.println(id);
 		return mapList ;
+	}
+	
+	@Override
+	public List<Map<String,Object>> getOrderDetailHistoryByCompanyId(Integer companyId) {
+		List<Map<String , Object>>  mapList = new ArrayList<Map<String , Object>>();
+		if(null == companyId){
+			return mapList;
+		}
+		String hql = "select od.productDetailId , od.brand , pp.product , p.product , c.brand  , up.price , "
+				+ " pd.subProduct ,pd.material , pd.formatNum , pd.unit, pd.format    "
+				+ " from TOrderDetail od , TProductDetail pd , TProduct p , TProduct pp , TCompany c , TOrder o , TUserProduct up" 
+				+ " where o.id = od.orderId and od.productDetailId = pd.id and pd.productId = p.id and  p.parentId = pp.id and od.brand = c.id"
+				+ " and  up.companyId = c.id "
+				+ " and o.companyId = " + companyId
+				+ " group by od.productDetailId  , od.brand , up.price "
+				+ " order by   COUNT(od.productDetailId) desc ";
+		
+		
+		List<Object[]> list = orderDao.find(hql);
+		for (int i = 0; i < list.size(); i++) {
+			Object[] objs = list.get(i);
+			Map<String,Object> map = new HashMap<>();
+			map.put("ids", (Integer)objs[0] + "/" +  objs[1] ) ;
+			map.put("productDetailId", (Integer)objs[0]);//三级产品ID
+			map.put("brand", objs[1]);//品牌、企业ID
+			map.put("firstPro", (String)objs[2]);//一级产品名称
+			map.put("secPro", (String)objs[3]);//二级产品名称
+			map.put("cname", (String)objs[4]);//工会商品牌
+			map.put("price", (Double)objs[5]);//产品单价
+			map.put("thirdPro", (String)objs[6]);//三级产品名称
+			String subPro = (String)objs[6] ;
+			String materail = (String )objs[7];
+			Integer formatNum = (Integer)objs[8];
+			map.put("formatNum", formatNum);
+			String unit = (String)objs[9];
+			String format = (String)objs[10];
+			map.put("unit", unit);
+			if(StringUtils.isNotBlank(materail) ){
+				map.put("thirdPro", (String)objs[6]  +  "-" +  materail );//三级产品名称 ;
+			}
+			if(formatNum != null && formatNum > 0){
+				map.put("format",  formatNum + unit + "/" +  format);
+			}else {
+				map.put("format", format);
+			}
+			map.put("subPor", subPro);
+			mapList.add(map);
+		}
+		return mapList;
 	}
 	
 	public static void main(String[] args) {
@@ -227,6 +283,8 @@ public class OrderServiceImpl implements OrderServiceI{
 		  return list;
 		
 	}
+	
+	
 	@Override
 	public List<TProduct> searchProductType(String product) {
 		String  hql = "from TProduct t where t.product = '" + product + "'";
@@ -455,6 +513,7 @@ public class OrderServiceImpl implements OrderServiceI{
 		
 		return null;
 	}
+	
 	
 	
 	

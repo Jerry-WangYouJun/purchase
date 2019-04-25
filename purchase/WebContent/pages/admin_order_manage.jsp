@@ -369,6 +369,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 						    		str += ("&address=${address.address}")
 	                	 </c:forEach>
 	    			 }
+	    			 if(col == 'confirmId' && row.confirmDate == undefined ){
+	    				 <c:forEach items="${confirm}" var="it">
+	    				 if( "${it.id}" == row.confirmId)
+					    		str += ("&confirmDate=${it.confirmDate}日")
+                	 	</c:forEach>
+	    			 }
 	    		}
 	    		window.open("${pageContext.request.contextPath}/orderAction!loadByOrderId.action" + str);
     		}

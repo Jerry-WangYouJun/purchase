@@ -291,6 +291,7 @@
 								</c:if>
 								<c:if test="${roleId eq 3 }">
 									<li class=""><a href="#" onclick="openTab('客户订单管理','${basePath}/pages/order_manage.jsp')">  快速下单</a></li>
+									<li class=""><a href="#" onclick="openTab('常用无聊采购','${basePath}/pages/pre_order_manage.jsp')"> 常用采购物料下单</a></li>
 									<li class=""><a href="#" onclick="openTab('加急订单管理','${basePath}/pages/urgent_manage.jsp')"> 加急订单管理</a></li>
 								</c:if>
 								<c:if test="${roleId ne 3 }">

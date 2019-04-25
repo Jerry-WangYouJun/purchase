@@ -226,10 +226,10 @@
 			return false ;
 		}
 	    var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-	     var boxnum = $("#table_add").datagrid('getEditor', {  
-	            index : rowIndex,  
-	            field : 'boxnum'  
-	        }); 
+//	     var boxnum = $("#table_add").datagrid('getEditor', {  
+//	            index : rowIndex,  
+//	            field : 'boxnum'  
+//	        }); 
 	     
 	     var acount = $("#table_add").datagrid('getEditor', {  
 	         index : rowIndex,  
@@ -259,7 +259,7 @@
 	//     if(taxflag != '0'){
 	//    	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
 	//     }
-	    $(boxnum.target).textbox('setValue', Math.ceil(num));
+	 //   $(boxnum.target).textbox('setValue', Math.ceil(num));
 	}
     
     //获取页面URL

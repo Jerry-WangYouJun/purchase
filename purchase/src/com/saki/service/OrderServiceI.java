@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.saki.entity.Grid;
 import com.saki.model.TOrderDetail;
+import com.saki.model.TOrderPre;
 import com.saki.model.TProduct;
 import com.saki.model.TProductDetail;
 import com.saki.model.TUserProduct;
@@ -84,5 +85,9 @@ public interface OrderServiceI extends BaseServiceI{
 	public void updateBase(Integer base);
 
 	public void updateTrans(Integer valueOf);
+
+	public List<Map<String,Object>> getOrderDetailHistoryByCompanyId(Integer companyId);
+
+//	public TOrderPre checkPreOrder(String companyId);
 	
 }

@@ -443,11 +443,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                    }); 
 				                                $(amount.target).combobox('disable');//不可用
 				                                
-				                                var boxnum = $("#table_add").datagrid('getEditor', {  
+				                               /*  var boxnum = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'boxnum'  //根据字段名获取编辑的字段
 			                                    });  
-			                                	$(boxnum.target).textbox('readonly');   //赋值
+			                                	$(boxnum.target).textbox('readonly');   //赋值 */
 				                                
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
@@ -618,7 +618,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                        index : rowIndex,  
 		                                        field : 'price'  
 		                                    });  
-		                              	   $(pri.target).textbox('setValue',  data[0].price * num); 
+			                                if(num){
+			                              	   $(pri.target).textbox('setValue',  data[0].price * num); 
+			                                }else{
+			                                  	$(pri.target).textbox('setValue',  data[0].price ); 
+			                                }
+			                                
 		                              		 $(pri.target).combobox('disable');
 		                              		 
 			                			} 
@@ -634,12 +639,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			                            			  return ;
 			                            		 }
 			                            		 changeAmount();
-			                            		 changeBoxnum();
+			                            		// changeBoxnum();
 			                            }
 										
 									}
 								}},
-								{field:'boxnum',title:'包装件数',width:100,align:'center',hidden:'true',editor:'textbox'},
+								//{field:'boxnum',title:'包装件数',width:100,align:'center',hidden:'true',editor:'textbox'},
 								{field:'price',title:'单价',width:100,align:'center',editor:{
 									type:'textbox',
 									options:{
@@ -722,6 +727,12 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                	 	 if("${address.cid}"  ==  row.companyId && "${address.id}" == row.addressId)
 							    		str += ("&address=${address.address}")
 		                	 </c:forEach>
+		    			 }
+		    			 if(col == 'confirmId' && row.confirmDate == undefined ){
+		    				 <c:forEach items="${confirm}" var="it">
+		    				 if( "${it.id}" == row.confirmId)
+						    		str += ("&confirmDate=${it.confirmDate}日")
+	                	 	</c:forEach>
 		    			 }
 		    		}
 		    		window.open("${pageContext.request.contextPath}/orderAction!loadByOrderId.action" + str);

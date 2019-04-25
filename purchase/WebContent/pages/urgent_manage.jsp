@@ -424,11 +424,11 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				                                        field : 'amount'  //根据字段名获取编辑的字段
 				                                    });  
 				                                $(amount.target).textbox('readonly');   //赋值
-				                                var boxnum = $("#table_add").datagrid('getEditor', {  
+				                               /*  var boxnum = $("#table_add").datagrid('getEditor', {  
 			                                        index : rowIndex,  
 			                                        field : 'boxnum'  //根据字段名获取编辑的字段
 			                                    });  
-			                                	$(boxnum.target).textbox('readonly');   //赋值
+			                                	$(boxnum.target).textbox('readonly');  */  //赋值
 			                                	
 				                                //定义要编辑的列
 				                                var target = $('#table_add').datagrid('getEditor', {'index':rowIndex,'field':'type'}).target;  
@@ -911,10 +911,10 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 				return false ;
 	 			}
 	 		    var rowIndex = $('#table_add').datagrid('getRowIndex',row);//获取行号  
-	 		     var boxnum = $("#table_add").datagrid('getEditor', {  
+	 		    /*  var boxnum = $("#table_add").datagrid('getEditor', {  
 	 		            index : rowIndex,  
 	 		            field : 'boxnum'  
-	 		        }); 
+	 		        });  */
 	 		     
 	 		     var acount = $("#table_add").datagrid('getEditor', {  
 	 		         index : rowIndex,  
@@ -943,7 +943,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 	 		//     if(taxflag != '0'){
 	 		//    	    amount -= (amount*taxrate.target.textbox('getValue')*0.01);
 	 		//     }
-	 		    $(boxnum.target).textbox('setValue', Math.ceil(num));
+	 		 //   $(boxnum.target).textbox('setValue', Math.ceil(num));
 	 		}
 	 		
 	 	 	/**关闭子页面重载*/

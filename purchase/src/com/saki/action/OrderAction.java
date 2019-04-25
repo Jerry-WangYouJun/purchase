@@ -22,6 +22,8 @@ import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.ModelDriven;
 import com.saki.entity.Grid;
 import com.saki.entity.Message;
+import com.saki.model.TAddress;
+import com.saki.model.TConfirm;
 import com.saki.model.TOrder;
 import com.saki.model.TOrderDetail;
 import com.saki.model.TProduct;
@@ -279,6 +281,14 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		super.writeJson(jsonArray);
 	}
 	
+	public void getOrderDetailHistory() {
+		Integer companyId  = (Integer)getSession().getAttribute("companyId");
+		List<Map<String,Object>> orderDetailList = orderService.getOrderDetailHistoryByCompanyId(companyId);
+		String jsonString = JSON.toJSONString(orderDetailList);
+		JSONArray jsonArray = JSONArray.parseArray(jsonString);
+		super.writeJson(jsonArray);
+	}
+	
 	public void getChanges( ) {
 		  
 		 String orderId = getParameter("id");
@@ -302,6 +312,8 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 		 String checkOrderDate = DateUtil.getUserDate("yyyyMM");
 		 params.put("orderNo", "KH" + checkOrderDate + "%");
 		 Grid grid  = orderService.search(params, "startDate", "desc", page, rows ,urgent);
+		 Integer  trans =(Integer)  getSession().getAttribute("trans");
+		 /**id不存在 新增， 只有新增详情insertFlag*/
 			 if(StringUtils.isEmpty(orderId)) {
 //				 if(grid.getTotal() > 0 ) {
 //					 j.setSuccess(false);
@@ -322,7 +334,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 					 if(StringUtils.isNotBlank(confirmId)) {
 						 order.setConfirmId(Integer.valueOf(confirmId));
 					 }
-					 Integer trans =(Integer) getSession().getAttribute("trans");
+					 
 					 order.setAmount(order.getAmount() + trans);
 					 orderService.add(order);
 					 if(StringUtils.isNotEmpty(insert) ) {
@@ -336,7 +348,7 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 				     j.setMsg("产品类型或产品的数量为必填，请仔细检查！");
 				 }
 				
-			 }else {
+			 }else { /**存在orderID时 数据更新**/
 				 //如果存在多条，数据异常
 //				 if(grid.getTotal() > 1 ) {
 //					 j.setSuccess(false);
@@ -393,6 +405,62 @@ public class OrderAction extends BaseAction implements ModelDriven<TOrder>{
 	    	    	   order.setAmount(SystemUtil.sub(order.getAmount(), detail.getAmount()));
 	    	    	   orderService.delete(detail);
 	     }
+	}
+	
+	/**
+	 * 添加常用订单
+	 */
+	@SuppressWarnings("unchecked")
+	public void insertPreOrder(){
+		Message j = new Message();
+		try{
+			String  s = getParameter("obj");
+			 JSONArray jsonArray = JSONArray.parseArray(s);
+			 String companyId = getParameter("companyId");
+			 String urgent = getParameter("urgent");
+			 if(StringUtils.isEmpty(companyId)) {
+				 companyId = String.valueOf((Integer)getSession().getAttribute("companyId"));
+			 }
+			 List<TConfirm> t = (List<TConfirm>) getSession().getAttribute("confirm");
+			 List<TAddress> addressList = (List<TAddress>) getSession().getAttribute("addressList");
+ 			TConfirm nextDay =  getConfirmDay(t);
+ 			TOrder order  = new TOrder();
+			String dayOfOrderNo = DateUtil.getUserDate("yyyyMMdd");
+			 order.setOrderNo("KH"  + dayOfOrderNo +  orderService.getOrderCode(dayOfOrderNo) );
+			 order.setCompanyId(Integer.valueOf(companyId));
+			 order.setStartDate(new Date());
+			 order.setAmount((Integer)  getSession().getAttribute("trans"));
+			 order.setStatus("1");//新订单
+			 if(StringUtils.isNotEmpty(urgent)){
+				 order.setUrgent(urgent);
+			 }
+			 for (TAddress tAddress : addressList) {
+				 if(tAddress.getCid().equals(Integer.valueOf(companyId))) {
+					 order.setAddressId(tAddress.getId());
+				 }
+			 }
+			 order.setConfirmId(nextDay.getId());
+			 orderService.add(order);
+			for (Object object : jsonArray) {
+				 JSONObject  json = (JSONObject) object;
+				 TOrderDetail detail = new TOrderDetail();
+		  	    	   detail.setOrderId(order.getId());
+		  	    	   detail.setProductDetailId(json.getIntValue("productDetailId"));
+		  	    	   detail.setBrand(json.getString("brand"));
+		  	    	   if(!StringUtils.isEmpty(json.getString("price"))){
+		  	    		 if(!StringUtils.isEmpty(json.getString("formatNum"))){
+		  	    			detail.setPrice(SystemUtil.mul(json.getDouble("price"), json.getDouble("formatNum")));
+		  	    		 }
+		    	    		   detail.setPrice(json.getDouble("price"));
+		    	    	   }
+		  	    	   orderService.add(detail);
+			}
+			j.setSuccess(true);
+			j.setMsg("保存成功");
+		}catch(Exception e){
+			j.setMsg("保存失败");
+		}	
+		super.writeJson(j);
 	}
 	
 	public void insertDetail(String insert)  {

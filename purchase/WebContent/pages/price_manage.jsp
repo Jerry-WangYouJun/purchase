@@ -158,9 +158,8 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					}},
 					{field:'priceUnit',title:'单价',width:20,align:'center',formatter: function(value,row,index){
 						
-						console.info(row)
 						if(row.price ){
-							return  row.price + "/" + row.unit;
+							return  row.price + (row.unit==undefined?"":("/" + row.unit));
 						}else{
 							return "";
 						}

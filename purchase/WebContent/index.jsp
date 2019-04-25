@@ -290,6 +290,9 @@
 								<li class="active-menu"><a href="#" onclick="openTab('价格设置','${basePath}/pages/price_manage.jsp')"> 
 										<span class="title">价格设置</span></a>
 								</li>
+								<li class="active-menu"><a href="#" onclick="openTab('工品一号','https://www.gpyh.com/quickbuy/goodsPage?goodsStandardId=18')"> 
+										<span class="title">工品一号</span></a>
+								</li>
 							</c:if>
 						</ul>
 					</li>
@@ -492,6 +495,7 @@
                    $("#panelName").text(panelName);
                     $("#home").empty();
                     $("#home").append(content);
+                    console.info($("#myframe").contents().find(".bd"))
         }
         $(function(){
        	 	$(".active-menu a").click(function (e) {
