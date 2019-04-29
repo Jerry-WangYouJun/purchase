@@ -207,7 +207,7 @@ public class OrderServiceImpl implements OrderServiceI{
 				subPro +=  "-" +  detail.getMaterial()  ;
 			}
 			if(detail.getFormatNum() != null ){
-				subPro += "-" + detail.getFormatNum() + detail.getUnit() + "/" +  detail.getFormat();
+				subPro += "-" + detail.getFormatNum() + (detail.getUnit()== null?"":detail.getUnit() + "/" ) +  detail.getFormat();
 			}
 			map.put("sub_product", subPro);
 			map.put("materail", detail.getMaterial());
@@ -263,7 +263,7 @@ public class OrderServiceImpl implements OrderServiceI{
 				map.put("thirdPro", (String)objs[6]  +  "-" +  materail );//三级产品名称 ;
 			}
 			if(formatNum != null && formatNum > 0){
-				map.put("format",  formatNum + unit + "/" +  format);
+				map.put("format",  formatNum + (unit==null?"":(unit + "/")) +  format);
 			}else {
 				map.put("format", format);
 			}

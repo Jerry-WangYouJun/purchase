@@ -618,11 +618,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                                        index : rowIndex,  
 		                                        field : 'price'  
 		                                    });  
-			                                if(num){
-			                              	   $(pri.target).textbox('setValue',  data[0].price * num); 
-			                                }else{
+			                               
 			                                  	$(pri.target).textbox('setValue',  data[0].price ); 
-			                                }
+			                               
 			                                
 		                              		 $(pri.target).combobox('disable');
 		                              		 
