@@ -37,12 +37,22 @@ public class ImportExcelImpl  implements ImportExcelI{
 	private final static String excel2007U =".xlsx";   //2007+ �汾��excel
 	
 	/**
-	 * @param in,fileName
+	 *  "old"代表最早的导入文件类型， 表中的每一行是一种产品大类
+	 */
+	private final static String ROW_PRODUCT_OLD = "old" ;
+	
+	/**
+	 *  "new"代表新的导入文件类型， 每一行是一种产品小类（大类中的属性会出现重复的情况）
+	 */
+	private final static String ROW_PRODUCT_NEW = "new" ;
+	
+	/**
+	 * @param in,fileName , fileType(一种代表每行一个大类“new”， 一种代表每行一个小类“old”)
 	 * @return
 	 * @throws IOException 
 	 */
 	@Override
-	public  void getListByExcel(InputStream in,String fileName) throws Exception{
+	public  void getListByExcel(InputStream in,String fileName , String fileType) throws Exception{
 		Workbook work = this.getWorkbook(in,fileName);
 		if(null == work){
 			throw new Exception("Excel文件中内容为空");
@@ -52,13 +62,19 @@ public class ImportExcelImpl  implements ImportExcelI{
 		Cell cell = null;
 		
 		List<List<Object>> list = new ArrayList<List<Object>>();
+		//遍历excel中的内容，存放在objectlist中 等待后续解析 
 		for (int i = 0; i < work.getNumberOfSheets(); i++) {
 			sheet = work.getSheetAt(i);
-			if(sheet==null){continue;}
-			
+			if(sheet==null){
+				continue;
+			}
+			//从第一行开始处理数据， 防止出现空行
 			for (int j = sheet.getFirstRowNum(); j <= sheet.getLastRowNum(); j++) {
 				row = sheet.getRow(j);
-				if(row==null||sheet.getFirstRowNum()==j){continue;}
+				//空行或者 行数为第一行时该行为表头，不取数据
+				if(row==null||sheet.getFirstRowNum()==j){
+					continue;
+				}
 				
 				List<Object> li = new ArrayList<Object>();
 				for (int y = row.getFirstCellNum(); y < row.getLastCellNum(); y++) {
@@ -69,11 +85,15 @@ public class ImportExcelImpl  implements ImportExcelI{
 			}
 		}
 		work.close();
-		saveProducts( list);
+		if(ROW_PRODUCT_OLD.equals(fileType)){
+			saveProducts( list);
+		}else{
+			saveProductsNew(list);
+		}
 	}
 	
 	@SuppressWarnings("unchecked")
-	public void saveProducts(List<List<Object>> list ) throws Exception{
+	public void saveProductsNew(List<List<Object>> list ) throws Exception{
 		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
 		for (int i= 0 ; i < list.size() ; i ++) {
 			 List<Object> list2 = list.get(i);
@@ -84,6 +104,81 @@ public class ImportExcelImpl  implements ImportExcelI{
 					throw new Exception("第"+ (i +2) + "行出错:" + e.getMessage());
 				}
 				//一条数据
+				Map<String , TProduct> tempMap = new HashMap<>();
+				tempMap.put( product.getChildProName(), product);
+				if(resultMap.containsKey(product.getProduct())) {
+					//向已存在的一级产品里添加二级产品作为value中的新类型
+					Map childProductMap =  resultMap.get(product.getProduct());
+					childProductMap.put(product.getChildProName(), product);
+				}else {
+					//不存在的一级产品 就添加一个新的key， 同时添加一个二级产品的map作为value
+					resultMap.put(product.getProduct(), tempMap);
+				}
+		}
+		Map<String , TProduct >  productChildMap = new HashMap<>();
+		Map<String , TProduct >  productMap = new HashMap<>();
+		List<TProduct> productParentList = productService.searchFirstProductType();
+		for(TProduct parent : productParentList ){
+			List<TProduct> productChildList = productService.searchChildProductType(parent.getId());
+			for(TProduct child : productChildList){
+				child.setDetailList(detailService.loadByProductId(child.getId()));
+				productChildMap.put(child.getProduct(), child);
+			}
+			productMap.put(parent.getProduct(), parent);
+		}
+		Iterator<String> it = resultMap.keySet().iterator();
+		while(it.hasNext()) {
+			String parent = it.next(); 
+			TProduct parentProductForSave = new TProduct();
+			if(productMap.containsKey(parent)) {
+				parentProductForSave  = productMap.get(parent);
+			}
+			parentProductForSave.setProduct(parent);
+			productDao.saveOrUpdate(parentProductForSave);
+			Iterator<String> child = resultMap.get(parent).keySet().iterator();
+			while(child.hasNext()) {
+				TProduct childProductForSave = new TProduct();
+				String  childPro = child.next();
+				if(productChildMap.containsKey(childPro)) {
+					childProductForSave = productChildMap.get(childPro);
+				}
+				childProductForSave.setProduct(childPro);
+				childProductForSave.setParentId(parentProductForSave.getId());
+				TProduct product =  resultMap.get(parent).get(childPro);
+				childProductForSave.setBase(product.getBase());
+				productDao.saveOrUpdate(childProductForSave);
+				continueOut:
+				for(TProductDetail detail : product.getDetailList()) {
+					if(productChildMap.containsKey(childPro)){
+						for(TProductDetail detailOld :childProductForSave.getDetailList() ) {
+							if(detailOld.equals(detail)) {
+								 continue continueOut;
+							}
+						}
+					}
+					detail.setProductId(childProductForSave.getId());
+					productDao.saveOrUpdate(detail);
+					companyService.addMapDataByProDetail(detail.getId(), detail.getProductId());
+				}
+				productDao.update(parentProductForSave);
+			}
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void saveProducts(List<List<Object>> list ) throws Exception{
+		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
+		//遍历行数据
+		for (int i= 0 ; i < list.size() ; i ++) {
+			 List<Object> list2 = list.get(i);
+				TProduct product;
+				try {
+					// 把每一行数据放到一个product对象中
+					product = getProductByList(list2);
+				} catch (Exception e) {
+					throw new Exception("第"+ (i +2) + "行出错:" + e.getMessage());
+				}
+				//二级产品   key:产品名  value:对应产品实体对象     
 				Map<String , TProduct> tempMap = new HashMap<>();
 				tempMap.put( product.getChildProName(), product);
 				if(resultMap.containsKey(product.getProduct())) {

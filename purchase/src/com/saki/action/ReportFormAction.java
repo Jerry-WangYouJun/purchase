@@ -118,13 +118,13 @@ public class ReportFormAction extends BaseAction implements ModelDriven<TColor>{
 		}
 	}
 	
-	public void importExcel() {
+	public void importExcel(String fileType) {
 			String fileName = ExcelUtil.copyFile(filename, uploadFile);
 			FileInputStream in;
 			Message j = new Message();
 			try {
 				in = new FileInputStream(fileName);
-				importExcelUtil.getListByExcel(in, filename);
+				importExcelUtil.getListByExcel(in, filename , fileType);
 				j.setSuccess(true);
 				j.setMsg("导入成功");
 			} catch (Exception e) {
