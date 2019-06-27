@@ -19,7 +19,16 @@ public interface ProductServiceI extends BaseServiceI{
 	public ArrayList<Product> searchProductAndChileProduct();
 	public ArrayList<ProductType> searchSecProductAndChild(String companyId);
 	public Grid searchProductDetailByCompanyId(Integer companyId , String page , String rows, Map params);
+	/**
+	 * 查询所有一级产品大类
+	 * @return
+	 */
 	public List<TProduct> searchFirstProductType();
+	/**
+	 * 根据一级id获取所有二级产品类型
+	 * @param parentId
+	 * @return
+	 */
 	public List<TProduct> searchChildProductType(Integer parentId);
 	public void deleteByProduct(TProduct product);
 	public List<TreeModel> listTree();

@@ -94,27 +94,10 @@ public class ImportExcelImpl  implements ImportExcelI{
 	
 	@SuppressWarnings("unchecked")
 	public void saveProductsNew(List<List<Object>> list ) throws Exception{
-		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
-		for (int i= 0 ; i < list.size() ; i ++) {
-			 List<Object> list2 = list.get(i);
-				TProduct product;
-				try {
-					product = getProductByList(list2);
-				} catch (Exception e) {
-					throw new Exception("第"+ (i +2) + "行出错:" + e.getMessage());
-				}
-				//一条数据
-				Map<String , TProduct> tempMap = new HashMap<>();
-				tempMap.put( product.getChildProName(), product);
-				if(resultMap.containsKey(product.getProduct())) {
-					//向已存在的一级产品里添加二级产品作为value中的新类型
-					Map childProductMap =  resultMap.get(product.getProduct());
-					childProductMap.put(product.getChildProName(), product);
-				}else {
-					//不存在的一级产品 就添加一个新的key， 同时添加一个二级产品的map作为value
-					resultMap.put(product.getProduct(), tempMap);
-				}
-		}
+		Map<String , Map<String , List<TProductDetail>>> resultMap = new HashMap<>();
+		resultMap = getProductByListNew(list);
+		
+		
 		Map<String , TProduct >  productChildMap = new HashMap<>();
 		Map<String , TProduct >  productMap = new HashMap<>();
 		List<TProduct> productParentList = productService.searchFirstProductType();
@@ -168,7 +151,7 @@ public class ImportExcelImpl  implements ImportExcelI{
 	@SuppressWarnings("unchecked")
 	public void saveProducts(List<List<Object>> list ) throws Exception{
 		Map<String , Map<String , TProduct>> resultMap = new HashMap<>();
-		//遍历行数据
+		/**此处遍历excel中的行数据转换为map数据 便于以下作对比**/
 		for (int i= 0 ; i < list.size() ; i ++) {
 			 List<Object> list2 = list.get(i);
 				TProduct product;
@@ -187,8 +170,15 @@ public class ImportExcelImpl  implements ImportExcelI{
 					resultMap.put(product.getProduct(), tempMap);
 				}
 		}
+		
+		/**
+		 * 此处代码是从数据库中取出已存在的代码，便于与excel中数据进行对比
+		 */
+		//key:二级产品名 value:二级产品对象 
 		Map<String , TProduct >  productChildMap = new HashMap<>();
+		//key:一级产品名 value：一级产品对象
 		Map<String , TProduct >  productMap = new HashMap<>();
+		//查询一级产品大类
 		List<TProduct> productParentList = productService.searchFirstProductType();
 		for(TProduct parent : productParentList ){
 			List<TProduct> productChildList = productService.searchChildProductType(parent.getId());
@@ -198,15 +188,21 @@ public class ImportExcelImpl  implements ImportExcelI{
 			}
 			productMap.put(parent.getProduct(), parent);
 		}
+		
+		
+		//遍历excel中的数据，取出
 		Iterator<String> it = resultMap.keySet().iterator();
 		while(it.hasNext()) {
 			String parent = it.next(); 
+			//最终存入数据库的一级产品
 			TProduct parentProductForSave = new TProduct();
 			if(productMap.containsKey(parent)) {
 				parentProductForSave  = productMap.get(parent);
 			}
 			parentProductForSave.setProduct(parent);
+			//一级产品存在则更新 不存在则新增
 			productDao.saveOrUpdate(parentProductForSave);
+			//根据一级产品名取出 所有对应的二级产品名
 			Iterator<String> child = resultMap.get(parent).keySet().iterator();
 			while(child.hasNext()) {
 				TProduct childProductForSave = new TProduct();
@@ -218,12 +214,13 @@ public class ImportExcelImpl  implements ImportExcelI{
 				childProductForSave.setParentId(parentProductForSave.getId());
 				TProduct product =  resultMap.get(parent).get(childPro);
 				childProductForSave.setBase(product.getBase());
+				//更新或保存二级产品
 				productDao.saveOrUpdate(childProductForSave);
 				continueOut:
-				for(TProductDetail detail : product.getDetailList()) {
+				for(TProductDetail detail : product.getDetailList()) {//遍历二级产品对应的产品详情
 					if(productChildMap.containsKey(childPro)){
 						for(TProductDetail detailOld :childProductForSave.getDetailList() ) {
-							if(detailOld.equals(detail)) {
+							if(detailOld.equals(detail)) {//重新产品详情equals方法，已存在产品不做保存更新
 								 continue continueOut;
 							}
 						}
@@ -235,6 +232,52 @@ public class ImportExcelImpl  implements ImportExcelI{
 				productDao.update(parentProductForSave);
 			}
 		}
+	}
+	
+	
+	/**
+	 * 把每一行数据放到一个product对象中
+	 * @param list
+	 * @return
+	 * @throws Exception
+	 */
+	private Map<String , Map<String , List<TProductDetail>>>  getProductByListNew(List<List<Object>> list) throws Exception {
+		TProduct product = new TProduct();
+		Map<String  , Map<String , List<TProductDetail>>>  parentProductMap = new HashMap<>();
+		Map<String , List<TProductDetail>>  childProductMap = new HashMap<>();
+		
+   		for(List<Object>  temp : list){
+   			TProductDetail detailTemp = new TProductDetail();
+   			String childProName = temp.get(1).toString();
+   			if(!childProductMap.containsKey(temp.get(1).toString())){
+   				List<TProductDetail> listTemp = new ArrayList<>();
+   				listTemp.add(detailTemp);
+   				childProductMap.put(childProName, listTemp);
+   			}else{
+   				childProductMap.get(childProName).add(detailTemp);
+   			}
+   			String parentProName = temp.get(0).toString() ; 
+   			if(!parentProductMap.containsKey(parentProName)){
+   				Map<String , List<TProductDetail>>  childProductMapTemp = new HashMap<>();
+   				parentProductMap.put(parentProName, null);
+   			}
+   			String baseNum =temp.get(3).toString().trim() ; 
+   			if(StringUtils.isNotEmpty(baseNum)){
+				try {
+					product.setBase(Integer.parseInt(baseNum));
+				} catch (Exception e) {
+					product.setBase(1);
+				}
+			}else{
+				product.setBase(1);
+			}
+			detailTemp.setSubProduct(temp.get(4).toString()); 
+			splitFormat(detailTemp, temp.get(5).toString());
+   			String  material = temp.get(6).toString();
+   			detailTemp.setMaterial(material);
+   		}
+		
+		return parentProductMap;
 	}
 	
 	/**
@@ -499,6 +542,18 @@ public class ImportExcelImpl  implements ImportExcelI{
 			 }
 		}
 		
+	}
+	
+	private void splitFormat(TProductDetail detail , String format ){
+		Integer formatNum = SystemUtil.getNumFromString(format);
+		detail.setFormatNum(formatNum);
+		String formatAndUnit = format.replace(formatNum+"", "");
+		if(formatAndUnit.indexOf("/") >= 0) {
+			detail.setUnit(formatAndUnit.split("/")[0]);
+			detail.setFormat(formatAndUnit.split("/")[1]);
+		}else {
+			detail.setUnit(formatAndUnit);
+		}
 	}
 
 	private BaseDaoI productDao;

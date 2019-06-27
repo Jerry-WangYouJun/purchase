@@ -61,6 +61,9 @@ public class ProductDetailServiceImpl implements ProductDetailServiceI{
 		return null;
 	}
 
+	/**
+	 *  根据二级产品类型获取所有产品详情
+	 */
 	@Override
 	public List<TProductDetail> loadByProductId(int productId) {
 		Map<String, Object> params = new HashMap<String, Object>();

@@ -9,6 +9,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang.StringUtils;
 import org.hibernate.annotations.GenericGenerator;
 
 /**
@@ -141,6 +142,33 @@ public class TProduct implements java.io.Serializable {
 		this.childProName = childProName;
 	}
 	
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TProduct other = (TProduct) obj;
+		if (StringUtils.isBlank(product)) {
+			if (StringUtils.isNotBlank(other.product))
+				return false;
+		} else if (!product.equals(other.product)){
+			return false;
+		}
+		if (base == null) {
+			if (other.base != null)
+				return false;
+		} else if (!base.equals(other.base))
+			return false;
+		
+		if (parentId == null) {
+			if (other.parentId != null)
+				return false;
+		} else if (!parentId.equals(other.parentId))
+			return false;
+		return true;
+	}
 
 }
