@@ -27,6 +27,9 @@
 </style>
 <title>Insert title here</title>
 <script type="text/javascript">
+	function setType(type){
+		  $("#fileType").val(type);
+	}
 	function importImg() {
 		var filename = $("#uploadFile").val().split("\\")[2];
 		var index = layer.load(1); 
@@ -34,7 +37,7 @@
 				.ajaxSubmit(
 						{
 							url : '${pageContext.request.contextPath}/report!importExcel.action?filename='
-									+ filename,
+									+ filename + '&fileType=' + $("#fileType").val(),
 							dataType : 'text',
 							success : resutlMsg,
 							error : errorMsg
@@ -66,6 +69,7 @@
 	<form id="ImportForm" action="${pageContext.request.contextPath}/report!importExcel.action"
 			 method="post" enctype="multipart/form-data" class="form-horizontal">
 			 <input type="hidden" name="proId" value="${proId}">
+			 <input type="hidden"  id="fileType" > 
 		<div class="control-group">
 			<div class="controls">
 				<div class="fileupload fileupload-new" data-provides="fileupload">

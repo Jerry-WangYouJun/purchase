@@ -52,6 +52,10 @@ public class UserProductServiceImpl implements UserProductServiceI{
 			updatePrice(companyId , Integer.valueOf(ap[i]) , 0  , roleId);
 		}
 	}
+	@Override
+	public void update(TUserProduct mapper) {
+		 userProductDao.update(mapper);
+	}
 
 	@Override
 	public void delete(int companyId) {
@@ -61,7 +65,9 @@ public class UserProductServiceImpl implements UserProductServiceI{
 		}
 	}
 	
-	
+	public TUserProduct getByKey(Integer id) {
+		return  (TUserProduct)userProductDao.get("from TUserProduct where id = " + id) ;
+	} 
 
 	@Override
 	public TColor getByKey(String id) {

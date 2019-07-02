@@ -11,6 +11,7 @@ public interface UserProductServiceI{
 	public List<TUserProduct> listByCompanyId(int companyId);
 	public void save(int companyId, String productlist, int roleId);
 	public void delete(int companyId);
+	void update(TUserProduct mapper);
 	void updatePrice(int companyId, int detailId, double price, int roleId);
 	void updateStatus(int id);
 	void updateStatusReset(int detailId, String companyId);
@@ -25,4 +26,5 @@ public interface UserProductServiceI{
 	public void updateColorImg(TColor color);
 	public TColor getByKey(String id);
 	public void updateStatusByIds(Integer valueOf, String parameter);
+	public TUserProduct getByKey(Integer id);
 }

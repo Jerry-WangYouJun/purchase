@@ -28,6 +28,11 @@ public class TProductDetail implements java.io.Serializable {
 	private String material;
 	private String remark;
 	
+	/**
+	 * 关联userProduct表的brand字段
+	 */
+	private String brand ;
+	
 	private TUserProduct mapper;
 	
 	private int selected = 0;
@@ -172,6 +177,14 @@ public class TProductDetail implements java.io.Serializable {
 
 	public void setUnit(String unit) {
 		this.unit = unit;
+	}
+	
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 
 	@Override

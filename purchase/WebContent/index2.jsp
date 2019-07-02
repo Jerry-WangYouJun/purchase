@@ -266,7 +266,7 @@
 							</c:if>
                             </ul>
                         </li>
-                        <c:if test="${roleId ne 1 }">
+                    <c:if test="${roleId ne 1 }">
 						<li class=""><a href="#" onclick="openTab('产品类别管理','${basePath}/productAction!toProduceSelectTab.action')"> <i
 								class="icon-bar-chart"></i> <span class="title">产品类别管理</span>
 						</a></li>	
@@ -279,6 +279,10 @@
 					<c:if test="${roleId ne 2 }">
 							<li class="last "><a href="#" onclick="openTab('色卡设置','${basePath}/pages/color_select.jsp')"> <i
 								class="icon-bar-chart"></i> <span class="title">色卡管理</span>
+						</a></li>
+						
+						<li class="last "><a href="#" onclick="openTab('常用采购品牌管理','${basePath}/pages/cust_brand_manage.jsp')"> <i
+								class="icon-bar-chart"></i> <span class="title">常用采购品牌管理</span>
 						</a></li>
 					</c:if>
 					<li>

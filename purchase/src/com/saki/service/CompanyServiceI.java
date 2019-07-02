@@ -16,5 +16,5 @@ public interface CompanyServiceI extends BaseServiceI{
 	
 	void addMapDataByUser(int companyId , int  role);
 	
-	void addMapDataByProDetail(int proDetailId , int  proId);
+	void addMapDataByProDetail(int proDetailId , int  proId , String brand , String status);
 }

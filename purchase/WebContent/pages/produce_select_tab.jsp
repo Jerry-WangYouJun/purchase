@@ -40,6 +40,7 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:100 });  //0代表加载�
 	<div data-options="region:'north',border:false,showHeader:false"  style="height:80px" >
 		<c:if test="${roleId eq  '3' }">
 	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">请在下面选择您要采购的商品明细<br/>点击产品名称，可查看下一级</span>
+	 		<button  id="dataExcelFile" type="button" class="btn btn-primary" style="float: right;text-align: center;margin-top: 10px;margin-right:10px">上传常用产品</button>
 		</c:if>
 		<c:if test="${roleId eq  '2' }">
 	 		<span style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">产品类别选择</span>
@@ -153,6 +154,22 @@ var index = layer.load(2, { shade:[0.3,'#fff'] , time:100 });  //0代表加载�
 		});
 	});
   	
+  $("#dataExcelFile").click(function(){
+		layer.open({
+			  type: 2,
+			  title: '导入单行产品详情信息表格',
+			  shadeClose: true,
+			  shade: 0.8,
+			  area: ['450px', '40%'],
+			  content: '<%=path%>/pages/file_import.jsp', //iframe的url，
+			  success: function (layero, index) {
+                  // 获取子页面的iframe
+                  var iframe = window['layui-layer-iframe' + index];
+                  // 向子页面的全局函数child传参
+                  iframe.setType("new");
+              }
+		});
+	});
   
     $('.aaa').click(function(event){
       event.stopPropagation()

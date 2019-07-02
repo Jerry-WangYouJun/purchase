@@ -104,6 +104,24 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		
 	}
 	
+	/**
+	 *  客户角色通过该方法获取全部数据中的品牌信息
+	 */
+	public void loadAllBrand(){
+		Map map = new HashMap();
+		String role = getParameter("roleId");
+		if(StringUtils.isNotEmpty(role)){
+			map.put("roleId", role);
+		}
+		String colName= getParameter("colName");
+		String colValue=getParameter("colValue");
+		if(StringUtils.isNotEmpty(colName) && StringUtils.isNotEmpty(colValue)) {
+			map.put(colName, "%" + colValue + "%");
+		}
+		super.writeJson(companyService.loadQuery(sort, order, page, rows, map).getRows());
+		
+	}
+	
 	public void loadColor(){
 		String roleId = getSession().getAttribute("roleId").toString();
 		String companyId = "";

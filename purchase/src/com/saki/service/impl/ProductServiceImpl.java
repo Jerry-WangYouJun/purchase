@@ -444,7 +444,7 @@ public class ProductServiceImpl implements ProductServiceI{
 		for (int i = 0; i < list.size(); i++) {
 			Object[] objs = list.get(i);
 			TUserProduct  mapper = (TUserProduct)objs[0]; 
-			TProductDetail ProductDetail = (TProductDetail)objs[1];
+			TProductDetail productDetail = (TProductDetail)objs[1];
 			TProduct product = (TProduct) objs[2];
 			TCompany company = (TCompany) objs[3];
 			TProduct productParent = (TProduct) objs[4];
@@ -455,26 +455,27 @@ public class ProductServiceImpl implements ProductServiceI{
 			tempMap.put("remark", company.getBrand());
 			tempMap.put("parentName", productParent.getProduct());
 			tempMap.put("productName", product.getProduct());
-			tempMap.put("subProduct", ProductDetail.getSubProduct());
+			tempMap.put("subProduct", productDetail.getSubProduct());
 			String proFormart = "";
-			if(ProductDetail.getFormatNum() != null && ProductDetail.getFormatNum() > 0){
-				 proFormart += ProductDetail.getFormatNum();
+			if(productDetail.getFormatNum() != null && productDetail.getFormatNum() > 0){
+				 proFormart += productDetail.getFormatNum();
 			}
-			if(StringUtils.isNotBlank(ProductDetail.getUnit())) {
-				proFormart +=ProductDetail.getUnit();
+			if(StringUtils.isNotBlank(productDetail.getUnit())) {
+				proFormart +=productDetail.getUnit();
 			}
-			if(StringUtils.isNotBlank(ProductDetail.getFormat())){
-				proFormart +=  ("/" + ProductDetail.getFormat());
+			if(StringUtils.isNotBlank(productDetail.getFormat())){
+				proFormart +=  ("/" + productDetail.getFormat());
 			}
-			tempMap.put("unit", ProductDetail.getUnit());
+			tempMap.put("unit", productDetail.getUnit());
 			tempMap.put("format", proFormart);
-			tempMap.put("material", ProductDetail.getMaterial());
+			tempMap.put("material", productDetail.getMaterial());
 			tempMap.put("price", mapper.getPrice());
 			tempMap.put("productDetailId", mapper.getProductDetailId());
 			tempMap.put("mapid", mapper.getId());
 			tempMap.put("status", mapper.getStatus());
 			tempMap.put("markup", mapper.getMarkup());
 			tempMap.put("percent", mapper.getPercent());
+			tempMap.put("brand",  mapper.getBrand()==null ? "" : mapper.getBrand());
 			//tempMap.put("taxrate", mapper.getTaxrate());
 			mapList.add(tempMap);
 		}

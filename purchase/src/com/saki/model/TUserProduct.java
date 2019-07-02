@@ -28,6 +28,7 @@ public class TUserProduct implements java.io.Serializable {
 	private Double percent;
 	private Integer productId;
 	private String imgUrl;
+	private String brand ; 
 	//private Double taxrate; 
 
 	// Constructors
@@ -151,6 +152,16 @@ public class TUserProduct implements java.io.Serializable {
 	}
 	public void setSupMarkup(Double supMarkup) {
 		this.supMarkup = supMarkup;
+	}
+
+	
+	@Column(name = "brand")
+	public String getBrand() {
+		return brand;
+	}
+
+	public void setBrand(String brand) {
+		this.brand = brand;
 	}
 	
 	

@@ -12,7 +12,6 @@ import com.saki.dao.BaseDaoI;
 import com.saki.entity.Grid;
 import com.saki.model.TColor;
 import com.saki.model.TCompany;
-import com.saki.model.TOrder;
 import com.saki.model.TUser;
 import com.saki.service.CompanyServiceI;
 import com.saki.service.UserServiceI;
@@ -183,9 +182,9 @@ public class CompanyServiceImpl implements CompanyServiceI{
 	}
 	
 	@Override
-	public void addMapDataByProDetail(int proDetailId , int  proId) {
-		String sql = " insert  into  t_user_product ( company_id , product_detail_id , role_id , product_id  , status ) "  + 
-				"select   id , '" + proDetailId +"' , roleid , '" + proId + "' , '1' from t_company   where roleid is not null  "   ;
+	public void addMapDataByProDetail(int proDetailId , int  proId , String brand , String flag ) {
+		String sql = " insert  into  t_user_product ( company_id , product_detail_id , role_id , product_id  , status  , brand ) "  + 
+				"select   id , '" + proDetailId +"' , roleid , '" + proId + "' , '1' , '" + brand + "' from t_company   where roleid is not null  "   ;
 		System.out.println(sql);
 		companyDao.executeUpdate(sql);
 	}

@@ -192,7 +192,7 @@ public class BaseDaoImpl<T> implements BaseDaoI<T> {
 				subPro +=  "-" +  tProductDetail.getMaterial()  ;
 			}
 			if(tProductDetail.getFormatNum() != null ){
-				subPro += "-" + tProductDetail.getFormatNum() +  (tProductDetail.getUnit()==null?"":tProductDetail + "/") + tProductDetail.getFormat();
+				subPro += "-" + tProductDetail.getFormatNum() +  (tProductDetail.getUnit()==null?"":tProductDetail.getUnit() + "/") + tProductDetail.getFormat();
 			}
 			tProductDetail.setSubProduct(subPro);
 			

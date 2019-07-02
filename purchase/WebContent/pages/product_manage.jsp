@@ -104,6 +104,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			if(product.parentId > 0){
 			    			$(".divBase").show();
 			    			$("#imageFile").show();
+			    			$("#imageFileNew").show();
 			    			if(product.childProName){
 			    				$("img").show();
 				    			$("img").attr("src","/ring/upload/"+product.childProName)
@@ -113,6 +114,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		    			}else{
 		    				$(".divBase").hide();
 		    				$("#imageFile").hide();
+		    				$("#imageFileNew").show();
 		    				$("img").hide();
 		    			}
 		    			$("#divUnit").show();
@@ -266,7 +268,30 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					  shadeClose: true,
 					  shade: 0.8,
 					  area: ['450px', '40%'],
-					  content: '<%=path%>/pages/file_import.jsp' //iframe的url
+					  content: '<%=path%>/pages/file_import.jsp' ,//iframe的url
+					  success: function (layero, index) {
+		                    // 获取子页面的iframe
+		                    var iframe = window['layui-layer-iframe' + index];
+		                    // 向子页面的全局函数child传参
+		                    iframe.setType("old");
+		                }
+				});
+			});
+			
+			$("#imageFileNew").click(function(){
+				layer.open({
+					  type: 2,
+					  title: '导入单行产品详情信息表格',
+					  shadeClose: true,
+					  shade: 0.8,
+					  area: ['450px', '40%'],
+					  content: '<%=path%>/pages/file_import.jsp', //iframe的url，
+					  success: function (layero, index) {
+		                    // 获取子页面的iframe
+		                    var iframe = window['layui-layer-iframe' + index];
+		                    // 向子页面的全局函数child传参
+		                    iframe.setType("new");
+		                }
 				});
 			});
 		});
@@ -337,7 +362,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
  		<a  id="addProduct" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">新增</a>
  		<a  id="imageFile" style="background-color:#e05447;color:#fff;float: left;width:60px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入</a>
-		
+		<a  id="imageFileNew" style="background-color:#e05447;color:#fff;float: left;width:80px;height: 30px;line-height: 30px;text-align: center;margin-top: 5px">导入（新）</a>
 	</div>
  	
 	<div class='container'>

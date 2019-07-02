@@ -41,6 +41,7 @@ public class ReportFormAction extends BaseAction implements ModelDriven<TColor>{
 	private File uploadFile;
 	private String filename;
 	private Integer proId;
+	private String fileType;
 	TColor tColor = new TColor();
 	
 	@Override
@@ -118,7 +119,7 @@ public class ReportFormAction extends BaseAction implements ModelDriven<TColor>{
 		}
 	}
 	
-	public void importExcel(String fileType) {
+	public void importExcel() {
 			String fileName = ExcelUtil.copyFile(filename, uploadFile);
 			FileInputStream in;
 			Message j = new Message();
@@ -247,6 +248,12 @@ public class ReportFormAction extends BaseAction implements ModelDriven<TColor>{
 	}
 	public void setProId(Integer proId) {
 		this.proId = proId;
+	}
+	public String getFileType() {
+		return fileType;
+	}
+	public void setFileType(String fileType) {
+		this.fileType = fileType;
 	}
 	
 }

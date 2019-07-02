@@ -391,7 +391,7 @@ public class ProductAction  extends BaseAction implements ModelDriven<TProduct>{
 								request.getParameter("remark"));
 			}
 			this.productDetailService.add(detail);
-			companyService.addMapDataByProDetail(detail.getId(), detail.getProductId());
+			companyService.addMapDataByProDetail(detail.getId(), detail.getProductId() ,detail.getBrand() , null);
 			j.setMsg("保存成功");
 			j.setSuccess(true);
 		} catch (NumberFormatException e) {
