@@ -410,8 +410,6 @@ public class ProductServiceImpl implements ProductServiceI{
 				+ " where m.companyId = c.id  and m.productDetailId = d.id  and d.productId = p.id  and p.parentId = g.id   and m.status = '1' "   ;
 		if(companyId > 0 ){
 			hql += " and  m.companyId  =  " + companyId ;
-		}else {
-			hql += " and  m.roleId = 2 " ;
 		}
 		
 		if(params.containsKey("companyId")){

@@ -29,7 +29,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
   
   <body class="easyui-layout">
  	<div data-options="region:'north',border:false,showHeader:false"  style="height:40px" >
- 		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">价格管理</p>
+ 		<p style="font-size: 22px;height:40px;line-height: 40px;margin: 0px">常用品牌管理</p>
  	</div>
  	<div data-options="region:'center',border:false,showHeader:false" style="padding-bottom: 30px">
  			 <div >
@@ -105,18 +105,19 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		}
 	});
 	var editIndex = undefined;
-	var json = [];
-
-	 var row1 = {value:'1',text:'系统品牌'}
-
-	 var row2 = {value:'2',text:'非系统品牌'}
-
-	 json.push(row1);
-
-	 json.push(row2);  
+	 
+	 var brandJson = {} ;
+	 $.ajax({ 
+			url: '${pageContext.request.contextPath}/companyAction!loadAllBrand.action?colName=roleId&colValue=2',
+			dataType : 'json',
+			success : function(obj){
+				brandJson = obj
+			}
+		});
+	 
     	$(function(){
 			$('#user_table').datagrid({
-				url:'${pageContext.request.contextPath}/productAction!loadProducntDetailByCompany.action',
+				url:'${pageContext.request.contextPath}/productAction!loadProducntDetailByCompany.action?colName=roleId&colValue=3',
 				pagination: true,
 				pagePosition:'top',
 				pageSize: 30,
@@ -140,9 +141,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				    			dataType : 'json',
 				    			success : function(obj){
 				    				if(obj.success){
-				    					alert(obj.msg)
+				    					//alert(obj.msg)
 				    				}else{
-				    					//alert(obj.msg);
+				    					alert(obj.msg);
 				    				}
 				    			}
 				    		});
@@ -159,20 +160,22 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'productName',title:'产品类别',width:20,align:'center'},
 					{field:'subProduct',title:'产品名称',width:20,align:'center'},
 					{field:'material',title:'材料',width:20,align:'center'},
-					/* {field:'status',title:'是否系统品牌',width:20,align:'center',editor:{
-					    type: 'combobox',
-					    options: {
-					        data: json ,
-					        valueField: "value",
-					        textField: "text"
-					    }
-					},formatter: function(value,row,index){
-						if(value == '1'){
+					{field:'brandStatus',title:'是否系统品牌',width:20,align:'center',
+						formatter: function(value,row,index){
+							console.info(row)
+						var flag = false ; 
+						for( var i = 0 ; i < brandJson.length ; i++){
+							 if(brandJson[i].brand == row.brand){
+								  flag = true ; 
+								  break;
+							 }
+						}
+						if(flag){
 							return "系统内品牌";
 						}else{
 							return "非系统内品牌";
 						}
-					}}, */
+					}}, 
 					{field:'brand',title:'品牌',width:20,align:'center',
 					editor:{
 					    type: 'combobox',
