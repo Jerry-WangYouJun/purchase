@@ -221,7 +221,7 @@ public class CompanyAction extends BaseAction implements ModelDriven<TCompany>{
 		
 	}
 	public void search(){
-		super.writeJson(companyService.search(name, value,sort, order, page, rows));
+		super.writeJson(companyService.search(name, "%" + value + "%",sort, order, page, rows));
 	}
 	
 	

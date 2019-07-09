@@ -4,13 +4,18 @@ import org.apache.struts2.convention.annotation.Action;
 import org.apache.struts2.convention.annotation.Namespace;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 import com.opensymphony.xwork2.ModelDriven;
+import com.saki.entity.Grid;
 import com.saki.entity.Message;
+import com.saki.model.TCompany;
 import com.saki.model.TUserProduct;
 import com.saki.service.CompanyServiceI;
 import com.saki.service.ProductDetailServiceI;
 import com.saki.service.ProductServiceI;
 import com.saki.service.UserProductServiceI;
+import com.saki.utils.SystemUtil;
 @Namespace("/")
 @Action(value="userProAction")
 public class UserProAction  extends BaseAction implements ModelDriven<TUserProduct>{
@@ -42,11 +47,36 @@ public class UserProAction  extends BaseAction implements ModelDriven<TUserProdu
 		mapper.setBrand(brand);
 		userProductService.update(mapper);
 		j.setSuccess(true);
-		j.setMsg(mapid + "," + brand);
 		super.writeJson(j);
 	}
 	
 	
+	public void updateMapperBrandMany() {
+		Message j = new Message();
+		String brand = getParameter("brand");
+		try{
+			Grid  com = companyService.search("brand",  brand, null, null, "1", "10");
+			if(com.getTotal() <= 0) {
+				j.setMsg("保存失败,该品牌不存在");
+				j.setSuccess(false);
+			}else {
+				String  s = getParameter("obj");
+				JSONArray jsonArray = JSONArray.parseArray(s);
+				for (Object object : jsonArray) {
+					JSONObject  json = (JSONObject) object;
+					Integer mapid = json.getIntValue("mapid");
+					TUserProduct  mapper = userProductService.getByKey(Integer.valueOf(mapid));
+					mapper.setBrand(brand);
+					userProductService.update(mapper);
+				}
+				j.setSuccess(true);
+				j.setMsg("保存成功");
+			}
+		}catch(Exception e){
+			j.setMsg("保存失败");
+		}	
+		super.writeJson(j);
+	}
 	
 	@Override
 	public TUserProduct getModel() {

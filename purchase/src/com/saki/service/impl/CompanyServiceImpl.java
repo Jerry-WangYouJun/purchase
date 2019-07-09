@@ -124,7 +124,7 @@ public class CompanyServiceImpl implements CompanyServiceI{
 		Map<String, Object> params = new HashMap<String, Object>();		
 		String hql = "from TCompany t";
 		if(row!=null && text!=null){
-			params.put("text", "%" + text + "%");
+			params.put("text", text);
 			hql = hql + " where t." + row + " like :text";
 		}
 		if(sort!=null && order!=null){

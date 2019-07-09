@@ -162,7 +162,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 					{field:'material',title:'材料',width:20,align:'center'},
 					{field:'brandStatus',title:'是否系统品牌',width:20,align:'center',
 						formatter: function(value,row,index){
-							console.info(row)
 						var flag = false ; 
 						for( var i = 0 ; i < brandJson.length ; i++){
 							 if(brandJson[i].brand == row.brand){
@@ -214,23 +213,6 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 			editIndex = rowIndex ;
 		}
     	
-		function updateBrand(price , detailId , mapid){
-			price = Math.round(price * 100) / 100;
-				$.ajax({ 
-		    			url: '${pageContext.request.contextPath}/productAction!updateMappingPrice.action',
-		    			data : {"price":price ,"detailId":detailId , "mapid" : mapid },
-		    			dataType : 'json',
-		    			success : function(obj){
-		    				if(obj.success){
-		    				 	//alert(obj.msg);
-		    				 	//$('#user_table').datagrid('reload');
-		    				}else{
-		    					alert(obj.msg);
-		    					$('#user_table').datagrid('reload');
-		    				}
-		    			}
-		    		});
-		}
 		
 		
 		function updateBrand_many(){
@@ -238,14 +220,14 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 				if(checkedItems.length  == 0){
 					return false;
 				}
-			var flag = confirm("确定进行批量修改价格？");
+			var flag = confirm("确定进行批量修改品牌名？");
 			if(flag){
-				 $.messager.prompt('','请输入金额',function(s){
+				 $.messager.prompt('','请输入品牌名',function(s){
 					if(s){
 						$.ajax({ 
-			    			url: '${pageContext.request.contextPath}/productAction!updatePriceMany.action',
+			    			url: '${pageContext.request.contextPath}/userProAction!updateMapperBrandMany.action',
 			    			type:'post',
-			    			data : { "obj": JSON.stringify(checkedItems) , price :s},
+			    			data : { "obj": JSON.stringify(checkedItems) , brand :s},
 			    			dataType : 'json',
 			    			success : function(obj){
 			    				if(obj.success){
